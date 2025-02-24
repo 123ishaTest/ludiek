@@ -1,0 +1,49 @@
+---
+title: Hello world
+description: Welcome to Ludiek!
+date: '2025-03-02'
+categories:
+- technical
+published: true
+---
+Hello everyone, welcome to the first blog post of _Ludiek_!
+
+Ludiek is a game engine that focuses purely on gameplay elements. No 3D graphics, no animations, pure game elements like `Upgrades`, `Achievements`, `Inventory`.
+Ludiek is the spiritual successor of the [Incremental Game Template](https://github.com/123ishaTest/igt-vue) (IGT) and currently [under heavy development](https://github.com/123ishaTest/ludiek/issues)
+
+In this blog I will write about design decisions, give updates about games made with Ludiek, and any other technical elements I find interesting. I hope you find some value in it!
+
+\- Isha
+
+## So why a completely new project?
+There are many things "wrong" with IGT. But the most glaring is the mixing of what I now call `content` and `engine`.
+In IGT, there was 
+
+
+```ts
+export class MoneyPouch extends AbstractConsumable {
+  _wallet: Wallet;
+  constructor(wallet: Wallet) {
+
+  super('Money Pouch', 'Open for some coins', ItemId.MoneyPouch,  ItemType.Consumable);
+
+  this._wallet = wallet;
+
+}
+
+
+  consume(): void {
+    this._wallet.gainCurrency(new Currency(10, CurrencyType.Money));
+  }
+
+}
+```
+
+### The advantages?
+- Every piece of content now works the same. Any item that awards a currency is implemented using the same logic in the engine. This is much easier to test and will 
+- Content is completely static. Since there is no custom logic in content by definition, the entire game can be configured from static yaml/JSON files. This makes it much easier to have non-coders work on balancing your games.
+- To add to that, you can now create custom tooling to edit your content. 
+### The disadvantages?
+- Creating custom content is more difficult. If you have an item that has unique behaviour, you have to implement it through the engine, which can be a bit of overhead if you will never reuse that behaviour.
+
+All in all I think this new setup is much, much better, an
