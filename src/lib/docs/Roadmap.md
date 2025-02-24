@@ -43,6 +43,8 @@ Create an example game that uses all the mechanics
 
 ## Blog
 
+This is where I talk at you.
+
 ## Content Studio
 
 A web application where you can edit all your content in a neat way.

@@ -26,3 +26,5 @@ const introspection = game.engine.introspect();
 
 const jsonSchema = zodToJsonSchema(introspection.requirements, 'requirement');
 console.log(JSON.stringify(jsonSchema, null, 2));
+
+
