@@ -1,0 +1,30 @@
+{
+  "name": "@123ishatest/ludiek",
+  "type": "module",
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "format": "prettier --write .",
+    "lint": "prettier --check . && eslint ."
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "devDependencies": {
+    "@123ishatest/ludiek-typescript-config": "*",
+    "@eslint/compat": "^1.2.5",
+    "@eslint/js": "^9.18.0",
+    "eslint": "^9.18.0",
+    "eslint-config-prettier": "^10.0.1",
+    "prettier": "^3.4.2",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.20.0"
+  },
+  "dependencies": {
+    "strongly-typed-events": "^3.0.11",
+    "zod": "^4.0.0-beta"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "extends": "@123ishatest/ludiek-typescript-config/base.json",
+  "compilerOptions": {
+    "paths": {
+      "@ludiek/*": ["./src/*"]
+    },
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
