@@ -8,11 +8,18 @@ export const SettingValueRequirementSchema = RequirementSchema.extend({
   id: z.string(),
   value: SettingValueSchema,
 })
-  .brand<'requirement'>()
   .meta({
     title: 'SettingValueRequirement',
     description: 'Whether the Setting has the required value',
-  });
+    examples: [
+      {
+        type: 'setting-value',
+        id: '/setting/auto-potion',
+        value: true,
+      },
+    ],
+  })
+  .brand<'requirement'>();
 
 export type SettingValueRequirement = z.infer<typeof SettingValueRequirementSchema>;
 

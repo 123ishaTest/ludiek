@@ -7,11 +7,18 @@ export const CurrencyRequirementSchema = RequirementSchema.extend({
   currency: z.string(),
   amount: z.number().positive(),
 })
-  .brand<'requirement'>()
   .meta({
     title: 'CurrencyRequirement',
     description: 'Whether the Wallet has the required amount of a Currency',
-  });
+    examples: [
+      {
+        type: 'currency',
+        currency: '/currency/money',
+        amount: 2,
+      },
+    ],
+  })
+  .brand<'requirement'>();
 
 export type CurrencyRequirement = z.infer<typeof CurrencyRequirementSchema>;
 

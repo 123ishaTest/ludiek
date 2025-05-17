@@ -5,6 +5,7 @@ import type { Features } from '@ludiek/features/Features';
 
 export const GainCurrencyEffectSchema = EffectSchema.extend({
   type: z.literal('gain-currency'),
+  something: z.string(),
   currency: CurrencySchema,
 })
   .brand<'effect'>()

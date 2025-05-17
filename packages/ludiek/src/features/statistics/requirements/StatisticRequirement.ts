@@ -7,11 +7,18 @@ export const StatisticRequirementSchema = RequirementSchema.extend({
   id: z.string(),
   value: z.number().positive(),
 })
-  .brand<'requirement'>()
   .meta({
     title: 'StatisticRequirement',
     description: 'Whether the specified statistic is the required value',
-  });
+    examples: [
+      {
+        type: 'statistic',
+        id: '/stat/total-money',
+        value: 100,
+      },
+    ],
+  })
+  .brand<'requirement'>();
 
 export type StatisticRequirement = z.infer<typeof StatisticRequirementSchema>;
 

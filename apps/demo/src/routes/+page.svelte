@@ -1,5 +1,6 @@
 <script lang="ts">
   import { demoGame } from '@123ishatest/ludiek';
+  import { LudiekPortal } from '@123ishatest/ludiek-portal';
 
   let money = $derived(demoGame.features.wallet.getCurrency('/currency/money'));
 
@@ -16,3 +17,5 @@
     </div>
   </div>
 </div>
+
+<LudiekPortal game={demoGame} />
