@@ -1,6 +1,7 @@
 import type { LayoutServerLoad } from './$types';
 import type { BlogPost } from '$lib/model/BlogPost';
 import type { PostsPerMonth } from '$lib/model/PostsPerMonth';
+import { base } from '$app/paths';
 
 const months = [
   'January',
@@ -18,7 +19,7 @@ const months = [
 ];
 
 export const load: LayoutServerLoad = async ({ fetch }) => {
-  const response = await fetch('/api/posts');
+  const response = await fetch(base + '/api/posts');
   const posts: BlogPost[] = await response.json();
 
   const groupedPosts: PostsPerMonth[] = [];
