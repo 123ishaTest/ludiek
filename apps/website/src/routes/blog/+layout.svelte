@@ -7,7 +7,7 @@
 <div class="flex flex-row">
   <BlogSidebar posts={data.posts}></BlogSidebar>
 
-  <div class="ml-24 p-4">
+  <div class="w-full p-4 md:ml-24">
     {@render children()}
   </div>
 </div>
