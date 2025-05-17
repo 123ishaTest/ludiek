@@ -19,8 +19,11 @@
   "sideEffects": [
     "**/*.css"
   ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "exports": {
     ".": {
+      "default": "./dist/index.js",
       "types": "./dist/index.d.ts",
       "svelte": "./dist/index.js"
     }
@@ -47,6 +50,7 @@
     "zod": "^4.0.0-beta.20250505T195954"
   },
   "dependencies": {
+    "json-schema": "^0.4.0",
     "lodash": "^4.17.21"
   }
 }

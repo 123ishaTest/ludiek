@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { capitalize } from '@123ishatest/ludiek';
   import { labelFormat } from '../../../util/form';
 
   interface Props {
