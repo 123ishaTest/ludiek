@@ -5,12 +5,13 @@
   import FormBooleanInput from './inputs/FormBooleanInput.svelte';
   import FormObjectInput from './inputs/FormObjectInput.svelte';
   import { labelFormat } from '../../util/form';
+  import type { JSONSchema4 } from 'json-schema';
 
   interface Props {
-    property: any;
+    property: JSONSchema4;
     key: string;
     required: boolean;
-    example?: any;
+    example?: Record<string, never>;
   }
 
   let { property, key, example = {}, required }: Props = $props();

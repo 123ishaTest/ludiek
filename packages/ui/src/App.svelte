@@ -2,7 +2,6 @@
   import './app.css';
   import { Game } from '@123ishatest/ludiek';
   import ContentSidebar from './components/ContentSidebar.svelte';
-  import FormDecisionInput from './components/forms/FormDecisionInput.svelte';
   import SchemaForm from './components/forms/SchemaForm.svelte';
 
   interface Props { game: Game }

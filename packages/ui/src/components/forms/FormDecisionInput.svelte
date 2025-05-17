@@ -1,19 +1,18 @@
 <script lang="ts">
   
-  import { z } from 'zod';
   import GenericForm from './GenericForm.svelte';
+  import type { JSONSchema4 } from 'json-schema';
 
   interface Props {
-    json: z.core.JSONSchema.Schema;
+    json: JSONSchema4;
   }
   
   let { json }: Props = $props();
-  console.log("decision", json)
 
-  let options = $derived(json.anyOf.map(a => a.title))
-  console.log("options", options)
+  let options = $derived(json.anyOf?.map(a => a.title ?? "UNKNOWN") ?? ["UNKNOWN"])
+
   let selectedKey: string = $derived(options[0])
-  let selectedJson = $derived(json.anyOf.find(a => a.title === selectedKey))
+  let selectedJson = $derived(json.anyOf?.find(a => a.title === selectedKey))
 
 </script>
 
@@ -25,4 +24,6 @@
   {/each}
 </select>
 
-<GenericForm json={selectedJson}/>
+{#if selectedJson}
+  <GenericForm json={selectedJson}/>
+{/if}
