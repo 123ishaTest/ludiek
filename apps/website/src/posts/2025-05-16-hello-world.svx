@@ -1,0 +1,14 @@
+---
+title: Hello world
+date: 2025-05-16
+published: true
+---
+Hello everyone, welcome to the first blog post of _Ludiek_!
+
+Ludiek is a game engine that focuses purely on gameplay elements. No 3D graphics, no animations, but pure game elements like `Upgrades`, `Achievements`, `Inventory` and such.
+Ludiek is the spiritual successor of the [Incremental Game Template](https://github.com/123ishaTest/igt-vue) (IGT) and currently [under heavy development](https://github.com/123ishaTest/ludiek/issues).
+
+In this blog I will write about design decisions, give updates about games made with Ludiek, and any other technical elements I find interesting. I hope you find some value in it!
+
+\- Isha
+
