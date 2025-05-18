@@ -11,5 +11,14 @@ export const docsLayout: DocsLayout = {
         },
       ],
     },
+    {
+      title: 'Features',
+      pages: [
+        {
+          title: 'Wallet',
+          slug: 'features/wallet',
+        },
+      ],
+    },
   ],
 };
