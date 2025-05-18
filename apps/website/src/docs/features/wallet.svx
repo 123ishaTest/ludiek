@@ -1,0 +1,6 @@
+---
+title: Wallet
+slug: features/wallet
+---
+
+Wallet docs go here

@@ -8,7 +8,7 @@
       <p class="btn btn-ghost text-xl">Ludiek</p>
     </a>
   </div>
-  <div class="navbar-center hidden lg:flex">
+  <div class="navbar-center lg:flex">
     <ul class="menu menu-horizontal px-1">
       <li>
         <a href="{base}/docs">Docs</a>
