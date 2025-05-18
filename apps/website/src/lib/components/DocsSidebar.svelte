@@ -9,10 +9,10 @@
 
   let { docs }: Props = $props();
 
-  let currentPostSlug = $derived(page.url.pathname.split('/').at(-1));
+  let currentDocSlug = $derived(page.url.pathname.split('docs/').at(-1));
 </script>
 
-<ul class="menu bg-base-200 rounded-box hidden w-64 sm:inline">
+<ul class="menu w-full">
   {#each docs.categories as category}
     <li>
       <details open>
@@ -20,7 +20,7 @@
         <ul>
           {#each category.pages as page}
             <li>
-              <a href="{base}/docs/{page.slug}" class={currentPostSlug === page.slug ? 'menu-active' : ''}>
+              <a href="{base}/docs/{page.slug}" class={currentDocSlug === page.slug ? 'menu-active' : ''}>
                 {page.title}
               </a>
             </li>

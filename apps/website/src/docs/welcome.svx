@@ -1,6 +1,6 @@
 ---
-title: Hello World
-slug: hello-world
+title: Welcome
+slug: welcome
 ---
 
 Hello interested reader, welcome to _Ludiek_.
@@ -48,12 +48,17 @@ Ludiek consists of the following projects:
 
 I am by no means a programming expert. It is a fun hobby that I picked up while studying Computer Science.
 Many, many choices in this project are made arbitrarily and might not be the optimal way to do things.
-Feel free to contact me if you have some good ideas :)
 
 Here are some of my opinions:
 
 - I like to overengineer tools.
 - Content should be split from your game logic as much as possible.
 - There should be absolutely no presentation logic mixed with game logic.
-- Features presented here should not depend on each other if possible. If they have to, this dependency should be injected.
+- Features presented here should not depend on each other if possible.
 - Have fun is the most important part of game development!
+
+
+## Get involved
+I have big plans for _Ludiek_, and could use all the help I can get.
+If this project has been helpful to you in some way, consider contributing via [Patreon](https://patreon.com/123ishatest)
+or [Development](https://github.com/123ishaTest/ludiek/issues).

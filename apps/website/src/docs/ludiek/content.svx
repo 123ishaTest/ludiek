@@ -1,0 +1,6 @@
+---
+title: Content
+slug: ludiek/content
+---
+
+Content

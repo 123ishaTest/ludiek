@@ -12,7 +12,7 @@
   let currentPostSlug = $derived(page.url.pathname.split('/').at(-1));
 </script>
 
-<ul class="menu bg-base-200 rounded-box hidden w-64 sm:inline">
+<ul class="menu w-64">
   {#each posts as category}
     <li>
       <details open>

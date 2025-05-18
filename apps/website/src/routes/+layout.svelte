@@ -5,10 +5,9 @@
   let { children } = $props();
 </script>
 
-<div>
+<div class="flex h-screen flex-col">
   <LudiekNavbar />
-
-  <div class="grow p-4">
+  <div class="flex flex-grow overflow-y-scroll">
     {@render children()}
   </div>
 </div>
