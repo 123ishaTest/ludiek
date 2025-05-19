@@ -8,6 +8,8 @@ import type { Requirement } from '#ludiek/engine/concepts/requirements/Requireme
 import { DuplicateContentError } from '#ludiek/engine/Errors';
 import { isNumber } from '#ludiek/util/types';
 import type { Effect } from '#ludiek/engine/concepts/effects/Effect';
+import type { EngineContribution } from '#ludiek/engine/EngineContribution';
+import type { ContentDefinition } from '#ludiek/content/ContentDefinition';
 
 export class Engine {
   private _features!: Features;
@@ -35,11 +37,11 @@ export class Engine {
     return this.requirements.hasRequirement(requirement, this._features);
   }
 
-  public addContent(key: string, schema: ZodType): void {
-    if (key in schema) {
-      throw new DuplicateContentError(`Cannot register Content with key '${key}' as it already exists.`);
+  public addContent(content: ContentDefinition): void {
+    if (content.key in this.content) {
+      throw new DuplicateContentError(`Cannot register Content with key '${content.key}' as it already exists.`);
     }
-    this.content[key] = schema;
+    this.content[content.key] = content.schema;
   }
 
   /**
@@ -67,5 +69,17 @@ export class Engine {
       };
     }
     return this._cachedIntrospection;
+  }
+
+  public addContribution(contribution: EngineContribution) {
+    // Add engine concepts
+    contribution.engine?.effects?.forEach((e) => this.effects.register(e));
+    contribution.engine?.numbers?.forEach((n) => this.numbers.register(n));
+    contribution.engine?.requirements?.forEach((r) => this.requirements.register(r));
+
+    // Add content
+    contribution.content?.forEach((content) => {
+      this.addContent(content);
+    });
   }
 }

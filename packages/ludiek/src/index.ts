@@ -1,5 +1,9 @@
 // TODO(@Isha): Fix barrel imports
 
+export { EngineConceptDefinition } from '#ludiek/engine/concepts/EngineConceptDefinition';
+
+export type { EngineContribution } from '#ludiek/engine/EngineContribution';
+
 export { capitalize } from '#ludiek/util/strings';
 
 export { Game } from '#ludiek/Game';

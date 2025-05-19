@@ -1,11 +1,11 @@
 import { assert, beforeEach, describe, expect, it } from 'vitest';
-import type { CurrencyType } from '@ludiek/features/wallet/content/CurrencyType';
-import type { CurrencyDetail } from '@ludiek/features/wallet/content/CurrencyDetail';
-import { Wallet } from '@ludiek/features/wallet/Wallet';
-import type { Features } from '@ludiek/features/Features';
-import { Engine } from '@ludiek/engine/Engine';
-import type { Content } from '@ludiek/content/Content';
-import { InvalidCurrencyError } from '@ludiek/features/wallet/WalletErrors';
+import type { CurrencyType } from '#ludiek/features/wallet/content/CurrencyType';
+import type { CurrencyDetail } from '#ludiek/features/wallet/content/CurrencyDetail';
+import { Wallet } from '#ludiek/features/wallet/Wallet';
+import type { Features } from '#ludiek/features/Features';
+import { Engine } from '#ludiek/engine/Engine';
+import type { Content } from '#ludiek/content/Content';
+import { InvalidCurrencyError } from '#ludiek/features/wallet/WalletErrors';
 
 describe('Wallet', () => {
   const money: CurrencyType = 'money';

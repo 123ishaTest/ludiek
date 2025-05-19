@@ -4,6 +4,7 @@ import type { Engine } from '#ludiek/engine/Engine';
 import type { Content } from '#ludiek/content/Content';
 import type { Requirement } from '#ludiek/engine/concepts/requirements/Requirement';
 import type { SaveData } from '#ludiek/tools/saving/SaveData';
+import type { EngineContribution } from '#ludiek/engine/EngineContribution';
 
 /**
  * An abstract class that all features should extend from.
@@ -56,12 +57,7 @@ export abstract class Feature implements Saveable {
    * This is where your engine configuration takes place.
    * Add definitions to engine concepts here.
    */
-  configure?(): void;
-
-  /**
-   * This is where your content declaration takes place.
-   */
-  content?(): void;
+  public getEngineContribution?(): EngineContribution;
 
   /**
    * This is where your feature configuration takes place.

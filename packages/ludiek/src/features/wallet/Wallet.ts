@@ -7,6 +7,7 @@ import { CurrencyRequirementDefinition } from '#ludiek/features/wallet/requireme
 import { GainCurrencyEffectDefinition } from '#ludiek/features/wallet/effects/GainCurrencyEffect';
 import { type CurrencyDetail, CurrencyDetailSchema } from '#ludiek/features/wallet/content/CurrencyDetail';
 import { InvalidCurrencyError } from '#ludiek/features/wallet/WalletErrors';
+import type { EngineContribution } from '#ludiek/engine/EngineContribution';
 
 export interface WalletState {
   currencies: Record<CurrencyType, CurrencyState>;
@@ -36,13 +37,14 @@ export class Wallet extends Feature {
     });
   }
 
-  public configure(): void {
-    this._engine.requirements.register(new CurrencyRequirementDefinition());
-    this._engine.effects.register(new GainCurrencyEffectDefinition());
-  }
-
-  public content() {
-    this._engine.addContent('currency', CurrencyDetailSchema);
+  public getEngineContribution(): EngineContribution {
+    return {
+      engine: {
+        requirements: [new CurrencyRequirementDefinition()],
+        effects: [new GainCurrencyEffectDefinition()],
+      },
+      content: [{ key: 'currency', schema: CurrencyDetailSchema }],
+    };
   }
 
   /**

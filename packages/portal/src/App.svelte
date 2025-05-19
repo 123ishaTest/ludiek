@@ -1,22 +1,25 @@
 <script lang="ts">
   import './app.css';
   import { Game } from '@123ishatest/ludiek';
-  import ContentSidebar from './components/ContentSidebar.svelte';
-  import SchemaForm from './components/forms/SchemaForm.svelte';
+  import FeatureOverview from './components/FeatureOverview.svelte';
 
-  interface Props { game: Game }
+  interface Props {
+    game: Game;
+  }
 
   let { game }: Props = $props();
 
-  let numberSchema  = game.engine.introspect().effect;
+  // let numberSchema = game.engine.introspect().effect;
 
+  let walletContribution = game.features.statistics.getEngineContribution();
 
 </script>
 
-<div class="flex flex-row space-x-4">
-  <ContentSidebar {game}/>
-  <p>This will be a portal some day</p>
+<!--<div class="flex flex-row space-x-4">-->
+<!--  <ContentSidebar {game}/>-->
+<!--  <p>This will be a portal some day</p>-->
+<!--</div>-->
 
-</div>
+<!--<SchemaForm schema={numberSchema}/>-->
 
-<SchemaForm schema={numberSchema}/>
+<FeatureOverview name="Wallet" contribution={walletContribution} />
