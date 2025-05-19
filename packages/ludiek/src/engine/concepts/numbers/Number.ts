@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { EngineConceptDefinition } from '@ludiek/engine/concepts/EngineConceptDefinition';
-import type { Features } from '@ludiek/features/Features';
-import { EngineConceptSchema } from '@ludiek/engine/concepts/EngineConceptSchema';
+import { EngineConceptDefinition } from '#ludiek/engine/concepts/EngineConceptDefinition';
+import type { Features } from '#ludiek/features/Features';
+import { EngineConceptSchema } from '#ludiek/engine/concepts/EngineConceptSchema';
 
 /**
  * Extend this class to create a new number definition.

@@ -1,13 +1,13 @@
 import type { ZodDiscriminatedUnion, ZodType } from 'zod';
-import type { Features } from '@ludiek/features/Features';
-import { Requirements } from '@ludiek/engine/concepts/requirements/Requirements';
-import { Numbers } from '@ludiek/engine/concepts/numbers/Numbers';
-import type { Number } from '@ludiek/engine/concepts/numbers/Number';
-import { Effects } from '@ludiek/engine/concepts/effects/Effects';
-import type { Requirement } from '@ludiek/engine/concepts/requirements/Requirement';
-import { DuplicateContentError } from '@ludiek/engine/Errors';
-import { isNumber } from '@ludiek/util/types';
-import type { Effect } from '@ludiek/engine/concepts/effects/Effect';
+import type { Features } from '#ludiek/features/Features';
+import { Requirements } from '#ludiek/engine/concepts/requirements/Requirements';
+import { Numbers } from '#ludiek/engine/concepts/numbers/Numbers';
+import type { Number } from '#ludiek/engine/concepts/numbers/Number';
+import { Effects } from '#ludiek/engine/concepts/effects/Effects';
+import type { Requirement } from '#ludiek/engine/concepts/requirements/Requirement';
+import { DuplicateContentError } from '#ludiek/engine/Errors';
+import { isNumber } from '#ludiek/util/types';
+import type { Effect } from '#ludiek/engine/concepts/effects/Effect';
 
 export class Engine {
   private _features!: Features;

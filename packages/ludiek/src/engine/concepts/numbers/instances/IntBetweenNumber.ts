@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { NumberDefinition, NumberSchema } from '@ludiek/engine/concepts/numbers/Number';
+import { NumberDefinition, NumberSchema } from '#ludiek/engine/concepts/numbers/Number';
 
 export const IntBetweenNumberSchema = NumberSchema.extend({
   type: z.literal('int-between'),

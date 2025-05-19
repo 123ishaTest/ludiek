@@ -1,10 +1,10 @@
-import type { Content } from '@ludiek/content/Content';
-import type { Features } from '@ludiek/features/Features';
-import { Wallet } from '@ludiek/features/wallet/Wallet';
-import { Statistics } from '@ludiek/features/statistics/Statistics';
-import { Settings } from '@ludiek/features/settings/Settings';
-import { Engine } from '@ludiek/engine/Engine';
-import { Game } from '@ludiek/Game';
+import type { Content } from '#ludiek/content/Content';
+import type { Features } from '#ludiek/features/Features';
+import { Wallet } from '#ludiek/features/wallet/Wallet';
+import { Statistics } from '#ludiek/features/statistics/Statistics';
+import { Settings } from '#ludiek/features/settings/Settings';
+import { Engine } from '#ludiek/engine/Engine';
+import { Game } from '#ludiek/Game';
 
 // Load the content
 // TODO(@Isha): Get from content parser

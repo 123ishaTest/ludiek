@@ -1,6 +1,6 @@
 import { type $ZodTypeDiscriminable, z, type ZodDiscriminatedUnion } from 'zod';
-import type { EngineConceptDefinition } from '@ludiek/engine/concepts/EngineConceptDefinition';
-import { ConceptDefinitionNotFoundError, DuplicateDefinitionError } from '@ludiek/engine/Errors';
+import type { EngineConceptDefinition } from '#ludiek/engine/concepts/EngineConceptDefinition';
+import { ConceptDefinitionNotFoundError, DuplicateDefinitionError } from '#ludiek/engine/Errors';
 
 export abstract class EngineConcept<C extends EngineConceptDefinition> {
   private readonly _definitions: Record<string, C> = {};

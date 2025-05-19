@@ -1,4 +1,4 @@
-import { LudiekError } from '@ludiek/Errors';
+import { LudiekError } from '#ludiek/Errors';
 
 export class EngineError extends LudiekError {}
 

@@ -1,4 +1,4 @@
-import { FeatureError } from '@ludiek/features/FeatureError';
+import { FeatureError } from '#ludiek/features/FeatureError';
 
 export class WalletError extends FeatureError {}
 

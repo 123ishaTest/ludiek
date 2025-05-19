@@ -1,5 +1,5 @@
-import type { NumberSettingDetail } from '@ludiek/features/settings/content/SettingDetail';
-import { SettingState } from '@ludiek/features/settings/state/SettingState';
+import type { NumberSettingDetail } from '#ludiek/features/settings/content/SettingDetail';
+import { SettingState } from '#ludiek/features/settings/state/SettingState';
 
 export class NumberSettingState extends SettingState<NumberSettingDetail> {
   constructor(detail: NumberSettingDetail) {

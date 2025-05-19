@@ -1,8 +1,8 @@
-import { Feature } from '@ludiek/features/Feature';
-import type { StatisticId } from '@ludiek/features/statistics/content/StatisticId';
-import type { StatisticState } from '@ludiek/features/statistics/state/StatisticState';
-import { StatisticRequirementDefinition } from '@ludiek/features/statistics/requirements/StatisticRequirement';
-import { type StatisticDetail, StatisticDetailSchema } from '@ludiek/features/statistics/content/StatisticDetail';
+import { Feature } from '#ludiek/features/Feature';
+import type { StatisticId } from '#ludiek/features/statistics/content/StatisticId';
+import type { StatisticState } from '#ludiek/features/statistics/state/StatisticState';
+import { StatisticRequirementDefinition } from '#ludiek/features/statistics/requirements/StatisticRequirement';
+import { type StatisticDetail, StatisticDetailSchema } from '#ludiek/features/statistics/content/StatisticDetail';
 
 /**
  * Statistics class to keep track of increasing numbers

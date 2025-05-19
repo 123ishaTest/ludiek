@@ -1,5 +1,5 @@
-import { NumberState } from '@ludiek/tools/state/NumberState';
-import type { StatisticDetail } from '@ludiek/features/statistics/content/StatisticDetail';
+import { NumberState } from '#ludiek/tools/state/NumberState';
+import type { StatisticDetail } from '#ludiek/features/statistics/content/StatisticDetail';
 
 export class StatisticState extends NumberState {
   detail: StatisticDetail;

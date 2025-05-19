@@ -1,4 +1,4 @@
-import type { SaveData } from '@ludiek/tools/saving/SaveData';
+import type { SaveData } from '#ludiek/tools/saving/SaveData';
 
 export interface Saveable {
   saveKey: string;
