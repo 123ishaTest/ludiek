@@ -1,5 +1,5 @@
 import z from 'zod';
-import { RequirementSchema } from '@ludiek/engine/concepts/requirements/Requirement';
+import { RequirementSchema } from '#ludiek/engine/concepts/requirements/Requirement';
 
 export const SettingValueSchema = z.union([z.number(), z.string(), z.boolean()]);
 

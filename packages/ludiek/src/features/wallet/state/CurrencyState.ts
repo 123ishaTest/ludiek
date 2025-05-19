@@ -1,5 +1,5 @@
-import type { CurrencyDetail } from '@ludiek/features/wallet/content/CurrencyDetail';
-import { NumberState } from '@ludiek/tools/state/NumberState';
+import type { CurrencyDetail } from '#ludiek/features/wallet/content/CurrencyDetail';
+import { NumberState } from '#ludiek/tools/state/NumberState';
 
 export class CurrencyState extends NumberState {
   detail: CurrencyDetail;

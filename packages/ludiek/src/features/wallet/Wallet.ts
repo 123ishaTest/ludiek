@@ -1,12 +1,12 @@
 import { type ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
-import type { CurrencyType } from '@ludiek/features/wallet/content/CurrencyType';
-import { CurrencyState } from '@ludiek/features/wallet/state/CurrencyState';
-import { Feature } from '@ludiek/features/Feature';
-import type { Currency } from '@ludiek/features/wallet/Currency';
-import { CurrencyRequirementDefinition } from '@ludiek/features/wallet/requirements/CurrencyRequirement';
-import { GainCurrencyEffectDefinition } from '@ludiek/features/wallet/effects/GainCurrencyEffect';
-import { type CurrencyDetail, CurrencyDetailSchema } from '@ludiek/features/wallet/content/CurrencyDetail';
-import { InvalidCurrencyError } from '@ludiek/features/wallet/WalletErrors';
+import type { CurrencyType } from '#ludiek/features/wallet/content/CurrencyType';
+import { CurrencyState } from '#ludiek/features/wallet/state/CurrencyState';
+import { Feature } from '#ludiek/features/Feature';
+import type { Currency } from '#ludiek/features/wallet/Currency';
+import { CurrencyRequirementDefinition } from '#ludiek/features/wallet/requirements/CurrencyRequirement';
+import { GainCurrencyEffectDefinition } from '#ludiek/features/wallet/effects/GainCurrencyEffect';
+import { type CurrencyDetail, CurrencyDetailSchema } from '#ludiek/features/wallet/content/CurrencyDetail';
+import { InvalidCurrencyError } from '#ludiek/features/wallet/WalletErrors';
 
 export interface WalletState {
   currencies: Record<CurrencyType, CurrencyState>;

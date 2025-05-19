@@ -1,11 +1,11 @@
-import { Feature } from '@ludiek/features/Feature';
-import type { SettingId } from '@ludiek/features/settings/content/SettingId';
-import type { SettingState } from '@ludiek/features/settings/state/SettingState';
-import { SettingValueRequirementDefinition } from '@ludiek/features/settings/requirements/SettingValueRequirement';
-import { SettingEnabledRequirementDefinition } from '@ludiek/features/settings/requirements/SettingEnabledRequirement';
-import { type SettingDetail, SettingSchema, type SettingValue } from '@ludiek/features/settings/content/SettingDetail';
-import { BooleanSettingState } from '@ludiek/features/settings/state/BooleanSettingState';
-import { NumberSettingState } from '@ludiek/features/settings/state/NumberSettingState';
+import { Feature } from '#ludiek/features/Feature';
+import type { SettingId } from '#ludiek/features/settings/content/SettingId';
+import type { SettingState } from '#ludiek/features/settings/state/SettingState';
+import { SettingValueRequirementDefinition } from '#ludiek/features/settings/requirements/SettingValueRequirement';
+import { SettingEnabledRequirementDefinition } from '#ludiek/features/settings/requirements/SettingEnabledRequirement';
+import { type SettingDetail, SettingSchema, type SettingValue } from '#ludiek/features/settings/content/SettingDetail';
+import { BooleanSettingState } from '#ludiek/features/settings/state/BooleanSettingState';
+import { NumberSettingState } from '#ludiek/features/settings/state/NumberSettingState';
 
 export class Settings extends Feature {
   protected _state: {

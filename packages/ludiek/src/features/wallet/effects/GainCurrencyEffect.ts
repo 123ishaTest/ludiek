@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { CurrencySchema } from '@ludiek/features/wallet/Currency';
-import { EffectDefinition, EffectSchema } from '@ludiek/engine/concepts/effects/Effect';
-import type { Features } from '@ludiek/features/Features';
+import { CurrencySchema } from '#ludiek/features/wallet/Currency';
+import { EffectDefinition, EffectSchema } from '#ludiek/engine/concepts/effects/Effect';
+import type { Features } from '#ludiek/features/Features';
 
 export const GainCurrencyEffectSchema = EffectSchema.extend({
   type: z.literal('gain-currency'),

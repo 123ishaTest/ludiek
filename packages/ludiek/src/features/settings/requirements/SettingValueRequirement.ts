@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { RequirementDefinition, RequirementSchema } from '@ludiek/engine/concepts/requirements/Requirement';
-import { SettingValueSchema } from '@ludiek/features/settings/content/SettingDetail';
-import type { Features } from '@ludiek/features/Features';
+import { RequirementDefinition, RequirementSchema } from '#ludiek/engine/concepts/requirements/Requirement';
+import { SettingValueSchema } from '#ludiek/features/settings/content/SettingDetail';
+import type { Features } from '#ludiek/features/Features';
 
 export const SettingValueRequirementSchema = RequirementSchema.extend({
   type: z.literal('setting-value'),

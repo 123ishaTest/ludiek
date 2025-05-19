@@ -1,6 +1,6 @@
-import { EngineConcept } from '@ludiek/engine/concepts/EngineConcept';
-import type { Requirement, RequirementDefinition } from '@ludiek/engine/concepts/requirements/Requirement';
-import type { Features } from '@ludiek/features/Features';
+import { EngineConcept } from '#ludiek/engine/concepts/EngineConcept';
+import type { Requirement, RequirementDefinition } from '#ludiek/engine/concepts/requirements/Requirement';
+import type { Features } from '#ludiek/features/Features';
 
 export class Requirements extends EngineConcept<RequirementDefinition> {
   constructor() {

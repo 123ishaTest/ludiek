@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { NumberSchema } from '@ludiek/engine/concepts/numbers/Number';
+import { NumberSchema } from '#ludiek/engine/concepts/numbers/Number';
 
 export const CurrencySchema = z.object({
   type: z.string(),

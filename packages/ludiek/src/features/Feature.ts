@@ -1,9 +1,9 @@
-import type { Saveable } from '@ludiek/tools/saving/Saveable';
-import type { Features } from '@ludiek/features/Features';
-import type { Engine } from '@ludiek/engine/Engine';
-import type { Content } from '@ludiek/content/Content';
-import type { Requirement } from '@ludiek/engine/concepts/requirements/Requirement';
-import type { SaveData } from '@ludiek/tools/saving/SaveData';
+import type { Saveable } from '#ludiek/tools/saving/Saveable';
+import type { Features } from '#ludiek/features/Features';
+import type { Engine } from '#ludiek/engine/Engine';
+import type { Content } from '#ludiek/content/Content';
+import type { Requirement } from '#ludiek/engine/concepts/requirements/Requirement';
+import type { SaveData } from '#ludiek/tools/saving/SaveData';
 
 /**
  * An abstract class that all features should extend from.

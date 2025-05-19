@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { RequirementDefinition, RequirementSchema } from '@ludiek/engine/concepts/requirements/Requirement';
-import type { Features } from '@ludiek/features/Features';
+import { RequirementDefinition, RequirementSchema } from '#ludiek/engine/concepts/requirements/Requirement';
+import type { Features } from '#ludiek/features/Features';
 
 export const StatisticRequirementSchema = RequirementSchema.extend({
   type: z.literal('statistic'),

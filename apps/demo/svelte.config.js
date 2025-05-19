@@ -5,9 +5,6 @@ const config = {
   preprocess: vitePreprocess(),
   kit: {
     adapter: adapter(),
-    alias: {
-      '@ludiek/*': '../../packages/ludiek/src/*',
-    },
   },
 };
 

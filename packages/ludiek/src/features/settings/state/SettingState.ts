@@ -1,7 +1,7 @@
 import { type ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
-import type { SettingId } from '@ludiek/features/settings/content/SettingId';
-import type { SettingDetail, SettingValue } from '@ludiek/features/settings/content/SettingDetail';
-import { LudiekState } from '@ludiek/tools/state/LudiekState';
+import type { SettingId } from '#ludiek/features/settings/content/SettingId';
+import type { SettingDetail, SettingValue } from '#ludiek/features/settings/content/SettingDetail';
+import { LudiekState } from '#ludiek/tools/state/LudiekState';
 
 export interface SettingChangedEvent {
   id: SettingId;

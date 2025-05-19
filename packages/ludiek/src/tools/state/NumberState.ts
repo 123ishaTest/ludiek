@@ -1,4 +1,4 @@
-import { LudiekState } from '@ludiek/tools/state/LudiekState';
+import { LudiekState } from '#ludiek/tools/state/LudiekState';
 
 export class NumberState extends LudiekState<number> {
   _state: number = 0;
