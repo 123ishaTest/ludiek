@@ -9,7 +9,7 @@ export const StatisticRequirementSchema = RequirementSchema.extend({
 })
   .meta({
     title: 'StatisticRequirement',
-    description: 'Whether the specified statistic is the required value',
+    description: 'Whether the specified statistic is at least the required value',
     examples: [
       {
         type: 'statistic',

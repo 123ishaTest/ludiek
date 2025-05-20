@@ -24,8 +24,13 @@ export class Game {
     this.featureList.forEach((feature) => feature._inject(this.features, this.engine, this.content));
     this.engine.injectFeatures(this.features);
 
-    this.featureList.forEach((feature) => feature.configure?.());
-    this.featureList.forEach((feature) => feature.content?.());
+    this.featureList.forEach((feature: Feature) => {
+      const contribution = feature.getEngineContribution?.();
+      if (contribution) {
+        this.engine.addContribution(contribution);
+      }
+    });
+
     this.featureList.forEach((feature) => feature.initialize?.());
   }
 

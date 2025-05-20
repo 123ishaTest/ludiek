@@ -9,7 +9,7 @@
     <BlogSidebar posts={data.posts}></BlogSidebar>
   </div>
 
-  <div class="flex-1 p-4 md:ml-24">
+  <div class="flex-1 overflow-y-scroll p-4 md:ml-24">
     {@render children()}
   </div>
 </div>

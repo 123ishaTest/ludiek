@@ -6,6 +6,7 @@ import { SettingEnabledRequirementDefinition } from '#ludiek/features/settings/r
 import { type SettingDetail, SettingSchema, type SettingValue } from '#ludiek/features/settings/content/SettingDetail';
 import { BooleanSettingState } from '#ludiek/features/settings/state/BooleanSettingState';
 import { NumberSettingState } from '#ludiek/features/settings/state/NumberSettingState';
+import type { EngineContribution } from '#ludiek/engine/EngineContribution';
 
 export class Settings extends Feature {
   protected _state: {
@@ -18,13 +19,13 @@ export class Settings extends Feature {
     super('settings');
   }
 
-  public configure(): void {
-    this._engine.requirements.register(new SettingValueRequirementDefinition());
-    this._engine.requirements.register(new SettingEnabledRequirementDefinition());
-  }
-
-  public content(): void {
-    this._engine.addContent('setting', SettingSchema);
+  public getEngineContribution(): EngineContribution {
+    return {
+      engine: {
+        requirements: [new SettingValueRequirementDefinition(), new SettingEnabledRequirementDefinition()],
+      },
+      content: [{ key: 'setting', schema: SettingSchema }],
+    };
   }
 
   initialize() {

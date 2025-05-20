@@ -3,6 +3,7 @@ import type { StatisticId } from '#ludiek/features/statistics/content/StatisticI
 import type { StatisticState } from '#ludiek/features/statistics/state/StatisticState';
 import { StatisticRequirementDefinition } from '#ludiek/features/statistics/requirements/StatisticRequirement';
 import { type StatisticDetail, StatisticDetailSchema } from '#ludiek/features/statistics/content/StatisticDetail';
+import type { EngineContribution } from '#ludiek/engine/EngineContribution';
 
 /**
  * Statistics class to keep track of increasing numbers
@@ -18,12 +19,13 @@ export class Statistics extends Feature {
     super('statistics');
   }
 
-  configure(): void {
-    this._engine.requirements.register(new StatisticRequirementDefinition());
-  }
-
-  content(): void {
-    this._engine.addContent('stat', StatisticDetailSchema);
+  public getEngineContribution(): EngineContribution {
+    return {
+      engine: {
+        requirements: [new StatisticRequirementDefinition()],
+      },
+      content: [{ key: 'stat', schema: StatisticDetailSchema }],
+    };
   }
 
   increment(id: StatisticId, amount = 1): void {
