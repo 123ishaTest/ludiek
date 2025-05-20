@@ -26,7 +26,7 @@
     {/each}
   </div>
 
-  <h1>{data.meta.title}</h1>
+  <h1 class="text-primary">{data.meta.title}</h1>
 
   <data.content />
 </article>

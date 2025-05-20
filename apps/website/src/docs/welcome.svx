@@ -3,7 +3,7 @@ title: Welcome
 slug: welcome
 ---
 
-Hello interested reader, welcome to _Ludiek_.
+Hello interested reader, welcome to <span class="text-primary">Ludiek</span>.
 
 My name is Isha. I have been developing incremental games since 2014. Some of them good, most of them bad.
 
