@@ -1,8 +1,7 @@
 <script lang="ts">
 
-  import type { EngineContribution } from '@123ishatest/ludiek';
-  import EngineDefinitionOverview from './engine/EngineDefinitionOverview.svelte';
-  import EngineContentOverview from './engine/EngineContentOverview.svelte';
+  import { EngineConceptDefinition, type EngineContribution } from '@123ishatest/ludiek';
+  import { z } from 'zod';
 
   interface Props {
     title?: string;
@@ -10,16 +9,55 @@
   }
 
   let { title, contribution }: Props = $props();
+
+
+  // TODO(@Isha): Move towards engine somewhere
+  type ConceptType = 'effect' | 'number' | 'requirement' | 'content'
+
+  const getConceptStyle = (concept: ConceptType): string => {
+    return {
+      'effect': 'badge-success',
+      'number': 'badge-info',
+      'requirement': 'badge-error',
+      'content': 'badge-warning',
+    }[concept];
+  };
 </script>
+
+{#snippet concept(name: ConceptType, contributions: EngineConceptDefinition[])}
+  {#each contributions as definition}
+    {@const json = z.toJSONSchema(definition.schema, { io: 'input' })}
+    <tr>
+      <td>
+        <span class="badge {getConceptStyle(name)}">{name}</span>
+      </td>
+      <td>{json.title}</td>
+
+      <td>{json.description}</td>
+      <td>{Object.keys(json.properties).join(", ")}</td>
+    </tr>
+  {/each}
+{/snippet}
 
 {#if title}
   <h2 class="card-title">{title}</h2>
 {/if}
 
-<div class="flex flex-col space-y-8">
-  <EngineDefinitionOverview title="Effect" definitions={contribution.engine.effects} />
-  <EngineDefinitionOverview title="Number" definitions={contribution.engine.numbers} />
-  <EngineDefinitionOverview title="Requirement" definitions={contribution.engine.requirements} />
-</div>
+<table class="table mt-0">
+  <thead>
+  <tr>
+    <th>Type</th>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Arguments</th>
+  </tr>
+  </thead>
+  <tbody>
 
-<EngineContentOverview definitions={contribution.content}/>
+  {@render concept('effect', contribution.engine.effects)}
+  {@render concept('number', contribution.engine.numbers)}
+  {@render concept('requirement', contribution.engine.requirements)}
+  {@render concept('content', contribution.content)}
+
+  </tbody>
+</table>

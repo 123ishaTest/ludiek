@@ -3,4 +3,14 @@ title: Features
 slug: ludiek/features
 ---
 
-Features
+<script lang="ts">
+  import { base } from '$app/paths';
+</script>
+
+A `Feature` is a part of your game that the user interacts with, for example the <a href="{base}/docs/features/wallet">Inventory</a>.
+
+It has the responsibility to keep track of internal `State`: User progress that changes over time and has to be saved and loaded.
+
+## Provided features
+
+_Ludiek_ has a large amount of Features available for your
