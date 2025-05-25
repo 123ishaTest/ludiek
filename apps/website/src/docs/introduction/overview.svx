@@ -1,0 +1,70 @@
+---
+title: Overview
+slug: introduction/overview
+---
+
+This page provides an overview into the main 3 parts that make up the core of Ludiek.
+
+## Engine, Feature, Content
+
+- `Engine` defines abstract concepts often used in games.
+- `Features` are the various gameplay mechanics of your game.
+- `Content` defines the main content of your game.
+
+We will now take a closer look to how these parts interact with each other within the context of opening a locked chest and finding an item in it.
+
+- The Engine defines the abstract concept of a `Requirement`, a condition which can be met or not.
+
+- A Feature can contribute an instance of a Requirement.
+The `Inventory` feature wants to check if the player has enough of an item with the Requirement `HasItem(id, amount)`.
+It implements the logic for it and _contributes_ it to the engine, registering it globally.
+
+- Now in our games Content, wherever we expect a Requirement, we can use our previously defined `HasItem`.
+```yaml
+name: Open Chest
+description: The chest can only be opened if you have a key
+requirement:
+  type: has-item
+  id: /item/key
+  amount: 1
+```
+
+Now we can only open our chest if we have a key, but what happens when we finally do?
+The Engine also provides the concept of an `Effect`, which is anything that can happen.
+
+Our Inventory feature has contributed the effects `GainItem(id, amount)` and `LoseItem(id, amount)`, which we can use in our Content.
+
+```yaml
+...
+
+on_complete:
+  - type: lose-item
+    id: /item/key
+    amount: 1
+  - type: gain-item
+    id: /item/gold
+    amount: 1000
+```
+
+Building even further on this example, the Engine also provides the concept of a `Number`, a description of a numeric value.
+Because our `GainItem` effect expects the engine concept Number as its amount, we can use any contributed Number instance.
+
+The engine has built-in support for `IntBetweenNumber(min, max)`, so let's use that to make our chest opening more interesting.
+
+```yaml
+on_complete:
+  ...
+
+  - type: gain-item
+    id: /item/gold
+    amount:
+      type: int-between
+      min: 500
+      max: 1500
+```
+
+## Conclusion
+
+You can see how this system is very powerful. Any instantiation of an engine concept can be used **anywhere** in all your content!
+
+With just a few engine concepts we can create an interesting game with just static content.

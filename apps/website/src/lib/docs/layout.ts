@@ -5,20 +5,19 @@ export const docsLayout: DocsLayout = {
     {
       title: 'Introduction',
       pages: [
-        {
-          title: 'Welcome',
-          slug: 'welcome',
-        },
+        { title: 'Welcome', slug: 'welcome' },
+        { title: 'Overview', slug: 'introduction/overview' },
       ],
     },
-    {
-      title: 'Ludiek',
-      pages: [
-        { title: 'Engine', slug: 'ludiek/engine' },
-        { title: 'Features', slug: 'ludiek/features' },
-        { title: 'Content', slug: 'ludiek/content' },
-      ],
-    },
+    // TODO(@Isha): More docs
+    // {
+    //   title: 'Ludiek',
+    //   pages: [
+    //     { title: 'Engine', slug: 'ludiek/engine' },
+    //     { title: 'Features', slug: 'ludiek/features' },
+    //     { title: 'Content', slug: 'ludiek/content' },
+    //   ],
+    // },
     {
       title: 'Features',
       pages: [{ title: 'Wallet', slug: 'features/wallet' }],

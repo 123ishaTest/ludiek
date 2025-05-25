@@ -3,4 +3,11 @@ title: Engine
 slug: ludiek/engine
 ---
 
-Engine
+The engine
+
+## Concepts
+
+The following engine concepts are currently implemented.
+
+- Effects: Anything that can happen (Gaining money, debug printing, unlocking
+- Numbers:
