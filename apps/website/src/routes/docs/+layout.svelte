@@ -16,8 +16,8 @@
 
   <div class="drawer-side">
     <label for="sidebar-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
-    <ul class="bg-base-200 h-full w-64">
+    <div class="bg-base-200 h-full w-64">
       <DocsSidebar docs={docsLayout}></DocsSidebar>
-    </ul>
+    </div>
   </div>
 </div>
