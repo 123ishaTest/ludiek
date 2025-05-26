@@ -2,6 +2,7 @@
   import { base } from '$app/paths';
   import { page } from '$app/state';
   import ThemeToggle from '$lib/components/ThemeToggle.svelte';
+  import SidebarToggle from '$lib/components/SidebarToggle.svelte';
 
   const getStyling = (path: string) => {
     return page.url.pathname.includes(path) ? 'menu-active' : '';
@@ -10,7 +11,9 @@
 
 <div class="navbar bg-base-200 shadow-sm">
   <div class="navbar-start">
-    <a href="{base}/">
+    <SidebarToggle />
+
+    <a href="{base}/" class="hidden lg:inline">
       <p class="btn btn-ghost text-primary text-xl">Ludiek</p>
     </a>
   </div>

@@ -43,21 +43,23 @@
   <h2 class="card-title">{title}</h2>
 {/if}
 
-<table class="table mt-0">
-  <thead>
-  <tr>
-    <th>Type</th>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Arguments</th>
-  </tr>
-  </thead>
-  <tbody>
+<div class="overflow-x-scroll">
+  <table class="table mt-0">
+    <thead>
+    <tr>
+      <th>Type</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Arguments</th>
+    </tr>
+    </thead>
+    <tbody>
 
-  {@render concept('effect', contribution.engine.effects)}
-  {@render concept('number', contribution.engine.numbers)}
-  {@render concept('requirement', contribution.engine.requirements)}
-  {@render concept('content', contribution.content)}
+    {@render concept('effect', contribution.engine.effects)}
+    {@render concept('number', contribution.engine.numbers)}
+    {@render concept('requirement', contribution.engine.requirements)}
+    {@render concept('content', contribution.content)}
 
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>
