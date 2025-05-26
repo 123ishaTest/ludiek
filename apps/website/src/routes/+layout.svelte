@@ -7,7 +7,7 @@
 
 <div class="flex h-screen flex-col">
   <LudiekNavbar />
-  <div class="flex flex-grow overflow-y-scroll">
+  <div class="flex flex-grow">
     {@render children()}
   </div>
 </div>

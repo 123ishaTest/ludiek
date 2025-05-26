@@ -5,12 +5,19 @@
   let { children } = $props();
 </script>
 
-<div class="flex h-full w-full flex-row">
-  <div class="bg-base-200 hidden h-full w-64 sm:inline">
-    <DocsSidebar docs={docsLayout} />
+<div class="drawer lg:drawer-open">
+  <input id="sidebar-drawer" type="checkbox" class="drawer-toggle" />
+
+  <div class="drawer-content">
+    <div class="flex-1 p-4 md:ml-24">
+      {@render children()}
+    </div>
   </div>
 
-  <div class="flex-1 overflow-y-scroll p-4 md:ml-24">
-    {@render children()}
+  <div class="drawer-side">
+    <label for="sidebar-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+    <div class="bg-base-200 h-full w-64">
+      <DocsSidebar docs={docsLayout}></DocsSidebar>
+    </div>
   </div>
 </div>
