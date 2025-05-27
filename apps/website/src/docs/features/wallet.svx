@@ -13,30 +13,5 @@ slug: features/wallet
 The `Wallet` is one of the first features I like to design in any project.
 Its responsibility is storing currency amounts and providing easy
 
-## Usage
-```ts
-// Gain an amount of currency
-wallet.gainCurrency({ amount: 10, type: '/currency/money' });
-
-// Check how much you have
-wallet.getAmount('/currency/money') // 10
-
-// Try to spend it
-wallet.pay({ amount: 11, type: '/currency/money' }); // false
-
-// Currency will only be spend if you have enough
-if (wallet.pay({ amount: 9, type: '/currency/money' })) {
-  console.log("Paid 5 money");
-}
-
-// We only have a little left
-wallet.getAmount('/currency/money') // 10
-
-// Get notified when currency is gained
-wallet.onCurrencyGain.subscribe((currency) => {
-  console.log(currency)
-});
-```
-
 ## Engine Contributions
 <FeatureOverview {contribution} />

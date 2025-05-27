@@ -1,0 +1,15 @@
+---
+title: Statistics
+slug: features/statistics
+---
+
+<script lang="ts">
+  import { FeatureOverview } from '@123ishatest/ludiek-portal';
+  import { demoGame } from '@123ishatest/ludiek';
+
+  const contribution = demoGame.features.statistics.getEngineContribution();
+</script>
+
+
+## Engine Contributions
+<FeatureOverview {contribution} />

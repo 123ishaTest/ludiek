@@ -1,0 +1,14 @@
+---
+title: Settings
+slug: features/settings
+---
+
+<script lang="ts">
+  import { FeatureOverview } from '@123ishatest/ludiek-portal';
+  import { demoGame } from '@123ishatest/ludiek';
+
+  const contribution = demoGame.features.settings.getEngineContribution();
+</script>
+
+## Engine Contributions
+<FeatureOverview {contribution} />

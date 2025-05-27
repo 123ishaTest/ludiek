@@ -1,7 +1,7 @@
 <script lang="ts">
 
-  import { EngineConceptDefinition, type EngineContribution } from '@123ishatest/ludiek';
-  import { z } from 'zod';
+  import { type EngineContribution } from '@123ishatest/ludiek';
+  import DefinitionDisplay from './DefinitionDisplay.svelte';
 
   interface Props {
     title?: string;
@@ -11,55 +11,24 @@
   let { title, contribution }: Props = $props();
 
 
-  // TODO(@Isha): Move towards engine somewhere
-  type ConceptType = 'effect' | 'number' | 'requirement' | 'content'
-
-  const getConceptStyle = (concept: ConceptType): string => {
-    return {
-      'effect': 'badge-success',
-      'number': 'badge-info',
-      'requirement': 'badge-error',
-      'content': 'badge-warning',
-    }[concept];
-  };
 </script>
 
-{#snippet concept(name: ConceptType, contributions: EngineConceptDefinition[])}
-  {#each contributions as definition}
-    {@const json = z.toJSONSchema(definition.schema, { io: 'input' })}
-    <tr>
-      <td>
-        <span class="badge {getConceptStyle(name)}">{name}</span>
-      </td>
-      <td>{json.title}</td>
-
-      <td>{json.description}</td>
-      <td>{Object.keys(json.properties).join(", ")}</td>
-    </tr>
-  {/each}
-{/snippet}
 
 {#if title}
   <h2 class="card-title">{title}</h2>
 {/if}
 
-<div class="overflow-x-scroll">
-  <table class="table mt-0">
-    <thead>
-    <tr>
-      <th>Type</th>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Arguments</th>
-    </tr>
-    </thead>
-    <tbody>
-
-    {@render concept('effect', contribution.engine.effects)}
-    {@render concept('number', contribution.engine.numbers)}
-    {@render concept('requirement', contribution.engine.requirements)}
-    {@render concept('content', contribution.content)}
-
-    </tbody>
-  </table>
+<div class="flex flex-col space-y-3">
+  {#each contribution.engine.effects as effect}
+    <DefinitionDisplay concept="effect" definition={effect} />
+  {/each}
+  {#each contribution.engine.numbers as number}
+    <DefinitionDisplay concept="number" definition={number} />
+  {/each}
+  {#each contribution.engine.requirements as requirement}
+    <DefinitionDisplay concept="requirement" definition={requirement} />
+  {/each}
+  {#each contribution.content as content}
+    <DefinitionDisplay concept="content" definition={content} />
+  {/each}
 </div>

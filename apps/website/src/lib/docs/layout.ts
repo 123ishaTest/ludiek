@@ -20,7 +20,11 @@ export const docsLayout: DocsLayout = {
     // },
     {
       title: 'Features',
-      pages: [{ title: 'Wallet', slug: 'features/wallet' }],
+      pages: [
+        { title: 'Wallet', slug: 'features/wallet' },
+        { title: 'Statistics', slug: 'features/statistics' },
+        { title: 'Settings', slug: 'features/settings' },
+      ],
     },
     {
       title: 'Other',
