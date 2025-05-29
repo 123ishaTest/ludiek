@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type { PageProps } from './$types';
+
   import { demoGame } from '@123ishatest/ludiek';
   import { LudiekPortal } from '@123ishatest/ludiek-portal';
 
@@ -7,6 +9,9 @@
   const gainMoney = () => {
     demoGame.features.wallet.gainCurrency({ amount: 1, type: '/currency/money' });
   };
+
+  let { data }: PageProps = $props();
+
 </script>
 
 <div class="flex flex-row flex-wrap space-x-8">
@@ -18,4 +23,4 @@
   </div>
 </div>
 
-<LudiekPortal game={demoGame} />
+<LudiekPortal game={demoGame} content={data.content} />

@@ -1,13 +1,15 @@
 <script lang="ts">
   import { z, type ZodType } from 'zod';
-  import GenericForm from './GenericForm.svelte';
+  import GenericObjectInput from './GenericObjectInput.svelte';
   import _ from 'lodash';
 
   interface Props {
     schema: ZodType;
+    data: any;
+    table?: boolean;
   }
 
-  let { schema }: Props = $props();
+  let { schema, data, table=false }: Props = $props();
 
   let json = $derived(z.toJSONSchema(schema, { io: 'input' }));
 
@@ -37,12 +39,8 @@
   <div class="card-body">
     <h2 class="card-title">{json.title}</h2>
     <form class="flex flex-col space-y-2" onsubmit={handleSubmit}>
-      <GenericForm {json} />
+      <GenericObjectInput {json} {data} compact={table} />
       <button class="btn btn-primary mt-2" type="submit">Save</button>
     </form>
   </div>
 </div>
-
-<pre>
-{JSON.stringify(json, null, 2)}
-</pre>

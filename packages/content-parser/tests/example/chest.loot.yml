@@ -1,0 +1,6 @@
+hrid: /loot/chest
+items:
+  - hrid: /items/orange
+    weight: 1
+  - hrid: /items/fish
+    weight: 2

@@ -44,6 +44,8 @@
   "dependencies": {
     "@123ishatest/ludiek": "*",
     "@123ishatest/ludiek-portal": "*",
+    "@123ishatest/content-parser": "*",
+
     "zod": "^4.0.0-beta"
   }
 }

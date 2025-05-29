@@ -12,9 +12,12 @@
     key: string;
     required: boolean;
     example?: Record<string, never>;
+    data?: object;
+    compact?: boolean;
   }
 
-  let { property, key, example = {}, required }: Props = $props();
+  let { property, key, example = {}, compact = false, required, data }: Props = $props();
+
 </script>
 
 
@@ -32,30 +35,36 @@
   <FormStringInput
     label={key}
     placeholder={example[key]}
+    data={data[key]}
     required={required}
+    {compact}
   />
 {:else if property.type === "boolean" }
   <FormBooleanInput
     label={key}
     required={required}
+    {compact}
   />
 {:else if property.type === "number"}
   <FormNumberInput
     label={key}
     placeholder={example[key]}
     required={required}
+    {compact}
   />
 {:else if property.type === "integer"}
   <FormNumberInput
     label={key}
     placeholder={example[key]}
     required={required}
+    {compact}
   />
 {:else if property.anyOf}
   <FormStringInput
     label={key}
     placeholder={example[key]}
     required={required}
+    {compact}
   />
 {:else}
   <span>UNKNOWN property for {key}: {JSON.stringify(property)}</span>

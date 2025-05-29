@@ -5,18 +5,30 @@
     label: string;
     required: boolean;
     placeholder?: string;
+    compact?: boolean;
   }
 
   let {
     label,
     required,
     placeholder = '',
-
+    compact = false,
   }: Props = $props();
 </script>
 
-<div class="flex flex-col">
-  <label for={label}>{labelFormat(label)}</label>
-
+{#snippet form()}
   <input name={label} id={label} {placeholder} {required} type="number" class="input w-full" />
-</div>
+{/snippet}
+
+{#if compact}
+  {@render form()}
+{:else}
+  <div class="flex flex-col">
+    <label for={label}>{labelFormat(label)}</label>
+    {@render form()}
+  </div>
+{/if}
+
+
+
+

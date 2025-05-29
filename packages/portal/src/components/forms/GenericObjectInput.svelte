@@ -5,17 +5,19 @@
 
   interface Props {
     json: JSONSchema4;
+    data: any;
+    compact?: boolean
   }
 
-  let { json }: Props = $props();
+  let { json, data, compact=false }: Props = $props();
 </script>
 
 
 {#if json.anyOf}
-  <FormDecisionInput {json} />
+  <FormDecisionInput {json} {data} {compact} />
 
 {:else if json.type === "object"}
-  <FormObjectInput {json} />
+  <FormObjectInput {json} {data} {compact} />
 {:else}
   <p>Unknown object type '{json}'</p>
 {/if}

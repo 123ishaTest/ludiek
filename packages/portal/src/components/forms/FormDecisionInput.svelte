@@ -1,6 +1,6 @@
 <script lang="ts">
   
-  import GenericForm from './GenericForm.svelte';
+  import GenericObjectInput from './GenericObjectInput.svelte';
   import type { JSONSchema4 } from 'json-schema';
 
   interface Props {
@@ -25,5 +25,5 @@
 </select>
 
 {#if selectedJson}
-  <GenericForm json={selectedJson}/>
+  <GenericObjectInput json={selectedJson}/>
 {/if}

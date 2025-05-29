@@ -1,0 +1,16 @@
+{
+  "extends": "@123ishatest/ludiek-typescript-config/base.json",
+  "include": ["src"],
+  "compilerOptions": {
+    "types": ["node"],
+    "paths": {
+      "#parser/*": ["./src/*"]
+    }
+  },
+  "exclude": ["node_modules"],
+  "references": [
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}

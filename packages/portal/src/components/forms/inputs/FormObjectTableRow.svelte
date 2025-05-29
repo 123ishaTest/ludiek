@@ -6,11 +6,11 @@
   interface Props {
     json: JSONSchema4;
     prefix?: string;
-    data?: object
-    compact?: boolean
+    data?: object;
+    compact?: boolean;
   }
 
-  let { json, prefix = '', data, compact= false }: Props = $props();
+  let { json, prefix = '', data, compact = false }: Props = $props();
 
   let properties = $derived(json.properties);
   let example = $derived(json.examples?.[0] ?? {});
@@ -25,19 +25,17 @@
     return json.required.includes(key);
   };
 
-  console.log(data)
-
-  console.log('object', json);
 </script>
 
 {#each Object.entries(properties) as [key, property]}
-  <GenericPropertyInput
-    key={prefix ? prefix + NESTING_SEPARATOR + key : key}
-    {property}
-    required={isRequired(key)}
-    {example}
-    {data}
-    {compact}
-  />
-
+  <td>
+    <GenericPropertyInput
+      key={prefix ? prefix + NESTING_SEPARATOR + key : key}
+      {property}
+      required={isRequired(key)}
+      {example}
+      {data}
+      {compact}
+    />
+  </td>
 {/each}
