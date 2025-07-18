@@ -1,0 +1,3 @@
+{
+  "extends": ["@123ishatest/ludiek-typescript-config/svelte.json"]
+}
