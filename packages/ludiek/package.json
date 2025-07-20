@@ -17,6 +17,7 @@
     "@123ishatest/ludiek-typescript-config": "*"
   },
   "dependencies": {
+    "strongly-typed-events": "^3.0.11",
     "tsup": "^8.5.0"
   }
 }

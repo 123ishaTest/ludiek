@@ -1,4 +1,4 @@
-import { LudiekPlugin } from './LudiekPlugin';
+import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 
 export type LudiekAPI<PL extends readonly LudiekPlugin[]> = {
   [P in PL[number] as P['name']]: P;

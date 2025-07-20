@@ -1,0 +1,56 @@
+<script lang="ts">
+  import { CurrencyPlugin } from '@123ishatest/ludiek';
+
+  const currency = new CurrencyPlugin([{ id: 'money' }]);
+
+  // TODO(@Isha): Figure out reactivity!
+  const reactive = $state(currency._balances);
+  currency._balances = reactive;
+
+  interface Notification {
+    type: 'alert-success' | 'alert-error';
+    message: string;
+  }
+
+  let notifications: Notification[] = $state([]);
+
+  const pay = () => {
+    const success = currency.payCurrency('money', 5);
+
+    notifications.push({
+      type: success ? 'alert-success' : 'alert-error',
+      message: success ? 'You paid 5 money!' : "You don't have enough money!",
+    });
+
+    setTimeout(() => {
+      notifications.shift();
+    }, 2000);
+  };
+
+  let money = $derived(currency.getBalance('money'));
+
+  $effect(() => {
+    currency.onCurrencyGain.sub(({ id, amount }) => {
+      console.log(`You gained ${amount} ${id}`);
+    });
+  });
+</script>
+
+<div class="card card-border bg-base-200 w-96">
+  <div class="card-body">
+    <span class="card-title">You have {money} money!</span>
+    <div class="flex flex-row space-x-4">
+      <button class="btn btn-primary" onclick={() => currency.gainCurrency('money', 3)}>Gain 3</button>
+      <button class="btn btn-error" onclick={() => currency.loseCurrency('money', 2)}>Lose 2</button>
+      <button class="btn btn-info" onclick={() => pay()}>Pay 5</button>
+    </div>
+  </div>
+</div>
+
+<div class="flex flex-col space-y-2">
+  {#each notifications as notification, i (i)}
+    <div role="alert" class="alert {notification.type}">
+      <span>{notification.message}</span>
+    </div>
+  {/each}
+</div>
