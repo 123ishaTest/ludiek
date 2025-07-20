@@ -10,13 +10,15 @@
   },
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
-    "dev": "tsup src/index.ts --format cjs,esm --dts --watch"
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "lint": "prettier --check . && eslint ."
   },
   "devDependencies": {
     "@123ishatest/ludiek-eslint-config": "*",
     "@123ishatest/ludiek-typescript-config": "*"
   },
   "dependencies": {
+    "strongly-typed-events": "^3.0.11",
     "tsup": "^8.5.0"
   }
 }

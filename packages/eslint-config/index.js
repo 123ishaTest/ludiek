@@ -16,7 +16,7 @@ export const config = ts.config(
     },
   },
   {
-    files: ['**/*.svelte'],
+    files: ['**/*.svelte', '**/*.svelte.ts'],
     ignores: ['.svelte-kit/*'],
     languageOptions: {
       parserOptions: {

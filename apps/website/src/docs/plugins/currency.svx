@@ -1,0 +1,37 @@
+---
+title: Currency Plugin
+---
+
+<script>
+  import CurrencyDemonstration from './CurrencyDemonstration.svelte';
+</script>
+
+The currency plugin is responsible for storing various amount of currencies.
+It provides helpful methods for gaining and spending these currencies.
+
+## Usage
+
+```ts
+const currency = new CurrencyPlugin([
+  { id: 'money' },
+  { id: 'gems' },
+]);
+
+currency.gainCurrency('money', 3)
+currency.loseCurrency('money', 2)
+
+const isPaid = currency.payCurrency('money', 5)
+console.log(isPaid) // false, we didn't have enough
+
+currency.onCurrencyGain.sub(({id, amount}) => {
+  console.log(`You gained ${amount} ${id}`);
+})
+```
+
+
+### Demo
+<CurrencyDemonstration />
+
+## Links
+
+- [src/plugins/currency/CurrencyPlugin.ts](https://github.com/123ishaTest/ludiek/blob/main/packages/ludiek/src/plugins/currency/CurrencyPlugin.ts)

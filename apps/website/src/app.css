@@ -17,3 +17,9 @@
   name: 'light';
   --color-primary: oklch(62% 0.194 149.214);
 }
+
+.pixelated {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: pixelated;
+  -ms-interpolation-mode: nearest-neighbor;
+}

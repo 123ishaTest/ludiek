@@ -1,14 +1,24 @@
 import { LudiekFeature } from '@123ishatest/ludiek';
-import type { EngineAPI } from '../../routes/demo';
+import type { EngineAPI, PlantDetail, PlantId } from '$lib/demo/demo';
 
 export class Farming extends LudiekFeature<EngineAPI> {
   public readonly name: string = 'farming';
 
-  constructor() {
+  public readonly plants: PlantDetail[];
+
+  constructor(plants: PlantDetail[]) {
     super();
+    this.plants = plants;
   }
 
-  public plant(): void {
-    this._api.currency.gainCurrency('/currency/gems', 4);
+  public sow(id: PlantId): void {
+    const plant = this.getPlant(id);
+    setTimeout(() => {
+      this._api.currency.gainCurrency('/currency/money', plant.moneyReward);
+    }, plant.growthTime);
+  }
+
+  public getPlant(id: PlantId): PlantDetail {
+    return this.plants.find((plant) => plant.id === id) as PlantDetail;
   }
 }

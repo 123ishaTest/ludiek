@@ -1,0 +1,42 @@
+---
+title: Welcome
+---
+
+Hello interested reader, welcome to <span class="text-primary">Ludiek</span>.
+
+My name is Isha. I have been developing incremental games since 2014. Some of them good, most of them bad.
+
+Over the years I have developed certain functionality over and over for different games.
+Currencies, Upgrades, Statistics and such.
+This project aims to develop the 'final' version of these functionalities, such that everyone can take advantage of them.
+
+## What is this project
+
+To gain the most out of this project, it is important to understand its architecture.
+It consists of an `Engine`, where you can register `Plugins`. Plugins are small pieces of commonly used game mechanics.
+<span class="text-primary">Ludiek</span> provides a collection of useful plugins out of box.
+
+You as a developer are occupied with creating `Features` that use these previously defined plugins.
+Add these features to your `Game` which provides logic for game ticks and saving/loading.
+
+These ideas are combined into a single project which makes them work well together
+
+You can use it as an engine and configure it to your liking to have a working game very quickly.
+You can also manually copy snippets and apply them to your own project with some modifications.
+
+
+## Components
+
+<span class="text-primary">Ludiek</span> consists of the following projects:
+
+- `ludiek`- the core engine that powers everything
+- `docs`- documentation of the important parts
+- `demo`- a sample farming game
+
+
+## Get involved
+I have big plans for <span class="text-primary">Ludiek</span>, and could use all the help I can get.
+If this project has been helpful to you, consider contributing via [Patreon](https://patreon.com/123ishatest)
+or through [Development Contributions](https://github.com/123ishaTest/ludiek/issues).
+
+## Have fun!

@@ -1,0 +1,79 @@
+---
+title: Getting Started
+---
+
+In this article we will make a simple farming game to show the basic features of <span class="text-primary">Ludiek</span>.
+In this game the player can sow a seed, and after an amount of time they will get money as a reward
+
+First we declare our fully static content: Plants we can sow and the currencies that exist.
+```ts
+const plants = [
+  { id: '/plant/sunflower', name: 'Sunflower', growthTime: 10, moneyReward: 10 },
+  { id: '/plant/cauliflower', name: 'Cauliflower', growthTime: 15, moneyReward: 20 },
+] as const satisfies PlantDetail[];
+
+const currencies = [
+  { id: '/currency/money', name: 'Money', icon: '/icon/coin' },
+  { id: '/currency/gems', name: 'Gems', icon: '/icon/gem-blue' },
+] as const satisfies CurrencyDetail[];
+```
+
+Then we create our engine with a list of plugins
+```ts
+// CurrencyPlugin is provided by Ludiek!
+const currency = new CurrencyPlugin(currencies);
+
+// Create engine and extract a utility type
+const engine = new LudiekEngine({
+  currency: currency,
+});
+export type EngineAPI = typeof engine.api;
+```
+
+Now we are ready to create our game. Let's start with a simple farming feature.
+We can plant a seed and gain a reward some time later!
+
+```ts
+export class Farming extends LudiekFeature<EngineAPI> {
+  public readonly name: string = 'farming';
+
+  public readonly plants: PlantDetail[];
+
+  constructor(plants: PlantDetail[]) {
+    super();
+    this.plants = plants;
+  }
+
+  public sow(id: PlantId): void {
+    const plant = this.getPlant(id);
+    setTimeout(() => {
+      this._api.currency.gainCurrency('/currency/money', plant.moneyReward);
+    }, plant.growthTime);
+  }
+
+  public getPlant(id: PlantId): PlantDetail {
+    return this.plants.find((plant) => plant.id === id);
+  }
+}
+```
+
+Now let's wire up our game!
+
+```ts
+const farming = new Farming(plants);
+
+export const game = new LudiekGame(engine, {
+  farming: farming,
+});
+```
+
+Because our content was static, this is now fully type-safe!
+
+```ts
+game.features.farming.plant('/plant/sunflower')
+game.engine.api.currency.gainCurrency('/currency/gems', 3)
+```
+
+Now that you know the essentials of <span class="text-primary">Ludiek</span>, you can create your own Plugins and use them in your own Features.
+
+Go and make the best game ever!

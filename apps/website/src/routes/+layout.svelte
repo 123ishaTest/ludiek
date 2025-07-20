@@ -1,7 +1,13 @@
 <script lang="ts">
   import '../app.css';
+  import LudiekNavbar from '$lib/components/LudiekNavbar.svelte';
 
   let { children } = $props();
 </script>
 
-{@render children()}
+<div class="flex h-screen flex-col">
+  <LudiekNavbar />
+  <div class="flex flex-grow">
+    {@render children()}
+  </div>
+</div>
