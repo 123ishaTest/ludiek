@@ -30,7 +30,9 @@ const currencies = [
 const currency = new CurrencyPlugin(currencies);
 
 // Create engine
-const engine = new LudiekEngine([currency]);
+const engine = new LudiekEngine({
+  currency: currency,
+});
 
 // Extract some neat utility types
 export type EngineAPI = typeof engine.api;

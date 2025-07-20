@@ -38,7 +38,7 @@
 
 <div class="card card-border bg-base-200 w-96">
   <div class="card-body">
-    <span class="card-title">You have {money} money!</span>
+    <span class="card-title">You have <span class="text-primary">{money}</span> money!</span>
     <div class="flex flex-row space-x-4">
       <button class="btn btn-primary" onclick={() => currency.gainCurrency('money', 3)}>Gain 3</button>
       <button class="btn btn-error" onclick={() => currency.loseCurrency('money', 2)}>Lose 2</button>

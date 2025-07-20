@@ -13,12 +13,12 @@
 </script>
 
 <ul class="menu w-full">
-  {#each docs.categories as category}
+  {#each docs.categories as category (category.title)}
     <li>
       <details open>
         <summary>{category.title}</summary>
         <ul>
-          {#each category.pages as page}
+          {#each category.pages as page (page.title)}
             <li>
               <a href="{base}/docs/{page.slug}" class={currentDocSlug === page.slug ? 'menu-active' : ''}>
                 {page.title}

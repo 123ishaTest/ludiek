@@ -24,9 +24,9 @@ Then we create our engine with a list of plugins
 const currency = new CurrencyPlugin(currencies);
 
 // Create engine and extract a utility type
-const engine = new LudiekEngine([
-  currency,
-]);
+const engine = new LudiekEngine({
+  currency: currency,
+});
 export type EngineAPI = typeof engine.api;
 ```
 
@@ -34,7 +34,7 @@ Now we are ready to create our game. Let's start with a simple farming feature.
 We can plant a seed and gain a reward some time later!
 
 ```ts
-export class Farming extends LudiekFeature\<EngineAPI\> {
+export class Farming extends LudiekFeature<EngineAPI> {
   public readonly name: string = 'farming';
 
   public readonly plants: PlantDetail[];

@@ -1,12 +1,12 @@
-import { LudiekEngine, LudiekAPI } from '@ludiek/engine/LudiekEngine';
+import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 
-export class LudiekGame<PL extends LudiekPlugin[], T extends Record<string, LudiekFeature<LudiekAPI<PL>>>> {
-  public features: T;
-  public engine: LudiekEngine<PL>;
+export class LudiekGame<API extends Record<string, LudiekPlugin>, Features extends Record<string, LudiekFeature<API>>> {
+  public features: Features;
+  public engine: LudiekEngine<API>;
 
-  constructor(engine: LudiekEngine<PL>, features: T) {
+  constructor(engine: LudiekEngine<API>, features: Features) {
     this.engine = engine;
     this.features = features;
 
@@ -25,7 +25,7 @@ export class LudiekGame<PL extends LudiekPlugin[], T extends Record<string, Ludi
     this.featureList.forEach((feature) => feature.update?.(delta));
   }
 
-  public get featureList(): LudiekFeature<LudiekAPI<PL>>[] {
+  public get featureList(): LudiekFeature<API>[] {
     return Object.values(this.features);
   }
 }
