@@ -52,7 +52,7 @@ export class CurrencyPlugin<CurrencyId extends string> extends LudiekPlugin {
   }
 
   /**
-   * Whether we have to provided amount of currency
+   * Whether we have the provided amount of currency
    */
   public hasCurrency(id: CurrencyId, amount: number): boolean {
     return this.getBalance(id) >= amount;
