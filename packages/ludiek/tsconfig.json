@@ -1,3 +1,8 @@
 {
-  "extends": ["@123ishatest/ludiek-typescript-config/svelte.json"]
+  "extends": ["@123ishatest/ludiek-typescript-config/svelte.json"],
+  "compilerOptions": {
+    "paths": {
+      "@ludiek/*": ["./src/*"]
+    }
+  }
 }
