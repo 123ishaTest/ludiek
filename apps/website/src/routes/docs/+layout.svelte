@@ -9,7 +9,7 @@
   <input id="sidebar-drawer" type="checkbox" class="drawer-toggle" />
 
   <div class="drawer-content">
-    <div class="my-12 flex-1 md:ml-24">
+    <div class="my-12 flex-1 p-4 md:ml-24 md:p-0">
       {@render children()}
     </div>
   </div>

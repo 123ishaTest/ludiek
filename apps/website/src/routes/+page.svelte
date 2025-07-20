@@ -3,7 +3,7 @@
 </script>
 
 <div class="flex h-full w-full flex-col items-center p-8">
-  <div class="flex h-64 w-64 flex-col items-center justify-center">
+  <div class="flex flex-col items-center justify-center">
     <img src="/favicon.png" class="pixelated h-48 w-48" alt="Ludiek Logo" />
   </div>
 
