@@ -11,13 +11,10 @@ export default defineConfig({
       formats: ['es', 'cjs'],
       fileName: (format) => `index.${format}.js`,
     },
-    rollupOptions: {
-      external: [], // mark peer deps here
-    },
   },
   server: {
     fs: {
-      allow: ['.'], // allow serving files from workspace
+      allow: ['.'],
     },
   },
 });
