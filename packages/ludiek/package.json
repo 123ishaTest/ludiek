@@ -2,23 +2,28 @@
   "name": "@123ishatest/ludiek",
   "private": false,
   "version": "0.1.0",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "imports": {
     "@ludiek/*": "./src/*"
   },
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts",
-    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "build": "vite build",
+    "dev": "vite build --watch",
     "lint": "prettier --check . && eslint ."
   },
   "devDependencies": {
     "@123ishatest/ludiek-eslint-config": "*",
-    "@123ishatest/ludiek-typescript-config": "*"
+    "@123ishatest/ludiek-typescript-config": "*",
+    "vite": "^7.0.5",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "dependencies": {
-    "strongly-typed-events": "^3.0.11",
-    "tsup": "^8.5.0"
+    "strongly-typed-events": "^3.0.11"
   }
 }
