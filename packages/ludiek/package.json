@@ -14,14 +14,16 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
-    "lint": "prettier --check . && eslint ."
+    "lint": "prettier --check . && eslint .",
+    "test": "vitest"
   },
   "devDependencies": {
     "@123ishatest/ludiek-eslint-config": "*",
     "@123ishatest/ludiek-typescript-config": "*",
     "vite": "^7.0.5",
     "vite-plugin-dts": "^4.5.4",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "strongly-typed-events": "^3.0.11"
