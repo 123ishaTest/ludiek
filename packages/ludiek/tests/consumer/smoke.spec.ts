@@ -39,3 +39,18 @@ it('allows a consumer to create a basic game', () => {
 
   expect(game.engine.api.currency.getBalance('money')).toBe(TICKS);
 });
+
+it('emits an event on tick', async () => {
+  // Arrange
+  expect.assertions(2);
+  const game = new LudiekGame(new LudiekEngine({}), {});
+
+  // Assert
+  game.onTick.sub(() => {
+    expect(true).toBeTruthy();
+  });
+
+  // Act
+  game.start();
+  await new Promise((resolve) => setTimeout(resolve, 2100));
+});
