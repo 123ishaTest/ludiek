@@ -132,7 +132,7 @@ export class CurrencyPlugin<CurrencyId extends string> extends LudiekPlugin {
   }
 
   /**
-   * Emitted whenever a currency is gained
+   * Emitted when a currency is gained
    */
   public get onCurrencyGain(): ISimpleEvent<Currency<CurrencyId>> {
     return this._onCurrencyGain.asEvent();
