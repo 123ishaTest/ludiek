@@ -9,28 +9,31 @@ title: Currency Plugin
 The currency plugin is responsible for storing various amount of currencies.
 It provides helpful methods for gaining and spending these currencies.
 
+
+## Demo
+
+<CurrencyDemonstration/>
+
 ## Usage
 
 ```ts
+import { CurrencyPlugin } from '@123ishatest/ludiek';
+
 const currency = new CurrencyPlugin([
   { id: 'money' },
   { id: 'gems' },
 ]);
 
-currency.gainCurrency('money', 3)
-currency.loseCurrency('money', 2)
+currency.gainCurrency('money', 3);
+currency.loseCurrency('money', 2);
 
-const isPaid = currency.payCurrency('money', 5)
-console.log(isPaid) // false, we didn't have enough
+const isPaid = currency.payCurrency('money', 5);
+console.log(isPaid); // false, we didn't have enough
 
-currency.onCurrencyGain.sub(({id, amount}) => {
+currency.onCurrencyGain.sub(({ id, amount }) => {
   console.log(`You gained ${amount} ${id}`);
-})
+});
 ```
-
-
-### Demo
-<CurrencyDemonstration />
 
 ## Links
 
