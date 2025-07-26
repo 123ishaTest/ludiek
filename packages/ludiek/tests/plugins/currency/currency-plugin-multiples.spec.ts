@@ -32,4 +32,64 @@ describe('Multiple currencies', () => {
     expect(actualMoney).toBe(1);
     expect(actualGems).toBe(2);
   });
+
+  it('loses multiple of the same currencies', () => {
+    // Act
+    currency.loseCurrencies([
+      { id: 'money', amount: 1 },
+      { id: 'money', amount: 2 },
+    ]);
+    const actualMoney = currency.getBalance('money');
+
+    // Assert
+    expect(actualMoney).toBe(-3);
+  });
+
+  it('loses multiple different currencies', () => {
+    // Act
+    currency.loseCurrencies([
+      { id: 'money', amount: 1 },
+      { id: 'gems', amount: 2 },
+    ]);
+    const actualMoney = currency.getBalance('money');
+    const actualGems = currency.getBalance('gems');
+
+    // Assert
+    expect(actualMoney).toBe(-1);
+    expect(actualGems).toBe(-2);
+  });
+
+  it('pays multiple different currencies', () => {
+    // Arrange
+    currency.gainCurrencies([
+      { id: 'money', amount: 1 },
+      { id: 'gems', amount: 2 },
+    ]);
+
+    // Act
+    const isPaid = currency.payCurrencies([
+      { id: 'money', amount: 1 },
+      { id: 'gems', amount: 2 },
+    ]);
+
+    // Assert
+    expect(isPaid).toBe(true);
+  });
+
+  it('does not pay multiple even if one is enough', () => {
+    // Arrange
+    currency.gainCurrencies([
+      { id: 'money', amount: 1 },
+      { id: 'gems', amount: 2 },
+    ]);
+
+    // Act
+    const isPaid = currency.payCurrencies([
+      { id: 'money', amount: 1 },
+      { id: 'gems', amount: 3 },
+    ]);
+
+    // Assert
+    expect(isPaid).toBe(false);
+  });
 });

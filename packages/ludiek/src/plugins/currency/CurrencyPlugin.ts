@@ -35,7 +35,7 @@ export class CurrencyPlugin<CurrencyId extends string> extends LudiekPlugin {
    * Gain a list of currencies
    */
   public gainCurrencies(currencies: Currency<CurrencyId>[]): void {
-    currencies.forEach((c) => this.validate(c, 'gain multiple'));
+    currencies.forEach((c) => this.validate(c, 'gain'));
     currencies.forEach((c) => {
       this.gainCurrency(c);
     });
@@ -46,8 +46,17 @@ export class CurrencyPlugin<CurrencyId extends string> extends LudiekPlugin {
    */
   public loseCurrency(currency: Currency<CurrencyId>): void {
     this.validate(currency, 'lose');
-
     this._balances[currency.id] -= currency.amount;
+  }
+
+  /**
+   * Lose a list of currencies
+   */
+  public loseCurrencies(currencies: Currency<CurrencyId>[]): void {
+    currencies.forEach((c) => this.validate(c, 'lose'));
+    currencies.forEach((c) => {
+      this.loseCurrency(c);
+    });
   }
 
   /**
@@ -65,10 +74,36 @@ export class CurrencyPlugin<CurrencyId extends string> extends LudiekPlugin {
   }
 
   /**
+   * Try to spend the specified amount of currencies if you have it.
+   * @return true if it was spent
+   *
+   * @todo(#61) Each currency is checked individually, meaning that if there are duplicate Ids it could lead to negative balance.
+   */
+  public payCurrencies(currencies: Currency<CurrencyId>[]): boolean {
+    if (!this.hasCurrencies(currencies)) {
+      return false;
+    }
+    this.loseCurrencies(currencies);
+    return true;
+  }
+
+  /**
    * Whether we have the provided amount of currency
    */
   public hasCurrency(currency: Currency<CurrencyId>): boolean {
+    this.validate(currency, 'has');
     return this.getBalance(currency.id) >= currency.amount;
+  }
+
+  /**
+   * Whether we have a list of currencies
+   *
+   * @todo(#61) Each currency is checked individually, meaning that if there are duplicate Ids the answer could be misleading.
+   */
+  public hasCurrencies(currencies: Currency<CurrencyId>[]): boolean {
+    return currencies.every((c) => {
+      return this.hasCurrency(c);
+    });
   }
 
   /**
@@ -76,7 +111,7 @@ export class CurrencyPlugin<CurrencyId extends string> extends LudiekPlugin {
    */
   public getBalance(id: CurrencyId): number {
     if (!this.supportsCurrency(id)) {
-      throw new InvalidCurrencyError(`Cannot currency '${id}' asit does not exist`);
+      throw new InvalidCurrencyError(`Cannot currency '${id}' as it does not exist`);
     }
     return this._balances[id];
   }
