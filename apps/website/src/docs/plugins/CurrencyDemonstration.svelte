@@ -15,7 +15,7 @@
   let notifications: Notification[] = $state([]);
 
   const pay = () => {
-    const success = currency.payCurrency('money', 5);
+    const success = currency.payCurrency({ id: 'money', amount: 5 });
 
     notifications.push({
       type: success ? 'alert-success' : 'alert-error',
@@ -40,8 +40,8 @@
   <div class="card-body">
     <span class="card-title">You have <span class="text-primary">{money}</span> money!</span>
     <div class="flex flex-row space-x-4">
-      <button class="btn btn-primary" onclick={() => currency.gainCurrency('money', 3)}>Gain 3</button>
-      <button class="btn btn-error" onclick={() => currency.loseCurrency('money', 2)}>Lose 2</button>
+      <button class="btn btn-primary" onclick={() => currency.gainCurrency({ id: 'money', amount: 3 })}>Gain 3</button>
+      <button class="btn btn-error" onclick={() => currency.loseCurrency({ id: 'money', amount: 2 })}>Lose 2</button>
       <button class="btn btn-info" onclick={() => pay()}>Pay 5</button>
     </div>
   </div>

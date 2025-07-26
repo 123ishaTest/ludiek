@@ -14,7 +14,7 @@ export class Farming extends LudiekFeature<EngineAPI> {
   public sow(id: PlantId): void {
     const plant = this.getPlant(id);
     setTimeout(() => {
-      this._api.currency.gainCurrency('/currency/money', plant.moneyReward);
+      this._api.currency.gainCurrency({ id: '/currency/money', amount: plant.moneyReward });
     }, plant.growthTime);
   }
 

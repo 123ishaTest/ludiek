@@ -47,4 +47,4 @@ export const game = new LudiekGame(engine, {
 
 // This is now fully type-safe :D
 game.features.farming.sow('/plant/sunflower');
-game.engine.api.currency.gainCurrency('/currency/gems', 3);
+game.engine.api.currency.gainCurrency({ id: '/currency/gems', amount: 3 });
