@@ -1,8 +1,6 @@
-import { APIOf } from '@ludiek/engine/utils';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
-
-export type CurrencyAPI<CurrencyId extends string> = APIOf<CurrencyPlugin<CurrencyId>>;
+import { InvalidCurrencyError, NegativeAmountError } from '@ludiek/plugins/currency/CurrencyErrors';
 
 export type Currency<CurrencyId extends string = string> = {
   id: CurrencyId;
@@ -27,42 +25,75 @@ export class CurrencyPlugin<CurrencyId extends string> extends LudiekPlugin {
   /**
    * Gain the specified amount of currency
    */
-  public gainCurrency(id: CurrencyId, amount: number): void {
-    this._balances[id] += amount;
-    this._onCurrencyGain.dispatch({ id, amount });
+  public gainCurrency(currency: Currency<CurrencyId>): void {
+    this.validate(currency, 'gain');
+    this._balances[currency.id] += currency.amount;
+    this._onCurrencyGain.dispatch(currency);
+  }
+
+  /**
+   * Gain a list of currencies
+   */
+  public gainCurrencies(currencies: Currency<CurrencyId>[]): void {
+    currencies.forEach((c) => this.validate(c, 'gain multiple'));
+    currencies.forEach((c) => {
+      this.gainCurrency(c);
+    });
   }
 
   /**
    * Lose the specified amount of currency
    */
-  public loseCurrency(id: CurrencyId, amount: number): void {
-    this._balances[id] -= amount;
+  public loseCurrency(currency: Currency<CurrencyId>): void {
+    this.validate(currency, 'lose');
+
+    this._balances[currency.id] -= currency.amount;
   }
 
   /**
    * Try to spend the specified amount of currency if you have it.
    * @return true if it was spent
    */
-  public payCurrency(id: CurrencyId, amount: number): boolean {
-    if (!this.hasCurrency(id, amount)) {
+  public payCurrency(currency: Currency<CurrencyId>): boolean {
+    this.validate(currency, 'pay');
+
+    if (!this.hasCurrency(currency)) {
       return false;
     }
-    this.loseCurrency(id, amount);
+    this.loseCurrency(currency);
     return true;
   }
 
   /**
    * Whether we have the provided amount of currency
    */
-  public hasCurrency(id: CurrencyId, amount: number): boolean {
-    return this.getBalance(id) >= amount;
+  public hasCurrency(currency: Currency<CurrencyId>): boolean {
+    return this.getBalance(currency.id) >= currency.amount;
   }
 
   /**
    * Retrieve the balance for the specified currency
    */
   public getBalance(id: CurrencyId): number {
+    if (!this.supportsCurrency(id)) {
+      throw new InvalidCurrencyError(`Cannot currency '${id}' asit does not exist`);
+    }
     return this._balances[id];
+  }
+
+  public supportsCurrency(id: CurrencyId): boolean {
+    return id in this._balances;
+  }
+
+  private validate(currency: Currency<CurrencyId>, action: string): void {
+    if (!this.supportsCurrency(currency.id)) {
+      throw new InvalidCurrencyError(`Cannot ${action} '${currency.amount}' of '${currency.id}'. Unknown currency`);
+    }
+    if (currency.amount < 0) {
+      throw new NegativeAmountError(
+        `Cannot ${action} '${currency.amount}' of '${currency.id}'. Amount must be positive`,
+      );
+    }
   }
 
   /**
