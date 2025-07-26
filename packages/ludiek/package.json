@@ -15,11 +15,13 @@
     "build": "vite build",
     "dev": "vite build --watch",
     "lint": "prettier --check . && eslint .",
-    "test": "vitest"
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "devDependencies": {
     "@123ishatest/ludiek-eslint-config": "*",
     "@123ishatest/ludiek-typescript-config": "*",
+    "@vitest/coverage-v8": "^3.2.4",
     "vite": "^7.0.5",
     "vite-plugin-dts": "^4.5.4",
     "vite-tsconfig-paths": "^5.1.4",
