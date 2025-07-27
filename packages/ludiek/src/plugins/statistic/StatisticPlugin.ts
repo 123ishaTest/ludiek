@@ -1,30 +1,70 @@
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
+import {
+  InvalidStatisticTypeError,
+  UnknownMapStatisticError,
+  UnknownStatisticError,
+} from '@ludiek/plugins/statistic/StatisticErrors';
 
-export class StatisticPlugin<StatisticId extends string, MapStatisticId extends string> extends LudiekPlugin {
+export type StatisticDetail = { id: string; type: 'scalar' } | { id: string; type: 'map' };
+
+export class StatisticPlugin<
+  Details extends readonly StatisticDetail[],
+  StatisticId extends Extract<Details[number], { type: 'scalar' }>['id'],
+  MapStatisticId extends Extract<Details[number], { type: 'map' }>['id'],
+> extends LudiekPlugin {
   readonly name = 'statistic';
 
   private _scalarStatistics: Record<string, number> = {};
   private _mapStatistics: Record<string, Record<string, number>> = {};
 
-  constructor(statistics: { scalar: readonly { id: StatisticId }[]; map: readonly { id: MapStatisticId }[] }) {
+  constructor(readonly statistics: Details) {
     super();
 
-    statistics.scalar.forEach((statistic) => {
-      this._scalarStatistics[statistic.id] = 0;
-    });
-
-    statistics.map.forEach((statistic) => {
-      this._mapStatistics[statistic.id] = {};
+    statistics.forEach((statistic) => {
+      switch (statistic.type) {
+        case 'scalar':
+          this._scalarStatistics[statistic.id] = 0;
+          break;
+        case 'map':
+          this._mapStatistics[statistic.id] = {};
+          break;
+        default:
+          throw new InvalidStatisticTypeError(
+            `Statistic type '${(statistic as { type: string }).type}' is not supported`,
+          );
+      }
     });
   }
 
-  public getStatistic(id: StatisticId): number;
-  public getStatistic(id: MapStatisticId, index: number): number;
-  public getStatistic(id: MapStatisticId, key: string): number;
-  public getStatistic(id: StatisticId | MapStatisticId, key?: number | string): number {
-    if (key == undefined) {
-      return this._scalarStatistics[id];
+  public getStatistic(id: StatisticId): number {
+    if (!(id in this._scalarStatistics)) {
+      throw new UnknownStatisticError(`Unknown statistic with id '${id}'`);
+    }
+    return this._scalarStatistics[id];
+  }
+
+  public getMapStatistic(id: MapStatisticId, key: string | number): number {
+    if (!(id in this._mapStatistics)) {
+      throw new UnknownMapStatisticError(`Unknown map statistic with id '${id}'`);
     }
     return this._mapStatistics[id][key] ?? 0;
+  }
+
+  public getMapStatisticObject(id: MapStatisticId): Record<string | number, number> {
+    return this._mapStatistics[id];
+  }
+
+  /**
+   * Increment a statistic with an amount of delta
+   */
+  public incrementStatistic(id: StatisticId, delta: number = 1): void {
+    this._scalarStatistics[id] += delta;
+  }
+
+  /**
+   * Increment a map statistic with an amount of delta
+   */
+  public incrementMapStatistic(id: MapStatisticId, key: string | number, delta: number = 1): void {
+    this._mapStatistics[id][key] = this.getMapStatistic(id, key) + delta;
   }
 }

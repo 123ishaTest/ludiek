@@ -6,3 +6,4 @@ export { LudiekGame } from '@ludiek/engine/LudiekGame';
 
 // Plugins
 export { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
+export { StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
