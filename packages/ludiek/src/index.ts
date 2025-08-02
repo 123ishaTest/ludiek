@@ -10,4 +10,5 @@ export { CurrencyChecker } from '@ludiek/plugins/currency/CurrencyChecker';
 
 export { StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
 export { StatisticChecker } from '@ludiek/plugins/statistic/StatisticChecker';
-export { RequirementPlugin } from '@ludiek/plugins/requirement/RequirementPlugin';
+
+export { ShopPlugin } from '@ludiek/plugins/shop/ShopPlugin';

@@ -8,9 +8,12 @@ it('allows a consumer to create a basic game', () => {
   type CurrencyId = 'money';
   const currency = new CurrencyPlugin([{ id: 'money' }]);
 
-  const engine = new LudiekEngine({
-    currency: currency,
-  });
+  const engine = new LudiekEngine(
+    {
+      currency: currency,
+    },
+    [],
+  );
   type EngineAPI = typeof engine.api;
 
   class DummyFeature extends LudiekFeature<EngineAPI> {

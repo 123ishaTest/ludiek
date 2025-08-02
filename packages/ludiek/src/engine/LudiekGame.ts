@@ -1,12 +1,17 @@
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
+import { BaseRequirement, RequirementChecker } from '@ludiek/engine/LudiekRequirement';
 
-export class LudiekGame<API extends Record<string, LudiekPlugin>, Features extends Record<string, LudiekFeature<API>>> {
+export class LudiekGame<
+  API extends Record<string, LudiekPlugin>,
+  Checkers extends RequirementChecker<BaseRequirement>[],
+  Features extends Record<string, LudiekFeature<API>>,
+> {
   public features: Features;
-  public engine: LudiekEngine<API>;
+  public engine: LudiekEngine<API, Checkers>;
 
-  constructor(engine: LudiekEngine<API>, features: Features) {
+  constructor(engine: LudiekEngine<API, Checkers>, features: Features) {
     this.engine = engine;
     this.features = features;
 

@@ -1,5 +1,5 @@
-import { RequirementChecker } from '@ludiek/plugins/requirement/RequirementPlugin';
 import { StatisticDetail, StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
+import { RequirementChecker } from '@ludiek/engine/LudiekRequirement';
 
 export interface StatisticRequirement<StatisticId> {
   type: 'statistic';
@@ -10,6 +10,8 @@ export interface StatisticRequirement<StatisticId> {
 export class StatisticChecker<ScalarStatisticId extends string, MapStatisticId extends string>
   implements RequirementChecker<StatisticRequirement<ScalarStatisticId | MapStatisticId>>
 {
+  readonly type: string = 'statistic';
+
   // TODO(@Isha): Refactor types?
   private _statistic: StatisticPlugin<StatisticDetail[], ScalarStatisticId, MapStatisticId>;
 

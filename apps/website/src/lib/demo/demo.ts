@@ -3,7 +3,7 @@ import {
   CurrencyPlugin,
   LudiekEngine,
   LudiekGame,
-  RequirementPlugin,
+  ShopPlugin,
   StatisticChecker,
   StatisticPlugin,
 } from '@123ishatest/ludiek';
@@ -47,17 +47,16 @@ const statistics = [
 // Define plugins
 const currency = new CurrencyPlugin(currencies);
 const statistic = new StatisticPlugin(statistics);
-const requirement = new RequirementPlugin({
-  currency: new CurrencyChecker(currency),
-  statistic: new StatisticChecker(statistic),
-});
 
 // Create engine
-const engine = new LudiekEngine({
-  currency: currency,
-  statistic: statistic,
-  requirement: requirement,
-});
+const engine = new LudiekEngine(
+  {
+    currency: currency,
+    statistic: statistic,
+    shop: new ShopPlugin(),
+  },
+  [new CurrencyChecker(currency), new StatisticChecker(statistic)],
+);
 
 // Extract some neat utility types
 export type EngineAPI = typeof engine.api;
@@ -79,9 +78,19 @@ engine.api.currency.onCurrencyGain.sub((currency) => {
 currency.gainCurrency({ id: '/currency/money', amount: 4 });
 
 console.log(
-  requirement.hasRequirement({
-    type: 'currency',
-    id: '/currency/money',
-    amount: 3,
+  engine.hasRequirement({
+    type: 'statistic',
+    id: '/statistic/total-money',
+    value: 0,
   }),
 );
+
+engine.api.shop.buy({
+  name: 'Test item',
+  amount: 1,
+  req: {
+    type: 'statistic',
+    id: '/statistic/total-money',
+    value: 5,
+  },
+});

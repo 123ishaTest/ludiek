@@ -1,5 +1,5 @@
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
-import { RequirementChecker } from '@ludiek/plugins/requirement/RequirementPlugin';
+import { RequirementChecker } from '@ludiek/engine/LudiekRequirement';
 
 export interface CurrencyRequirement<CurrencyId> {
   type: 'currency';
@@ -8,6 +8,8 @@ export interface CurrencyRequirement<CurrencyId> {
 }
 
 export class CurrencyChecker<CurrencyId extends string> implements RequirementChecker<CurrencyRequirement<CurrencyId>> {
+  readonly type: string = 'currency';
+
   private _currency: CurrencyPlugin<CurrencyId>;
 
   constructor(currency: CurrencyPlugin<CurrencyId>) {
