@@ -1,4 +1,12 @@
-import { CurrencyPlugin, LudiekEngine, LudiekGame, StatisticPlugin } from '@123ishatest/ludiek';
+import {
+  CurrencyChecker,
+  CurrencyPlugin,
+  LudiekEngine,
+  LudiekGame,
+  RequirementPlugin,
+  StatisticChecker,
+  StatisticPlugin,
+} from '@123ishatest/ludiek';
 import { Farming } from '$lib/demo/Farming';
 
 // First we define the shapes of our content
@@ -39,11 +47,16 @@ const statistics = [
 // Define plugins
 const currency = new CurrencyPlugin(currencies);
 const statistic = new StatisticPlugin(statistics);
+const requirement = new RequirementPlugin({
+  currency: new CurrencyChecker(currency),
+  statistic: new StatisticChecker(statistic),
+});
 
 // Create engine
 const engine = new LudiekEngine({
   currency: currency,
   statistic: statistic,
+  requirement: requirement,
 });
 
 // Extract some neat utility types
@@ -56,3 +69,19 @@ const farming = new Farming(plants);
 export const game = new LudiekGame(engine, {
   farming: farming,
 });
+
+engine.api.currency.onCurrencyGain.sub((currency) => {
+  if (currency.id === '/currency/money') {
+    engine.api.statistic.incrementStatistic('/statistic/total-money', currency.amount);
+  }
+});
+
+currency.gainCurrency({ id: '/currency/money', amount: 4 });
+
+console.log(
+  requirement.hasRequirement({
+    type: 'currency',
+    id: '/currency/money',
+    amount: 3,
+  }),
+);
