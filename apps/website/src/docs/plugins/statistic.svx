@@ -1,0 +1,56 @@
+---
+title: Statistic Plugin
+---
+
+<script>
+  import StatisticDemonstration from './StatisticDemonstration.svelte';
+</script>
+
+The statistic plugin provides tracking for numeric statistics in two flavors: `scalar` and `map`.
+Scalars are single numeric values, while Maps allows you to track multiple values indexed by a key.
+
+## Demo
+
+<StatisticDemonstration/>
+
+## Usage
+
+```ts
+import { StatisticPlugin } from '@123ishatest/ludiek';
+
+// Initialise our plugin with statistic definitions
+const statistic = new StatisticPlugin([
+  { id: 'total', type: 'scalar' },
+  { id: 'currency', type: 'map' },
+] as const);
+
+
+// Increment scalar 'total' by 3
+statistic.incrementStatistic('total', 3);
+
+// Increment map statistic 'currency' key 'money' by 4
+statistic.incrementMapStatistic('currency', 'money', 4);
+
+
+// And read them back
+statistic.getStatistic('total'); // 3
+statistic.getMapStatistic('currency', 'money'); // 4
+
+// Unset map keys return 0
+statistic.getMapStatistic('currency', 'gems'); // 0
+```
+
+Connect incrementing statistics to existing events.
+```ts
+currency.onCurrencyGain.subscribe(({ id, amount }) => {
+  // Track the global total
+  statistic.incrementStatistic('total', amount);
+  
+  // Track total per currency
+  statistic.incrementMapStatistic('currency', id, amount);
+});
+```
+
+## Links
+
+- [src/plugins/statistic/StatisticPlugin.ts](https://github.com/123ishaTest/ludiek/blob/main/packages/ludiek/src/plugins/statistic/StatisticPlugin.ts)

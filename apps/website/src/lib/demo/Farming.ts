@@ -15,6 +15,7 @@ export class Farming extends LudiekFeature<EngineAPI> {
     const plant = this.getPlant(id);
     setTimeout(() => {
       this._api.currency.gainCurrency({ id: '/currency/money', amount: plant.moneyReward });
+      this._api.statistic.incrementMapStatistic('/statistic/plants-planted', plant.id);
     }, plant.growthTime);
   }
 
