@@ -9,7 +9,9 @@ it('allows a consumer to create a basic game', () => {
   const currency = new CurrencyPlugin([{ id: 'money' }]);
 
   const engine = new LudiekEngine({
-    currency: currency,
+    plugins: {
+      currency: currency,
+    },
   });
   type EngineAPI = typeof engine.api;
 
@@ -43,7 +45,7 @@ it('allows a consumer to create a basic game', () => {
 it('emits an event on tick', async () => {
   // Arrange
   expect.assertions(2);
-  const game = new LudiekGame(new LudiekEngine({}), {});
+  const game = new LudiekGame(new LudiekEngine({ plugins: {} }), {});
 
   // Assert
   game.onTick.sub(() => {

@@ -42,8 +42,10 @@ const statistic = new StatisticPlugin(statistics);
 
 // Create engine
 const engine = new LudiekEngine({
-  currency: currency,
-  statistic: statistic,
+  plugins: {
+    currency: currency,
+    statistic: statistic,
+  },
 });
 
 // Extract some neat utility types
