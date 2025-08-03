@@ -1,6 +1,7 @@
-import { LudiekEngine, PluginMap } from '@ludiek/engine/LudiekEngine';
+import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
+import { PluginMap } from '@ludiek/engine/LudiekConfiguration';
 import { ISignal, SignalDispatcher } from 'strongly-typed-events';
 
 export class LudiekGame<

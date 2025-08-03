@@ -14,8 +14,8 @@ export class Farming extends LudiekFeature<EnginePlugins> {
   public sow(id: PlantId): void {
     const plant = this.getPlant(id);
     setTimeout(() => {
-      this._api.currency.gainCurrency({ id: '/currency/money', amount: plant.moneyReward });
-      this._api.statistic.incrementMapStatistic('/statistic/plants-planted', plant.id);
+      this._plugins.currency.gainCurrency({ id: '/currency/money', amount: plant.moneyReward });
+      this._plugins.statistic.incrementMapStatistic('/statistic/plants-planted', plant.id);
     }, plant.growthTime);
   }
 
