@@ -9,11 +9,9 @@ it('allows a consumer to create a basic game', () => {
   const currency = new CurrencyPlugin([{ id: 'money' }]);
 
   const engine = new LudiekEngine({
-    plugins: {
-      currency: currency,
-    },
+    plugins: [currency],
   });
-  type EngineAPI = typeof engine.api;
+  type EngineAPI = typeof engine.plugins;
 
   class DummyFeature extends LudiekFeature<EngineAPI> {
     name: string = 'dummy';
@@ -39,13 +37,13 @@ it('allows a consumer to create a basic game', () => {
     game.tick(1);
   }
 
-  expect(game.engine.api.currency.getBalance('money')).toBe(TICKS);
+  expect(game.engine.plugins.currency.getBalance('money')).toBe(TICKS);
 });
 
 it('emits an event on tick', async () => {
   // Arrange
   expect.assertions(2);
-  const game = new LudiekGame(new LudiekEngine({ plugins: {} }), {});
+  const game = new LudiekGame(new LudiekEngine({}), {});
 
   // Assert
   game.onTick.sub(() => {

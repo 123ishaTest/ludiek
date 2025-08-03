@@ -1,7 +1,7 @@
 import { LudiekFeature } from '@123ishatest/ludiek';
-import type { EngineAPI, PlantDetail, PlantId } from '$lib/demo/demo';
+import type { EnginePlugins, PlantDetail, PlantId } from '$lib/demo/demo';
 
-export class Farming extends LudiekFeature<EngineAPI> {
+export class Farming extends LudiekFeature<EnginePlugins> {
   public readonly name: string = 'farming';
 
   public readonly plants: PlantDetail[];

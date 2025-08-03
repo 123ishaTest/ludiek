@@ -42,14 +42,11 @@ const statistic = new StatisticPlugin(statistics);
 
 // Create engine
 const engine = new LudiekEngine({
-  plugins: {
-    currency: currency,
-    statistic: statistic,
-  },
+  plugins: [currency, statistic],
 });
 
 // Extract some neat utility types
-export type EngineAPI = typeof engine.api;
+export type EnginePlugins = typeof engine.plugins;
 export type PlantId = (typeof plants)[number]['id'];
 
 // Create your game
