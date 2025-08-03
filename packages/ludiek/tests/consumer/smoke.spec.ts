@@ -11,9 +11,9 @@ it('allows a consumer to create a basic game', () => {
   const engine = new LudiekEngine({
     plugins: [currency],
   });
-  type EngineAPI = typeof engine.plugins;
+  type EnginePlugins = typeof engine.plugins;
 
-  class DummyFeature extends LudiekFeature<EngineAPI> {
+  class DummyFeature extends LudiekFeature<EnginePlugins> {
     name: string = 'dummy';
 
     private _currency: CurrencyPlugin<CurrencyId>;

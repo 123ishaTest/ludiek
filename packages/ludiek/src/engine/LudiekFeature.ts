@@ -5,8 +5,8 @@ export abstract class LudiekFeature<Plugins extends Record<string, LudiekPlugin>
 
   protected _plugins!: Plugins;
 
-  public init(api: Plugins) {
-    this._plugins = api;
+  public init(plugins: Plugins) {
+    this._plugins = plugins;
   }
 
   /**
