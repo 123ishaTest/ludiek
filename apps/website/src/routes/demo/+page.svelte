@@ -1,8 +1,10 @@
 <script lang="ts">
   import { game } from '$lib/demo/demo';
 
-  let gems = $state(game.engine.api.currency.getBalance('/currency/gems'));
-  let statistic = $state(game.engine.api.statistic.getMapStatistic('/statistic/plants-planted', '/plant/sunflower'));
+  let gems = $state(game.engine.plugins.currency.getBalance('/currency/gems'));
+  let statistic = $state(
+    game.engine.plugins.statistic.getMapStatistic('/statistic/plants-planted', '/plant/sunflower'),
+  );
 
   const sow = () => {
     game.features.farming.sow('/plant/sunflower');

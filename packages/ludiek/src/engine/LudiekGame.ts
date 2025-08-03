@@ -1,20 +1,24 @@
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
+import { PluginMap } from '@ludiek/engine/LudiekConfiguration';
 import { ISignal, SignalDispatcher } from 'strongly-typed-events';
 
-export class LudiekGame<API extends Record<string, LudiekPlugin>, Features extends Record<string, LudiekFeature<API>>> {
+export class LudiekGame<
+  Plugins extends LudiekPlugin[],
+  Features extends Record<string, LudiekFeature<PluginMap<Plugins>>>,
+> {
   public features: Features;
-  public engine: LudiekEngine<API>;
+  public engine: LudiekEngine<Plugins>;
 
   private _onTick = new SignalDispatcher();
 
-  constructor(engine: LudiekEngine<API>, features: Features) {
+  constructor(engine: LudiekEngine<Plugins>, features: Features) {
     this.engine = engine;
     this.features = features;
 
     this.featureList.forEach((feature) => {
-      feature.init(this.engine.api);
+      feature.init(this.engine.plugins);
     });
   }
 
@@ -29,7 +33,7 @@ export class LudiekGame<API extends Record<string, LudiekPlugin>, Features exten
     this._onTick.dispatch();
   }
 
-  public get featureList(): LudiekFeature<API>[] {
+  public get featureList(): LudiekFeature<PluginMap<Plugins>>[] {
     return Object.values(this.features);
   }
 

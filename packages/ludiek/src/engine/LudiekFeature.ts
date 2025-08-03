@@ -1,10 +1,12 @@
-export abstract class LudiekFeature<API> {
+import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
+
+export abstract class LudiekFeature<Plugins extends Record<string, LudiekPlugin>> {
   abstract readonly name: string;
 
-  protected _api!: API;
+  protected _plugins!: Plugins;
 
-  public init(api: API) {
-    this._api = api;
+  public init(plugins: Plugins) {
+    this._plugins = plugins;
   }
 
   /**

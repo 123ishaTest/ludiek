@@ -27,14 +27,14 @@ const currency = new CurrencyPlugin(currencies);
 const engine = new LudiekEngine({
   currency: currency,
 });
-export type EngineAPI = typeof engine.api;
+export type EnginePlugins = typeof engine.plugins;
 ```
 
 Now we are ready to create our game. Let's start with a simple farming feature.
 We can plant a seed and gain a reward some time later!
 
 ```ts
-export class Farming extends LudiekFeature<EngineAPI> {
+export class Farming extends LudiekFeature<EnginePlugins> {
   public readonly name: string = 'farming';
 
   public readonly plants: PlantDetail[];
@@ -47,7 +47,7 @@ export class Farming extends LudiekFeature<EngineAPI> {
   public sow(id: PlantId): void {
     const plant = this.getPlant(id);
     setTimeout(() => {
-      this._api.currency.gainCurrency('/currency/money', plant.moneyReward);
+      this._plugins.currency.gainCurrency('/currency/money', plant.moneyReward);
     }, plant.growthTime);
   }
 
@@ -71,7 +71,7 @@ Because our content was static, this is now fully type-safe!
 
 ```ts
 game.features.farming.plant('/plant/sunflower')
-game.engine.api.currency.gainCurrency('/currency/gems', 3)
+game.engine.plugins.currency.gainCurrency('/currency/gems', 3)
 ```
 
 Now that you know the essentials of <span class="text-primary">Ludiek</span>, you can create your own Plugins and use them in your own Features.

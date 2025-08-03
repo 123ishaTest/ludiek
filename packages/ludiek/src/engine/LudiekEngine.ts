@@ -1,12 +1,13 @@
-import { LudiekPlugin } from './LudiekPlugin';
+import { LudiekConfig, PluginMap } from '@ludiek/engine/LudiekConfiguration';
+import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 
 /**
  * Collection of plugins
  */
-export class LudiekEngine<API extends Record<string, LudiekPlugin>> {
-  public api: API;
+export class LudiekEngine<Plugins extends LudiekPlugin[]> {
+  public plugins: PluginMap<Plugins>;
 
-  constructor(plugins: API) {
-    this.api = plugins;
+  constructor(config: LudiekConfig<Plugins>) {
+    this.plugins = Object.fromEntries(config.plugins?.map((p) => [p.name, p]) ?? []) as PluginMap<Plugins>;
   }
 }
