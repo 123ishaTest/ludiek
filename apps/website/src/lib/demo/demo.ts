@@ -1,4 +1,4 @@
-import { CurrencyPlugin, LudiekEngine, LudiekGame, StatisticPlugin } from '@123ishatest/ludiek';
+import { CurrencyPlugin, HasCurrencyCondition, LudiekEngine, LudiekGame, StatisticPlugin } from '@123ishatest/ludiek';
 import { Farming } from '$lib/demo/Farming';
 
 // First we define the shapes of our content
@@ -43,6 +43,7 @@ const statistic = new StatisticPlugin(statistics);
 // Create engine
 const engine = new LudiekEngine({
   plugins: [currency, statistic],
+  conditions: [new HasCurrencyCondition(currency)],
 });
 
 // Extract some neat utility types

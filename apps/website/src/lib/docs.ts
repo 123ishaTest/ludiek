@@ -10,6 +10,10 @@ export const docsLayout: DocsLayout = {
       ],
     },
     {
+      title: 'Engine',
+      pages: [{ title: 'Conditions', slug: 'engine/conditions' }],
+    },
+    {
       title: 'Plugins',
       pages: [
         { title: 'Currency', slug: 'plugins/currency' },
