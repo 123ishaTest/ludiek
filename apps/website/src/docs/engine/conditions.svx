@@ -1,0 +1,49 @@
+---
+title: Conditions
+---
+
+`Conditions` let you express and verify boolean requirements within your game.
+For example when you are checking if a player holds a specific key, meets a skill threshold, or can unlock an achievement.
+
+In <span class="text-primary">Ludiek</span>, Conditions are an abstract `Engine` concept.
+You provide a data shape and logic to `evaluate` whether this condition is true or false.
+At runtime, the Engine queries the registered evaluators and invokes their evaluate method.
+
+Sounds complicated? It's really not! Let's take the `Currency Plugin` as an example.
+It provides the `HasCurrencyCondition`.
+First we define the shape of what an instance of our condition should look like:
+
+```ts
+interface HasCurrencyConditionShape extends BaseConditionShape {
+  type: 'currency';
+  id: CurrencyId;
+  amount: number;
+}
+```
+
+And we extend a `LudiekCondition` to check whether it is true:
+
+```ts
+export class HasCurrencyCondition<CurrencyId extends string> implements LudiekCondition<HasCurrencyConditionShape<CurrencyId>> {
+  readonly type: string = 'currency';
+
+  constructor(private readonly _currency: CurrencyPlugin<CurrencyId>) {
+  }
+
+  evaluate(condition: HasCurrencyConditionShape<CurrencyId>): boolean {
+    return this._currency.hasCurrency(condition);
+  }
+}
+```
+
+And we can use it fully type-safe!
+
+```ts
+game.engine.evaluate({
+  type: 'currency',
+  id: 'money',
+  amount: 100,
+})
+```
+
+Now any piece of content in your game can use this condition as a requirement!

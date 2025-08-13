@@ -2,18 +2,20 @@ import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 import { PluginMap } from '@ludiek/engine/LudiekConfiguration';
+import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/LudiekCondition';
 import { ISignal, SignalDispatcher } from 'strongly-typed-events';
 
 export class LudiekGame<
   Plugins extends LudiekPlugin[],
+  Conditions extends LudiekCondition<BaseConditionShape>[],
   Features extends Record<string, LudiekFeature<PluginMap<Plugins>>>,
 > {
   public features: Features;
-  public engine: LudiekEngine<Plugins>;
+  public engine: LudiekEngine<Plugins, Conditions>;
 
   private _onTick = new SignalDispatcher();
 
-  constructor(engine: LudiekEngine<Plugins>, features: Features) {
+  constructor(engine: LudiekEngine<Plugins, Conditions>, features: Features) {
     this.engine = engine;
     this.features = features;
 
