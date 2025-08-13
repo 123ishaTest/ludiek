@@ -2,7 +2,7 @@ import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/LudiekCondit
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
 
 interface HasCurrencyConditionShape<CurrencyId> extends BaseConditionShape {
-  type: 'currency';
+  type: 'has-currency';
   id: CurrencyId;
   amount: number;
 }
@@ -10,7 +10,7 @@ interface HasCurrencyConditionShape<CurrencyId> extends BaseConditionShape {
 export class HasCurrencyCondition<CurrencyId extends string>
   implements LudiekCondition<HasCurrencyConditionShape<CurrencyId>>
 {
-  readonly type: string = 'currency';
+  readonly type: string = 'has-currency';
 
   private _currency: CurrencyPlugin<CurrencyId>;
 

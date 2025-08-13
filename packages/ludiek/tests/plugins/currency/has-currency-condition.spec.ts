@@ -12,12 +12,12 @@ describe('Has Currency Condition', () => {
 
     // Act
     const has3Money = condition.evaluate({
-      type: 'currency',
+      type: 'has-currency',
       id: 'money',
       amount: 3,
     });
     const has4Money = condition.evaluate({
-      type: 'currency',
+      type: 'has-currency',
       id: 'money',
       amount: 4,
     });
@@ -37,12 +37,12 @@ describe('Has Currency Condition', () => {
         // @ts-expect-error 'wrong' is not a CurrencyId
         type: 'wrong',
         // @ts-expect-error Type string is not assignable to type number
-        amount: 'asd',
+        amount: 'number',
       });
     }).toThrow(InvalidCurrencyError);
 
     condition.evaluate({
-      type: 'currency',
+      type: 'has-currency',
       id: 'gems',
       amount: 0,
       // @ts-expect-error Object literal may only specify known properties
