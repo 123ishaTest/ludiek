@@ -1,11 +1,24 @@
-import { CurrencyPlugin, HasCurrencyCondition, LudiekEngine, LudiekGame, StatisticPlugin } from '@123ishatest/ludiek';
+import {
+  AchievementPlugin,
+  CurrencyPlugin,
+  HasCurrencyCondition,
+  LudiekEngine,
+  LudiekGame,
+  StatisticPlugin,
+} from '@123ishatest/ludiek';
 import { Farming } from '$lib/demo/Farming';
+import type { ConditionShape } from '@123ishatest/ludiek/dist/engine/LudiekCondition';
 
 // First we define the shapes of our content
 export interface CurrencyDetail {
   id: string;
   name: string;
   icon: string;
+}
+
+export interface AchievementDetail {
+  id: string;
+  condition: ConditionShape<never>[];
 }
 
 export interface StatisticDetail {
@@ -22,8 +35,8 @@ export interface PlantDetail {
 
 // First we declare our fully static content
 const plants = [
-  { id: '/plant/sunflower', name: 'Sunflower', growthTime: 10, moneyReward: 10 },
-  { id: '/plant/cauliflower', name: 'Cauliflower', growthTime: 15, moneyReward: 20 },
+  { id: '/plant/sunflower', name: 'Sunflower', growthTime: 1, moneyReward: 10 },
+  { id: '/plant/cauliflower', name: 'Cauliflower', growthTime: 1.5, moneyReward: 20 },
 ] as const satisfies PlantDetail[];
 
 const currencies = [
@@ -36,13 +49,27 @@ const statistics = [
   { id: '/statistic/plants-planted', type: 'map' },
 ] as const satisfies StatisticDetail[];
 
+const achievements = [
+  {
+    id: '/achievement/total-money',
+    condition: [
+      {
+        type: 'has-currency',
+        id: '/currency/money',
+        amount: 30,
+      },
+    ],
+  },
+] as const satisfies AchievementDetail[];
+
 // Define plugins
 const currency = new CurrencyPlugin(currencies);
 const statistic = new StatisticPlugin(statistics);
+const achievement = new AchievementPlugin(achievements);
 
 // Create engine
 const engine = new LudiekEngine({
-  plugins: [currency, statistic],
+  plugins: [currency, statistic, achievement],
   conditions: [new HasCurrencyCondition(currency)],
 });
 

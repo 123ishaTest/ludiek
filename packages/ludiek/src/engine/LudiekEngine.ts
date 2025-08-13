@@ -10,11 +10,15 @@ export class LudiekEngine<Plugins extends LudiekPlugin[], Conditions extends Lud
   constructor(config: LudiekConfig<Plugins, Conditions>) {
     this.plugins = Object.fromEntries(config.plugins?.map((p) => [p.name, p]) ?? []) as PluginMap<Plugins>;
 
+    // Inject the engine into all plugins so they can access core concepts
+    config.plugins?.forEach((plugin) => plugin.inject(this));
+
     this._conditions = Object.fromEntries(config.conditions?.map((c) => [c.type, c]) ?? []);
   }
 
   /**
    * Evaluate a condition and return whether it is true.
+   * @remarks test remarks
    */
   public evaluate(condition: ConditionShape<Conditions>): boolean {
     const evaluator = this._conditions[condition.type];

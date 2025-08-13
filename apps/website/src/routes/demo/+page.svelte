@@ -6,8 +6,19 @@
     game.engine.plugins.statistic.getMapStatistic('/statistic/plants-planted', '/plant/sunflower'),
   );
 
+  game.engine.plugins.currency.onCurrencyGain.sub(c => {
+    if(c.id ==='/currency/money') {
+      game.engine.plugins.statistic.incrementStatistic('/statistic/total-money', c.amount)
+    }
+  })
+
+  game.engine.plugins.achievement.onAchievementGain.sub(a => {
+    console.log("Achievement gained:", a)
+  })
+
   const sow = () => {
     game.features.farming.sow('/plant/sunflower');
+    game.engine.plugins.achievement.checkAchievements();
   };
 </script>
 
