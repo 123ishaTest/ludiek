@@ -1,6 +1,7 @@
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
-import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
 import { InvalidCurrencyError, NegativeAmountError } from '@ludiek/plugins/currency/CurrencyErrors';
+import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
+import { createCurrencyState, CurrencyPluginState } from '@ludiek/plugins/currency/CurrencyPluginState';
 
 export type Currency = {
   id: string;
@@ -10,17 +11,18 @@ export type Currency = {
 export class CurrencyPlugin extends LudiekPlugin {
   readonly name = 'currency';
 
-  private _balances: Record<string, number> = {};
+  protected _state: CurrencyPluginState;
 
   protected _onCurrencyGain = new SimpleEventDispatcher<Currency>();
 
-  constructor() {
+  constructor(state: CurrencyPluginState = createCurrencyState()) {
     super();
+    this._state = state;
   }
 
   public loadContent(currencies: { id: string }[]): void {
     currencies.forEach((currency) => {
-      this._balances[currency.id] = 0;
+      this._state.balances[currency.id] = 0;
     });
   }
 
@@ -29,7 +31,7 @@ export class CurrencyPlugin extends LudiekPlugin {
    */
   public gainCurrency(currency: Currency): void {
     this.validate(currency, 'gain');
-    this._balances[currency.id] += currency.amount;
+    this._state.balances[currency.id] += currency.amount;
     this._onCurrencyGain.dispatch(currency);
   }
 
@@ -48,7 +50,7 @@ export class CurrencyPlugin extends LudiekPlugin {
    */
   public loseCurrency(currency: Currency): void {
     this.validate(currency, 'lose');
-    this._balances[currency.id] -= currency.amount;
+    this._state.balances[currency.id] -= currency.amount;
   }
 
   /**
@@ -115,7 +117,7 @@ export class CurrencyPlugin extends LudiekPlugin {
     if (!this.supportsCurrency(id)) {
       throw new InvalidCurrencyError(`Cannot currency '${id}' as it does not exist`);
     }
-    return this._balances[id];
+    return this._state.balances[id];
   }
 
   /**
@@ -123,7 +125,7 @@ export class CurrencyPlugin extends LudiekPlugin {
    * @param id
    */
   public supportsCurrency(id: string): boolean {
-    return id in this._balances;
+    return id in this._state.balances;
   }
 
   private validate(currency: Currency, action: string): void {

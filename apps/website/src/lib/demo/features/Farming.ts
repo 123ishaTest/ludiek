@@ -1,5 +1,5 @@
 import { LudiekFeature } from '@123ishatest/ludiek';
-import type { EnginePlugins, PlantId } from '$lib/demo/demo';
+import type { EnginePlugins, PlantId } from '$lib/demo/demo.svelte';
 
 import type { PlantDetail } from '$lib/demo/model/PlantDetail';
 

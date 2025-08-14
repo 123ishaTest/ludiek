@@ -1,26 +1,26 @@
 <script lang="ts">
-  import { CurrencyPlugin, StatisticPlugin, type StatisticDefinition } from '@123ishatest/ludiek';
+  import {
+    CurrencyPlugin,
+    StatisticPlugin,
+    type StatisticDefinition,
+    createStatisticState,
+    createCurrencyState,
+  } from '@123ishatest/ludiek';
 
-  const currency = new CurrencyPlugin();
+  // Define plugins with reactive state
+  const currencyState = $state(createCurrencyState());
+  const currency = new CurrencyPlugin(currencyState);
+  const statisticState = $state(createStatisticState());
+  const statistic = new StatisticPlugin(statisticState);
+
   const currencies = [{ id: 'money' }, { id: 'gems' }];
   currency.loadContent(currencies);
 
-  const statistic = new StatisticPlugin();
   const statistics: StatisticDefinition[] = [
     { id: 'currency', type: 'map' },
     { id: 'total', type: 'scalar' },
   ];
   statistic.loadContent(statistics);
-
-  // TODO(@Isha): Figure out reactivity!
-  const reactive = $state(currency._balances);
-  currency._balances = reactive;
-
-  const reactiveScalar = $state(statistic._scalarStatistics);
-  statistic._scalarStatistics = reactiveScalar;
-
-  const reactiveMap = $state(statistic._mapStatistics);
-  statistic._mapStatistics = reactiveMap;
 
   let allStatistic = $derived(statistic.getStatistic('total'));
   let currenciesStatistic = $state(statistic.getMapStatisticObject('currency'));
