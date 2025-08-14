@@ -6,7 +6,9 @@ import { InvalidCurrencyError } from '@ludiek/plugins/currency/CurrencyErrors';
 describe('Has Currency Condition', () => {
   it('evaluates to true on currencies we have', () => {
     // Arrange
-    const currency = new CurrencyPlugin([{ id: 'money' }, { id: 'gems' }]);
+    const currency = new CurrencyPlugin();
+    currency.loadContent([{ id: 'money' }, { id: 'gems' }]);
+
     currency.gainCurrency({ id: 'money', amount: 3 });
     const condition = new HasCurrencyCondition(currency);
 
@@ -29,12 +31,13 @@ describe('Has Currency Condition', () => {
 
   it('retains full type-safety', () => {
     // Arrange
-    const currency = new CurrencyPlugin([{ id: 'money' }, { id: 'gems' }]);
+    const currency = new CurrencyPlugin();
     const condition = new HasCurrencyCondition(currency);
+    currency.loadContent([{ id: 'money' }, { id: 'gems' }]);
 
     expect(() => {
       condition.evaluate({
-        // @ts-expect-error 'wrong' is not a CurrencyId
+        // @ts-expect-error 'wrong' is not a valid type
         type: 'wrong',
         // @ts-expect-error Type string is not assignable to type number
         amount: 'number',

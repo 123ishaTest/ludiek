@@ -1,0 +1,54 @@
+---
+title: Achievement Plugin
+---
+
+<script>
+  import AchievementDemonstration from './AchievementDemonstration.svelte';
+</script>
+
+Achievements are great.
+Not only is it a way to reward the player for exploring and experimenting, they also provide a sense of purpose.
+If your players can see they have many achievements left to complete, they will keep playing for a longer time.
+
+The achievement plugin handles the earning of Achievements.
+It uses your existing [Conditions](../engine/conditions) to determine when an achievement should unlock.
+
+## Demo
+
+<AchievementDemonstration/>
+
+## Usage
+
+```ts
+new LudiekEngine({
+  plugins: [currency, statistic, achievement],
+  conditions: [new HasStatisticCondition(statistic)],
+});
+
+// Define your achievements
+const achievements: AchievementDetail[] = [
+  { id: '10-total-money', condition: { type: 'has-statistic', id: 'total-money', amount: 10 } },
+  { id: 'manual' },
+];
+achievement.loadContent(achievements);
+
+// Check all unearned achievement to see if the conditions are met
+achievement.checkAchievements()
+
+// Manually earn an achievement
+achievement.earnAchievement('manual')
+
+// Check whether we have them
+achievement.hasAchievement('manual') // true
+```
+
+Hook into the “achievement earned” event for UI/popups
+```ts
+currency.onAchievementEarned.subscribe(({ id }) => {
+  console.log(`Congratulations, you have earned achievement ${id}!`)
+});
+```
+
+## Links
+
+- [src/plugins/achievement/AchievementPlugin.ts](https://github.com/123ishaTest/ludiek/blob/main/packages/ludiek/src/plugins/achievement/AchievementPlugin.ts)

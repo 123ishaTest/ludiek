@@ -1,27 +1,27 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
+import { StatisticDefinition, StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
 import {
   InvalidStatisticTypeError,
   UnknownMapStatisticError,
   UnknownStatisticError,
 } from '@ludiek/plugins/statistic/StatisticErrors';
 
-const statisticContent = [
+const statistic = new StatisticPlugin();
+const statisticContent: StatisticDefinition[] = [
   { id: 'money', type: 'scalar' },
   { id: 'numbers', type: 'map' },
   { id: 'monsters', type: 'map' },
 ] as const;
 
-let statistic = new StatisticPlugin(statisticContent);
 beforeEach(() => {
-  statistic = new StatisticPlugin(statisticContent);
+  statistic.loadContent(statisticContent);
 });
 
 describe('Bad flow', () => {
   it('throws an error when passing a wrong statistic type', () => {
     // Arrange
     expect(() => {
-      new StatisticPlugin([
+      statistic.loadContent([
         // @ts-expect-error 'wrong' is not a valid type
         { id: 'wrong', type: 'wrong' },
       ]);
@@ -29,7 +29,6 @@ describe('Bad flow', () => {
   });
 
   it('throws an error when accessing an unknown statistic ', () => {
-    // @ts-expect-error 'numbers' is not a valid StatisticId
     expect(() => statistic.getStatistic('numbers')).toThrow(UnknownStatisticError);
   });
 

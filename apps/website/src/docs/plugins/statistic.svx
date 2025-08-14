@@ -18,12 +18,11 @@ Scalars are single numeric values, while Maps allows you to track multiple value
 ```ts
 import { StatisticPlugin } from '@123ishatest/ludiek';
 
-// Initialise our plugin with statistic definitions
-const statistic = new StatisticPlugin([
+const statistic = new StatisticPlugin();
+statistic.loadContent([
   { id: 'total', type: 'scalar' },
   { id: 'currency', type: 'map' },
-] as const);
-
+]);
 
 // Increment scalar 'total' by 3
 statistic.incrementStatistic('total', 3);

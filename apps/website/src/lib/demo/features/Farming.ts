@@ -1,5 +1,7 @@
 import { LudiekFeature } from '@123ishatest/ludiek';
-import type { EnginePlugins, PlantDetail, PlantId } from '$lib/demo/demo';
+import type { EnginePlugins, PlantId } from '$lib/demo/demo';
+
+import type { PlantDetail } from '$lib/demo/model/PlantDetail';
 
 export class Farming extends LudiekFeature<EnginePlugins> {
   public readonly name: string = 'farming';
@@ -13,10 +15,8 @@ export class Farming extends LudiekFeature<EnginePlugins> {
 
   public sow(id: PlantId): void {
     const plant = this.getPlant(id);
-    setTimeout(() => {
-      this._plugins.currency.gainCurrency({ id: '/currency/money', amount: plant.moneyReward });
-      this._plugins.statistic.incrementMapStatistic('/statistic/plants-planted', plant.id);
-    }, plant.growthTime);
+    this._plugins.currency.gainCurrency({ id: '/currency/money', amount: plant.moneyReward });
+    this._plugins.statistic.incrementMapStatistic('/statistic/plants-planted', plant.id);
   }
 
   public getPlant(id: PlantId): PlantDetail {

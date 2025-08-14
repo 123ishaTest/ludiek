@@ -5,8 +5,8 @@ it('allows a consumer to create a basic game', () => {
   // Arrange
   const TICKS = 1000;
 
-  type CurrencyId = 'money';
-  const currency = new CurrencyPlugin([{ id: 'money' }]);
+  const currency = new CurrencyPlugin();
+  currency.loadContent([{ id: 'money' }]);
 
   const engine = new LudiekEngine({
     plugins: [currency],
@@ -16,9 +16,9 @@ it('allows a consumer to create a basic game', () => {
   class DummyFeature extends LudiekFeature<EnginePlugins> {
     name: string = 'dummy';
 
-    private _currency: CurrencyPlugin<CurrencyId>;
+    private _currency: CurrencyPlugin;
 
-    constructor(currency: CurrencyPlugin<CurrencyId>) {
+    constructor(currency: CurrencyPlugin) {
       super();
       this._currency = currency;
     }

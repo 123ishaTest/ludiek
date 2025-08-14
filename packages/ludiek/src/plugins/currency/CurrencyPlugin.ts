@@ -2,21 +2,23 @@ import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
 import { InvalidCurrencyError, NegativeAmountError } from '@ludiek/plugins/currency/CurrencyErrors';
 
-export type Currency<CurrencyId extends string = string> = {
-  id: CurrencyId;
+export type Currency = {
+  id: string;
   amount: number;
 };
 
-export class CurrencyPlugin<CurrencyId extends string> extends LudiekPlugin {
+export class CurrencyPlugin extends LudiekPlugin {
   readonly name = 'currency';
 
   private _balances: Record<string, number> = {};
 
-  protected _onCurrencyGain = new SimpleEventDispatcher<Currency<CurrencyId>>();
+  protected _onCurrencyGain = new SimpleEventDispatcher<Currency>();
 
-  constructor(currencies: readonly { id: CurrencyId }[]) {
+  constructor() {
     super();
+  }
 
+  public loadContent(currencies: { id: string }[]): void {
     currencies.forEach((currency) => {
       this._balances[currency.id] = 0;
     });
@@ -25,7 +27,7 @@ export class CurrencyPlugin<CurrencyId extends string> extends LudiekPlugin {
   /**
    * Gain the specified amount of currency
    */
-  public gainCurrency(currency: Currency<CurrencyId>): void {
+  public gainCurrency(currency: Currency): void {
     this.validate(currency, 'gain');
     this._balances[currency.id] += currency.amount;
     this._onCurrencyGain.dispatch(currency);
@@ -34,7 +36,7 @@ export class CurrencyPlugin<CurrencyId extends string> extends LudiekPlugin {
   /**
    * Gain a list of currencies
    */
-  public gainCurrencies(currencies: Currency<CurrencyId>[]): void {
+  public gainCurrencies(currencies: Currency[]): void {
     currencies.forEach((c) => this.validate(c, 'gain'));
     currencies.forEach((c) => {
       this.gainCurrency(c);
@@ -44,7 +46,7 @@ export class CurrencyPlugin<CurrencyId extends string> extends LudiekPlugin {
   /**
    * Lose the specified amount of currency
    */
-  public loseCurrency(currency: Currency<CurrencyId>): void {
+  public loseCurrency(currency: Currency): void {
     this.validate(currency, 'lose');
     this._balances[currency.id] -= currency.amount;
   }
@@ -52,7 +54,7 @@ export class CurrencyPlugin<CurrencyId extends string> extends LudiekPlugin {
   /**
    * Lose a list of currencies
    */
-  public loseCurrencies(currencies: Currency<CurrencyId>[]): void {
+  public loseCurrencies(currencies: Currency[]): void {
     currencies.forEach((c) => this.validate(c, 'lose'));
     currencies.forEach((c) => {
       this.loseCurrency(c);
@@ -63,7 +65,7 @@ export class CurrencyPlugin<CurrencyId extends string> extends LudiekPlugin {
    * Try to spend the specified amount of currency if you have it.
    * @return true if it was spent
    */
-  public payCurrency(currency: Currency<CurrencyId>): boolean {
+  public payCurrency(currency: Currency): boolean {
     this.validate(currency, 'pay');
 
     if (!this.hasCurrency(currency)) {
@@ -79,7 +81,7 @@ export class CurrencyPlugin<CurrencyId extends string> extends LudiekPlugin {
    *
    * @todo(#61) Each currency is checked individually, meaning that if there are duplicate Ids it could lead to negative balance.
    */
-  public payCurrencies(currencies: Currency<CurrencyId>[]): boolean {
+  public payCurrencies(currencies: Currency[]): boolean {
     if (!this.hasCurrencies(currencies)) {
       return false;
     }
@@ -90,7 +92,7 @@ export class CurrencyPlugin<CurrencyId extends string> extends LudiekPlugin {
   /**
    * Whether we have the provided amount of currency
    */
-  public hasCurrency(currency: Currency<CurrencyId>): boolean {
+  public hasCurrency(currency: Currency): boolean {
     this.validate(currency, 'has');
     return this.getBalance(currency.id) >= currency.amount;
   }
@@ -100,7 +102,7 @@ export class CurrencyPlugin<CurrencyId extends string> extends LudiekPlugin {
    *
    * @todo(#61) Each currency is checked individually, meaning that if there are duplicate Ids the answer could be misleading.
    */
-  public hasCurrencies(currencies: Currency<CurrencyId>[]): boolean {
+  public hasCurrencies(currencies: Currency[]): boolean {
     return currencies.every((c) => {
       return this.hasCurrency(c);
     });
@@ -109,18 +111,22 @@ export class CurrencyPlugin<CurrencyId extends string> extends LudiekPlugin {
   /**
    * Retrieve the balance for the specified currency
    */
-  public getBalance(id: CurrencyId): number {
+  public getBalance(id: string): number {
     if (!this.supportsCurrency(id)) {
       throw new InvalidCurrencyError(`Cannot currency '${id}' as it does not exist`);
     }
     return this._balances[id];
   }
 
-  public supportsCurrency(id: CurrencyId): boolean {
+  /**
+   * Whether the plugin supports this type of currency
+   * @param id
+   */
+  public supportsCurrency(id: string): boolean {
     return id in this._balances;
   }
 
-  private validate(currency: Currency<CurrencyId>, action: string): void {
+  private validate(currency: Currency, action: string): void {
     if (!this.supportsCurrency(currency.id)) {
       throw new InvalidCurrencyError(`Cannot ${action} '${currency.amount}' of '${currency.id}'. Unknown currency`);
     }
@@ -134,7 +140,7 @@ export class CurrencyPlugin<CurrencyId extends string> extends LudiekPlugin {
   /**
    * Emitted when a currency is gained
    */
-  public get onCurrencyGain(): ISimpleEvent<Currency<CurrencyId>> {
+  public get onCurrencyGain(): ISimpleEvent<Currency> {
     return this._onCurrencyGain.asEvent();
   }
 }

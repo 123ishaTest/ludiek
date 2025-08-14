@@ -9,6 +9,11 @@ export abstract class LudiekError extends Error {}
 export abstract class PluginError extends LudiekError {}
 
 /**
+ * The engine is not injected into the plugin
+ */
+export class EngineNotInjectedError extends PluginError {}
+
+/**
  * Thrown when a condition is not found
  */
 export class ConditionNotFoundError extends LudiekError {}

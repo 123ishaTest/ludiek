@@ -2,16 +2,14 @@ import { describe, expect, it } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LudiekCondition } from '@ludiek/engine/LudiekCondition';
 import { ConditionNotFoundError } from '@ludiek/engine/LudiekError';
+import { AlwaysTrueCondition } from '@ludiek/engine/evaluators/AlwaysTrueCondition';
+import { AlwaysFalseCondition } from '@ludiek/engine/evaluators/AlwaysFalseCondition';
 
 describe('Engine Conditions', () => {
   it('checks an always true condition', () => {
     // Arrange
-    const alwaysTrueEvaluator = {
-      type: 'always-true',
-      evaluate: () => true,
-    };
     const engine = new LudiekEngine({
-      conditions: [alwaysTrueEvaluator],
+      conditions: [new AlwaysTrueCondition()],
     });
 
     // Act
@@ -23,12 +21,8 @@ describe('Engine Conditions', () => {
 
   it('checks an always false condition', () => {
     // Arrange
-    const alwaysFalseEvaluator = {
-      type: 'always-false',
-      evaluate: () => false,
-    };
     const engine = new LudiekEngine({
-      conditions: [alwaysFalseEvaluator],
+      conditions: [new AlwaysFalseCondition()],
     });
 
     // Act

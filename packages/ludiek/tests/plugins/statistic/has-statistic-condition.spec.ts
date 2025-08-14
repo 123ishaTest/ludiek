@@ -1,14 +1,22 @@
-import { describe, expect, it } from 'vitest';
-import { StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { StatisticDefinition, StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
 import { HasStatisticCondition } from '@ludiek/plugins/statistic/evaluators/HasStatisticCondition';
 import { UnknownStatisticError } from '@ludiek/plugins/statistic/StatisticErrors';
 
-const statisticContent = [{ id: 'money', type: 'scalar' }] as const;
+const statistic = new StatisticPlugin();
+const statisticContent: StatisticDefinition[] = [
+  { id: 'money', type: 'scalar' },
+  { id: 'numbers', type: 'map' },
+  { id: 'monsters', type: 'map' },
+] as const;
+
+beforeEach(() => {
+  statistic.loadContent(statisticContent);
+});
 
 describe('Has Statistic Condition', () => {
   it('evaluates to true on statistics we have', () => {
     // Arrange
-    const statistic = new StatisticPlugin(statisticContent);
     statistic.incrementStatistic('money', 3);
     const condition = new HasStatisticCondition(statistic);
 
@@ -31,7 +39,6 @@ describe('Has Statistic Condition', () => {
 
   it('retains full type-safety', () => {
     // Arrange
-    const statistic = new StatisticPlugin(statisticContent);
     const condition = new HasStatisticCondition(statistic);
 
     expect(() => {

@@ -1,0 +1,21 @@
+import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/LudiekCondition';
+import { AchievementPlugin } from '@ludiek/plugins/achievement/AchievementPlugin';
+
+interface HasAchievementConditionShape extends BaseConditionShape {
+  type: 'has-achievement';
+  id: string;
+}
+
+export class HasAchievementCondition implements LudiekCondition<HasAchievementConditionShape> {
+  readonly type: string = 'has-achievement';
+
+  private _achievement: AchievementPlugin;
+
+  constructor(achievement: AchievementPlugin) {
+    this._achievement = achievement;
+  }
+
+  evaluate(condition: HasAchievementConditionShape): boolean {
+    return this._achievement.hasAchievement(condition.id);
+  }
+}

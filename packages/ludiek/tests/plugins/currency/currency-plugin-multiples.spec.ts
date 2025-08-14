@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
 
-let currency = new CurrencyPlugin([{ id: 'money' }, { id: 'gems' }]);
+const currency = new CurrencyPlugin();
 beforeEach(() => {
-  currency = new CurrencyPlugin([{ id: 'money' }, { id: 'gems' }]);
+  currency.loadContent([{ id: 'money' }, { id: 'gems' }]);
 });
 
 describe('Multiple currencies', () => {

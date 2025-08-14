@@ -1,15 +1,15 @@
 import { beforeEach, expect, it } from 'vitest';
-import { StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
+import { StatisticDefinition, StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
 
-const statisticContent = [
+const statistic = new StatisticPlugin();
+const statisticContent: StatisticDefinition[] = [
   { id: 'money', type: 'scalar' },
   { id: 'numbers', type: 'map' },
   { id: 'monsters', type: 'map' },
 ] as const;
 
-let statistic = new StatisticPlugin(statisticContent);
 beforeEach(() => {
-  statistic = new StatisticPlugin(statisticContent);
+  statistic.loadContent(statisticContent);
 });
 
 it('initializes at 0', () => {
