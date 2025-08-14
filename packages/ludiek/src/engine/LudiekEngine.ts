@@ -2,6 +2,7 @@ import { LudiekConfig, PluginMap } from '@ludiek/engine/LudiekConfiguration';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { BaseConditionShape, ConditionShape, LudiekCondition } from '@ludiek/engine/LudiekCondition';
 import { ConditionNotFoundError } from '@ludiek/engine/LudiekError';
+import { LudiekEngineSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 
 export class LudiekEngine<Plugins extends LudiekPlugin[], Conditions extends LudiekCondition<BaseConditionShape>[]> {
   public plugins: PluginMap<Plugins>;
@@ -42,8 +43,8 @@ export class LudiekEngine<Plugins extends LudiekPlugin[], Conditions extends Lud
   }
 
   // Saving and loading
-  public save(): object {
-    const data: Record<string, object> = {};
+  public save(): LudiekEngineSaveData {
+    const data: LudiekEngineSaveData = {};
 
     this.pluginList.forEach((plugin) => {
       data[plugin.name] = plugin.save();
@@ -52,7 +53,7 @@ export class LudiekEngine<Plugins extends LudiekPlugin[], Conditions extends Lud
     return data;
   }
 
-  public load(data: Record<string, object>): void {
+  public load(data: LudiekEngineSaveData): void {
     this.pluginList.forEach((plugin) => {
       const state = data[plugin.name];
       if (state) {
