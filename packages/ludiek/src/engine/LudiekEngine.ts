@@ -40,4 +40,28 @@ export class LudiekEngine<Plugins extends LudiekPlugin[], Conditions extends Lud
       return evaluator.evaluate(condition);
     });
   }
+
+  // Saving and loading
+  public save(): object {
+    const data: Record<string, object> = {};
+
+    this.pluginList.forEach((plugin) => {
+      data[plugin.name] = plugin.save();
+    });
+
+    return data;
+  }
+
+  public load(data: Record<string, object>): void {
+    this.pluginList.forEach((plugin) => {
+      const state = data[plugin.name];
+      if (state) {
+        plugin.load(state);
+      }
+    });
+  }
+
+  private get pluginList(): LudiekPlugin[] {
+    return Object.values(this.plugins);
+  }
 }

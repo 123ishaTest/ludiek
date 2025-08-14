@@ -11,7 +11,10 @@ export const docsLayout: DocsLayout = {
     },
     {
       title: 'Engine',
-      pages: [{ title: 'Conditions', slug: 'engine/conditions' }],
+      pages: [
+        { title: 'Conditions', slug: 'engine/conditions' },
+        { title: 'Persistence', slug: 'engine/persistence' },
+      ],
     },
     {
       title: 'Plugins',
