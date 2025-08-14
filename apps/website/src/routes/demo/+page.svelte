@@ -17,7 +17,6 @@
   const sow = () => {
     game.features.farming.sow('/plant/sunflower');
     achievement.checkAchievements();
-    console.log('asd', currency.getBalance('/currency/money'));
   };
 
   $effect(() => {

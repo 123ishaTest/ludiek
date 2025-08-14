@@ -61,7 +61,6 @@ export class LudiekGame<
       const data = this.save();
       LudiekLocalStorage.store(this.config.saveKey, data, this.saveEncoder);
 
-      console.log('saving');
       this._nextSave = this.SAVE_INTERVAL;
     }
     this._onTick.dispatch();
