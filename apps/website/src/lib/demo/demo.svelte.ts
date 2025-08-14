@@ -2,6 +2,9 @@ import {
   AchievementPlugin,
   AlwaysTrueCondition,
   type ConditionShape,
+  createAchievementState,
+  createCurrencyState,
+  createStatisticState,
   CurrencyPlugin,
   HasCurrencyCondition,
   HasStatisticCondition,
@@ -12,15 +15,22 @@ import {
 import { Farming } from '$lib/demo/features/Farming';
 import { achievements, currencies, plants, statistics } from '$lib/demo/content';
 
-// Define plugins
-const currency = new CurrencyPlugin();
-const statistic = new StatisticPlugin();
-const achievement = new AchievementPlugin();
+// Define plugins with reactive state
+const currencyState = $state(createCurrencyState());
+const currencyPlugin = new CurrencyPlugin(currencyState);
+const statisticState = $state(createStatisticState());
+const statisticPlugin = new StatisticPlugin(statisticState);
+const achievementState = $state(createAchievementState());
+const achievementPlugin = new AchievementPlugin(achievementState);
 
 // Create engine with plugins
 const config = {
-  plugins: [currency, statistic, achievement],
-  conditions: [new AlwaysTrueCondition(), new HasCurrencyCondition(currency), new HasStatisticCondition(statistic)],
+  plugins: [currencyPlugin, statisticPlugin, achievementPlugin],
+  conditions: [
+    new AlwaysTrueCondition(),
+    new HasCurrencyCondition(currencyPlugin),
+    new HasStatisticCondition(statisticPlugin),
+  ],
 };
 
 const engine = new LudiekEngine(config);
@@ -40,3 +50,5 @@ export const game = new LudiekGame(engine, {
 engine.plugins.currency.loadContent(currencies);
 engine.plugins.statistic.loadContent(statistics);
 engine.plugins.achievement.loadContent(achievements);
+
+export const { currency, statistic, achievement } = engine.plugins;

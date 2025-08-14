@@ -19,13 +19,19 @@ export { AlwaysFalseCondition } from '@ludiek/engine/evaluators/AlwaysFalseCondi
  */
 // Achievement
 export { AchievementPlugin, type AchievementDefinition } from '@ludiek/plugins/achievement/AchievementPlugin';
+export {
+  type AchievementPluginState,
+  createAchievementState,
+} from '@ludiek/plugins/achievement/AchievementPluginState';
 export { HasAchievementCondition } from '@ludiek/plugins/achievement/evaluators/HasAchievementCondition';
 
 // Currency
 export { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
+export { type CurrencyPluginState, createCurrencyState } from '@ludiek/plugins/currency/CurrencyPluginState';
 export { HasCurrencyCondition } from '@ludiek/plugins/currency/evaluators/HasCurrencyCondition';
 
 // Statistic
 export { StatisticPlugin, type StatisticDefinition } from '@ludiek/plugins/statistic/StatisticPlugin';
+export { type StatisticPluginState, createStatisticState } from '@ludiek/plugins/statistic/StatisticPluginState';
 export { HasStatisticCondition } from '@ludiek/plugins/statistic/evaluators/HasStatisticCondition';
 export { HasMapStatisticCondition } from '@ludiek/plugins/statistic/evaluators/HasMapStatisticCondition';

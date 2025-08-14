@@ -1,12 +1,9 @@
 <script lang="ts">
-  import { CurrencyPlugin } from '@123ishatest/ludiek';
+  import { createCurrencyState, CurrencyPlugin } from '@123ishatest/ludiek';
 
-  const currency = new CurrencyPlugin();
+  const currencyState = $state(createCurrencyState());
+  const currency = new CurrencyPlugin(currencyState);
   currency.loadContent([{ id: 'money' }]);
-
-  // TODO(@Isha): Figure out reactivity!
-  const reactive = $state(currency._balances);
-  currency._balances = reactive;
 
   interface Notification {
     type: 'alert-success' | 'alert-error';

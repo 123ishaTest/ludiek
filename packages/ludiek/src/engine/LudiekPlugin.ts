@@ -7,6 +7,7 @@ import { EngineNotInjectedError } from '@ludiek/engine/LudiekError';
  */
 export abstract class LudiekPlugin {
   abstract readonly name: string;
+  protected abstract _state: object;
 
   private _engine!: LudiekEngine<never, never>;
 
@@ -28,4 +29,11 @@ export abstract class LudiekPlugin {
   }
 
   // TODO(@Isha): Add persistence
+  public save(): object {
+    return this._state;
+  }
+
+  public load(data: object): void {
+    this._state = data;
+  }
 }

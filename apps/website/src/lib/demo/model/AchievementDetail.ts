@@ -1,4 +1,4 @@
-import type { Condition } from '$lib/demo/demo';
+import type { Condition } from '$lib/demo/demo.svelte';
 
 export interface AchievementDetail {
   id: string;

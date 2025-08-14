@@ -1,6 +1,9 @@
 <script lang="ts">
   import {
     AchievementPlugin,
+    createAchievementState,
+    createCurrencyState,
+    createStatisticState,
     CurrencyPlugin,
     HasStatisticCondition,
     LudiekEngine,
@@ -8,9 +11,12 @@
   } from '@123ishatest/ludiek';
   import type { AchievementDetail } from '$lib/demo/model/AchievementDetail';
 
-  const currency = new CurrencyPlugin();
-  const statistic = new StatisticPlugin();
-  const achievement = new AchievementPlugin();
+  const currencyState = $state(createCurrencyState());
+  const currency = new CurrencyPlugin(currencyState);
+  const statisticState = $state(createStatisticState());
+  const statistic = new StatisticPlugin(statisticState);
+  const achievementState = $state(createAchievementState());
+  const achievement = new AchievementPlugin(achievementState);
 
   new LudiekEngine({
     plugins: [currency, statistic, achievement],
@@ -48,12 +54,6 @@
     }
     achievement.checkAchievements();
   });
-
-  // TODO(@Isha): Figure out reactivity!
-  const reactive = $state(currency._balances);
-  currency._balances = reactive;
-  const reactiveRecord = $state(achievement._record);
-  achievement._record = reactiveRecord;
 
   let hasGain10 = $derived(achievement.hasAchievement('gain-10-money'));
   let hasGain50 = $derived(achievement.hasAchievement('gain-50-money'));

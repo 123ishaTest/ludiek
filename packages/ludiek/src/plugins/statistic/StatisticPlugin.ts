@@ -4,6 +4,7 @@ import {
   UnknownMapStatisticError,
   UnknownStatisticError,
 } from '@ludiek/plugins/statistic/StatisticErrors';
+import { createStatisticState, StatisticPluginState } from '@ludiek/plugins/statistic/StatisticPluginState';
 
 export interface StatisticDefinition {
   id: string;
@@ -13,21 +14,21 @@ export interface StatisticDefinition {
 export class StatisticPlugin extends LudiekPlugin {
   readonly name = 'statistic';
 
-  private _scalarStatistics: Record<string, number> = {};
-  private _mapStatistics: Record<string, Record<string, number>> = {};
+  protected _state: StatisticPluginState;
 
-  constructor() {
+  constructor(state: StatisticPluginState = createStatisticState()) {
     super();
+    this._state = state;
   }
 
   public loadContent(statistics: StatisticDefinition[]): void {
     statistics.forEach((statistic) => {
       switch (statistic.type) {
         case 'scalar':
-          this._scalarStatistics[statistic.id] = 0;
+          this._state.scalar[statistic.id] = 0;
           break;
         case 'map':
-          this._mapStatistics[statistic.id] = {};
+          this._state.map[statistic.id] = {};
           break;
         default:
           throw new InvalidStatisticTypeError(
@@ -38,34 +39,34 @@ export class StatisticPlugin extends LudiekPlugin {
   }
 
   public getStatistic(id: string): number {
-    if (!(id in this._scalarStatistics)) {
+    if (!(id in this._state.scalar)) {
       throw new UnknownStatisticError(`Unknown statistic with id '${id}'`);
     }
-    return this._scalarStatistics[id];
+    return this._state.scalar[id];
   }
 
   public getMapStatistic(id: string, key: string | number): number {
-    if (!(id in this._mapStatistics)) {
+    if (!(id in this._state.map)) {
       throw new UnknownMapStatisticError(`Unknown map statistic with id '${id}'`);
     }
-    return this._mapStatistics[id][key] ?? 0;
+    return this._state.map[id][key] ?? 0;
   }
 
   public getMapStatisticObject(id: string): Record<string | number, number> {
-    return this._mapStatistics[id];
+    return this._state.map[id];
   }
 
   /**
    * Increment a statistic with an amount of delta
    */
   public incrementStatistic(id: string, delta: number = 1): void {
-    this._scalarStatistics[id] += delta;
+    this._state.scalar[id] += delta;
   }
 
   /**
    * Increment a map statistic with an amount of delta
    */
   public incrementMapStatistic(id: string, key: string | number, delta: number = 1): void {
-    this._mapStatistics[id][key] = this.getMapStatistic(id, key) + delta;
+    this._state.map[id][key] = this.getMapStatistic(id, key) + delta;
   }
 }

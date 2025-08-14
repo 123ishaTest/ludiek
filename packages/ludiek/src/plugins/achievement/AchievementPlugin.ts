@@ -2,6 +2,7 @@ import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
 import { BaseConditionShape } from '@ludiek/engine/LudiekCondition';
 import { UnknownAchievementError } from '@ludiek/plugins/achievement/AchievementErrors';
+import { AchievementPluginState } from '@ludiek/plugins/achievement/AchievementPluginState';
 
 export interface AchievementDefinition {
   id: string;
@@ -15,19 +16,21 @@ export interface AchievementDefinition {
 export class AchievementPlugin extends LudiekPlugin {
   readonly name = 'achievement';
 
-  private _record: Record<string, boolean> = {} as Record<string, boolean>;
+  protected _state: AchievementPluginState;
+
   private readonly _achievements: Record<string, AchievementDefinition> = {};
 
   protected _onAchievementEarn = new SimpleEventDispatcher<AchievementDefinition>();
 
-  constructor() {
+  constructor(state: AchievementPluginState = { record: {} }) {
     super();
+    this._state = state;
   }
 
   public loadContent(achievements: AchievementDefinition[]): void {
     achievements.forEach((achievement) => {
       this._achievements[achievement.id] = achievement;
-      this._record[achievement.id] = false;
+      this._state.record[achievement.id] = false;
     });
   }
 
@@ -73,7 +76,7 @@ export class AchievementPlugin extends LudiekPlugin {
       return;
     }
 
-    this._record[id] = true;
+    this._state.record[id] = true;
     this._onAchievementEarn.dispatch(this._achievements[id]);
   }
 
@@ -84,7 +87,7 @@ export class AchievementPlugin extends LudiekPlugin {
   public hasAchievement(id: string): boolean {
     this.validate(id);
 
-    return this._record[id];
+    return this._state.record[id];
   }
 
   /**
