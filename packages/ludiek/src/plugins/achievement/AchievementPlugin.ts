@@ -2,7 +2,7 @@ import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
 import { BaseConditionShape } from '@ludiek/engine/LudiekCondition';
 import { UnknownAchievementError } from '@ludiek/plugins/achievement/AchievementErrors';
-import { AchievementPluginState } from '@ludiek/plugins/achievement/AchievementPluginState';
+import { AchievementPluginState, createAchievementState } from '@ludiek/plugins/achievement/AchievementPluginState';
 
 export interface AchievementDefinition {
   id: string;
@@ -22,7 +22,7 @@ export class AchievementPlugin extends LudiekPlugin {
 
   protected _onAchievementEarn = new SimpleEventDispatcher<AchievementDefinition>();
 
-  constructor(state: AchievementPluginState = { record: {} }) {
+  constructor(state: AchievementPluginState = createAchievementState()) {
     super();
     this._state = state;
   }
