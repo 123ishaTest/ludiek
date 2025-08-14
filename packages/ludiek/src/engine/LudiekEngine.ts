@@ -16,20 +16,28 @@ export class LudiekEngine<Plugins extends LudiekPlugin[], Conditions extends Lud
     this._conditions = Object.fromEntries(config.conditions?.map((c) => [c.type, c]) ?? []);
   }
 
-  /**
-   * Evaluate a condition and return whether it is true.
-   * @remarks test remarks
-   */
-  public evaluate(condition: ConditionShape<Conditions>): boolean {
-    const evaluator = this._conditions[condition.type];
+  public get conditions(): LudiekCondition<BaseConditionShape>[] {
+    return Object.values(this._conditions);
+  }
 
-    if (evaluator == null) {
-      const registeredEvaluators = Object.keys(this._conditions).join(', ');
-      throw new ConditionNotFoundError(
-        `Cannot evaluate condition of type '${condition.type}' because its evaluator is not registered. Registered evaluators are ${registeredEvaluators}`,
-      );
+  /**
+   * Evaluate one or multiple conditions and evaluates whether they are all true.
+   */
+  public evaluate(condition: ConditionShape<Conditions> | ConditionShape<Conditions>[]): boolean {
+    if (!Array.isArray(condition)) {
+      condition = [condition];
     }
 
-    return this._conditions[condition.type].evaluate(condition);
+    return condition.every((condition) => {
+      const evaluator = this._conditions[condition.type];
+
+      if (evaluator == null) {
+        const registeredEvaluators = Object.keys(this._conditions).join(', ');
+        throw new ConditionNotFoundError(
+          `Cannot evaluate condition of type '${condition.type}' because its evaluator is not registered. Registered evaluators are: ${registeredEvaluators}`,
+        );
+      }
+      return evaluator.evaluate(condition);
+    });
   }
 }

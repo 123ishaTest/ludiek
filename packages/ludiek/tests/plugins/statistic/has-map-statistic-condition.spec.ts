@@ -1,13 +1,21 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { HasMapStatisticCondition } from '@ludiek/plugins/statistic/evaluators/HasMapStatisticCondition';
-import { StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
+import { StatisticDefinition, StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
 
-const statisticContent = [{ id: 'monsters', type: 'map' }] as const;
+const statistic = new StatisticPlugin();
+const statisticContent: StatisticDefinition[] = [
+  { id: 'money', type: 'scalar' },
+  { id: 'numbers', type: 'map' },
+  { id: 'monsters', type: 'map' },
+] as const;
+
+beforeEach(() => {
+  statistic.loadContent(statisticContent);
+});
 
 describe('Has Map Statistic Condition', () => {
   it('evaluates to true on statistics we have', () => {
     // Arrange
-    const statistic = new StatisticPlugin(statisticContent);
     statistic.incrementMapStatistic('monsters', 'goblin', 3);
     const condition = new HasMapStatisticCondition(statistic);
 

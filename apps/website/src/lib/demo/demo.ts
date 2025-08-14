@@ -1,80 +1,33 @@
 import {
   AchievementPlugin,
+  AlwaysTrueCondition,
+  type ConditionShape,
   CurrencyPlugin,
   HasCurrencyCondition,
+  HasStatisticCondition,
   LudiekEngine,
   LudiekGame,
   StatisticPlugin,
 } from '@123ishatest/ludiek';
-import { Farming } from '$lib/demo/Farming';
-import type { ConditionShape } from '@123ishatest/ludiek/dist/engine/LudiekCondition';
-
-// First we define the shapes of our content
-export interface CurrencyDetail {
-  id: string;
-  name: string;
-  icon: string;
-}
-
-export interface AchievementDetail {
-  id: string;
-  condition: ConditionShape<never>[];
-}
-
-export interface StatisticDetail {
-  id: string;
-  type: 'scalar' | 'map';
-}
-
-export interface PlantDetail {
-  id: string;
-  name: string;
-  growthTime: number;
-  moneyReward: number;
-}
-
-// First we declare our fully static content
-const plants = [
-  { id: '/plant/sunflower', name: 'Sunflower', growthTime: 1, moneyReward: 10 },
-  { id: '/plant/cauliflower', name: 'Cauliflower', growthTime: 1.5, moneyReward: 20 },
-] as const satisfies PlantDetail[];
-
-const currencies = [
-  { id: '/currency/money', name: 'Money', icon: '/icon/coin' },
-  { id: '/currency/gems', name: 'Gems', icon: '/icon/gem-blue' },
-] as const satisfies CurrencyDetail[];
-
-const statistics = [
-  { id: '/statistic/total-money', type: 'scalar' },
-  { id: '/statistic/plants-planted', type: 'map' },
-] as const satisfies StatisticDetail[];
-
-const achievements = [
-  {
-    id: '/achievement/total-money',
-    condition: [
-      {
-        type: 'has-currency',
-        id: '/currency/money',
-        amount: 30,
-      },
-    ],
-  },
-] as const satisfies AchievementDetail[];
+import { Farming } from '$lib/demo/features/Farming';
+import { achievements, currencies, plants, statistics } from '$lib/demo/content';
 
 // Define plugins
-const currency = new CurrencyPlugin(currencies);
-const statistic = new StatisticPlugin(statistics);
-const achievement = new AchievementPlugin(achievements);
+const currency = new CurrencyPlugin();
+const statistic = new StatisticPlugin();
+const achievement = new AchievementPlugin();
 
-// Create engine
-const engine = new LudiekEngine({
+// Create engine with plugins
+const config = {
   plugins: [currency, statistic, achievement],
-  conditions: [new HasCurrencyCondition(currency)],
-});
+  conditions: [new AlwaysTrueCondition(), new HasCurrencyCondition(currency), new HasStatisticCondition(statistic)],
+};
+
+const engine = new LudiekEngine(config);
 
 // Extract some neat utility types
 export type EnginePlugins = typeof engine.plugins;
+export type Condition = ConditionShape<typeof config.conditions>;
 export type PlantId = (typeof plants)[number]['id'];
 
 // Create your game
@@ -83,3 +36,7 @@ const farming = new Farming(plants);
 export const game = new LudiekGame(engine, {
   farming: farming,
 });
+
+engine.plugins.currency.loadContent(currencies);
+engine.plugins.statistic.loadContent(statistics);
+engine.plugins.achievement.loadContent(achievements);

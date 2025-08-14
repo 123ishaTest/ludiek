@@ -19,7 +19,8 @@ It provides helpful methods for gaining and spending these currencies.
 ```ts
 import { CurrencyPlugin } from '@123ishatest/ludiek';
 
-const currency = new CurrencyPlugin([
+const currency = new CurrencyPlugin();
+currency.loadContent([
   { id: 'money' },
   { id: 'gems' },
 ]);

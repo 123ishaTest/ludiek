@@ -1,9 +1,9 @@
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-let currency = new CurrencyPlugin([{ id: 'money' }, { id: 'gems' }]);
+const currency = new CurrencyPlugin();
 beforeEach(() => {
-  currency = new CurrencyPlugin([{ id: 'money' }, { id: 'gems' }]);
+  currency.loadContent([{ id: 'money' }, { id: 'gems' }]);
 });
 
 describe('Happy flow', () => {
@@ -27,7 +27,6 @@ describe('Happy flow', () => {
   it('knows which currencies are supported', () => {
     expect(currency.supportsCurrency('money')).toBe(true);
     expect(currency.supportsCurrency('gems')).toBe(true);
-    // @ts-expect-error 'unknown' is not a valid CurrencyId
     expect(currency.supportsCurrency('unknown')).toBe(false);
   });
 

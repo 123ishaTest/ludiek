@@ -1,72 +1,114 @@
 import { beforeEach, expect, it } from 'vitest';
-import { AchievementDetail, AchievementPlugin } from '@ludiek/plugins/achievement/AchievementPlugin';
+import { AchievementPlugin } from '@ludiek/plugins/achievement/AchievementPlugin';
+import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
+import { AlwaysTrueCondition } from '@ludiek/engine/evaluators/AlwaysTrueCondition';
+import { AlwaysFalseCondition } from '@ludiek/engine/evaluators/AlwaysFalseCondition';
+
+const achievement = new AchievementPlugin();
+new LudiekEngine({
+  conditions: [new AlwaysTrueCondition(), new AlwaysFalseCondition()],
+  plugins: [achievement],
+});
 
 const achievementContent = [
-  { id: 'should-gain', condition: [{ type: 'always-true' }] },
-  { id: 'should-not-gain', condition: [{ type: 'always-false' }] },
-] as const;
-
-let achievement = new AchievementPlugin(achievementContent);
+  {
+    id: 'always-true',
+    condition: {
+      type: 'always-true',
+    },
+  },
+  {
+    id: 'always-false',
+    condition: {
+      type: 'always-false',
+    },
+  },
+  {
+    id: 'manual',
+  },
+];
 
 beforeEach(() => {
-  achievement = new AchievementPlugin(achievementContent);
+  achievement.loadContent(achievementContent);
 });
 
-it('initializes at 0', () => {
+it('initializes at false', () => {
   // Act
-  const money = achievement.getAchievement('money');
-  const number = achievement.getMapAchievement('numbers', 0);
-  const monster = achievement.getMapAchievement('monsters', 'zombie');
+  const alwaysTrue = achievement.hasAchievement('always-true');
+  const alwaysFalse = achievement.hasAchievement('always-false');
+  const manual = achievement.hasAchievement('manual');
 
   // Assert
-  expect(money).toBe(0);
-  expect(number).toBe(0);
-  expect(monster).toBe(0);
+  expect(alwaysTrue).toBe(false);
+  expect(alwaysFalse).toBe(false);
+  expect(manual).toBe(false);
 });
 
-it('increments with a delta', () => {
+it('checks for requirements', () => {
   // Act
-  achievement.incrementAchievement('money', 2);
-  achievement.incrementMapAchievement('numbers', 0, 3);
-  achievement.incrementMapAchievement('monsters', 'zombie', 4);
-
-  const money = achievement.getAchievement('money');
-  const number = achievement.getMapAchievement('numbers', 0);
-  const monster = achievement.getMapAchievement('monsters', 'zombie');
+  achievement.checkAchievements();
+  const alwaysTrue = achievement.hasAchievement('always-true');
+  const alwaysFalse = achievement.hasAchievement('always-false');
+  const manual = achievement.hasAchievement('manual');
 
   // Assert
-  expect(money).toBe(2);
-  expect(number).toBe(3);
-  expect(monster).toBe(4);
+  expect(alwaysTrue).toBe(true);
+  expect(alwaysFalse).toBe(false);
+  expect(manual).toBe(false);
 });
 
-it('increments with a default of 1', () => {
+it('can earn manual achievements', () => {
   // Act
-  achievement.incrementAchievement('money');
-  achievement.incrementMapAchievement('numbers', 0);
-  achievement.incrementMapAchievement('monsters', 'zombie');
-
-  const money = achievement.getAchievement('money');
-  const number = achievement.getMapAchievement('numbers', 0);
-  const monster = achievement.getMapAchievement('monsters', 'zombie');
+  achievement.earnAchievement('manual');
+  const manual = achievement.hasAchievement('manual');
 
   // Assert
-  expect(money).toBe(1);
-  expect(number).toBe(1);
-  expect(monster).toBe(1);
+  expect(manual).toBe(true);
 });
 
-it('returns map objects', () => {
+it('emits an event when gaining achievements', () => {
   // Arrange
-  achievement.incrementMapAchievement('numbers', 'first', 2);
-  achievement.incrementMapAchievement('numbers', 'second', 3);
+  expect.assertions(1);
+
+  const unsub = achievement.onAchievementEarn.sub((a) => {
+    expect(a.id).toBe('manual');
+  });
 
   // Act
-  const numbers = achievement.getMapAchievementObject('numbers');
+  achievement.earnAchievement('manual');
 
-  // Assert
-  expect(numbers).toEqual({
-    first: 2,
-    second: 3,
+  // After
+  unsub();
+});
+
+it('cannot earn checked achievements twice', () => {
+  expect.assertions(1);
+
+  // Arrange
+  const unsub = achievement.onAchievementEarn.sub((a) => {
+    expect(a.id).toBe('always-true');
   });
+
+  // Act
+  achievement.checkAchievements();
+  achievement.checkAchievements();
+
+  // After
+  unsub();
+});
+
+it('cannot earn manual achievements twice', () => {
+  expect.assertions(1);
+
+  // Arrange
+  const unsub = achievement.onAchievementEarn.sub((a) => {
+    expect(a.id).toBe('manual');
+  });
+
+  // Act
+  achievement.earnAchievement('manual');
+  achievement.earnAchievement('manual');
+
+  // After
+  unsub();
 });

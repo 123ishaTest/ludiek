@@ -1,5 +1,6 @@
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { BaseConditionShape } from '@ludiek/engine/LudiekCondition';
+import { EngineNotInjectedError } from '@ludiek/engine/LudiekError';
 
 /**
  * Extend to create your own custom plugin
@@ -13,13 +14,15 @@ export abstract class LudiekPlugin {
     this._engine = engine;
   }
 
+  public abstract loadContent(content: { id: string }[]): void;
+
   /**
    * @internal
    * @see LudiekEngine.evaluate
    */
   protected evaluate(condition: BaseConditionShape | BaseConditionShape[]): boolean {
-    if (Array.isArray(condition)) {
-      return condition.every((c) => this._engine.evaluate(c));
+    if (!this._engine) {
+      throw new EngineNotInjectedError(`There is no engine injected into plugin '${this.name}'`);
     }
     return this._engine.evaluate(condition);
   }

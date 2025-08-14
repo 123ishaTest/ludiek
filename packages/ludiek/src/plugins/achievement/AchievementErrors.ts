@@ -5,4 +5,4 @@ export class AchievementPluginError extends PluginError {}
 /**
  * Thrown when an unknown achievement is accessed.
  */
-export class UnknownStatisticError extends AchievementPluginError {}
+export class UnknownAchievementError extends AchievementPluginError {}

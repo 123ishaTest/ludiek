@@ -1,12 +1,16 @@
 <script lang="ts">
-  import { CurrencyPlugin, StatisticPlugin } from '@123ishatest/ludiek';
+  import { CurrencyPlugin, StatisticPlugin, type StatisticDefinition } from '@123ishatest/ludiek';
 
-  const currencies = [{ id: 'money' }, { id: 'gems' }] as const;
-  const currency = new CurrencyPlugin(currencies);
-  const statistic = new StatisticPlugin([
+  const currency = new CurrencyPlugin();
+  const currencies = [{ id: 'money' }, { id: 'gems' }];
+  currency.loadContent(currencies);
+
+  const statistic = new StatisticPlugin();
+  const statistics: StatisticDefinition[] = [
     { id: 'currency', type: 'map' },
     { id: 'total', type: 'scalar' },
-  ] as const);
+  ];
+  statistic.loadContent(statistics);
 
   // TODO(@Isha): Figure out reactivity!
   const reactive = $state(currency._balances);

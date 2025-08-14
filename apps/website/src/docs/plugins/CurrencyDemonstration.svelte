@@ -1,7 +1,8 @@
 <script lang="ts">
   import { CurrencyPlugin } from '@123ishatest/ludiek';
 
-  const currency = new CurrencyPlugin([{ id: 'money' }]);
+  const currency = new CurrencyPlugin();
+  currency.loadContent([{ id: 'money' }]);
 
   // TODO(@Isha): Figure out reactivity!
   const reactive = $state(currency._balances);

@@ -1,28 +1,32 @@
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
 import { BaseConditionShape } from '@ludiek/engine/LudiekCondition';
+import { UnknownAchievementError } from '@ludiek/plugins/achievement/AchievementErrors';
 
-export interface AchievementDetail<AchievementId> {
-  id: AchievementId;
-  condition: BaseConditionShape[];
+export interface AchievementDefinition {
+  id: string;
+  /**
+   * Optional condition to automatically unlock.
+   * If left empty it can only be unlocked manually
+   */
+  condition?: BaseConditionShape;
 }
 
-export class AchievementPlugin<AchievementId extends string> extends LudiekPlugin {
+export class AchievementPlugin extends LudiekPlugin {
   readonly name = 'achievement';
 
-  private _record: Record<AchievementId, boolean> = {} as Record<AchievementId, boolean>;
-  private readonly _achievements: Record<AchievementId, AchievementDetail<AchievementId>>;
+  private _record: Record<string, boolean> = {} as Record<string, boolean>;
+  private readonly _achievements: Record<string, AchievementDefinition> = {};
 
-  protected _onAchievementGain = new SimpleEventDispatcher<AchievementDetail<AchievementId>>();
+  protected _onAchievementEarn = new SimpleEventDispatcher<AchievementDefinition>();
 
-  constructor(achievements: AchievementDetail<AchievementId>[]) {
+  constructor() {
     super();
+  }
 
-    this._achievements = Object.fromEntries(achievements.map((a) => [a.id, a]) ?? []) as Record<
-      AchievementId,
-      AchievementDetail<AchievementId>
-    >;
+  public loadContent(achievements: AchievementDefinition[]): void {
     achievements.forEach((achievement) => {
+      this._achievements[achievement.id] = achievement;
       this._record[achievement.id] = false;
     });
   }
@@ -32,20 +36,23 @@ export class AchievementPlugin<AchievementId extends string> extends LudiekPlugi
    */
   public checkAchievements(): void {
     Object.keys(this._achievements).forEach((id) => {
-      this.tryUnlockAchievement(id as AchievementId);
+      this.tryEarnAchievement(id as string);
     });
   }
 
   /**
    * Unlock the achievement if the condition is met
    */
-  public tryUnlockAchievement(id: AchievementId): void {
-    console.log(id, this.hasAchievement(id))
+  public tryEarnAchievement(id: string): void {
+    this.validate(id);
+
     if (this.hasAchievement(id)) {
       return;
     }
 
-
+    if (this._achievements[id].condition == null) {
+      return;
+    }
 
     const isMet = this.evaluate(this._achievements[id].condition);
     if (!isMet) {
@@ -55,23 +62,54 @@ export class AchievementPlugin<AchievementId extends string> extends LudiekPlugi
     this.earnAchievement(id);
   }
 
-  private earnAchievement(id: AchievementId): void {
+  /**
+   * Earns the achievement, this bypasses any potential requirements
+   * @param id
+   */
+  public earnAchievement(id: string): void {
+    this.validate(id);
+
+    if (this.hasAchievement(id)) {
+      return;
+    }
+
     this._record[id] = true;
-    this._onAchievementGain.dispatch(this._achievements[id]);
+    this._onAchievementEarn.dispatch(this._achievements[id]);
   }
 
   /**
-   * Return whether we have the achievement
+   * Return whether we have earned the achievement
    * @param id
    */
-  public hasAchievement(id: AchievementId): boolean {
+  public hasAchievement(id: string): boolean {
+    this.validate(id);
+
     return this._record[id];
+  }
+
+  /**
+   * Throws an error if the id does not exist
+   * @param id
+   * @private
+   */
+  private validate(id: string): void {
+    if (!this.supportsAchievement(id)) {
+      throw new UnknownAchievementError(`Unknown achievement with id '${id}'`);
+    }
+  }
+
+  /**
+   * Whether the plugin supports this type of achievement
+   * @param id
+   */
+  public supportsAchievement(id: string): boolean {
+    return this._achievements[id] != undefined;
   }
 
   /**
    * Emitted when an achievement is gained
    */
-  public get onAchievementGain(): ISimpleEvent<AchievementDetail<AchievementId>> {
-    return this._onAchievementGain.asEvent();
+  public get onAchievementEarn(): ISimpleEvent<AchievementDefinition> {
+    return this._onAchievementEarn.asEvent();
   }
 }

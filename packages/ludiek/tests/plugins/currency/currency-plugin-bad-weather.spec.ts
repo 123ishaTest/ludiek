@@ -2,19 +2,17 @@ import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
 import { InvalidCurrencyError, NegativeAmountError } from '@ludiek/plugins/currency/CurrencyErrors';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-let currency = new CurrencyPlugin([{ id: 'money' }, { id: 'gems' }]);
+const currency = new CurrencyPlugin();
 beforeEach(() => {
-  currency = new CurrencyPlugin([{ id: 'money' }, { id: 'gems' }]);
+  currency.loadContent([{ id: 'money' }, { id: 'gems' }]);
 });
 
 describe('Bad flow', () => {
   it('throws an error when accessing an invalid currency ', () => {
-    // @ts-expect-error 'unknown' is not a valid CurrencyId
     expect(() => currency.getBalance('unknown')).toThrow(InvalidCurrencyError);
   });
 
   it('prevents gaining unknown currencies', () => {
-    // @ts-expect-error 'unknown' is not a valid currencyId
     expect(() => currency.gainCurrency({ id: 'unknown', amount: 4 })).toThrow(InvalidCurrencyError);
   });
 

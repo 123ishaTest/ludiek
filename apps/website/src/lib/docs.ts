@@ -18,6 +18,7 @@ export const docsLayout: DocsLayout = {
       pages: [
         { title: 'Currency', slug: 'plugins/currency' },
         { title: 'Statistic', slug: 'plugins/statistic' },
+        { title: 'Achievement', slug: 'plugins/achievement' },
       ],
     },
   ],
