@@ -1,49 +1,106 @@
-import { expect, it } from 'vitest';
+import { beforeEach, expect, it } from 'vitest';
 import { CurrencyPlugin, LudiekEngine, LudiekFeature, LudiekGame } from '@ludiek/index';
+import { LudiekSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 
-it('allows a consumer to create a basic game', () => {
-  // Arrange
-  const TICKS = 1000;
+class DummyFeature extends LudiekFeature<never> {
+  name: string = 'dummy';
 
+  protected _state = {
+    xp: 0,
+  };
+
+  private _currency: CurrencyPlugin;
+
+  constructor(currency: CurrencyPlugin) {
+    super();
+    this._currency = currency;
+  }
+
+  update() {
+    this._state.xp++;
+    this._currency.gainCurrency({ id: 'money', amount: 1 });
+  }
+
+  public getXp(): number {
+    return this._state.xp;
+  }
+}
+
+const createGame = () => {
   const currency = new CurrencyPlugin();
-  currency.loadContent([{ id: 'money' }]);
 
   const engine = new LudiekEngine({
     plugins: [currency],
   });
-  type EnginePlugins = typeof engine.plugins;
+  currency.loadContent([{ id: 'money' }]);
 
-  class DummyFeature extends LudiekFeature<EnginePlugins> {
-    name: string = 'dummy';
+  return new LudiekGame(
+    engine,
+    {
+      dummy: new DummyFeature(currency),
+    },
+    {
+      saveKey: 'dummy-game',
+    },
+  );
+};
 
-    private _currency: CurrencyPlugin;
+let game = createGame();
 
-    constructor(currency: CurrencyPlugin) {
-      super();
-      this._currency = currency;
-    }
+beforeEach(() => {
+  game = createGame();
+});
 
-    update() {
-      this._currency.gainCurrency({ id: 'money', amount: 1 });
-    }
-  }
-
-  const game = new LudiekGame(engine, {
-    dummy: new DummyFeature(currency),
-  });
+it('allows a consumer to create a basic game', () => {
+  // Arrange
+  const TICKS = 1000;
 
   // Act
   for (let i = 0; i < TICKS; i++) {
     game.tick(1);
   }
 
+  // Assert
   expect(game.engine.plugins.currency.getBalance('money')).toBe(TICKS);
+});
+
+it('saves features and plugins', () => {
+  // Arrange
+  const TICKS = 1000;
+
+  // Act
+  for (let i = 0; i < TICKS; i++) {
+    game.tick(1);
+  }
+  const save = game.save();
+
+  // Assert
+  expect(save).toStrictEqual({
+    engine: { currency: { balances: { money: 1000 } } },
+    features: { dummy: { xp: 1000 } },
+  });
+});
+
+it('loads features and plugins', () => {
+  // Arrange
+  const save: LudiekSaveData = {
+    engine: { currency: { balances: { money: 300 } } },
+    features: { dummy: { xp: 400 } },
+  };
+
+  // Act
+  game.load(save);
+  const money = game.engine.plugins.currency.getBalance('money');
+  const xp = game.features.dummy.getXp();
+
+  // Assert
+  expect(money).toBe(300);
+  expect(xp).toBe(400);
 });
 
 it('emits an event on tick', async () => {
   // Arrange
   expect.assertions(2);
-  const game = new LudiekGame(new LudiekEngine({}), {});
 
   // Assert
   game.onTick.sub(() => {

@@ -2,10 +2,12 @@ import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { BaseConditionShape } from '@ludiek/engine/LudiekCondition';
 import { EngineNotInjectedError } from '@ludiek/engine/LudiekError';
 
+import { LudiekSavable } from '@ludiek/engine/peristence/LudiekSavable';
+
 /**
  * Extend to create your own custom plugin
  */
-export abstract class LudiekPlugin {
+export abstract class LudiekPlugin implements LudiekSavable {
   abstract readonly name: string;
   protected abstract _state: object;
 
@@ -28,12 +30,11 @@ export abstract class LudiekPlugin {
     return this._engine.evaluate(condition);
   }
 
-  // TODO(@Isha): Add persistence
   public save(): object {
     return this._state;
   }
 
   public load(data: object): void {
-    this._state = data;
+    Object.assign(this._state, data);
   }
 }

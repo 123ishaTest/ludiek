@@ -1,0 +1,30 @@
+---
+title: Persistence
+---
+
+<script>
+  import LudiekAlert from '$lib/components/atoms/LudiekAlert.svelte';
+</script>
+
+All games require the saving and loading of player data. <span class="text-primary">Ludiek</span> comes with built-in
+support for persistence so you don't have to worry about it. How does it work?
+
+To answer that, we need to talk about the concept of `state`.
+We define state as anything that concerns the players progress in the game.
+The amount of times a player has bought an upgrade is state,
+while the effect it has is not, as it is derived from the upgrade `content`.
+
+<LudiekAlert type="warning">
+    Treat state as data that you as a developer can not change between game updates.
+    It should never contain game content. 
+</LudiekAlert>
+
+## Plugins & Features
+
+Each plugin and feature stores its data in a private `state` object.
+
+- On save, every plugin and feature `state` is combined into an object and saved to local storage.
+- On load, this object is retrieved and all plugin and features `state` are replaced
+
+Your plugins and features are persisted by default!
+If you need custom functionality, you can override the `save()` and `load()` functions.

@@ -18,6 +18,11 @@
     game.features.farming.sow('/plant/sunflower');
     achievement.checkAchievements();
   };
+
+  $effect(() => {
+    game.loadFromStorage();
+    game.start();
+  });
 </script>
 
 <div class="p-4">
