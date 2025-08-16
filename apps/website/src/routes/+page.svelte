@@ -12,7 +12,7 @@
       <h1 class="text-primary text-8xl">Ludiek</h1>
       <p class="text-3xl">The game engine that focuses on the fun!</p>
 
-      <a href="{resolve('/docs')}">
+      <a href={resolve('/docs')}>
         <button class="btn btn-primary mt-4 w-24">Explore!</button>
       </a>
     </div>
