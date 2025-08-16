@@ -20,7 +20,10 @@
         <ul>
           {#each category.pages as page (page.title)}
             <li>
-              <a href="{resolve('/docs/[...slug]', {slug: page.slug})}" class={currentDocSlug === page.slug ? 'menu-active' : ''}>
+              <a
+                href={resolve('/docs/[...slug]', { slug: page.slug })}
+                class={currentDocSlug === page.slug ? 'menu-active' : ''}
+              >
                 {page.title}
               </a>
             </li>

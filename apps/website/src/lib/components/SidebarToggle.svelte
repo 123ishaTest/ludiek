@@ -8,6 +8,6 @@
 
 {#if showSidebar}
   <label for="sidebar-drawer" class="btn drawer-button lg:hidden">
-    <img class="w-6" src="{asset('/icons/hamburger.svg')}" alt="Menu" />
+    <img class="w-6" src={asset('/icons/hamburger.svg')} alt="Menu" />
   </label>
 {/if}
