@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { base } from '$app/paths';
+  import { resolve } from '$app/paths';
   import { page } from '$app/state';
   import type { DocsLayout } from '$lib/model/Docs';
 
@@ -20,7 +20,10 @@
         <ul>
           {#each category.pages as page (page.title)}
             <li>
-              <a href="{base}/docs/{page.slug}" class={currentDocSlug === page.slug ? 'menu-active' : ''}>
+              <a
+                href={resolve('/docs/[...slug]', { slug: page.slug })}
+                class={currentDocSlug === page.slug ? 'menu-active' : ''}
+              >
                 {page.title}
               </a>
             </li>
