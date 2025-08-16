@@ -12,7 +12,8 @@
     "@ludiek/*": "./src/*"
   },
   "scripts": {
-    "build": "vite build",
+    "build": "tsc --noEmit && vite build; npm run build:clean",
+    "build:clean": "rm -f ./tsconfig.tsbuildinfo",
     "dev": "vite build --watch",
     "lint": "prettier --check . && eslint .",
     "test": "vitest",

@@ -5,6 +5,7 @@ import type { PlantDetail } from '$lib/demo/model/PlantDetail';
 
 export class Farming extends LudiekFeature<EnginePlugins> {
   public readonly name: string = 'farming';
+  protected _state = {};
 
   public readonly plants: PlantDetail[];
 
