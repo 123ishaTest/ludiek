@@ -7,7 +7,8 @@ export default defineConfig({
     tsconfigPaths(),
     dts({
       tsconfigPath: './tsconfig.build.json',
-    })],
+    }),
+  ],
   build: {
     lib: {
       entry: 'src/index.ts',
