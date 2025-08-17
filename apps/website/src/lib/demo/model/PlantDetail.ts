@@ -3,4 +3,5 @@ export interface PlantDetail {
   name: string;
   growthTime: number;
   moneyReward: number;
+  stages: string[];
 }

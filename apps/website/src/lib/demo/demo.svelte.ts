@@ -14,7 +14,7 @@ import {
   type ExtractCondition,
   StatisticPlugin,
 } from '@123ishatest/ludiek';
-import { Farming } from '$lib/demo/features/Farming';
+import { Farming } from '$lib/demo/features/Farming.svelte';
 import { achievements, currencies, plants, statistics } from '$lib/demo/content';
 
 // Define plugins with reactive state
@@ -53,6 +53,7 @@ export const game = new LudiekGame(engine, {
 });
 
 engine.plugins.currency.loadContent(currencies);
+engine.plugins.currency.loadContent(plants);
 engine.plugins.statistic.loadContent(statistics);
 engine.plugins.achievement.loadContent(achievements);
 
