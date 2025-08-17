@@ -1,5 +1,6 @@
 <script lang="ts">
   import { achievement, currency, game, statistic } from '$lib/demo/demo.svelte';
+  import FarmDisplay from '$lib/components/farming/FarmDisplay.svelte';
   import { onMount } from 'svelte';
 
   let money = $derived(currency.getBalance('/currency/money'));
@@ -47,6 +48,7 @@
   <p>You have {gems} gems</p>
   <p>You have planted {planted} sunflowers</p>
 
+  <FarmDisplay farming={game.features.farming} />
   <button class="btn btn-primary" onclick={() => sow()}>Sow</button>
   <button class="btn btn-secondary" onclick={() => trade()}>Trade 100 money for 1 gem</button>
 </div>
