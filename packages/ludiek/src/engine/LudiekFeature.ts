@@ -1,5 +1,6 @@
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekSavable } from '@ludiek/engine/peristence/LudiekSavable';
+import { merge } from 'es-toolkit';
 
 export abstract class LudiekFeature<Plugins extends Record<string, LudiekPlugin>> implements LudiekSavable {
   abstract readonly name: string;
@@ -18,11 +19,15 @@ export abstract class LudiekFeature<Plugins extends Record<string, LudiekPlugin>
    */
   update?(delta: number): void;
 
+  public get state(): object {
+    return this._state;
+  }
+
   public save(): object {
     return this._state;
   }
 
   public load(data: object): void {
-    Object.assign(this._state, data);
+    merge(this._state, data);
   }
 }

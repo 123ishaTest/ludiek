@@ -1,5 +1,6 @@
 <script lang="ts">
   import { achievement, currency, game, statistic } from '$lib/demo/demo.svelte';
+  import { onMount } from 'svelte';
 
   let money = $derived(currency.getBalance('/currency/money'));
   let planted = $derived(statistic.getMapStatistic('/statistic/plants-planted', '/plant/sunflower'));
@@ -19,7 +20,7 @@
     achievement.checkAchievements();
   };
 
-  $effect(() => {
+  onMount(() => {
     game.loadFromStorage();
     game.start();
   });

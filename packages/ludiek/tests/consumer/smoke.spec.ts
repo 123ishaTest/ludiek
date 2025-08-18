@@ -41,6 +41,8 @@ const createGame = () => {
     },
     {
       saveKey: 'dummy-game',
+      saveInterval: 30,
+      tickDuration: 1,
     },
   );
 };

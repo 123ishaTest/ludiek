@@ -3,6 +3,7 @@ import { BaseConditionShape } from '@ludiek/engine/LudiekCondition';
 import { EngineNotInjectedError } from '@ludiek/engine/LudiekError';
 
 import { LudiekSavable } from '@ludiek/engine/peristence/LudiekSavable';
+import { merge } from 'es-toolkit';
 
 /**
  * Extend to create your own custom plugin
@@ -30,11 +31,17 @@ export abstract class LudiekPlugin implements LudiekSavable {
     return this._engine.evaluate(condition);
   }
 
+  public get state(): object {
+    return this._state;
+  }
+
   public save(): object {
     return this._state;
   }
 
   public load(data: object): void {
-    Object.assign(this._state, data);
+    console.log('loading', this._state);
+    merge(this._state, data);
+    console.log(this._state);
   }
 }
