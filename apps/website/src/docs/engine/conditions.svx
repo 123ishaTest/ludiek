@@ -9,14 +9,16 @@ In <span class="text-primary">Ludiek</span>, Conditions are an abstract `Engine`
 You provide a data shape and logic to `evaluate` whether this condition is true or false.
 At runtime, the Engine queries the registered evaluators and invokes their evaluate method.
 
-Sounds complicated? It's really not! Let's take the `Currency Plugin` as an example.
+Sounds complicated? It's really not!
+Let's take a look at the `Currency Plugin`.
 It provides the `HasCurrencyCondition`.
+
 First we define the shape of what an instance of our condition should look like:
 
 ```ts
 interface HasCurrencyConditionShape extends BaseConditionShape {
   type: 'currency';
-  id: CurrencyId;
+  id: string;
   amount: number;
 }
 ```
@@ -24,7 +26,7 @@ interface HasCurrencyConditionShape extends BaseConditionShape {
 And we extend a `LudiekCondition` to check whether it is true:
 
 ```ts
-export class HasCurrencyCondition<CurrencyId extends string> implements LudiekCondition<HasCurrencyConditionShape<CurrencyId>> {
+export class HasCurrencyCondition implements LudiekCondition<HasCurrencyConditionShape> {
   readonly type: string = 'currency';
 
   constructor(private readonly _currency: CurrencyPlugin<CurrencyId>) {
@@ -46,4 +48,4 @@ game.engine.evaluate({
 })
 ```
 
-Now any piece of content in your game can use this condition as a requirement!
+Any game content can now use this condition as a requirement!

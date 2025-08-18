@@ -1,0 +1,66 @@
+---
+title: Transactions
+---
+
+`Transactions` are a way to convert `Input` resources into `Output` resources.
+Resources can be anything, for example:
+- Selling an item: `item` -> `currency`
+- Buying an upgrade: `currency` -> `upgradeLevel`
+- Crafting an item: `item` -> `item` + `exp`
+
+In <span class="text-primary">Ludiek</span>, Transactions, Inputs and Outputs are an abstract `Engine` concept.
+You provide a data shape and logic to `process` the inputs and outputs.
+At runtime, the Engine queries the registered processors and invokes their lose and gain method.
+
+Sounds complicated? It's really not!
+Let's take a look at the `Currency Plugin`.
+It provides the `CurrencyInput`.
+
+First we define the shape of what an instance of our input should look like:
+
+```ts
+interface CurrencyInputShape extends BaseInputShape {
+  type: 'currency';
+  id: string;
+  amount: number;
+}
+```
+
+And we extend a `LudiekInput` for the losing currency logic:
+
+```ts
+export class CurrencyInput implements LudiekInput<CurrencyInputShape> {
+  readonly type: string = 'currency';
+
+  constructor(private readonly _currency: CurrencyPlugin) {}
+
+  canLose(input: CurrencyInputShape): boolean {
+    return this._currency.hasCurrency(input);
+  }
+
+  lose(input: CurrencyInputShape): void {
+    return this._currency.loseCurrency(input);
+  }
+}
+```
+
+Outputs work similar, instead implementing `canGain()` and `gain()`.
+
+And we can use it fully type-safe!
+
+```ts
+game.engine.handleTransaction({
+  input: {
+    type: 'currency',
+    id: '/currency/money',
+    amount: 100,
+  },
+  output: {
+    type: 'item',
+    id: '/item/carrot',
+    amount: 1,
+  },
+});
+```
+
+Any game content can now use these `Input` and `Output` in transactions!

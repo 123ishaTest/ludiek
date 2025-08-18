@@ -12,9 +12,9 @@ export abstract class LudiekPlugin implements LudiekSavable {
   abstract readonly name: string;
   protected abstract _state: object;
 
-  private _engine!: LudiekEngine<never, never>;
+  private _engine!: LudiekEngine<never, never, never, never>;
 
-  inject(engine: LudiekEngine<never, never>) {
+  inject(engine: LudiekEngine<never, never, never, never>) {
     this._engine = engine;
   }
 
@@ -25,10 +25,27 @@ export abstract class LudiekPlugin implements LudiekSavable {
    * @see LudiekEngine.evaluate
    */
   protected evaluate(condition: BaseConditionShape | BaseConditionShape[]): boolean {
+    this.ensureEngine();
+    return this._engine.evaluate(condition);
+  }
+
+  // /**
+  //  * @internal
+  //  * @see LudiekEngine.loseInput
+  //  */
+  // protected loseInput(condition: BaseConditionShape | BaseConditionShape[]): boolean {
+  //   this.ensureEngine()
+  //   return this._engine.loseInput(condition);
+  // }
+
+  /**
+   * Throws an error if the engine is not injected
+   * @private
+   */
+  private ensureEngine(): void {
     if (!this._engine) {
       throw new EngineNotInjectedError(`There is no engine injected into plugin '${this.name}'`);
     }
-    return this._engine.evaluate(condition);
   }
 
   public get state(): object {
@@ -40,8 +57,6 @@ export abstract class LudiekPlugin implements LudiekSavable {
   }
 
   public load(data: object): void {
-    console.log('loading', this._state);
     merge(this._state, data);
-    console.log(this._state);
   }
 }

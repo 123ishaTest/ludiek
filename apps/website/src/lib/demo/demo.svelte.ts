@@ -5,6 +5,8 @@ import {
   createAchievementState,
   createCurrencyState,
   createStatisticState,
+  CurrencyInput,
+  CurrencyOutput,
   CurrencyPlugin,
   HasCurrencyCondition,
   HasStatisticCondition,
@@ -31,6 +33,8 @@ const config = {
     new HasCurrencyCondition(currencyPlugin),
     new HasStatisticCondition(statisticPlugin),
   ],
+  inputs: [new CurrencyInput(currencyPlugin)],
+  outputs: [new CurrencyOutput(currencyPlugin)],
 };
 
 const engine = new LudiekEngine(config);

@@ -2,20 +2,24 @@ import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 import { PluginMap } from '@ludiek/engine/LudiekConfiguration';
-import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/LudiekCondition';
+import { LudiekCondition } from '@ludiek/engine/LudiekCondition';
 import { ISignal, SignalDispatcher } from 'strongly-typed-events';
 import { LudiekFeaturesSaveData, LudiekSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 import { LudiekLocalStorage } from '@ludiek/engine/peristence/LudiekLocalStorage';
 import { LudiekJsonSaveEncoder } from '@ludiek/engine/peristence/LudiekJsonSaveEncoder';
 import { LudiekGameConfig } from '@ludiek/engine/LudiekGameConfig';
+import { LudiekInput } from '@ludiek/engine/transactions/LudiekInput';
+import { LudiekOutput } from '@ludiek/engine/transactions/LudiekOutput';
 
 export class LudiekGame<
   Plugins extends LudiekPlugin[],
-  Conditions extends LudiekCondition<BaseConditionShape>[],
+  Conditions extends LudiekCondition[],
+  Inputs extends LudiekInput[],
+  Outputs extends LudiekOutput[],
   Features extends Record<string, LudiekFeature<PluginMap<Plugins>>>,
 > {
   public features: Features;
-  public engine: LudiekEngine<Plugins, Conditions>;
+  public engine: LudiekEngine<Plugins, Conditions, Inputs, Outputs>;
   public config: LudiekGameConfig;
   protected saveEncoder = new LudiekJsonSaveEncoder();
   protected _tickInterval: NodeJS.Timeout | null = null;
@@ -24,7 +28,11 @@ export class LudiekGame<
 
   protected _nextSave: number;
 
-  constructor(engine: LudiekEngine<Plugins, Conditions>, features: Features, config: LudiekGameConfig) {
+  constructor(
+    engine: LudiekEngine<Plugins, Conditions, Inputs, Outputs>,
+    features: Features,
+    config: LudiekGameConfig,
+  ) {
     this.engine = engine;
     this.features = features;
     this.config = config;
