@@ -7,10 +7,7 @@ import { ISignal, SignalDispatcher } from 'strongly-typed-events';
 import { LudiekFeaturesSaveData, LudiekSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 import { LudiekLocalStorage } from '@ludiek/engine/peristence/LudiekLocalStorage';
 import { LudiekJsonSaveEncoder } from '@ludiek/engine/peristence/LudiekJsonSaveEncoder';
-
-export interface LudiekGameConfig {
-  saveKey: string;
-}
+import { LudiekGameConfig } from '@ludiek/engine/LudiekGameConfig';
 
 export class LudiekGame<
   Plugins extends LudiekPlugin[],
@@ -25,13 +22,14 @@ export class LudiekGame<
 
   private _onTick = new SignalDispatcher();
 
-  protected readonly SAVE_INTERVAL: number = 3;
-  protected _nextSave: number = this.SAVE_INTERVAL;
+  protected _nextSave: number;
 
   constructor(engine: LudiekEngine<Plugins, Conditions>, features: Features, config: LudiekGameConfig) {
     this.engine = engine;
     this.features = features;
     this.config = config;
+
+    this._nextSave = this.config.saveInterval;
 
     this.featureList.forEach((feature) => {
       feature.init(this.engine.plugins);
@@ -42,8 +40,8 @@ export class LudiekGame<
     // TODO(@Isha): Improve game loop
     this.stop();
     this._tickInterval = setInterval(() => {
-      this.tick(1);
-    }, 1000);
+      this.tick(this.config.tickDuration);
+    }, this.config.tickDuration * 1000);
   }
 
   // TODO(@Isha): Improve state management
@@ -61,7 +59,7 @@ export class LudiekGame<
       const data = this.save();
       LudiekLocalStorage.store(this.config.saveKey, data, this.saveEncoder);
 
-      this._nextSave = this.SAVE_INTERVAL;
+      this._nextSave = this.config.saveInterval;
     }
     this._onTick.dispatch();
   }
