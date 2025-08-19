@@ -4,6 +4,9 @@ import { EngineNotInjectedError } from '@ludiek/engine/LudiekError';
 
 import { LudiekSavable } from '@ludiek/engine/peristence/LudiekSavable';
 import { merge } from 'es-toolkit';
+import { LudiekTransaction } from '@ludiek/engine/transactions/LudiekTransaction';
+import { BaseInputShape } from '@ludiek/engine/transactions/LudiekInput';
+import { BaseOutputShape } from '@ludiek/engine/transactions/LudiekOutput';
 
 /**
  * Extend to create your own custom plugin
@@ -29,14 +32,46 @@ export abstract class LudiekPlugin implements LudiekSavable {
     return this._engine.evaluate(condition);
   }
 
-  // /**
-  //  * @internal
-  //  * @see LudiekEngine.loseInput
-  //  */
-  // protected loseInput(condition: BaseConditionShape | BaseConditionShape[]): boolean {
-  //   this.ensureEngine()
-  //   return this._engine.loseInput(condition);
-  // }
+  /**
+   * @internal
+   * @see LudiekEngine.handleTransaction
+   */
+  protected handleTransaction(transaction: LudiekTransaction<never, never, never>): boolean {
+    this.ensureEngine();
+    return this._engine.handleTransaction(transaction);
+  }
+
+  /**
+   * @internal
+   * @see LudiekEngine.canLoseInput
+   */
+  protected canLoseInput(input: BaseInputShape | BaseInputShape[]): boolean {
+    return this._engine.canLoseInput(input);
+  }
+
+  /**
+   * @internal
+   * @see LudiekEngine.loseInput
+   */
+  protected loseInput(input: BaseInputShape | BaseInputShape[]): void {
+    this._engine.loseInput(input);
+  }
+
+  /**
+   * @internal
+   * @see LudiekEngine.canGainOutput
+   */
+  protected canGainOutput(output: BaseOutputShape | BaseOutputShape[]): boolean {
+    return this._engine.canGainOutput(output);
+  }
+
+  /**
+   * @internal
+   * @see LudiekEngine.gainOutput
+   */
+  protected gainOutput(output: BaseOutputShape | BaseOutputShape[]) {
+    this._engine.gainOutput(output);
+  }
 
   /**
    * Throws an error if the engine is not injected
