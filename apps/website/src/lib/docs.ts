@@ -13,6 +13,7 @@ export const docsLayout: DocsLayout = {
       title: 'Engine',
       pages: [
         { title: 'Conditions', slug: 'engine/conditions' },
+        { title: 'Transactions', slug: 'engine/transactions' },
         { title: 'Persistence', slug: 'engine/persistence' },
       ],
     },

@@ -3,6 +3,7 @@
   import { onMount } from 'svelte';
 
   let money = $derived(currency.getBalance('/currency/money'));
+  let gems = $derived(currency.getBalance('/currency/gems'));
   let planted = $derived(statistic.getMapStatistic('/statistic/plants-planted', '/plant/sunflower'));
 
   currency.onCurrencyGain.sub((c) => {
@@ -20,6 +21,21 @@
     achievement.checkAchievements();
   };
 
+  const trade = () => {
+    game.engine.handleTransaction({
+      input: {
+        type: 'currency',
+        id: '/currency/money',
+        amount: 100,
+      },
+      output: {
+        type: 'currency',
+        id: '/currency/gems',
+        amount: 1,
+      },
+    });
+  };
+
   onMount(() => {
     game.loadFromStorage();
     game.start();
@@ -28,7 +44,9 @@
 
 <div class="p-4">
   <p>You have {money} money</p>
+  <p>You have {gems} gems</p>
   <p>You have planted {planted} sunflowers</p>
 
   <button class="btn btn-primary" onclick={() => sow()}>Sow</button>
+  <button class="btn btn-secondary" onclick={() => trade()}>Trade 100 money for 1 gem</button>
 </div>

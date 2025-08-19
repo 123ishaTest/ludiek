@@ -14,6 +14,16 @@ export abstract class PluginError extends LudiekError {}
 export class EngineNotInjectedError extends PluginError {}
 
 /**
- * Thrown when a condition is not found
+ * Thrown when a condition evaluator is not found
  */
 export class ConditionNotFoundError extends LudiekError {}
+
+/**
+ * Thrown when an input processor is not found
+ */
+export class InputNotFoundError extends LudiekError {}
+
+/**
+ * Thrown when an output processor is not found
+ */
+export class OutputNotFoundError extends LudiekError {}
