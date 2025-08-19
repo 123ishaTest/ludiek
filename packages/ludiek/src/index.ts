@@ -29,8 +29,11 @@ export {
   createAchievementState,
 } from '@ludiek/plugins/achievement/AchievementPluginState';
 
-// Currency.Conditions
+// Achievement.Conditions
 export { HasAchievementCondition } from '@ludiek/plugins/achievement/evaluators/HasAchievementCondition';
+
+// Achievement.Transactions
+export { AchievementOutput } from '@ludiek/plugins/achievement/transactions/AchievementOutput';
 
 // Currency
 export { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
