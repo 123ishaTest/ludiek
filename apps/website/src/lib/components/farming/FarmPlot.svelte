@@ -17,12 +17,20 @@
 </script>
 
 <div class="border-primary h-24 w-24 border">
+
   {#if plant}
     <div class="flex h-full flex-col items-center justify-between p-3">
+
       <img class="pixelated h-12 w-12" src={plantIcon} alt={plant.name} />
+
       {#if !farming.isReady(index)}
         <progress class="progress progress-info" value={plot.progress} max={plant.growthTime}></progress>
       {/if}
     </div>
   {/if}
+
 </div>
+
+<style>
+
+</style>
