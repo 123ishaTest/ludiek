@@ -1,4 +1,4 @@
-import type { PlantId } from '$lib/demo/demo.svelte';
+import type { PlantId } from '$lib/demo/content';
 
 export interface FarmPlotState {
   plant: PlantId | null;

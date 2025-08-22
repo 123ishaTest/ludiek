@@ -42,7 +42,6 @@ const engine = new LudiekEngine(config);
 // Extract some neat utility types
 export type EnginePlugins = typeof engine.plugins;
 export type Condition = ConditionShape<typeof config.conditions>;
-export type PlantId = (typeof plants)[number]['id'];
 
 // Create your game
 const farmingFeature = new Farming(plants);
@@ -64,5 +63,9 @@ engine.plugins.currency.loadContent(plants);
 engine.plugins.statistic.loadContent(statistics);
 engine.plugins.achievement.loadContent(achievements);
 
+engine.plugins.currency.gainCurrency({
+  id: '/currency/money',
+  amount: 10,
+})
 export const { currency, statistic, achievement } = engine.plugins;
 export const { farming } = game.features;

@@ -1,13 +1,13 @@
 import { LudiekFeature } from '@123ishatest/ludiek';
-import type { EnginePlugins, PlantId } from '$lib/demo/demo.svelte';
+import type { EnginePlugins } from '$lib/demo/demo.svelte';
 
 import type { PlantDetail } from '$lib/demo/model/PlantDetail';
 import { emptyPlot, type FarmingState, type FarmPlotState } from '$lib/demo/features/FarmingState';
-import { getPlant } from '$lib/demo/content';
+import { getPlant, type PlantId } from '$lib/demo/content';
 
 export class Farming extends LudiekFeature<EnginePlugins> {
   public readonly name: string = 'farming';
-  private readonly FARM_PLOTS = 25;
+  public readonly FARM_PLOTS = 25;
   protected _state: FarmingState = $state({
     plots: [],
   });
@@ -38,6 +38,15 @@ export class Farming extends LudiekFeature<EnginePlugins> {
 
   public sow(index: number, id: PlantId): void {
     if (!this.isEmpty(index)) {
+      return;
+    }
+    const plant = getPlant(id);
+    if (
+      !this._plugins.currency.payCurrency({
+        id: plant.id,
+        amount: 1,
+      })
+    ) {
       return;
     }
 
