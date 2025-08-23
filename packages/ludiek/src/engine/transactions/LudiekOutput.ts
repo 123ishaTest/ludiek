@@ -10,5 +10,5 @@ export interface LudiekOutput<Output extends BaseOutputShape = BaseOutputShape> 
   gain(output: Output): void;
 }
 
-export type OutputShape<Outputs extends LudiekOutput[]> =
+export type OutputShape<Outputs extends readonly LudiekOutput[]> =
   Outputs[number] extends LudiekOutput<infer Output> ? Output : never;

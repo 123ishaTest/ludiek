@@ -10,4 +10,4 @@ export interface LudiekInput<Input extends BaseInputShape = BaseInputShape> {
   lose(input: Input): void;
 }
 
-export type InputShape<Inputs extends LudiekInput[]> = Inputs[number] extends LudiekInput<infer Input> ? Input : never;
+export type InputShape<Inputs extends readonly LudiekInput[]> = Inputs[number] extends LudiekInput<infer Input> ? Input : never;

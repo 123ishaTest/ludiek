@@ -2,6 +2,7 @@
   import { achievement, currency, game, statistic } from '$lib/demo/demo.svelte';
   import FarmDisplay from '$lib/components/farming/FarmDisplay.svelte';
   import { onMount } from 'svelte';
+  import RequestTimeline from '$lib/ludiek/RequestTimeline.svelte';
 
   let money = $derived(currency.getBalance('/currency/money'));
   let compost = $derived(currency.getBalance('/currency/compost'));
@@ -33,9 +34,17 @@
     });
   };
 
+
   onMount(() => {
     game.loadFromStorage();
     game.start();
+
+
+game.resolve({
+  type: 'plant-all',
+  plant: '/plant/cabbage',
+})
+
   });
 </script>
 
@@ -46,4 +55,7 @@
 
   <button class="btn btn-secondary" onclick={() => trade()}>Trade 100 money for 1 compost</button>
   <FarmDisplay farming={game.features.farming} />
+
 </div>
+
+<RequestTimeline history={game.requestHistory}/>

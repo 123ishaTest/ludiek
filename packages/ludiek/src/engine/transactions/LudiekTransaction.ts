@@ -3,9 +3,9 @@ import { LudiekOutput, OutputShape } from '@ludiek/engine/transactions/LudiekOut
 import { ConditionShape, LudiekCondition } from '@ludiek/engine/LudiekCondition';
 
 export interface LudiekTransaction<
-  Inputs extends LudiekInput[],
-  Outputs extends LudiekOutput[],
-  Conditions extends LudiekCondition[],
+  Inputs extends readonly LudiekInput[],
+  Outputs extends readonly LudiekOutput[],
+  Conditions extends readonly LudiekCondition[],
 > {
   input?: InputShape<Inputs> | InputShape<Inputs>[];
   output?: OutputShape<Outputs> | OutputShape<Outputs>[];

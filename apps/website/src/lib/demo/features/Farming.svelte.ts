@@ -4,10 +4,18 @@ import type { EnginePlugins } from '$lib/demo/demo.svelte';
 import type { PlantDetail } from '$lib/demo/model/PlantDetail';
 import { emptyPlot, type FarmingState, type FarmPlotState } from '$lib/demo/features/FarmingState';
 import { getPlant, type PlantId } from '$lib/demo/content';
+import { HarvestAllController } from '$lib/demo/features/HarvestAllController';
+import { PlantAllController } from '$lib/demo/features/PlantAllController';
 
 export class Farming extends LudiekFeature<EnginePlugins> {
   public readonly name: string = 'farming';
   public readonly FARM_PLOTS = 25;
+
+  public readonly controllers = [
+    new PlantAllController(this),
+    new HarvestAllController(this),
+  ]
+
   protected _state: FarmingState = $state({
     plots: [],
   });
@@ -58,6 +66,7 @@ export class Farming extends LudiekFeature<EnginePlugins> {
   }
 
   public reap(index: number): void {
+    console.log(index)
     if (!this.isReady(index)) {
       return;
     }
@@ -117,5 +126,23 @@ export class Farming extends LudiekFeature<EnginePlugins> {
 
   public get plots(): FarmPlotState[] {
     return this._state.plots;
+  }
+
+  /**
+   * Harvest all plots
+   */
+  public harvestAll(): void {
+    for (let i = 0; i < this.FARM_PLOTS; i++) {
+      this.reap(i);
+    }
+  }
+
+  /**
+   * Plant all plots
+   */
+  plantAll(plant: PlantId) {
+    for (let i = 0; i < this.FARM_PLOTS; i++) {
+      this.sow(i, plant);
+    }
   }
 }

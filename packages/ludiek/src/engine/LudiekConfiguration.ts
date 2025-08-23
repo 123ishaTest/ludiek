@@ -4,10 +4,10 @@ import { LudiekInput } from '@ludiek/engine/transactions/LudiekInput';
 import { LudiekOutput } from '@ludiek/engine/transactions/LudiekOutput';
 
 export interface LudiekConfig<
-  Plugins extends LudiekPlugin[],
-  Conditions extends LudiekCondition[],
-  Inputs extends LudiekInput[],
-  Outputs extends LudiekOutput[],
+  Plugins extends readonly LudiekPlugin[],
+  Conditions extends readonly LudiekCondition[],
+  Inputs extends readonly LudiekInput[],
+  Outputs extends readonly LudiekOutput[],
 > {
   plugins?: Plugins;
   conditions?: Conditions;

@@ -8,5 +8,5 @@ export interface LudiekCondition<Condition extends BaseConditionShape = BaseCond
   evaluate(condition: Condition): boolean;
 }
 
-export type ConditionShape<Conditions extends LudiekCondition[]> =
+export type ConditionShape<Conditions extends readonly LudiekCondition[]> =
   Conditions[number] extends LudiekCondition<infer Condition> ? Condition : never;
