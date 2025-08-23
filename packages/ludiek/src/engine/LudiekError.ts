@@ -27,3 +27,9 @@ export class InputNotFoundError extends LudiekError {}
  * Thrown when an output processor is not found
  */
 export class OutputNotFoundError extends LudiekError {}
+
+/**
+ * Thrown when a controller is not found
+ */
+export class ControllerNotFoundError extends LudiekError {}
+

@@ -8,10 +8,10 @@ import { LudiekOutput, OutputShape } from '@ludiek/engine/transactions/LudiekOut
 import { LudiekTransaction } from '@ludiek/engine/transactions/LudiekTransaction';
 
 export class LudiekEngine<
-  Plugins extends LudiekPlugin[],
-  Conditions extends LudiekCondition[],
-  Inputs extends LudiekInput[],
-  Outputs extends LudiekOutput[],
+  Plugins extends readonly LudiekPlugin[],
+  Conditions extends readonly LudiekCondition[],
+  Inputs extends readonly LudiekInput[],
+  Outputs extends readonly LudiekOutput[],
 > {
   public plugins: PluginMap<Plugins>;
   private readonly _conditions: Record<string, LudiekCondition>;

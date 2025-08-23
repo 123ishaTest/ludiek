@@ -10,11 +10,11 @@ import {
   CurrencyPlugin,
   HasCurrencyCondition,
   HasStatisticCondition,
-  LudiekEngine,
+  LudiekEngine, LudiekFeature,
   LudiekGame,
   StatisticPlugin,
 } from '@123ishatest/ludiek';
-import { Farming } from '$lib/demo/features/Farming';
+import { Farming } from '$lib/demo/features/Farming.svelte';
 import { achievements, currencies, plants, statistics } from '$lib/demo/content';
 
 // Define plugins with reactive state
@@ -42,25 +42,40 @@ const engine = new LudiekEngine(config);
 // Extract some neat utility types
 export type EnginePlugins = typeof engine.plugins;
 export type Condition = ConditionShape<typeof config.conditions>;
-export type PlantId = (typeof plants)[number]['id'];
+
+class Dummy extends LudiekFeature<EnginePlugins> {
+  name = 'dummy'
+
+  _state = {}
+  controllers = [];
+}
 
 // Create your game
-const farming = new Farming(plants);
+const farmingFeature = new Farming(plants);
+const dummyFeature = new Dummy();
+export const game = new LudiekGame(engine, {
+  features: [
+    farmingFeature,
+    dummyFeature,
+  ],
+  saveKey: '@123ishatest/ludiek-demo',
+  tickDuration: 0.1,
+  saveInterval: 30,
+});
 
-export const game = new LudiekGame(
-  engine,
-  {
-    farming: farming,
-  },
-  {
-    saveKey: '@123ishatest/ludiek-demo',
-    tickDuration: 0.1,
-    saveInterval: 30,
-  },
-);
+console.log(game.features.farming);
+console.log(game.features.wrong);
 
 engine.plugins.currency.loadContent(currencies);
+engine.plugins.currency.loadContent(plants);
 engine.plugins.statistic.loadContent(statistics);
 engine.plugins.achievement.loadContent(achievements);
 
+engine.plugins.currency.gainCurrency({
+  id: '/currency/money',
+  amount: 10,
+});
+
+
 export const { currency, statistic, achievement } = engine.plugins;
+export const { farming } = game.features;

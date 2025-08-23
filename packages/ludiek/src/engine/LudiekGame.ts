@@ -1,7 +1,6 @@
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
-import { PluginMap } from '@ludiek/engine/LudiekConfiguration';
 import { LudiekCondition } from '@ludiek/engine/LudiekCondition';
 import { ISignal, SignalDispatcher } from 'strongly-typed-events';
 import { LudiekFeaturesSaveData, LudiekSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
@@ -10,17 +9,26 @@ import { LudiekJsonSaveEncoder } from '@ludiek/engine/peristence/LudiekJsonSaveE
 import { LudiekGameConfig } from '@ludiek/engine/LudiekGameConfig';
 import { LudiekInput } from '@ludiek/engine/transactions/LudiekInput';
 import { LudiekOutput } from '@ludiek/engine/transactions/LudiekOutput';
+import { LudiekController, RequestHistory, RequestShape } from '@ludiek/engine/LudiekRequest';
+import { ControllerNotFoundError } from '@ludiek/engine/LudiekError';
+import { PluginMap } from '@ludiek/engine/LudiekConfiguration';
+
+export type FeatureMap<Plugins extends readonly LudiekPlugin[], Features extends readonly LudiekFeature<PluginMap<Plugins>>[]> = {
+  [Feature in Features[number] as Feature['name']]: Extract<Features[number], { name: Feature['name'] }>;
+};
+
 
 export class LudiekGame<
-  Plugins extends LudiekPlugin[],
-  Conditions extends LudiekCondition[],
-  Inputs extends LudiekInput[],
-  Outputs extends LudiekOutput[],
-  Features extends Record<string, LudiekFeature<PluginMap<Plugins>>>,
+  Plugins extends readonly LudiekPlugin[],
+  Conditions extends readonly LudiekCondition[],
+  Inputs extends readonly LudiekInput[],
+  Outputs extends readonly LudiekOutput[],
+  Features extends readonly LudiekFeature<PluginMap<Plugins>>[],
+
 > {
-  public features: Features;
+  public features: FeatureMap<Plugins, Features>;
   public engine: LudiekEngine<Plugins, Conditions, Inputs, Outputs>;
-  public config: LudiekGameConfig;
+  public config: LudiekGameConfig<Plugins, Features>;
   protected saveEncoder = new LudiekJsonSaveEncoder();
   protected _tickInterval: NodeJS.Timeout | null = null;
 
@@ -28,19 +36,31 @@ export class LudiekGame<
 
   protected _nextSave: number;
 
+  private _requestHistory: RequestHistory;
+  private _controllers: Record<string, LudiekController> = {};
+
   constructor(
     engine: LudiekEngine<Plugins, Conditions, Inputs, Outputs>,
-    features: Features,
-    config: LudiekGameConfig,
+    config: LudiekGameConfig<Plugins, Features>,
   ) {
     this.engine = engine;
-    this.features = features;
+    this.features = Object.fromEntries(
+      config.features.map(f => [f.name, f])
+    ) as FeatureMap<Plugins, Features>;
+
+
+    this._requestHistory = new RequestHistory()
     this.config = config;
 
     this._nextSave = this.config.saveInterval;
 
+
     this.featureList.forEach((feature) => {
       feature.init(this.engine.plugins);
+
+      feature.controllers.forEach(c => {
+        this._controllers[c.type] = c;
+      })
     });
   }
 
@@ -70,6 +90,21 @@ export class LudiekGame<
       this._nextSave = this.config.saveInterval;
     }
     this._onTick.dispatch();
+  }
+
+  public get requestHistory(): RequestHistory {
+    return this._requestHistory;
+  }
+
+  public resolve(request: RequestShape<Features[number]['controllers']>): void {
+    this._requestHistory.add(request);
+    const controller = this._controllers[request.type];
+    if(!controller) {
+      const registeredResolvers = Object.keys(this._controllers).join(', ');
+      throw new ControllerNotFoundError(`Cannot resolve request of type '${request.type}' because its resolver is not registered. Registered processors are: ${registeredResolvers}`);
+    }
+
+    controller.resolve(request);
   }
 
   public save(): LudiekSaveData {
