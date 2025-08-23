@@ -47,17 +47,12 @@ export type PlantId = (typeof plants)[number]['id'];
 // Create your game
 const farming = new Farming(plants);
 
-export const game = new LudiekGame(
-  engine,
-  {
-    farming: farming,
-  },
-  {
-    saveKey: '@123ishatest/ludiek-demo',
-    tickDuration: 0.1,
-    saveInterval: 30,
-  },
-);
+export const game = new LudiekGame(engine, {
+  features: [farming],
+  saveKey: '@123ishatest/ludiek-demo',
+  tickDuration: 0.1,
+  saveInterval: 30,
+});
 
 engine.plugins.currency.loadContent(currencies);
 engine.plugins.statistic.loadContent(statistics);

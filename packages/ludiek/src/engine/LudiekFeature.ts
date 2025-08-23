@@ -3,6 +3,10 @@ import { LudiekSavable } from '@ludiek/engine/peristence/LudiekSavable';
 import { merge } from 'es-toolkit';
 
 export abstract class LudiekFeature<Plugins extends Record<string, LudiekPlugin>> implements LudiekSavable {
+  /**
+   * Override with the name of your feature
+   * @remarks Type it as a literal, not as a string as this breaks type-safety.
+   */
   abstract readonly name: string;
 
   protected abstract _state: object;

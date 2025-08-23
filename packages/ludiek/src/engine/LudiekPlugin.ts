@@ -12,6 +12,10 @@ import { BaseOutputShape } from '@ludiek/engine/transactions/LudiekOutput';
  * Extend to create your own custom plugin
  */
 export abstract class LudiekPlugin implements LudiekSavable {
+  /**
+   * Override with the name of your feature
+   * @remarks Type it as a literal, not as a string as this breaks type-safety.
+   */
   abstract readonly name: string;
   protected abstract _state: object;
 
