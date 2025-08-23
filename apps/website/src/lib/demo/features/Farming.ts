@@ -4,7 +4,7 @@ import type { EnginePlugins, PlantId } from '$lib/demo/demo.svelte';
 import type { PlantDetail } from '$lib/demo/model/PlantDetail';
 
 export class Farming extends LudiekFeature<EnginePlugins> {
-  public readonly name: string = 'farming';
+  readonly name = 'farming';
   protected _state = {};
 
   public readonly plants: PlantDetail[];

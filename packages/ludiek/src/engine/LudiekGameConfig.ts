@@ -1,5 +1,14 @@
+import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
+import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
+import { PluginMap } from '@ludiek/engine/LudiekConfiguration';
+
 // TODO(@Isha): Use Zod for configuration for nice defaults
-export interface LudiekGameConfig {
+export interface LudiekGameConfig<
+  Plugins extends LudiekPlugin[],
+  Features extends readonly LudiekFeature<PluginMap<Plugins>>[],
+> {
+  features: Features;
+
   /**
    * The key under which your game will be saved in local storage
    */

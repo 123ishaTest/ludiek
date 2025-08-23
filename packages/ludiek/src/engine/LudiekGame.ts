@@ -11,16 +11,20 @@ import { LudiekGameConfig } from '@ludiek/engine/LudiekGameConfig';
 import { LudiekInput } from '@ludiek/engine/transactions/LudiekInput';
 import { LudiekOutput } from '@ludiek/engine/transactions/LudiekOutput';
 
+export type FeatureMap<Features extends LudiekFeature<Record<string, LudiekPlugin>>[]> = {
+  [Feature in Features[number] as Feature['name']]: Extract<Features[number], { name: Feature['name'] }>;
+};
+
 export class LudiekGame<
   Plugins extends LudiekPlugin[],
   Conditions extends LudiekCondition[],
   Inputs extends LudiekInput[],
   Outputs extends LudiekOutput[],
-  Features extends Record<string, LudiekFeature<PluginMap<Plugins>>>,
+  Features extends LudiekFeature<PluginMap<Plugins>>[],
 > {
-  public features: Features;
+  public features: FeatureMap<Features>;
   public engine: LudiekEngine<Plugins, Conditions, Inputs, Outputs>;
-  public config: LudiekGameConfig;
+  public config: LudiekGameConfig<Plugins, Features>;
   protected saveEncoder = new LudiekJsonSaveEncoder();
   protected _tickInterval: NodeJS.Timeout | null = null;
 
@@ -30,11 +34,11 @@ export class LudiekGame<
 
   constructor(
     engine: LudiekEngine<Plugins, Conditions, Inputs, Outputs>,
-    features: Features,
-    config: LudiekGameConfig,
+    config: LudiekGameConfig<Plugins, Features> & { features: Features },
   ) {
     this.engine = engine;
-    this.features = features;
+    this.features = Object.fromEntries(config.features?.map((f) => [f.name, f]) ?? []) as FeatureMap<Features>;
+
     this.config = config;
 
     this._nextSave = this.config.saveInterval;

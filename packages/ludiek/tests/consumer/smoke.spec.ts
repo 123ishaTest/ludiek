@@ -3,7 +3,7 @@ import { CurrencyPlugin, LudiekEngine, LudiekFeature, LudiekGame } from '@ludiek
 import { LudiekSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 
 class DummyFeature extends LudiekFeature<never> {
-  name: string = 'dummy';
+  name = 'dummy';
 
   protected _state = {
     xp: 0,
@@ -34,17 +34,12 @@ const createGame = () => {
   });
   currency.loadContent([{ id: 'money' }]);
 
-  return new LudiekGame(
-    engine,
-    {
-      dummy: new DummyFeature(currency),
-    },
-    {
-      saveKey: 'dummy-game',
-      saveInterval: 30,
-      tickDuration: 1,
-    },
-  );
+  return new LudiekGame(engine, {
+    features: [new DummyFeature(currency)],
+    saveKey: 'dummy-game',
+    saveInterval: 30,
+    tickDuration: 1,
+  });
 };
 
 let game = createGame();
