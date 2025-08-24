@@ -35,22 +35,23 @@ coupon.loadContent([
   {
     id: 'gain-10-money',
     hash: '282868016',
-    output: {
-      type: 'currency',
-      id: 'money',
-      amount: 10,
-    },
+    output: { type: 'currency', id: 'money', amount: 10 },
+  },
+  {
+    id: 'super-secret',
+    hash: '1821260852',
+    output: { type: 'achievement', id: 'super-secret' },
   },
 ]);
 
 // Check if a code is supported
-coupon.supportsCode('gain-10-money') // True
+coupon.supportsCode('gain-10-money'); // True
 
 // Enter a code
-coupon.enterCode('SUMMER2025') // True
+coupon.enterCode('SUMMER2025'); // True
 
 // Check whether we have redeemed it
-coupon.hasRedeemedCode('gain-10-money') // True
+coupon.hasRedeemedCode('gain-10-money'); // True
 ```
 
 Hook into the “code redeemed earned” event for UI/popups.

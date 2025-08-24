@@ -87,16 +87,16 @@
   <div class="card card-border bg-base-200 w-96">
     <div class="card-body">
       <span class="card-title">You have <span class="text-primary">{money}</span> money!</span>
-      <div class="flex flex-row space-x-4">
-        <input class="input" placeholder="Enter coupon..." bind:value={couponGuess} />
-        <button class="btn btn-primary" onclick={() => guess()}>Submit</button>
-      </div>
     </div>
   </div>
 
   <div class="card card-border bg-base-200 w-96">
-    <div class="card-body">
+    <div class="card-body space-y-4">
       <div class="flex flex-row space-x-4">
+        <input class="input" placeholder="Enter coupon..." bind:value={couponGuess} />
+        <button class="btn btn-primary" onclick={() => guess()}>Submit</button>
+      </div>
+      <div class="flex flex-row justify-center space-x-4">
         <div
           class="bg-base-100 flex h-24 w-24 flex-col items-center justify-center border-2 p-2 {unlockedGain10
             ? 'border-secondary'
