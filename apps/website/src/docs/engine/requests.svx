@@ -1,0 +1,60 @@
+---
+title: Requests
+---
+
+`Requests` are a way for your players to interact with the game you created.
+Instead of calling functions directly, we add a layer of abstraction such that we can have an overview of all user
+interactions.
+These interactions are of great benefit for debugging, logging and testing.
+
+In <span class="text-primary">Ludiek</span>, Requests are flat objects that can be resolved by controllers.
+At runtime, the Game queries the registered controllers and invokes their resolve method.
+
+Sounds complicated? It's really not!
+Let's take a look at the `Farming` feature.
+It provides the `PlantSeedController`.
+
+First we define the shape of what an instance of our request should look like:
+
+```ts
+export interface PlantSeedRequest extends BaseRequestShape {
+  type: '/request/plant-seed'
+  plant: PlantId;
+}
+```
+
+And we extend a `LudiekController` for the planting logic:
+
+```ts
+export class PlantSeedController implements LudiekController<PlantSeedRequest> {
+  type: string = '/request/plant-seed';
+
+  constructor(private readonly _farming: Farming) {
+  }
+
+  resolve(request: PlantSeedRequest): void {
+    this._farming.plantSeed(request.plant);
+  }
+}
+```
+
+And add it to our feature:
+
+```ts
+export class Farming extends LudiekFeature<EnginePlugins> {
+  public readonly name: string = 'farming';
+
+  public readonly controllers = [
+    new PlantSeedController(this),
+  ]
+}
+```
+
+Now we can use it fully type-safe!
+
+```ts
+game.resolve({
+  type: '/request/plant-seed',
+  id: '/plant/potato',
+});
+```

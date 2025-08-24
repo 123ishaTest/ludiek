@@ -10,6 +10,9 @@ import { LudiekJsonSaveEncoder } from '@ludiek/engine/peristence/LudiekJsonSaveE
 import { LudiekGameConfig } from '@ludiek/engine/LudiekGameConfig';
 import { LudiekInput } from '@ludiek/engine/transactions/LudiekInput';
 import { LudiekOutput } from '@ludiek/engine/transactions/LudiekOutput';
+import { LudiekController, RequestShape } from '@ludiek/engine/requests/LudiekRequest';
+import { ControllerNotFoundError } from '@ludiek/engine/LudiekError';
+import { LudiekRequestHistory } from '@ludiek/engine/requests/LudiekRequestHistory';
 
 export type FeatureMap<Features extends LudiekFeature<Record<string, LudiekPlugin>>[]> = {
   [Feature in Features[number] as Feature['name']]: Extract<Features[number], { name: Feature['name'] }>;
@@ -32,6 +35,9 @@ export class LudiekGame<
 
   protected _nextSave: number;
 
+  private _requestHistory: LudiekRequestHistory;
+  private _controllers: Record<string, LudiekController> = {};
+
   constructor(
     engine: LudiekEngine<Plugins, Conditions, Inputs, Outputs>,
     config: LudiekGameConfig<Plugins, Features> & { features: Features },
@@ -39,12 +45,17 @@ export class LudiekGame<
     this.engine = engine;
     this.features = Object.fromEntries(config.features?.map((f) => [f.name, f]) ?? []) as FeatureMap<Features>;
 
+    this._requestHistory = new LudiekRequestHistory();
     this.config = config;
 
     this._nextSave = this.config.saveInterval;
 
     this.featureList.forEach((feature) => {
       feature.init(this.engine.plugins);
+
+      feature.controllers.forEach((c) => {
+        this._controllers[c.type] = c;
+      });
     });
   }
 
@@ -73,7 +84,29 @@ export class LudiekGame<
 
       this._nextSave = this.config.saveInterval;
     }
+
+    // TODO(@Isha): Should ticks be in the history?
+    // this.requestHistory.record({
+    //   type: '/internal/tick'
+    // })
     this._onTick.dispatch();
+  }
+
+  public get requestHistory(): LudiekRequestHistory {
+    return this._requestHistory;
+  }
+
+  public request(request: RequestShape<Features[number]['controllers']>): void {
+    this._requestHistory.record(request);
+    const controller = this._controllers[request.type];
+    if (!controller) {
+      const registeredResolvers = Object.keys(this._controllers).join(', ');
+      throw new ControllerNotFoundError(
+        `Cannot resolve request of type '${request.type}' because its resolver is not registered. Registered processors are: ${registeredResolvers}`,
+      );
+    }
+
+    controller.resolve(request);
   }
 
   public save(): LudiekSaveData {

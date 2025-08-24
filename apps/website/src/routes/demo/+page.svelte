@@ -17,7 +17,10 @@
   });
 
   const sow = () => {
-    game.features.farming.sow('/plant/sunflower');
+    game.request({
+      type: '/farming/sow-seed',
+      plant: '/plant/sunflower',
+    });
     achievement.checkAchievements();
   };
 

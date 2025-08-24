@@ -40,7 +40,6 @@ const config = {
 };
 
 const engine = new LudiekEngine(config);
-
 // Extract some neat utility types
 export type EnginePlugins = typeof engine.plugins;
 export type Condition = ConditionShape<typeof config.conditions>;
@@ -57,6 +56,9 @@ export const game = new LudiekGame(engine, {
   tickDuration: 0.1,
   saveInterval: 30,
 });
+
+const historyState = $state([]);
+game.requestHistory.makeReactive(historyState);
 
 engine.plugins.currency.loadContent(currencies);
 engine.plugins.statistic.loadContent(statistics);
