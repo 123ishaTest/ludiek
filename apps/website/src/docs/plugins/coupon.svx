@@ -1,0 +1,67 @@
+---
+title: CouponDetail Plugin
+---
+
+<script>
+  import CouponDemonstration from './CouponDemonstration.svelte';
+</script>
+
+Coupons are a mechanic often used during active development or for community building.
+A player enters a coupon (e.g. `SUMMER2025`) and they are rewarded with something such as special items or a temporary
+boost.
+
+The Coupon plugin handles the checking of coupons and awards the player with your
+existing [Output](../engine/transactions).
+Coupons are hashed so that snoops cannot infer them from your source code.
+
+## Demo
+
+<CouponDemonstration/>
+
+## Usage
+
+```ts
+import { CouponPlugin } from '@123ishatest/ludiek';
+
+const coupon = new CouponPlugin();
+
+new LudiekEngine({
+  plugins: [currency, coupon],
+  outputs: [new CurrencyOutput(currency)],
+});
+
+// Define your coupons
+coupon.loadContent([
+  {
+    id: 'gain-10-money',
+    hash: '282868016',
+    output: { type: 'currency', id: 'money', amount: 10 },
+  },
+  {
+    id: 'super-secret',
+    hash: '1821260852',
+    output: { type: 'achievement', id: 'super-secret' },
+  },
+]);
+
+// Check if a code is supported
+coupon.supportsCode('gain-10-money'); // True
+
+// Enter a code
+coupon.enterCode('SUMMER2025'); // True
+
+// Check whether we have redeemed it
+coupon.hasRedeemedCode('gain-10-money'); // True
+```
+
+Hook into the “code redeemed earned” event for UI/popups.
+
+```ts
+coupon.onCouponRedeemed.subscribe((coupon) => {
+  console.log(`You have redeemed '${coupon.id}'!`)
+});
+```
+
+## Links
+
+- [src/plugins/coupon/CouponPlugin.ts](https://github.com/123ishaTest/ludiek/blob/main/packages/ludiek/src/plugins/coupon/CouponPlugin.ts)
