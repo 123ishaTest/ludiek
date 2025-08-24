@@ -10,8 +10,10 @@ import {
   CurrencyPlugin,
   HasCurrencyCondition,
   HasStatisticCondition,
+  type InputShape,
   LudiekEngine,
   LudiekGame,
+  type OutputShape,
   StatisticPlugin,
 } from '@123ishatest/ludiek';
 import { Farming } from '$lib/demo/features/Farming';
@@ -42,6 +44,8 @@ const engine = new LudiekEngine(config);
 // Extract some neat utility types
 export type EnginePlugins = typeof engine.plugins;
 export type Condition = ConditionShape<typeof config.conditions>;
+export type Input = InputShape<typeof config.inputs>;
+export type Output = OutputShape<typeof config.outputs>;
 export type PlantId = (typeof plants)[number]['id'];
 
 // Create your game

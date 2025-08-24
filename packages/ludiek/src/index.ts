@@ -46,6 +46,10 @@ export { HasCurrencyCondition } from '@ludiek/plugins/currency/evaluators/HasCur
 export { CurrencyInput } from '@ludiek/plugins/currency/transactions/CurrencyInput';
 export { CurrencyOutput } from '@ludiek/plugins/currency/transactions/CurrencyOutput';
 
+// CouponDetail
+export { CouponPlugin } from '@ludiek/plugins/coupon/CouponPlugin';
+export { type CouponPluginState, createCouponState } from '@ludiek/plugins/coupon/CouponPluginState';
+
 // Statistic
 export { StatisticPlugin, type StatisticDefinition } from '@ludiek/plugins/statistic/StatisticPlugin';
 export { type StatisticPluginState, createStatisticState } from '@ludiek/plugins/statistic/StatisticPluginState';
@@ -53,3 +57,8 @@ export { HasStatisticCondition } from '@ludiek/plugins/statistic/evaluators/HasS
 
 // Statistic.Conditions
 export { HasMapStatisticCondition } from '@ludiek/plugins/statistic/evaluators/HasMapStatisticCondition';
+
+/**
+ * Util
+ */
+export { hash } from '@ludiek/util/hash';
