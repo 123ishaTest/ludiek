@@ -14,6 +14,11 @@ export type { ConditionShape } from '@ludiek/engine/LudiekCondition';
 export { AlwaysTrueCondition } from '@ludiek/engine/evaluators/AlwaysTrueCondition';
 export { AlwaysFalseCondition } from '@ludiek/engine/evaluators/AlwaysFalseCondition';
 
+// Engine.Requests
+export type { BaseRequestShape, LudiekController, RequestShape } from '@ludiek/engine/requests/LudiekRequest';
+export { type RequestEvent } from '@ludiek/engine/requests/LudiekRequest';
+export { LudiekRequestHistory } from '@ludiek/engine/requests/LudiekRequestHistory';
+
 // Engine.Transactions
 export type { LudiekTransaction } from '@ludiek/engine/transactions/LudiekTransaction';
 export type { InputShape, LudiekInput } from '@ludiek/engine/transactions/LudiekInput';
