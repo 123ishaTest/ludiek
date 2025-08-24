@@ -23,6 +23,7 @@ export const docsLayout: DocsLayout = {
         { title: 'Currency', slug: 'plugins/currency' },
         { title: 'Statistic', slug: 'plugins/statistic' },
         { title: 'Achievement', slug: 'plugins/achievement' },
+        { title: 'Coupon', slug: 'plugins/coupon' },
       ],
     },
   ],
