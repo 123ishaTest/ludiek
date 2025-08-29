@@ -1,5 +1,5 @@
-import type { BaseRequestShape, LudiekController } from '@123ishatest/ludiek';
 import { CouponPlugin } from '@ludiek/plugins/coupon/CouponPlugin';
+import { BaseRequestShape, LudiekController } from '@ludiek/engine/requests/LudiekRequest';
 
 export interface EnterCouponRequest extends BaseRequestShape {
   type: '/request/coupon/enter';
