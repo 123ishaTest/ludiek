@@ -2,7 +2,9 @@ import {
   AchievementPlugin,
   AlwaysTrueCondition,
   type ConditionShape,
+  CouponPlugin,
   createAchievementState,
+  createCouponState,
   createCurrencyState,
   createStatisticState,
   CurrencyInput,
@@ -26,10 +28,12 @@ const statisticState = $state(createStatisticState());
 const statisticPlugin = new StatisticPlugin(statisticState);
 const achievementState = $state(createAchievementState());
 const achievementPlugin = new AchievementPlugin(achievementState);
+const couponState = $state(createCouponState());
+const couponPlugin = new CouponPlugin(couponState);
 
 // Create engine with plugins
 const config = {
-  plugins: [currencyPlugin, statisticPlugin, achievementPlugin],
+  plugins: [currencyPlugin, statisticPlugin, achievementPlugin, couponPlugin],
   conditions: [
     new AlwaysTrueCondition(),
     new HasCurrencyCondition(currencyPlugin),
