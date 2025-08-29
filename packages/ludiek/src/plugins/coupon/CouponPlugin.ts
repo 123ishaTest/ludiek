@@ -38,7 +38,6 @@ export class CouponPlugin extends LudiekPlugin {
   }
 
   public enterCoupon(guess: string): boolean {
-    console.log('asdasd', guess);
     const hashValue = hash(guess);
     return Object.keys(this._coupons).some((id) => {
       return this.tryRedeemCoupon(id, hashValue);
