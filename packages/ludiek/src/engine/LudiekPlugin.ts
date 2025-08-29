@@ -7,6 +7,7 @@ import { merge } from 'es-toolkit';
 import { LudiekTransaction } from '@ludiek/engine/transactions/LudiekTransaction';
 import { BaseInputShape } from '@ludiek/engine/transactions/LudiekInput';
 import { BaseOutputShape } from '@ludiek/engine/transactions/LudiekOutput';
+import { LudiekController } from '@ludiek/engine/requests/LudiekRequest';
 
 /**
  * Extend to create your own custom plugin
@@ -18,6 +19,8 @@ export abstract class LudiekPlugin implements LudiekSavable {
    */
   abstract readonly name: string;
   protected abstract _state: object;
+
+  public abstract controllers: LudiekController[];
 
   private _engine!: LudiekEngine<never, never, never, never>;
 

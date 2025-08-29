@@ -2,8 +2,9 @@ import { BaseRequestShape, LudiekController } from '@ludiek/engine/requests/Ludi
 import { LudiekGame } from '@ludiek/engine/LudiekGame';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
-import { expect, it } from 'vitest';
+import { beforeEach, expect, it } from 'vitest';
 import { ControllerNotFoundError } from '@ludiek/engine/LudiekError';
+import { CouponPlugin } from '@ludiek/plugins/coupon/CouponPlugin';
 
 interface DummyRequest extends BaseRequestShape {
   type: 'dummy';
@@ -36,15 +37,27 @@ class DummyController implements LudiekController<DummyRequest> {
   }
 }
 
-it('resolves requests', () => {
-  // Arrange
-  const game = new LudiekGame(new LudiekEngine({}), {
-    features: [new DummyFeature()],
-    saveInterval: 30,
-    saveKey: '/test',
-    tickDuration: 1,
-  });
+const createGame = () => {
+  return new LudiekGame(
+    new LudiekEngine({
+      plugins: [new CouponPlugin()],
+    }),
+    {
+      features: [new DummyFeature()],
+      saveInterval: 30,
+      saveKey: '/test',
+      tickDuration: 1,
+    },
+  );
+};
 
+let game = createGame();
+
+beforeEach(() => {
+  game = createGame();
+});
+
+it('resolves requests', () => {
   // Act
   game.request({
     type: 'dummy',
@@ -56,14 +69,6 @@ it('resolves requests', () => {
 });
 
 it('keeps track of requests in a history', () => {
-  // Arrange
-  const game = new LudiekGame(new LudiekEngine({}), {
-    features: [new DummyFeature()],
-    saveInterval: 30,
-    saveKey: '/test',
-    tickDuration: 1,
-  });
-
   // Act
   game.request({ type: 'dummy', amount: 1 });
   game.request({ type: 'dummy', amount: 10 });
@@ -73,14 +78,6 @@ it('keeps track of requests in a history', () => {
 });
 
 it('throws an error when performing an unknown request', () => {
-  // Arrange
-  const game = new LudiekGame(new LudiekEngine({}), {
-    features: [new DummyFeature()],
-    saveInterval: 30,
-    saveKey: '/test',
-    tickDuration: 1,
-  });
-
   // Assert
   expect(() => {
     // @ts-expect-error wrong is not a known request type

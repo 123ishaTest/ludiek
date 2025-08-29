@@ -185,7 +185,7 @@ export class LudiekEngine<
     });
   }
 
-  private get pluginList(): LudiekPlugin[] {
+  public get pluginList(): LudiekPlugin[] {
     return Object.values(this.plugins);
   }
 }

@@ -57,6 +57,12 @@ export class LudiekGame<
         this._controllers[c.type] = c;
       });
     });
+
+    this.engine.pluginList.forEach((plugin) => {
+      plugin.controllers.forEach((c) => {
+        this._controllers[c.type] = c;
+      });
+    });
   }
 
   public start(): void {
@@ -96,7 +102,7 @@ export class LudiekGame<
     return this._requestHistory;
   }
 
-  public request(request: RequestShape<Features[number]['controllers']>): void {
+  public request(request: RequestShape<Plugins, Features>): void {
     this._requestHistory.record(request);
     const controller = this._controllers[request.type];
     if (!controller) {
