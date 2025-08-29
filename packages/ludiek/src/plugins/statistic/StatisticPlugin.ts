@@ -15,6 +15,7 @@ export class StatisticPlugin extends LudiekPlugin {
   readonly name = 'statistic';
 
   protected _state: StatisticPluginState;
+  public readonly controllers = [];
 
   constructor(state: StatisticPluginState = createStatisticState()) {
     super();
