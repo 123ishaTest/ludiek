@@ -1,6 +1,7 @@
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekSavable } from '@ludiek/engine/peristence/LudiekSavable';
 import { merge } from 'es-toolkit';
+import { LudiekController } from '@ludiek/engine/requests/LudiekRequest';
 
 export abstract class LudiekFeature<Plugins extends Record<string, LudiekPlugin>> implements LudiekSavable {
   /**
@@ -10,6 +11,8 @@ export abstract class LudiekFeature<Plugins extends Record<string, LudiekPlugin>
   abstract readonly name: string;
 
   protected abstract _state: object;
+
+  public abstract controllers: LudiekController[];
 
   protected _plugins!: Plugins;
 

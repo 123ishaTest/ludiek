@@ -15,6 +15,7 @@ export const docsLayout: DocsLayout = {
         { title: 'Conditions', slug: 'engine/conditions' },
         { title: 'Transactions', slug: 'engine/transactions' },
         { title: 'Persistence', slug: 'engine/persistence' },
+        { title: 'Requests', slug: 'engine/requests' },
       ],
     },
     {

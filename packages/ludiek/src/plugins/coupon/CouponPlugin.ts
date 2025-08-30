@@ -5,6 +5,7 @@ import { BaseOutputShape } from '@ludiek/engine/transactions/LudiekOutput';
 import { createCouponState, CouponPluginState } from '@ludiek/plugins/coupon/CouponPluginState';
 import { hash } from '@ludiek/util/hash';
 import { UnknownCouponError } from '@ludiek/plugins/coupon/CouponErrors';
+import { EnterCouponController } from '@ludiek/plugins/coupon/controllers/EnterCouponController';
 
 export interface CouponDefinition {
   id: string;
@@ -17,6 +18,8 @@ export class CouponPlugin extends LudiekPlugin {
   readonly name = 'coupon';
 
   protected _state: CouponPluginState;
+
+  public readonly controllers = [new EnterCouponController(this)];
 
   private readonly _coupons: Record<string, CouponDefinition> = {};
 

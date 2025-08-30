@@ -18,6 +18,7 @@ export class AchievementPlugin extends LudiekPlugin {
 
   protected _state: AchievementPluginState;
 
+  public readonly controllers = [];
   private readonly _achievements: Record<string, AchievementDefinition> = {};
 
   protected _onAchievementEarn = new SimpleEventDispatcher<AchievementDefinition>();

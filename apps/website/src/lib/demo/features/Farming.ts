@@ -2,10 +2,13 @@ import { LudiekFeature } from '@123ishatest/ludiek';
 import type { EnginePlugins, PlantId } from '$lib/demo/demo.svelte';
 
 import type { PlantDetail } from '$lib/demo/model/PlantDetail';
+import { SowSeedController } from '$lib/demo/features/SowPlantController';
 
 export class Farming extends LudiekFeature<EnginePlugins> {
   readonly name = 'farming';
   protected _state = {};
+
+  public readonly controllers = [new SowSeedController(this)];
 
   public readonly plants: PlantDetail[];
 

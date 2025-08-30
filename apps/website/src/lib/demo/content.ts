@@ -6,10 +6,10 @@ import type { PlantDetail } from '$lib/demo/model/PlantDetail';
 // TODO(@Isha): Replace with Zod parsing
 
 // First we declare our fully static content
-export const plants: PlantDetail[] = [
+export const plants = [
   { id: '/plant/sunflower', name: 'Sunflower', growthTime: 1, moneyReward: 10 },
   { id: '/plant/cauliflower', name: 'Cauliflower', growthTime: 1.5, moneyReward: 20 },
-];
+] as const satisfies PlantDetail[];
 
 export const currencies: CurrencyDetail[] = [
   { id: '/currency/money', name: 'Money', icon: '/icon/coin' },
