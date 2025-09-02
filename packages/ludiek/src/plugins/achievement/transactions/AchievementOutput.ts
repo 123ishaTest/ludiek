@@ -7,7 +7,7 @@ interface AchievementOutputShape extends BaseOutputShape {
 }
 
 export class AchievementOutput implements LudiekOutput<AchievementOutputShape> {
-  readonly type: string = 'achievement';
+  readonly type = 'achievement';
 
   private _achievement: AchievementPlugin;
 

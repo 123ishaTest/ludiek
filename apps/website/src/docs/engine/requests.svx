@@ -27,7 +27,7 @@ And we extend a `LudiekController` for the planting logic:
 
 ```ts
 export class PlantSeedController implements LudiekController<PlantSeedRequest> {
-  type: string = '/request/plant-seed';
+  readonly type = '/request/plant-seed';
 
   constructor(private readonly _farming: Farming) {
   }

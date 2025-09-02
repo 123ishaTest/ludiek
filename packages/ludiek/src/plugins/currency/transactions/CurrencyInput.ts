@@ -8,7 +8,7 @@ interface CurrencyInputShape extends BaseInputShape {
 }
 
 export class CurrencyInput implements LudiekInput<CurrencyInputShape> {
-  readonly type: string = 'currency';
+  readonly type = 'currency';
 
   private _currency: CurrencyPlugin;
 

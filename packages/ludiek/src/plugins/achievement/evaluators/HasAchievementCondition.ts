@@ -7,7 +7,7 @@ interface HasAchievementConditionShape extends BaseConditionShape {
 }
 
 export class HasAchievementCondition implements LudiekCondition<HasAchievementConditionShape> {
-  readonly type: string = 'has-achievement';
+  readonly type = 'has-achievement';
 
   private _achievement: AchievementPlugin;
 

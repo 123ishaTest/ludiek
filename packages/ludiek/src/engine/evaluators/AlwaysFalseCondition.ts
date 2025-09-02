@@ -1,12 +1,17 @@
-import { LudiekCondition } from '@ludiek/engine/LudiekCondition';
+import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/LudiekCondition';
+
+interface AlwaysFalseConditionShape extends BaseConditionShape {
+  type: 'always-false';
+}
 
 /**
  * A condition which is always false
  */
-export class AlwaysFalseCondition implements LudiekCondition<never> {
+export class AlwaysFalseCondition implements LudiekCondition<AlwaysFalseConditionShape> {
   type = 'always-false';
 
-  evaluate(): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  evaluate(object: AlwaysFalseConditionShape): boolean {
     return false;
   }
 }

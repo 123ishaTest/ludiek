@@ -8,7 +8,7 @@ interface CurrencyOutputShape extends BaseOutputShape {
 }
 
 export class CurrencyOutput implements LudiekOutput<CurrencyOutputShape> {
-  readonly type: string = 'currency';
+  readonly type = 'currency';
 
   private _currency: CurrencyPlugin;
 

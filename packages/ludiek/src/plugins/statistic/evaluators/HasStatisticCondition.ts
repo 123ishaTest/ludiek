@@ -8,7 +8,7 @@ interface HasStatisticConditionShape extends BaseConditionShape {
 }
 
 export class HasStatisticCondition implements LudiekCondition<HasStatisticConditionShape> {
-  readonly type: string = 'has-statistic';
+  readonly type = 'has-statistic';
 
   private _statistic: StatisticPlugin;
 

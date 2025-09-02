@@ -9,7 +9,7 @@ interface HasMapStatisticConditionShape extends BaseConditionShape {
 }
 
 export class HasMapStatisticCondition implements LudiekCondition<HasMapStatisticConditionShape> {
-  readonly type: string = 'has-map-statistic';
+  readonly type = 'has-map-statistic';
 
   private _statistic: StatisticPlugin;
 

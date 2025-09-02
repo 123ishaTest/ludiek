@@ -30,7 +30,7 @@ And we extend a `LudiekInput` for the losing currency logic:
 
 ```ts
 export class CurrencyInput implements LudiekInput<CurrencyInputShape> {
-  readonly type: string = 'currency';
+  readonly type = 'currency';
 
   constructor(private readonly _currency: CurrencyPlugin) {}
 

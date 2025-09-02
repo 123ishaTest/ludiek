@@ -8,9 +8,10 @@ interface AlwaysTrueConditionShape extends BaseConditionShape {
  * A condition which is always true
  */
 export class AlwaysTrueCondition implements LudiekCondition<AlwaysTrueConditionShape> {
-  type = 'always-true';
+  readonly type = 'always-true';
 
-  evaluate(): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  evaluate(object: AlwaysTrueConditionShape): boolean {
     return true;
   }
 }
