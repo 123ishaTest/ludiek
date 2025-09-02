@@ -15,7 +15,12 @@ export interface AchievementDefinition {
 
 export class AchievementPlugin extends LudiekPlugin {
   readonly name = 'achievement';
-
+  public readonly config = {
+    controllers: [],
+    conditions: [],
+    inputs: [],
+    outputs: [],
+  };
   protected _state: AchievementPluginState;
 
   public readonly controllers = [];

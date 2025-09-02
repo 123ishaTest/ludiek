@@ -13,7 +13,12 @@ export interface StatisticDefinition {
 
 export class StatisticPlugin extends LudiekPlugin {
   readonly name = 'statistic';
-
+  public readonly config = {
+    controllers: [],
+    conditions: [],
+    inputs: [],
+    outputs: [],
+  };
   protected _state: StatisticPluginState;
   public readonly controllers = [];
 

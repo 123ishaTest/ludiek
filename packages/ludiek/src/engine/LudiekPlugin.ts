@@ -1,12 +1,12 @@
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { BaseConditionShape } from '@ludiek/engine/LudiekCondition';
+import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/LudiekCondition';
 import { EngineNotInjectedError } from '@ludiek/engine/LudiekError';
 
 import { LudiekSavable } from '@ludiek/engine/peristence/LudiekSavable';
 import { merge } from 'es-toolkit';
 import { LudiekTransaction } from '@ludiek/engine/transactions/LudiekTransaction';
-import { BaseInputShape } from '@ludiek/engine/transactions/LudiekInput';
-import { BaseOutputShape } from '@ludiek/engine/transactions/LudiekOutput';
+import { BaseInputShape, LudiekInput } from '@ludiek/engine/transactions/LudiekInput';
+import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/transactions/LudiekOutput';
 import { LudiekController } from '@ludiek/engine/requests/LudiekRequest';
 
 /**
@@ -18,6 +18,15 @@ export abstract class LudiekPlugin implements LudiekSavable {
    * @remarks Type it as a literal, not as a string as this breaks type-safety.
    */
   abstract readonly name: string;
+
+  // TODO(@Isha): Improve by allowing optionals
+  public abstract readonly config: {
+    conditions: LudiekCondition[];
+    controllers: LudiekController[];
+    inputs: LudiekInput[];
+    outputs: LudiekOutput[];
+  };
+
   protected abstract _state: object;
 
   public abstract controllers: LudiekController[];
