@@ -27,7 +27,7 @@ export type RequestShape<Controllers extends LudiekController[]> =
  */
 export type PluginRequests<Plugins extends LudiekPlugin[] | undefined = undefined> = Plugins extends undefined
   ? []
-  : NonNullable<Plugins>[number]['config'] extends { requests?: (infer C)[] }
+  : NonNullable<Plugins>[number]['config'] extends { controllers?: (infer C)[] }
     ? C[]
     : never;
 

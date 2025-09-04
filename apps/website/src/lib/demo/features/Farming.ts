@@ -8,7 +8,9 @@ export class Farming extends LudiekFeature<EnginePlugins> {
   readonly name = 'farming';
   protected _state = {};
 
-  public readonly controllers = [new SowSeedController(this)];
+  public readonly config = {
+    controllers: [new SowSeedController(this)],
+  };
 
   public readonly plants: PlantDetail[];
 

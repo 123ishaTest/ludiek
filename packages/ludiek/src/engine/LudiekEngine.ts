@@ -45,6 +45,10 @@ export class LudiekEngine<
       plugin.config.inputs?.forEach((input) => {
         this._inputs[input.type] = input;
       });
+
+      plugin.config.controllers?.forEach((controller) => {
+        this.registerController(controller);
+      });
     });
   }
 

@@ -2,12 +2,12 @@ import { BaseRequestShape, LudiekController } from '@ludiek/engine/requests/Ludi
 import { KitchenSinkPlugin } from '@tests/shared/KitchenSinkPlugin';
 
 export interface IncreaseVariableRequest extends BaseRequestShape {
-  type: '/controller/increase-variable';
+  type: '/request/increase-variable';
   amount: number;
 }
 
 export class KitchenSinkController implements LudiekController<IncreaseVariableRequest> {
-  readonly type = '/controller/increase-variable';
+  readonly type = '/request/increase-variable';
 
   constructor(private readonly _kitchenSink: KitchenSinkPlugin) {}
 

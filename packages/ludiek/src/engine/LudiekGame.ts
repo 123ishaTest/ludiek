@@ -48,7 +48,7 @@ export class LudiekGame<
     this.featureList.forEach((feature) => {
       feature.init(this.engine.plugins);
 
-      feature.controllers.forEach((controller) => {
+      feature.config.controllers?.forEach((controller) => {
         engine.registerController(controller);
       });
     });
