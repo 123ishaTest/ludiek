@@ -8,11 +8,11 @@ export { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 export { LudiekGame } from '@ludiek/engine/LudiekGame';
 
 // Engine.Conditions
-export type { LudiekCondition } from '@ludiek/engine/LudiekCondition';
-export type { BaseConditionShape } from '@ludiek/engine/LudiekCondition';
-export type { ConditionShape } from '@ludiek/engine/LudiekCondition';
-export { AlwaysTrueCondition } from '@ludiek/engine/evaluators/AlwaysTrueCondition';
-export { AlwaysFalseCondition } from '@ludiek/engine/evaluators/AlwaysFalseCondition';
+export type { LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
+export type { BaseConditionShape } from '@ludiek/engine/conditions/LudiekCondition';
+export type { ConditionShape } from '@ludiek/engine/conditions/LudiekCondition';
+export { AlwaysTrueCondition } from '@ludiek/engine/conditions/AlwaysTrueCondition';
+export { AlwaysFalseCondition } from '@ludiek/engine/conditions/AlwaysFalseCondition';
 
 // Engine.Requests
 export type { BaseRequestShape, LudiekController, RequestShape } from '@ludiek/engine/requests/LudiekRequest';

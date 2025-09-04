@@ -1,20 +1,18 @@
 import { expect, it } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
-import { AlwaysTrueCondition } from '@ludiek/engine/evaluators/AlwaysTrueCondition';
-import { CouponPlugin } from '@ludiek/plugins/coupon/CouponPlugin';
+import { AlwaysTrueCondition } from '@ludiek/engine/conditions/AlwaysTrueCondition';
 import { ConditionNotFoundError } from '@ludiek/engine/LudiekError';
+import { KitchenSinkPlugin } from '@tests/shared/KitchenSinkPlugin';
+import { EmptyPlugin } from '@tests/shared/EmptyPlugin';
 
 it('is type-safe when plugins and conditions exists', () => {
   // Arrange
   const engine = new LudiekEngine({
-    plugins: [new CurrencyPlugin(), new CouponPlugin()],
+    plugins: [new KitchenSinkPlugin()],
     conditions: [new AlwaysTrueCondition()],
   });
-  engine.plugins.currency.loadContent([{ id: 'money' }]);
 
-  // Valid
-  engine.evaluate({ type: 'has-currency', amount: 4, id: 'money' });
+  engine.evaluate({ type: '/condition/has-variable', amount: 4 });
   engine.evaluate({ type: 'always-true' });
 
   expect(() => {
@@ -31,12 +29,11 @@ it('is type-safe when plugins and conditions exists', () => {
 it('is type-safe when only plugins exists', () => {
   // Arrange
   const engine = new LudiekEngine({
-    plugins: [new CurrencyPlugin()],
+    plugins: [new KitchenSinkPlugin()],
   });
-  engine.plugins.currency.loadContent([{ id: 'money' }]);
 
-  // Valid
-  engine.evaluate({ type: 'has-currency', amount: 4, id: 'money' });
+  engine.evaluate({ type: '/condition/has-variable', amount: 4 });
+
   expect(() => {
     // @ts-expect-error unknown type
     engine.evaluate({ type: 'wrong' });
@@ -46,7 +43,7 @@ it('is type-safe when only plugins exists', () => {
 it('is type-safe when plugins without conditions exists', () => {
   // Arrange
   const engine = new LudiekEngine({
-    plugins: [new CouponPlugin()],
+    plugins: [new EmptyPlugin()],
   });
 
   expect(() => {

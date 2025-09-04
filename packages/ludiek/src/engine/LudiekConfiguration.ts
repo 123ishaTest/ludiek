@@ -1,5 +1,5 @@
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
-import { LudiekCondition } from '@ludiek/engine/LudiekCondition';
+import { LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
 import { LudiekInput } from '@ludiek/engine/transactions/LudiekInput';
 import { LudiekOutput } from '@ludiek/engine/transactions/LudiekOutput';
 import { LudiekController } from '@ludiek/engine/requests/LudiekRequest';

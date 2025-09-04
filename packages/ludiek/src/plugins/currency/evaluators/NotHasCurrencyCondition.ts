@@ -1,4 +1,4 @@
-import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/LudiekCondition';
+import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
 
 interface NotHasCurrencyConditionShape extends BaseConditionShape {

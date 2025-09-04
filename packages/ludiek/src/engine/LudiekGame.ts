@@ -2,7 +2,7 @@ import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 import { PluginMap } from '@ludiek/engine/LudiekConfiguration';
-import { LudiekCondition } from '@ludiek/engine/LudiekCondition';
+import { LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
 import { ISignal, SignalDispatcher } from 'strongly-typed-events';
 import { LudiekFeaturesSaveData, LudiekSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 import { LudiekLocalStorage } from '@ludiek/engine/peristence/LudiekLocalStorage';

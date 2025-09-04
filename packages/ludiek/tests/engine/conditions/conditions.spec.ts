@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { LudiekCondition } from '@ludiek/engine/LudiekCondition';
+import { LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
 import { ConditionNotFoundError } from '@ludiek/engine/LudiekError';
-import { AlwaysTrueCondition } from '@ludiek/engine/evaluators/AlwaysTrueCondition';
-import { AlwaysFalseCondition } from '@ludiek/engine/evaluators/AlwaysFalseCondition';
+import { AlwaysTrueCondition } from '@ludiek/engine/conditions/AlwaysTrueCondition';
+import { AlwaysFalseCondition } from '@ludiek/engine/conditions/AlwaysFalseCondition';
+import { KitchenSinkPlugin } from '@tests/shared/KitchenSinkPlugin';
 
 describe('Engine Conditions', () => {
   it('checks an always true condition', () => {
@@ -77,12 +78,29 @@ describe('Engine Conditions', () => {
     expect(has4Again).toBe(false);
   });
 
+  it('retrieves conditions from plugins', () => {
+    // Arrange
+    const engine = new LudiekEngine({
+      plugins: [new KitchenSinkPlugin()],
+    });
+
+    // Act
+    const condition = engine.evaluate({
+      type: '/condition/has-variable',
+      amount: 1,
+    });
+
+    // Assert
+    expect(condition).toBe(false);
+  });
+
   it('errors when an evaluator does not exist', () => {
     // Arrange
     const engine = new LudiekEngine({});
 
     // Act
     expect(() => {
+      // @ts-expect-error unknown type
       engine.evaluate({ type: 'wrong' });
     }).toThrow(ConditionNotFoundError);
   });

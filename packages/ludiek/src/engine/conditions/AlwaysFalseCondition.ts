@@ -1,4 +1,4 @@
-import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/LudiekCondition';
+import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
 
 interface AlwaysFalseConditionShape extends BaseConditionShape {
   type: 'always-false';

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { AlwaysFalseCondition } from '@ludiek/engine/evaluators/AlwaysFalseCondition';
-import { AlwaysTrueCondition } from '@ludiek/engine/evaluators/AlwaysTrueCondition';
+import { AlwaysFalseCondition } from '@ludiek/engine/conditions/AlwaysFalseCondition';
+import { AlwaysTrueCondition } from '@ludiek/engine/conditions/AlwaysTrueCondition';
 import { InputNotFoundError } from '@ludiek/engine/LudiekError';
 
 const neverInput = {

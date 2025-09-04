@@ -1,5 +1,5 @@
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/LudiekCondition';
+import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
 import { EngineNotInjectedError } from '@ludiek/engine/LudiekError';
 
 import { LudiekSavable } from '@ludiek/engine/peristence/LudiekSavable';
@@ -27,8 +27,6 @@ export abstract class LudiekPlugin implements LudiekSavable {
   };
 
   protected abstract _state: object;
-
-  public abstract controllers: LudiekController[];
 
   private _engine!: LudiekEngine<LudiekPlugin[], LudiekCondition[], LudiekInput[], LudiekOutput[]>;
 

@@ -1,4 +1,4 @@
-import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/LudiekCondition';
+import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
 import { AchievementPlugin } from '@ludiek/plugins/achievement/AchievementPlugin';
 
 interface HasAchievementConditionShape extends BaseConditionShape {

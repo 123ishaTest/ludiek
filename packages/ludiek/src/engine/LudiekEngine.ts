@@ -1,6 +1,6 @@
 import { LudiekConfig, PluginMap } from '@ludiek/engine/LudiekConfiguration';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
-import { EngineConditionShape, LudiekCondition } from '@ludiek/engine/LudiekCondition';
+import { EngineConditionShape, LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
 import {
   ConditionNotFoundError,
   ControllerNotFoundError,

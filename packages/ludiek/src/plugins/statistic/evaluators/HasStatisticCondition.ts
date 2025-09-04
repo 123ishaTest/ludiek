@@ -1,4 +1,4 @@
-import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/LudiekCondition';
+import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
 import { StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
 
 interface HasStatisticConditionShape extends BaseConditionShape {
