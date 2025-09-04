@@ -2,7 +2,12 @@ import { describe, expect, it, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { AlwaysFalseCondition } from '@ludiek/engine/conditions/AlwaysFalseCondition';
 import { AlwaysTrueCondition } from '@ludiek/engine/conditions/AlwaysTrueCondition';
-import { InputNotFoundError } from '@ludiek/engine/LudiekError';
+
+const alwaysInput = {
+  type: 'always',
+  canLose: () => true,
+  lose: () => {},
+};
 
 const neverInput = {
   type: 'never',
@@ -12,18 +17,32 @@ const neverInput = {
   },
 };
 
-const alwaysInput = {
+const alwaysOutput = {
   type: 'always',
-  canLose: () => true,
-  lose: () => {},
+  canGain: () => true,
+  gain: () => {},
+};
+const neverOutput = {
+  type: 'never',
+  canGain: () => false,
+  gain: () => {},
 };
 
 const engine = new LudiekEngine({
   conditions: [new AlwaysTrueCondition(), new AlwaysFalseCondition()],
-  inputs: [neverInput, alwaysInput],
+  inputs: [alwaysInput, neverInput],
+  outputs: [alwaysOutput, neverOutput],
 });
 
-describe('Engine Input', () => {
+describe('Engine Transactions', () => {
+  it('completes an empty transaction', () => {
+    // Act
+    const completed = engine.handleTransaction({});
+
+    // Assert
+    expect(completed).toBe(true);
+  });
+
   it('stops if we cannot lose', () => {
     // Arrange
     const loseSpy = vi.spyOn(neverInput, 'lose');
@@ -60,23 +79,27 @@ describe('Engine Input', () => {
     expect(loseSpy).toHaveBeenCalledOnce();
   });
 
-  it("throws an error when input doesn't exist on canLoseInput", () => {
-    // Arrange
-    expect(() => {
-      engine.canLoseInput({
-        type: 'wrong',
-        amount: 1,
-      });
-    }).toThrow(InputNotFoundError);
+  it('stops on false conditions', () => {
+    // Act
+    const isCompleted = engine.handleTransaction({
+      requirement: {
+        type: 'always-false',
+      },
+    });
+
+    // Assert
+    expect(isCompleted).toBe(false);
   });
 
-  it("throws an error when input doesn't exist on loseInput", () => {
-    // Arrange
-    expect(() => {
-      engine.loseInput({
-        type: 'wrong',
-        amount: 1,
-      });
-    }).toThrow(InputNotFoundError);
+  it('continues on true conditions', () => {
+    // Act
+    const isCompleted = engine.handleTransaction({
+      requirement: {
+        type: 'always-true',
+      },
+    });
+
+    // Assert
+    expect(isCompleted).toBe(true);
   });
 });

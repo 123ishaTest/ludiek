@@ -30,7 +30,6 @@ describe('Engine Requests', () => {
     const kitchenSink = new KitchenSinkPlugin();
     const engine = new LudiekEngine({
       plugins: [kitchenSink],
-      controllers: [],
     });
     const increaseSpy = vi.spyOn(kitchenSink, 'increase');
 
@@ -45,6 +44,7 @@ describe('Engine Requests', () => {
 
     // Assert
   });
+
   it('throws an error when performing an unknown request', () => {
     // Assert
     expect(() => {

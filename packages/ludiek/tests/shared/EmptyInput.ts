@@ -1,6 +1,6 @@
 import { BaseInputShape, LudiekInput } from '@ludiek/engine/transactions/LudiekInput';
 
-interface EmptyInputShape extends BaseInputShape {
+export interface EmptyInputShape extends BaseInputShape {
   type: '/input/empty';
 }
 
