@@ -2,11 +2,12 @@
   "extends": ["@123ishatest/ludiek-typescript-config/svelte.json"],
   "compilerOptions": {
     "paths": {
-      "@ludiek/*": ["./src/*"]
+      "@ludiek/*": ["./src/*"],
+      "@tests/*": ["./tests/*"]
     },
     "declaration": true,
     "declarationMap": true,
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "dist",
     "composite": true
   },
