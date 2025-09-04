@@ -5,6 +5,7 @@ import { BaseConditionShape } from '@ludiek/engine/conditions/LudiekCondition';
 
 class ExamplePlugin extends LudiekPlugin {
   name = 'example';
+  public config = {};
 
   protected _state = {};
 
