@@ -38,22 +38,23 @@ export class LudiekEngine<
     config.plugins?.forEach((plugin) => {
       plugin.inject(this as LudiekEngine<LudiekPlugin[], LudiekCondition[], LudiekInput[], LudiekOutput[]>);
 
-      plugin.config.conditions?.forEach((condition) => {
-        this._conditions[condition.type] = condition;
-      });
-
-      plugin.config.inputs?.forEach((input) => {
-        this._inputs[input.type] = input;
-      });
-
-      plugin.config.outputs?.forEach((output) => {
-        this._outputs[output.type] = output;
-      });
-
-      plugin.config.controllers?.forEach((controller) => {
-        this.registerController(controller);
-      });
+      plugin.config.conditions?.forEach((c) => this.registerCondition(c));
+      plugin.config.inputs?.forEach((i) => this.registerInput(i));
+      plugin.config.outputs?.forEach((o) => this.registerOutput(o));
+      plugin.config.controllers?.forEach((c) => this.registerController(c));
     });
+  }
+
+  public registerCondition(condition: LudiekCondition): void {
+    this._conditions[condition.type] = condition;
+  }
+
+  public registerInput(input: LudiekInput): void {
+    this._inputs[input.type] = input;
+  }
+
+  public registerOutput(output: LudiekOutput): void {
+    this._outputs[output.type] = output;
   }
 
   public registerController(controller: LudiekController): void {
