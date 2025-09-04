@@ -68,15 +68,6 @@ it('resolves requests', () => {
   expect(game.features.dummy.xp).toBe(10);
 });
 
-it('keeps track of requests in a history', () => {
-  // Act
-  game.request({ type: 'dummy', amount: 1 });
-  game.request({ type: 'dummy', amount: 10 });
-
-  // Assert
-  expect(game.requestHistory.events.length).toBe(2);
-});
-
 it('throws an error when performing an unknown request', () => {
   // Assert
   expect(() => {

@@ -16,12 +16,7 @@ export interface CouponDefinition {
 
 export class CouponPlugin extends LudiekPlugin {
   readonly name = 'coupon';
-  public readonly config = {
-    controllers: [],
-    conditions: [],
-    inputs: [],
-    outputs: [],
-  };
+  public readonly config = {};
   protected _state: CouponPluginState;
 
   public readonly controllers = [new EnterCouponController(this)];

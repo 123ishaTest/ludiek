@@ -61,9 +61,6 @@ export const game = new LudiekGame(engine, {
   saveInterval: 30,
 });
 
-const historyState = $state([]);
-game.requestHistory.makeReactive(historyState);
-
 engine.plugins.currency.loadContent(currencies);
 engine.plugins.statistic.loadContent(statistics);
 engine.plugins.achievement.loadContent(achievements);

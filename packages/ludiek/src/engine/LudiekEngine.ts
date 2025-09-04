@@ -1,42 +1,63 @@
 import { LudiekConfig, PluginMap } from '@ludiek/engine/LudiekConfiguration';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
-import { BaseConditionShape, ConditionShape, LudiekCondition } from '@ludiek/engine/LudiekCondition';
-import { ConditionNotFoundError, InputNotFoundError, OutputNotFoundError } from '@ludiek/engine/LudiekError';
+import { EngineConditionShape, LudiekCondition } from '@ludiek/engine/LudiekCondition';
+import {
+  ConditionNotFoundError,
+  ControllerNotFoundError,
+  InputNotFoundError,
+  OutputNotFoundError,
+} from '@ludiek/engine/LudiekError';
 import { LudiekEngineSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
-import { InputShape, LudiekInput } from '@ludiek/engine/transactions/LudiekInput';
-import { LudiekOutput, OutputShape } from '@ludiek/engine/transactions/LudiekOutput';
+import { EngineInputShape, LudiekInput } from '@ludiek/engine/transactions/LudiekInput';
+import { EngineOutputShape, LudiekOutput } from '@ludiek/engine/transactions/LudiekOutput';
 import { LudiekTransaction } from '@ludiek/engine/transactions/LudiekTransaction';
+import { EngineRequestShape, LudiekController } from '@ludiek/engine/requests/LudiekRequest';
 
 export class LudiekEngine<
-  Plugins extends LudiekPlugin[],
-  Conditions extends LudiekCondition[],
-  Inputs extends LudiekInput[],
-  Outputs extends LudiekOutput[],
+  Plugins extends LudiekPlugin[] | undefined = undefined,
+  Conditions extends LudiekCondition[] | undefined = undefined,
+  Inputs extends LudiekInput[] | undefined = undefined,
+  Outputs extends LudiekOutput[] | undefined = undefined,
+  Controllers extends LudiekController[] | undefined = undefined,
 > {
   public plugins: PluginMap<Plugins>;
   private readonly _conditions: Record<string, LudiekCondition>;
   private readonly _inputs: Record<string, LudiekInput>;
   private readonly _outputs: Record<string, LudiekOutput>;
+  private readonly _controllers: Record<string, LudiekController>;
 
-  constructor(config: LudiekConfig<Plugins, Conditions, Inputs, Outputs>) {
+  constructor(config: LudiekConfig<Plugins, Conditions, Inputs, Outputs, Controllers>) {
     this.plugins = Object.fromEntries(config.plugins?.map((p) => [p.name, p]) ?? []) as PluginMap<Plugins>;
-
-    // Inject the engine into all plugins so they can access core concepts
-    config.plugins?.forEach((plugin) => plugin.inject(this));
 
     this._conditions = Object.fromEntries(config.conditions?.map((c) => [c.type, c]) ?? []);
     this._inputs = Object.fromEntries(config.inputs?.map((i) => [i.type, i]) ?? []);
     this._outputs = Object.fromEntries(config.outputs?.map((o) => [o.type, o]) ?? []);
+    this._controllers = Object.fromEntries(config.controllers?.map((c) => [c.type, c]) ?? []);
+
+    // Inject the engine into all plugins so they can access core concepts
+    config.plugins?.forEach((plugin) => {
+      plugin.inject(this as LudiekEngine<LudiekPlugin[], LudiekCondition[], LudiekInput[], LudiekOutput[]>);
+
+      plugin.config.conditions?.forEach((condition) => {
+        this._conditions[condition.type] = condition;
+      });
+
+      plugin.config.inputs?.forEach((input) => {
+        this._inputs[input.type] = input;
+      });
+    });
   }
 
-  public get conditions(): LudiekCondition<BaseConditionShape>[] {
-    return Object.values(this._conditions);
+  public registerController(controller: LudiekController): void {
+    this._controllers[controller.type] = controller;
   }
 
   /**
    * Evaluate one or multiple conditions and evaluates whether they are all true.
    */
-  public evaluate(condition: ConditionShape<Conditions> | ConditionShape<Conditions>[]): boolean {
+  public evaluate(
+    condition: EngineConditionShape<Plugins, Conditions> | EngineConditionShape<Plugins, Conditions>[],
+  ): boolean {
     if (!Array.isArray(condition)) {
       condition = [condition];
     }
@@ -54,7 +75,25 @@ export class LudiekEngine<
     });
   }
 
-  public handleTransaction(transaction: LudiekTransaction<Inputs, Outputs, Conditions>): boolean {
+  public request(request: EngineRequestShape<Plugins, Controllers>): void {
+    const controller = this._controllers[request.type];
+    if (!controller) {
+      const registeredResolvers = Object.keys(this._controllers).join(', ');
+      throw new ControllerNotFoundError(
+        `Cannot resolve request of type '${request.type}' because its resolver is not registered. Registered processors are: ${registeredResolvers}`,
+      );
+    }
+
+    controller.resolve(request);
+  }
+
+  public handleTransaction(
+    transaction: LudiekTransaction<
+      EngineInputShape<Plugins, Inputs>,
+      EngineOutputShape<Plugins, Outputs>,
+      EngineConditionShape<Plugins, Conditions>
+    >,
+  ): boolean {
     if (transaction.requirement && !this.evaluate(transaction.requirement)) {
       return false;
     }
@@ -81,7 +120,7 @@ export class LudiekEngine<
    * Checks whether we can lose the input
    * @param input
    */
-  public canLoseInput(input: InputShape<Inputs> | InputShape<Inputs>[]): boolean {
+  public canLoseInput(input: EngineInputShape<Plugins, Inputs> | EngineInputShape<Plugins, Inputs>[]): boolean {
     if (!Array.isArray(input)) {
       input = [input];
     }
@@ -103,7 +142,7 @@ export class LudiekEngine<
    * Loses the input with no regards for whether we can lose it.
    * @param input
    */
-  public loseInput(input: InputShape<Inputs> | InputShape<Inputs>[]): void {
+  public loseInput(input: EngineInputShape<Plugins, Inputs> | EngineInputShape<Plugins, Inputs>[]): void {
     if (!Array.isArray(input)) {
       input = [input];
     }
@@ -125,7 +164,7 @@ export class LudiekEngine<
    * Checks whether we can gain the output
    * @param output
    */
-  public canGainOutput(output: OutputShape<Outputs> | OutputShape<Outputs>[]): boolean {
+  public canGainOutput(output: EngineOutputShape<Plugins, Outputs> | EngineOutputShape<Plugins, Outputs>[]): boolean {
     if (!Array.isArray(output)) {
       output = [output];
     }
@@ -147,7 +186,7 @@ export class LudiekEngine<
    * Gains the output with no regards for whether we can take it.
    * @param output
    */
-  public gainOutput(output: OutputShape<Outputs> | OutputShape<Outputs>[]): void {
+  public gainOutput(output: EngineOutputShape<Plugins, Outputs> | EngineOutputShape<Plugins, Outputs>[]): void {
     if (!Array.isArray(output)) {
       output = [output];
     }

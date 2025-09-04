@@ -3,6 +3,8 @@ import { InvalidCurrencyError, NegativeAmountError } from '@ludiek/plugins/curre
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
 import { createCurrencyState, CurrencyPluginState } from '@ludiek/plugins/currency/CurrencyPluginState';
 import { HasCurrencyCondition } from '@ludiek/plugins/currency/evaluators/HasCurrencyCondition';
+import { NotHasCurrencyCondition } from '@ludiek/plugins/currency/evaluators/NotHasCurrencyCondition';
+import { CurrencyInput } from '@ludiek/plugins/currency/transactions/CurrencyInput';
 
 export type Currency = {
   id: string;
@@ -13,8 +15,8 @@ export class CurrencyPlugin extends LudiekPlugin {
   readonly name = 'currency';
   public readonly config = {
     controllers: [],
-    conditions: [new HasCurrencyCondition(this)],
-    inputs: [],
+    conditions: [new HasCurrencyCondition(this), new NotHasCurrencyCondition(this)],
+    inputs: [new CurrencyInput(this)],
     outputs: [],
   };
 

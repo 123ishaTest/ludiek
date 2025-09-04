@@ -19,21 +19,20 @@ export abstract class LudiekPlugin implements LudiekSavable {
    */
   abstract readonly name: string;
 
-  // TODO(@Isha): Improve by allowing optionals
   public abstract readonly config: {
-    conditions: LudiekCondition[];
-    controllers: LudiekController[];
-    inputs: LudiekInput[];
-    outputs: LudiekOutput[];
+    conditions?: LudiekCondition[];
+    controllers?: LudiekController[];
+    inputs?: LudiekInput[];
+    outputs?: LudiekOutput[];
   };
 
   protected abstract _state: object;
 
   public abstract controllers: LudiekController[];
 
-  private _engine!: LudiekEngine<never, never, never, never>;
+  private _engine!: LudiekEngine<LudiekPlugin[], LudiekCondition[], LudiekInput[], LudiekOutput[]>;
 
-  inject(engine: LudiekEngine<never, never, never, never>) {
+  inject(engine: LudiekEngine<LudiekPlugin[], LudiekCondition[], LudiekInput[], LudiekOutput[]>) {
     this._engine = engine;
   }
 
