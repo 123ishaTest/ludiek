@@ -61,6 +61,8 @@ describe('Engine Input', () => {
   it("throws an error when input doesn't exist on loseInput", () => {
     // Arrange
     const engine = new LudiekEngine({});
+
+    // Act
     expect(() => {
       // @ts-expect-error unknown type
       engine.loseInput({ type: 'wrong', amount: 1 });

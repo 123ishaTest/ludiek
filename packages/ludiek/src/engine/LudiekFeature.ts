@@ -3,8 +3,8 @@ import { LudiekSavable } from '@ludiek/engine/peristence/LudiekSavable';
 import { merge } from 'es-toolkit';
 import { LudiekController } from '@ludiek/engine/requests/LudiekRequest';
 import { LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
-import { LudiekInput } from '@ludiek/engine/transactions/LudiekInput';
-import { LudiekOutput } from '@ludiek/engine/transactions/LudiekOutput';
+import { LudiekInput } from '@ludiek/engine/inputs/LudiekInput';
+import { LudiekOutput } from '@ludiek/engine/outputs/LudiekOutput';
 
 export abstract class LudiekFeature<Plugins extends Record<string, LudiekPlugin>> implements LudiekSavable {
   /**

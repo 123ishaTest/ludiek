@@ -1,4 +1,4 @@
-import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/transactions/LudiekOutput';
+import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/outputs/LudiekOutput';
 import { KitchenSinkPlugin } from '@tests/shared/KitchenSinkPlugin';
 
 interface KitchenSinkOutputShape extends BaseOutputShape {

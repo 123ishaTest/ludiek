@@ -5,8 +5,8 @@ import { EngineNotInjectedError } from '@ludiek/engine/LudiekError';
 import { LudiekSavable } from '@ludiek/engine/peristence/LudiekSavable';
 import { merge } from 'es-toolkit';
 import { LudiekTransaction } from '@ludiek/engine/transactions/LudiekTransaction';
-import { BaseInputShape, LudiekInput } from '@ludiek/engine/transactions/LudiekInput';
-import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/transactions/LudiekOutput';
+import { BaseInputShape, LudiekInput } from '@ludiek/engine/inputs/LudiekInput';
+import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/outputs/LudiekOutput';
 import { LudiekController } from '@ludiek/engine/requests/LudiekRequest';
 
 /**

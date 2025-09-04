@@ -1,5 +1,5 @@
 import { AchievementPlugin } from '@ludiek/plugins/achievement/AchievementPlugin';
-import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/transactions/LudiekOutput';
+import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/outputs/LudiekOutput';
 
 interface AchievementOutputShape extends BaseOutputShape {
   type: 'achievement';

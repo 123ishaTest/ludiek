@@ -79,6 +79,42 @@ describe('Engine Transactions', () => {
     expect(loseSpy).toHaveBeenCalledOnce();
   });
 
+  it('stops if we cannot gain', () => {
+    // Arrange
+    const gainSpy = vi.spyOn(neverOutput, 'gain');
+    const transaction = {
+      output: {
+        type: 'never',
+        amount: 0,
+      },
+    };
+
+    // Act
+    const completed = engine.handleTransaction(transaction);
+
+    // Assert
+    expect(completed).toBe(false);
+    expect(gainSpy).not.toHaveBeenCalled();
+  });
+
+  it('continues if we can gain', () => {
+    // Arrange
+    const gainSpy = vi.spyOn(alwaysOutput, 'gain');
+    const transaction = {
+      output: {
+        type: 'always',
+        amount: 0,
+      },
+    };
+
+    // Act
+    const completed = engine.handleTransaction(transaction);
+
+    // Assert
+    expect(completed).toBe(true);
+    expect(gainSpy).toHaveBeenCalledOnce();
+  });
+
   it('stops on false conditions', () => {
     // Act
     const isCompleted = engine.handleTransaction({

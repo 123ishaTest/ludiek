@@ -8,8 +8,8 @@ import {
   OutputNotFoundError,
 } from '@ludiek/engine/LudiekError';
 import { LudiekEngineSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
-import { EngineInputShape, LudiekInput } from '@ludiek/engine/transactions/LudiekInput';
-import { EngineOutputShape, LudiekOutput } from '@ludiek/engine/transactions/LudiekOutput';
+import { EngineInputShape, LudiekInput } from '@ludiek/engine/inputs/LudiekInput';
+import { EngineOutputShape, LudiekOutput } from '@ludiek/engine/outputs/LudiekOutput';
 import { LudiekTransaction } from '@ludiek/engine/transactions/LudiekTransaction';
 import { EngineRequestShape, LudiekController } from '@ludiek/engine/requests/LudiekRequest';
 
@@ -44,6 +44,10 @@ export class LudiekEngine<
 
       plugin.config.inputs?.forEach((input) => {
         this._inputs[input.type] = input;
+      });
+
+      plugin.config.outputs?.forEach((output) => {
+        this._outputs[output.type] = output;
       });
 
       plugin.config.controllers?.forEach((controller) => {

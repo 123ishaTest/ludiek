@@ -1,5 +1,5 @@
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
-import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/transactions/LudiekOutput';
+import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/outputs/LudiekOutput';
 
 interface CurrencyOutputShape extends BaseOutputShape {
   type: 'currency';

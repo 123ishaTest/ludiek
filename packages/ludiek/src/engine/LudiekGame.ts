@@ -8,8 +8,8 @@ import { LudiekFeaturesSaveData, LudiekSaveData } from '@ludiek/engine/peristenc
 import { LudiekLocalStorage } from '@ludiek/engine/peristence/LudiekLocalStorage';
 import { LudiekJsonSaveEncoder } from '@ludiek/engine/peristence/LudiekJsonSaveEncoder';
 import { LudiekGameConfig } from '@ludiek/engine/LudiekGameConfig';
-import { LudiekInput } from '@ludiek/engine/transactions/LudiekInput';
-import { LudiekOutput } from '@ludiek/engine/transactions/LudiekOutput';
+import { LudiekInput } from '@ludiek/engine/inputs/LudiekInput';
+import { LudiekOutput } from '@ludiek/engine/outputs/LudiekOutput';
 import { LudiekController } from '@ludiek/engine/requests/LudiekRequest';
 
 export type FeatureMap<Features extends LudiekFeature<Record<string, LudiekPlugin>>[]> = {

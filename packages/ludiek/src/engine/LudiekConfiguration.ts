@@ -1,7 +1,7 @@
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
-import { LudiekInput } from '@ludiek/engine/transactions/LudiekInput';
-import { LudiekOutput } from '@ludiek/engine/transactions/LudiekOutput';
+import { LudiekInput } from '@ludiek/engine/inputs/LudiekInput';
+import { LudiekOutput } from '@ludiek/engine/outputs/LudiekOutput';
 import { LudiekController } from '@ludiek/engine/requests/LudiekRequest';
 
 export interface LudiekConfig<

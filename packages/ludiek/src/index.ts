@@ -20,8 +20,8 @@ export { type RequestEvent } from '@ludiek/engine/requests/LudiekRequest';
 
 // Engine.Transactions
 export type { LudiekTransaction } from '@ludiek/engine/transactions/LudiekTransaction';
-export type { InputShape, LudiekInput } from '@ludiek/engine/transactions/LudiekInput';
-export type { LudiekOutput, OutputShape } from '@ludiek/engine/transactions/LudiekOutput';
+export type { InputShape, LudiekInput } from '@ludiek/engine/inputs/LudiekInput';
+export type { LudiekOutput, OutputShape } from '@ludiek/engine/outputs/LudiekOutput';
 
 /**
  * Plugins

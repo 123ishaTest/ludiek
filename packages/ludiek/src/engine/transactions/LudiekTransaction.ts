@@ -1,5 +1,5 @@
-import { BaseInputShape } from '@ludiek/engine/transactions/LudiekInput';
-import { BaseOutputShape } from '@ludiek/engine/transactions/LudiekOutput';
+import { BaseInputShape } from '@ludiek/engine/inputs/LudiekInput';
+import { BaseOutputShape } from '@ludiek/engine/outputs/LudiekOutput';
 import { BaseConditionShape } from '@ludiek/engine/conditions/LudiekCondition';
 
 export interface LudiekTransaction<
