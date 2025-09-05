@@ -1,4 +1,4 @@
-import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/LudiekCondition';
+import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
 import { AchievementPlugin } from '@ludiek/plugins/achievement/AchievementPlugin';
 
 interface HasAchievementConditionShape extends BaseConditionShape {
@@ -7,7 +7,7 @@ interface HasAchievementConditionShape extends BaseConditionShape {
 }
 
 export class HasAchievementCondition implements LudiekCondition<HasAchievementConditionShape> {
-  readonly type: string = 'has-achievement';
+  readonly type = 'has-achievement';
 
   private _achievement: AchievementPlugin;
 

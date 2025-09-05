@@ -1,6 +1,4 @@
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
-import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
-import { PluginMap } from '@ludiek/engine/LudiekConfiguration';
 
 export interface BaseRequestShape {
   type: string;
@@ -13,15 +11,35 @@ export interface LudiekController<Request extends BaseRequestShape = BaseRequest
   resolve(request: Request): void;
 }
 
-export type RequestShape<
-  Plugins extends LudiekPlugin[],
-  Features extends LudiekFeature<PluginMap<Plugins>>[],
-> = ControllerRequest<[...Features[number]['controllers'], ...Plugins[number]['controllers']]>;
-
-export type ControllerRequest<Requests extends LudiekController[]> =
-  Requests[number] extends LudiekController<infer Request> ? Request : never;
-
 export interface RequestEvent {
   timestamp: Date;
   request: BaseRequestShape;
 }
+
+/**
+ * Create a union of RequestShapes from a list of LudiekRequests.
+ */
+export type RequestShape<Controllers extends LudiekController[]> =
+  Controllers[number] extends LudiekController<infer Request> ? Request : never;
+
+/**
+ * Extract the list of requests from a plugins config and account for it being optional.
+ */
+export type PluginRequests<Plugins extends LudiekPlugin[] | undefined = undefined> = Plugins extends undefined
+  ? []
+  : NonNullable<Plugins>[number]['config'] extends { controllers?: (infer C)[] }
+    ? C[]
+    : never;
+
+export type EngineController<
+  Plugins extends LudiekPlugin[] | undefined,
+  Controllers extends LudiekController[] | undefined,
+> = [...PluginRequests<Plugins>, ...(Controllers extends undefined ? [] : NonNullable<Controllers>)];
+
+/**
+ * Build all requests available to the engine by combining the PluginRequests and ConfigRequests
+ */
+export type EngineRequestShape<
+  Plugins extends LudiekPlugin[] | undefined,
+  Controllers extends LudiekController[] | undefined,
+> = Controllers | Plugins extends undefined ? never : RequestShape<EngineController<Plugins, Controllers>>;

@@ -1,4 +1,4 @@
-import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/LudiekCondition';
+import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
 import { StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
 
 interface HasMapStatisticConditionShape extends BaseConditionShape {
@@ -9,7 +9,7 @@ interface HasMapStatisticConditionShape extends BaseConditionShape {
 }
 
 export class HasMapStatisticCondition implements LudiekCondition<HasMapStatisticConditionShape> {
-  readonly type: string = 'has-map-statistic';
+  readonly type = 'has-map-statistic';
 
   private _statistic: StatisticPlugin;
 

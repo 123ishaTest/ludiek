@@ -1,4 +1,4 @@
-import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/LudiekCondition';
+import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
 
 interface HasCurrencyConditionShape extends BaseConditionShape {
@@ -8,7 +8,7 @@ interface HasCurrencyConditionShape extends BaseConditionShape {
 }
 
 export class HasCurrencyCondition implements LudiekCondition<HasCurrencyConditionShape> {
-  readonly type: string = 'has-currency';
+  readonly type = 'has-currency' as const;
 
   private _currency: CurrencyPlugin;
 

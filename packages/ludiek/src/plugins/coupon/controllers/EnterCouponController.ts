@@ -7,7 +7,7 @@ export interface EnterCouponRequest extends BaseRequestShape {
 }
 
 export class EnterCouponController implements LudiekController<EnterCouponRequest> {
-  type: string = '/request/coupon/enter';
+  readonly type = '/request/coupon/enter';
 
   private readonly _coupon: CouponPlugin;
 

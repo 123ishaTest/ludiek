@@ -1,6 +1,6 @@
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
-import { BaseConditionShape } from '@ludiek/engine/LudiekCondition';
+import { BaseConditionShape } from '@ludiek/engine/conditions/LudiekCondition';
 import { UnknownAchievementError } from '@ludiek/plugins/achievement/AchievementErrors';
 import { AchievementPluginState, createAchievementState } from '@ludiek/plugins/achievement/AchievementPluginState';
 
@@ -15,7 +15,7 @@ export interface AchievementDefinition {
 
 export class AchievementPlugin extends LudiekPlugin {
   readonly name = 'achievement';
-
+  public readonly config = {};
   protected _state: AchievementPluginState;
 
   public readonly controllers = [];
