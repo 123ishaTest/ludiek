@@ -50,9 +50,20 @@ export { NotHasCurrencyCondition } from '@ludiek/plugins/currency/NotHasCurrency
 export { CurrencyInput } from '@ludiek/plugins/currency/CurrencyInput';
 export { CurrencyOutput } from '@ludiek/plugins/currency/CurrencyOutput';
 
-// CouponDetail
+// Coupon
 export { CouponPlugin } from '@ludiek/plugins/coupon/CouponPlugin';
 export { type CouponPluginState, createCouponState } from '@ludiek/plugins/coupon/CouponPluginState';
+
+// Skill
+export { SkillPlugin } from '@ludiek/plugins/skill/SkillPlugin';
+export { type SkillPluginState, createSkillState } from '@ludiek/plugins/skill/SkillPluginState';
+
+// Skill.Conditions
+export { HasSkillExperienceCondition } from '@ludiek/plugins/skill/HasSkillExperienceCondition';
+export { HasSkillLevelCondition } from '@ludiek/plugins/skill/HasSkillLevelCondition';
+
+// Skill.Output
+export { SkillExperienceOutput } from '@ludiek/plugins/skill/SkillExperienceOutput';
 
 // Statistic
 export { StatisticPlugin, type StatisticDefinition } from '@ludiek/plugins/statistic/StatisticPlugin';
