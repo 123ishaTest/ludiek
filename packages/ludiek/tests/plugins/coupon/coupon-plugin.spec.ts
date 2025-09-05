@@ -1,10 +1,10 @@
 import { beforeEach, expect, it } from 'vitest';
 import { CouponPlugin } from '@ludiek/plugins/coupon/CouponPlugin';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { AlwaysTrueCondition } from '@ludiek/engine/conditions/AlwaysTrueCondition';
-import { AlwaysFalseCondition } from '@ludiek/engine/conditions/AlwaysFalseCondition';
+import { AlwaysTrueCondition } from '@ludiek/engine/condition/AlwaysTrueCondition';
+import { AlwaysFalseCondition } from '@ludiek/engine/condition/AlwaysFalseCondition';
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
-import { CurrencyOutput } from '@ludiek/plugins/currency/transactions/CurrencyOutput';
+import { CurrencyOutput } from '@ludiek/plugins/currency/CurrencyOutput';
 import { UnknownCouponError } from '@ludiek/plugins/coupon/CouponErrors';
 
 const coupon = new CouponPlugin();

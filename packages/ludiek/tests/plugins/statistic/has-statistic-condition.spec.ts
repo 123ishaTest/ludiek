@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { StatisticDefinition, StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
-import { HasStatisticCondition } from '@ludiek/plugins/statistic/evaluators/HasStatisticCondition';
+import { HasStatisticCondition } from '@ludiek/plugins/statistic/HasStatisticCondition';
 import { UnknownStatisticError } from '@ludiek/plugins/statistic/StatisticErrors';
 
 const statistic = new StatisticPlugin();

@@ -1,4 +1,4 @@
-import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
+import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
 import { KitchenSinkPlugin } from '@tests/shared/KitchenSinkPlugin';
 
 export interface HasVariableConditionShape extends BaseConditionShape {

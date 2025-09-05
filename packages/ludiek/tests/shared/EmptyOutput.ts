@@ -1,4 +1,4 @@
-import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/outputs/LudiekOutput';
+import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
 
 export interface EmptyOutputShape extends BaseOutputShape {
   type: '/output/empty';

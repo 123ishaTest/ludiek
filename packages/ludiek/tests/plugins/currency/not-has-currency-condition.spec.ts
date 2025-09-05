@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
-import { NotHasCurrencyCondition } from '@ludiek/plugins/currency/evaluators/NotHasCurrencyCondition';
+import { NotHasCurrencyCondition } from '@ludiek/plugins/currency/NotHasCurrencyCondition';
 import { InvalidCurrencyError } from '@ludiek/plugins/currency/CurrencyErrors';
 
 describe('Not Has Currency Condition', () => {

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { HasMapStatisticCondition } from '@ludiek/plugins/statistic/evaluators/HasMapStatisticCondition';
+import { HasMapStatisticCondition } from '@ludiek/plugins/statistic/HasMapStatisticCondition';
 import { StatisticDefinition, StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
 
 const statistic = new StatisticPlugin();

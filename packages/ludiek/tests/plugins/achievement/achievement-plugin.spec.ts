@@ -1,8 +1,8 @@
 import { beforeEach, expect, it } from 'vitest';
 import { AchievementPlugin } from '@ludiek/plugins/achievement/AchievementPlugin';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { AlwaysTrueCondition } from '@ludiek/engine/conditions/AlwaysTrueCondition';
-import { AlwaysFalseCondition } from '@ludiek/engine/conditions/AlwaysFalseCondition';
+import { AlwaysTrueCondition } from '@ludiek/engine/condition/AlwaysTrueCondition';
+import { AlwaysFalseCondition } from '@ludiek/engine/condition/AlwaysFalseCondition';
 
 const achievement = new AchievementPlugin();
 new LudiekEngine({

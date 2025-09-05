@@ -1,6 +1,6 @@
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
-import { PluginMap } from '@ludiek/engine/LudiekConfiguration';
+import { PluginMap } from '@ludiek/engine/LudiekEngineConfig';
 
 // TODO(@Isha): Use Zod for configuration for nice defaults
 export interface LudiekGameConfig<

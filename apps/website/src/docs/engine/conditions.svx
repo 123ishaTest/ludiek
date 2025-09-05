@@ -17,7 +17,7 @@ First we define the shape of what an instance of our condition should look like:
 
 ```ts
 interface HasCurrencyConditionShape extends BaseConditionShape {
-  type: 'currency';
+  type: '/condition/currency';
   id: string;
   amount: number;
 }
@@ -27,12 +27,11 @@ And we extend a `LudiekCondition` to check whether it is true:
 
 ```ts
 export class HasCurrencyCondition implements LudiekCondition<HasCurrencyConditionShape> {
-  readonly type = 'currency';
+  readonly type = '/condition/currency';
 
-  constructor(private readonly _currency: CurrencyPlugin<CurrencyId>) {
-  }
+  constructor(private readonly _currency: CurrencyPlugin) {}
 
-  evaluate(condition: HasCurrencyConditionShape<CurrencyId>): boolean {
+  evaluate(condition: HasCurrencyConditionShape): boolean {
     return this._currency.hasCurrency(condition);
   }
 }
@@ -42,8 +41,8 @@ And we can use it fully type-safe!
 
 ```ts
 game.engine.evaluate({
-  type: 'currency',
-  id: 'money',
+  type: '/condition/currency',
+  id: '/currency/money',
   amount: 100,
 })
 ```

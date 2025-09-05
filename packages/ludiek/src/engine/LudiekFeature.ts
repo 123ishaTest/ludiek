@@ -1,10 +1,10 @@
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekSavable } from '@ludiek/engine/peristence/LudiekSavable';
 import { merge } from 'es-toolkit';
-import { LudiekController } from '@ludiek/engine/requests/LudiekRequest';
-import { LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
-import { LudiekInput } from '@ludiek/engine/inputs/LudiekInput';
-import { LudiekOutput } from '@ludiek/engine/outputs/LudiekOutput';
+import { LudiekController } from '@ludiek/engine/request/LudiekRequest';
+import { LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
+import { LudiekInput } from '@ludiek/engine/input/LudiekInput';
+import { LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
 
 export abstract class LudiekFeature<Plugins extends Record<string, LudiekPlugin>> implements LudiekSavable {
   /**

@@ -1,4 +1,4 @@
-import { BaseInputShape, LudiekInput } from '@ludiek/engine/inputs/LudiekInput';
+import { BaseInputShape, LudiekInput } from '@ludiek/engine/input/LudiekInput';
 import { KitchenSinkPlugin } from '@tests/shared/KitchenSinkPlugin';
 
 interface KitchenSinkInputShape extends BaseInputShape {

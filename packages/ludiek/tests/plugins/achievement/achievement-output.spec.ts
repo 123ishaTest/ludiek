@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { AchievementPlugin } from '@ludiek/plugins/achievement/AchievementPlugin';
-import { AchievementOutput } from '@ludiek/plugins/achievement/transactions/AchievementOutput';
+import { AchievementOutput } from '@ludiek/plugins/achievement/AchievementOutput';
 
 const achievement = new AchievementPlugin();
 

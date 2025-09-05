@@ -1,4 +1,4 @@
-import { BaseRequestShape, LudiekController } from '@ludiek/engine/requests/LudiekRequest';
+import { BaseRequestShape, LudiekController } from '@ludiek/engine/request/LudiekRequest';
 
 export interface EmptyRequest extends BaseRequestShape {
   type: '/request/empty';

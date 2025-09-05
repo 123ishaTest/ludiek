@@ -20,7 +20,7 @@ First we define the shape of what an instance of our input should look like:
 
 ```ts
 interface CurrencyInputShape extends BaseInputShape {
-  type: 'currency';
+  type: '/input/currency';
   id: string;
   amount: number;
 }
@@ -30,7 +30,7 @@ And we extend a `LudiekInput` for the losing currency logic:
 
 ```ts
 export class CurrencyInput implements LudiekInput<CurrencyInputShape> {
-  readonly type = 'currency';
+  readonly type = '/input/currency';
 
   constructor(private readonly _currency: CurrencyPlugin) {}
 
@@ -51,12 +51,12 @@ And we can use it fully type-safe!
 ```ts
 game.engine.handleTransaction({
   input: {
-    type: 'currency',
+    type: '/input/currency',
     id: '/currency/money',
     amount: 100,
   },
   output: {
-    type: 'item',
+    type: '/output/item',
     id: '/item/carrot',
     amount: 1,
   },
