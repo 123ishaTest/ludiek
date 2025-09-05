@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { AchievementPlugin } from '@ludiek/plugins/achievement/AchievementPlugin';
-import { HasAchievementCondition } from '@ludiek/plugins/achievement/evaluators/HasAchievementCondition';
+import { HasAchievementCondition } from '@ludiek/plugins/achievement/HasAchievementCondition';
 
 const achievement = new AchievementPlugin();
 

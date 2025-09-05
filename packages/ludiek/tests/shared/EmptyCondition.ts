@@ -1,4 +1,4 @@
-import { LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
+import { LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
 
 export interface EmptyConditionShape extends LudiekCondition {
   type: '/condition/empty';

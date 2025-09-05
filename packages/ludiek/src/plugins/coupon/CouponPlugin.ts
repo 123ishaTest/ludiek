@@ -1,11 +1,11 @@
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
-import { BaseConditionShape } from '@ludiek/engine/conditions/LudiekCondition';
-import { BaseOutputShape } from '@ludiek/engine/outputs/LudiekOutput';
+import { BaseConditionShape } from '@ludiek/engine/condition/LudiekCondition';
+import { BaseOutputShape } from '@ludiek/engine/output/LudiekOutput';
 import { createCouponState, CouponPluginState } from '@ludiek/plugins/coupon/CouponPluginState';
 import { hash } from '@ludiek/util/hash';
 import { UnknownCouponError } from '@ludiek/plugins/coupon/CouponErrors';
-import { EnterCouponController } from '@ludiek/plugins/coupon/controllers/EnterCouponController';
+import { EnterCouponController } from '@ludiek/plugins/coupon/EnterCouponController';
 
 export interface CouponDefinition {
   id: string;

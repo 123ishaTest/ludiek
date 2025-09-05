@@ -1,17 +1,15 @@
-import { LudiekConfig, PluginMap } from '@ludiek/engine/LudiekConfiguration';
+import { LudiekEngineConfig, PluginMap } from '@ludiek/engine/LudiekEngineConfig';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
-import { EngineConditionShape, LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
-import {
-  ConditionNotFoundError,
-  ControllerNotFoundError,
-  InputNotFoundError,
-  OutputNotFoundError,
-} from '@ludiek/engine/LudiekError';
+import { EngineConditionShape, LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
 import { LudiekEngineSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
-import { EngineInputShape, LudiekInput } from '@ludiek/engine/inputs/LudiekInput';
-import { EngineOutputShape, LudiekOutput } from '@ludiek/engine/outputs/LudiekOutput';
-import { LudiekTransaction } from '@ludiek/engine/transactions/LudiekTransaction';
-import { EngineRequestShape, LudiekController } from '@ludiek/engine/requests/LudiekRequest';
+import { EngineInputShape, LudiekInput } from '@ludiek/engine/input/LudiekInput';
+import { EngineOutputShape, LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
+import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
+import { EngineRequestShape, LudiekController } from '@ludiek/engine/request/LudiekRequest';
+import { ConditionNotFoundError } from '@ludiek/engine/condition/ConditionError';
+import { InputNotFoundError } from '@ludiek/engine/input/InputError';
+import { OutputNotFoundError } from '@ludiek/engine/output/OutputError';
+import { ControllerNotFoundError } from '@ludiek/engine/request/RequestError';
 
 export class LudiekEngine<
   Plugins extends LudiekPlugin[] | undefined = undefined,
@@ -26,7 +24,7 @@ export class LudiekEngine<
   private readonly _outputs: Record<string, LudiekOutput>;
   private readonly _controllers: Record<string, LudiekController>;
 
-  constructor(config: LudiekConfig<Plugins, Conditions, Inputs, Outputs, Controllers>) {
+  constructor(config: LudiekEngineConfig<Plugins, Conditions, Inputs, Outputs, Controllers>) {
     this.plugins = Object.fromEntries(config.plugins?.map((p) => [p.name, p]) ?? []) as PluginMap<Plugins>;
 
     this._conditions = Object.fromEntries(config.conditions?.map((c) => [c.type, c]) ?? []);
@@ -62,7 +60,7 @@ export class LudiekEngine<
   }
 
   /**
-   * Evaluate one or multiple conditions and evaluates whether they are all true.
+   * Evaluate one or multiple condition and evaluates whether they are all true.
    */
   public evaluate(
     condition: EngineConditionShape<Plugins, Conditions> | EngineConditionShape<Plugins, Conditions>[],

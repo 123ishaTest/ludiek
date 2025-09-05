@@ -8,20 +8,20 @@ export { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 export { LudiekGame } from '@ludiek/engine/LudiekGame';
 
 // Engine.Conditions
-export type { LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
-export type { BaseConditionShape } from '@ludiek/engine/conditions/LudiekCondition';
-export type { ConditionShape } from '@ludiek/engine/conditions/LudiekCondition';
-export { AlwaysTrueCondition } from '@ludiek/engine/conditions/AlwaysTrueCondition';
-export { AlwaysFalseCondition } from '@ludiek/engine/conditions/AlwaysFalseCondition';
+export type { LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
+export type { BaseConditionShape } from '@ludiek/engine/condition/LudiekCondition';
+export type { ConditionShape } from '@ludiek/engine/condition/LudiekCondition';
+export { AlwaysTrueCondition } from '@ludiek/engine/condition/AlwaysTrueCondition';
+export { AlwaysFalseCondition } from '@ludiek/engine/condition/AlwaysFalseCondition';
 
 // Engine.Requests
-export type { BaseRequestShape, LudiekController, RequestShape } from '@ludiek/engine/requests/LudiekRequest';
-export { type RequestEvent } from '@ludiek/engine/requests/LudiekRequest';
+export type { BaseRequestShape, LudiekController, RequestShape } from '@ludiek/engine/request/LudiekRequest';
+export { type RequestEvent } from '@ludiek/engine/request/LudiekRequest';
 
 // Engine.Transactions
-export type { LudiekTransaction } from '@ludiek/engine/transactions/LudiekTransaction';
-export type { InputShape, LudiekInput } from '@ludiek/engine/inputs/LudiekInput';
-export type { LudiekOutput, OutputShape } from '@ludiek/engine/outputs/LudiekOutput';
+export type { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
+export type { InputShape, LudiekInput } from '@ludiek/engine/input/LudiekInput';
+export type { LudiekOutput, OutputShape } from '@ludiek/engine/output/LudiekOutput';
 
 /**
  * Plugins
@@ -34,21 +34,22 @@ export {
 } from '@ludiek/plugins/achievement/AchievementPluginState';
 
 // Achievement.Conditions
-export { HasAchievementCondition } from '@ludiek/plugins/achievement/evaluators/HasAchievementCondition';
+export { HasAchievementCondition } from '@ludiek/plugins/achievement/HasAchievementCondition';
 
 // Achievement.Transactions
-export { AchievementOutput } from '@ludiek/plugins/achievement/transactions/AchievementOutput';
+export { AchievementOutput } from '@ludiek/plugins/achievement/AchievementOutput';
 
 // Currency
 export { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
 export { type CurrencyPluginState, createCurrencyState } from '@ludiek/plugins/currency/CurrencyPluginState';
 
 // Currency.Conditions
-export { HasCurrencyCondition } from '@ludiek/plugins/currency/evaluators/HasCurrencyCondition';
+export { HasCurrencyCondition } from '@ludiek/plugins/currency/HasCurrencyCondition';
+export { NotHasCurrencyCondition } from '@ludiek/plugins/currency/NotHasCurrencyCondition';
 
 // Currency.Transactions
-export { CurrencyInput } from '@ludiek/plugins/currency/transactions/CurrencyInput';
-export { CurrencyOutput } from '@ludiek/plugins/currency/transactions/CurrencyOutput';
+export { CurrencyInput } from '@ludiek/plugins/currency/CurrencyInput';
+export { CurrencyOutput } from '@ludiek/plugins/currency/CurrencyOutput';
 
 // CouponDetail
 export { CouponPlugin } from '@ludiek/plugins/coupon/CouponPlugin';
@@ -57,10 +58,10 @@ export { type CouponPluginState, createCouponState } from '@ludiek/plugins/coupo
 // Statistic
 export { StatisticPlugin, type StatisticDefinition } from '@ludiek/plugins/statistic/StatisticPlugin';
 export { type StatisticPluginState, createStatisticState } from '@ludiek/plugins/statistic/StatisticPluginState';
-export { HasStatisticCondition } from '@ludiek/plugins/statistic/evaluators/HasStatisticCondition';
+export { HasStatisticCondition } from '@ludiek/plugins/statistic/HasStatisticCondition';
 
 // Statistic.Conditions
-export { HasMapStatisticCondition } from '@ludiek/plugins/statistic/evaluators/HasMapStatisticCondition';
+export { HasMapStatisticCondition } from '@ludiek/plugins/statistic/HasMapStatisticCondition';
 
 /**
  * Util

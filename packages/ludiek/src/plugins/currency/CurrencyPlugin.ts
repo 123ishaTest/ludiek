@@ -2,10 +2,10 @@ import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { InvalidCurrencyError, NegativeAmountError } from '@ludiek/plugins/currency/CurrencyErrors';
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
 import { createCurrencyState, CurrencyPluginState } from '@ludiek/plugins/currency/CurrencyPluginState';
-import { HasCurrencyCondition } from '@ludiek/plugins/currency/evaluators/HasCurrencyCondition';
-import { NotHasCurrencyCondition } from '@ludiek/plugins/currency/evaluators/NotHasCurrencyCondition';
-import { CurrencyInput } from '@ludiek/plugins/currency/transactions/CurrencyInput';
-import { CurrencyOutput } from '@ludiek/plugins/currency/transactions/CurrencyOutput';
+import { HasCurrencyCondition } from '@ludiek/plugins/currency/HasCurrencyCondition';
+import { NotHasCurrencyCondition } from '@ludiek/plugins/currency/NotHasCurrencyCondition';
+import { CurrencyInput } from '@ludiek/plugins/currency/CurrencyInput';
+import { CurrencyOutput } from '@ludiek/plugins/currency/CurrencyOutput';
 
 export type Currency = {
   id: string;

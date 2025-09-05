@@ -1,16 +1,16 @@
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
-import { PluginMap } from '@ludiek/engine/LudiekConfiguration';
-import { LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
+import { PluginMap } from '@ludiek/engine/LudiekEngineConfig';
+import { LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
 import { ISignal, SignalDispatcher } from 'strongly-typed-events';
 import { LudiekFeaturesSaveData, LudiekSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 import { LudiekLocalStorage } from '@ludiek/engine/peristence/LudiekLocalStorage';
 import { LudiekJsonSaveEncoder } from '@ludiek/engine/peristence/LudiekJsonSaveEncoder';
 import { LudiekGameConfig } from '@ludiek/engine/LudiekGameConfig';
-import { LudiekInput } from '@ludiek/engine/inputs/LudiekInput';
-import { LudiekOutput } from '@ludiek/engine/outputs/LudiekOutput';
-import { LudiekController } from '@ludiek/engine/requests/LudiekRequest';
+import { LudiekInput } from '@ludiek/engine/input/LudiekInput';
+import { LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
+import { LudiekController } from '@ludiek/engine/request/LudiekRequest';
 
 export type FeatureMap<Features extends LudiekFeature<Record<string, LudiekPlugin>>[]> = {
   [Feature in Features[number] as Feature['name']]: Extract<Features[number], { name: Feature['name'] }>;

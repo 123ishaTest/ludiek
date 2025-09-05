@@ -1,13 +1,13 @@
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/conditions/LudiekCondition';
+import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
 import { EngineNotInjectedError } from '@ludiek/engine/LudiekError';
 
 import { LudiekSavable } from '@ludiek/engine/peristence/LudiekSavable';
 import { merge } from 'es-toolkit';
-import { LudiekTransaction } from '@ludiek/engine/transactions/LudiekTransaction';
-import { BaseInputShape, LudiekInput } from '@ludiek/engine/inputs/LudiekInput';
-import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/outputs/LudiekOutput';
-import { LudiekController } from '@ludiek/engine/requests/LudiekRequest';
+import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
+import { BaseInputShape, LudiekInput } from '@ludiek/engine/input/LudiekInput';
+import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
+import { LudiekController } from '@ludiek/engine/request/LudiekRequest';
 
 /**
  * Extend to create your own custom plugin

@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
-import { CurrencyOutput } from '@ludiek/plugins/currency/transactions/CurrencyOutput';
+import { CurrencyOutput } from '@ludiek/plugins/currency/CurrencyOutput';
 
 const currency = new CurrencyPlugin();
 

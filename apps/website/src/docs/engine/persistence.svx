@@ -28,3 +28,13 @@ Each plugin and feature stores its data in a private `state` object.
 
 Your plugins and features are persisted by default!
 If you need custom functionality, you can override the `save()` and `load()` functions.
+
+```ts
+export class CurrencyPlugin extends LudiekPlugin {
+  readonly name = 'currency';
+
+  protected _state: CurrencyPluginState = {
+    balances: {}
+  }
+};
+```

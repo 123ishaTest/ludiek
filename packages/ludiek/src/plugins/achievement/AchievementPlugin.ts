@@ -1,6 +1,6 @@
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
-import { BaseConditionShape } from '@ludiek/engine/conditions/LudiekCondition';
+import { BaseConditionShape } from '@ludiek/engine/condition/LudiekCondition';
 import { UnknownAchievementError } from '@ludiek/plugins/achievement/AchievementErrors';
 import { AchievementPluginState, createAchievementState } from '@ludiek/plugins/achievement/AchievementPluginState';
 
