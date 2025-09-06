@@ -21,7 +21,6 @@ export class CurrencyPlugin extends LudiekPlugin {
   };
 
   protected _state: CurrencyPluginState;
-  public readonly controllers = [];
 
   protected _onCurrencyGain = new SimpleEventDispatcher<Currency>();
 

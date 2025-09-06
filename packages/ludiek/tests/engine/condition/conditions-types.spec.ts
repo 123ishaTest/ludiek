@@ -52,7 +52,19 @@ it('is type-safe when plugins without condition exists', () => {
   }).toThrow(ConditionNotFoundError);
 });
 
-it('is type-safe when only condition exists', () => {
+it('is type-safe when incomplete plugins exists', () => {
+  // Arrange
+  const engine = new LudiekEngine({
+    plugins: [new KitchenSinkPlugin(), new EmptyPlugin()],
+  });
+
+  expect(() => {
+    // @ts-expect-error unknown type
+    engine.evaluate({ type: 'wrong' });
+  }).toThrow(ConditionNotFoundError);
+});
+
+it('is type-safe when only conditions exists', () => {
   // Arrange
   const engine = new LudiekEngine({
     conditions: [new AlwaysTrueCondition()],

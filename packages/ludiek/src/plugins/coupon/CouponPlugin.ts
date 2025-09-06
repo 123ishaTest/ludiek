@@ -2,7 +2,7 @@ import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
 import { BaseConditionShape } from '@ludiek/engine/condition/LudiekCondition';
 import { BaseOutputShape } from '@ludiek/engine/output/LudiekOutput';
-import { createCouponState, CouponPluginState } from '@ludiek/plugins/coupon/CouponPluginState';
+import { CouponPluginState, createCouponState } from '@ludiek/plugins/coupon/CouponPluginState';
 import { hash } from '@ludiek/util/hash';
 import { UnknownCouponError } from '@ludiek/plugins/coupon/CouponErrors';
 import { EnterCouponController } from '@ludiek/plugins/coupon/EnterCouponController';
@@ -16,10 +16,11 @@ export interface CouponDefinition {
 
 export class CouponPlugin extends LudiekPlugin {
   readonly name = 'coupon';
-  public readonly config = {};
-  protected _state: CouponPluginState;
+  public readonly config = {
+    controllers: [new EnterCouponController(this)],
+  };
 
-  public readonly controllers = [new EnterCouponController(this)];
+  protected _state: CouponPluginState;
 
   private readonly _coupons: Record<string, CouponDefinition> = {};
 

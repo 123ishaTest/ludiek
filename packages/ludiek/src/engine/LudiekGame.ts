@@ -2,15 +2,16 @@ import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 import { PluginMap } from '@ludiek/engine/LudiekEngineConfig';
-import { LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
+import { EngineConditionShape, LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
 import { ISignal, SignalDispatcher } from 'strongly-typed-events';
 import { LudiekFeaturesSaveData, LudiekSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 import { LudiekLocalStorage } from '@ludiek/engine/peristence/LudiekLocalStorage';
 import { LudiekJsonSaveEncoder } from '@ludiek/engine/peristence/LudiekJsonSaveEncoder';
 import { LudiekGameConfig } from '@ludiek/engine/LudiekGameConfig';
-import { LudiekInput } from '@ludiek/engine/input/LudiekInput';
-import { LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
+import { EngineInputShape, LudiekInput } from '@ludiek/engine/input/LudiekInput';
+import { EngineOutputShape, LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
 import { LudiekController } from '@ludiek/engine/request/LudiekRequest';
+import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
 
 export type FeatureMap<Features extends LudiekFeature<Record<string, LudiekPlugin>>[]> = {
   [Feature in Features[number] as Feature['name']]: Extract<Features[number], { name: Feature['name'] }>;
@@ -24,9 +25,9 @@ export class LudiekGame<
   Controllers extends LudiekController[],
   Features extends LudiekFeature<PluginMap<Plugins>>[],
 > {
-  public features: FeatureMap<Features>;
-  public engine: LudiekEngine<Plugins, Conditions, Inputs, Outputs, Controllers>;
-  public config: LudiekGameConfig<Plugins, Features>;
+  public readonly features: FeatureMap<Features>;
+  public readonly engine: LudiekEngine<Plugins, Conditions, Inputs, Outputs, Controllers>;
+  public readonly config: LudiekGameConfig<Plugins, Features>;
   protected saveEncoder = new LudiekJsonSaveEncoder();
   protected _tickInterval: NodeJS.Timeout | null = null;
 
@@ -88,10 +89,24 @@ export class LudiekGame<
     this._onTick.dispatch();
   }
 
-  // TODO(@Isha): Rework to GameRequestShape<>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public request(request: any): void {
+  public request(request: Parameters<this['engine']['request']>[0]): void {
     return this.engine.request(request);
+  }
+
+  public evaluate(
+    condition: EngineConditionShape<Plugins, Conditions> | EngineConditionShape<Plugins, Conditions>[],
+  ): boolean {
+    return this.engine.evaluate(condition);
+  }
+
+  public handleTransaction(
+    transaction: LudiekTransaction<
+      EngineInputShape<Plugins, Inputs>,
+      EngineOutputShape<Plugins, Outputs>,
+      EngineConditionShape<Plugins, Conditions>
+    >,
+  ): boolean {
+    return this.engine.handleTransaction(transaction);
   }
 
   public save(): LudiekSaveData {

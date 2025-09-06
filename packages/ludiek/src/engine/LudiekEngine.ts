@@ -1,9 +1,9 @@
 import { LudiekEngineConfig, PluginMap } from '@ludiek/engine/LudiekEngineConfig';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
-import { EngineConditionShape, LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
+import { EngineConditions, EngineConditionShape, LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
 import { LudiekEngineSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
-import { EngineInputShape, LudiekInput } from '@ludiek/engine/input/LudiekInput';
-import { EngineOutputShape, LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
+import { EngineInputs, EngineInputShape, LudiekInput } from '@ludiek/engine/input/LudiekInput';
+import { EngineOutputs, EngineOutputShape, LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
 import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
 import { EngineRequestShape, LudiekController } from '@ludiek/engine/request/LudiekRequest';
 import { ConditionNotFoundError } from '@ludiek/engine/condition/ConditionError';
@@ -57,6 +57,18 @@ export class LudiekEngine<
 
   public registerController(controller: LudiekController): void {
     this._controllers[controller.type] = controller;
+  }
+
+  public get conditions(): EngineConditions<Plugins, Conditions> {
+    return Object.values(this._conditions) as EngineConditions<Plugins, Conditions>;
+  }
+
+  public get inputs(): EngineInputs<Plugins, Inputs> {
+    return Object.values(this._inputs) as EngineInputs<Plugins, Inputs>;
+  }
+
+  public get outputs(): EngineOutputs<Plugins, Outputs> {
+    return Object.values(this._outputs) as EngineOutputs<Plugins, Outputs>;
   }
 
   /**

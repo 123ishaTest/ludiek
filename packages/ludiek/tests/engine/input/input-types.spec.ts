@@ -19,11 +19,6 @@ it('is type-safe when plugins and input exists', () => {
     // @ts-expect-error unknown type
     engine.loseInput({ type: 'wrong' });
   }).toThrow(InputNotFoundError);
-
-  expect(() => {
-    // @ts-expect-error should have more arguments
-    engine.loseInput({ type: '/input/kitchen-sink' });
-  }).toThrow(Error);
 });
 
 it('is type-safe when only plugins exists', () => {
@@ -52,7 +47,19 @@ it('is type-safe when plugins without input exists', () => {
   }).toThrow(InputNotFoundError);
 });
 
-it('is type-safe when only input exists', () => {
+it('is type-safe when incomplete plugins exists', () => {
+  // Arrange
+  const engine = new LudiekEngine({
+    plugins: [new KitchenSinkPlugin(), new EmptyPlugin()],
+  });
+
+  expect(() => {
+    // @ts-expect-error unknown type
+    engine.loseInput({ type: 'wrong' });
+  }).toThrow(InputNotFoundError);
+});
+
+it('is type-safe when only inputs exists', () => {
   // Arrange
   const engine = new LudiekEngine({
     inputs: [new EmptyInput()],

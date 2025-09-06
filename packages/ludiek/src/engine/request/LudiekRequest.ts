@@ -17,29 +17,39 @@ export interface RequestEvent {
 }
 
 /**
- * Create a union of RequestShapes from a list of LudiekRequests.
+ * Given a tuple of LudiekControllers, produce a union of their request shapes.
  */
 export type RequestShape<Controllers extends LudiekController[]> =
-  Controllers[number] extends LudiekController<infer Request> ? Request : never;
+  Controllers[number] extends LudiekController<infer Shape> ? Shape : never;
 
 /**
- * Extract the list of request from a plugins config and account for it being optional.
+ * Extract the list of controllers from a plugin's config, or [] if none.
  */
-export type PluginRequests<Plugins extends LudiekPlugin[] | undefined = undefined> = Plugins extends undefined
-  ? []
-  : NonNullable<Plugins>[number]['config'] extends { controllers?: (infer C)[] }
-    ? C[]
-    : never;
+export type PluginControllers<T extends LudiekPlugin> = T extends { config: { controllers: infer C } } ? C : never[];
 
-export type EngineController<
+/**
+ * Given a list of plugins, produce the union of all their controller classes.
+ * If no plugins or no controllers, returns [].
+ */
+export type PluginControllerList<Plugins extends LudiekPlugin[] | undefined = undefined> = Plugins extends undefined
+  ? []
+  : PluginControllers<NonNullable<Plugins>[number]> extends never[]
+    ? []
+    : PluginControllers<NonNullable<Plugins>[number]>;
+
+/**
+ * Combine plugin‑provided controllers and engine‑provided controllers into a single tuple.
+ */
+export type EngineControllers<
   Plugins extends LudiekPlugin[] | undefined,
   Controllers extends LudiekController[] | undefined,
-> = [...PluginRequests<Plugins>, ...(Controllers extends undefined ? [] : NonNullable<Controllers>)];
+> = [...PluginControllerList<Plugins>, ...(Controllers extends undefined ? [] : NonNullable<Controllers>)];
 
 /**
- * Build all request available to the engine by combining the PluginRequests and ConfigRequests
+ * Build the union of all available controller shapes for the engine.
+ * Collapses to `never` if there are no controllers at all.
  */
 export type EngineRequestShape<
   Plugins extends LudiekPlugin[] | undefined,
   Controllers extends LudiekController[] | undefined,
-> = Controllers | Plugins extends undefined ? never : RequestShape<EngineController<Plugins, Controllers>>;
+> = EngineControllers<Plugins, Controllers> extends [] ? never : RequestShape<EngineControllers<Plugins, Controllers>>;

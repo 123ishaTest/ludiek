@@ -8,9 +8,13 @@ export { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 export { LudiekGame } from '@ludiek/engine/LudiekGame';
 
 // Engine.Conditions
-export type { LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
-export type { BaseConditionShape } from '@ludiek/engine/condition/LudiekCondition';
-export type { ConditionShape } from '@ludiek/engine/condition/LudiekCondition';
+export type {
+  LudiekCondition,
+  ConditionShape,
+  BaseConditionShape,
+  EngineConditions,
+  EngineConditionShape,
+} from '@ludiek/engine/condition/LudiekCondition';
 export { AlwaysTrueCondition } from '@ludiek/engine/condition/AlwaysTrueCondition';
 export { AlwaysFalseCondition } from '@ludiek/engine/condition/AlwaysFalseCondition';
 
@@ -20,8 +24,20 @@ export { type RequestEvent } from '@ludiek/engine/request/LudiekRequest';
 
 // Engine.Transactions
 export type { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
-export type { InputShape, LudiekInput } from '@ludiek/engine/input/LudiekInput';
-export type { LudiekOutput, OutputShape } from '@ludiek/engine/output/LudiekOutput';
+export type {
+  LudiekInput,
+  InputShape,
+  BaseInputShape,
+  EngineInputs,
+  EngineInputShape,
+} from '@ludiek/engine/input/LudiekInput';
+export type {
+  LudiekOutput,
+  OutputShape,
+  BaseOutputShape,
+  EngineOutputs,
+  EngineOutputShape,
+} from '@ludiek/engine/output/LudiekOutput';
 
 /**
  * Plugins
