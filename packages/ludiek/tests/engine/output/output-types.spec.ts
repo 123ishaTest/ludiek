@@ -19,11 +19,6 @@ it('is type-safe when plugins and output exists', () => {
     // @ts-expect-error unknown type
     engine.gainOutput({ type: 'wrong' });
   }).toThrow(OutputNotFoundError);
-
-  expect(() => {
-    // @ts-expect-error should have more arguments
-    engine.gainOutput({ type: '/output/kitchen-sink' });
-  }).toThrow(Error);
 });
 
 it('is type-safe when only plugins exists', () => {
@@ -44,6 +39,18 @@ it('is type-safe when plugins without output exists', () => {
   // Arrange
   const engine = new LudiekEngine({
     plugins: [new EmptyPlugin()],
+  });
+
+  expect(() => {
+    // @ts-expect-error unknown type
+    engine.gainOutput({ type: 'wrong' });
+  }).toThrow(OutputNotFoundError);
+});
+
+it('is type-safe when incomplete plugins exists', () => {
+  // Arrange
+  const engine = new LudiekEngine({
+    plugins: [new KitchenSinkPlugin(), new EmptyPlugin()],
   });
 
   expect(() => {

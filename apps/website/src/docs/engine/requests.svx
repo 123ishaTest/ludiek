@@ -29,8 +29,7 @@ And we extend a `LudiekController` for the planting logic:
 export class PlantSeedController implements LudiekController<PlantSeedRequest> {
   readonly type = '/request/plant-seed';
 
-  constructor(private readonly _farming: Farming) {
-  }
+  constructor(private readonly _farming: Farming) {}
 
   resolve(request: PlantSeedRequest): void {
     this._farming.plantSeed(request.plant);
@@ -44,9 +43,9 @@ And add it to our feature:
 export class Farming extends LudiekFeature<EnginePlugins> {
   public readonly name: string = 'farming';
 
-  public readonly controllers = [
-    new PlantSeedController(this),
-  ]
+  public readonly config = {
+    controllers: [new PlantSeedController(this)],
+  };
 }
 ```
 

@@ -7,11 +7,7 @@ import {
   createCouponState,
   createCurrencyState,
   createStatisticState,
-  CurrencyInput,
-  CurrencyOutput,
   CurrencyPlugin,
-  HasCurrencyCondition,
-  HasStatisticCondition,
   type InputShape,
   LudiekEngine,
   LudiekGame,
@@ -32,23 +28,18 @@ const couponState = $state(createCouponState());
 const couponPlugin = new CouponPlugin(couponState);
 
 // Create engine with plugins
-const config = {
+export const engine = new LudiekEngine({
   plugins: [currencyPlugin, statisticPlugin, achievementPlugin, couponPlugin],
-  conditions: [
-    new AlwaysTrueCondition(),
-    new HasCurrencyCondition(currencyPlugin),
-    new HasStatisticCondition(statisticPlugin),
-  ],
-  inputs: [new CurrencyInput(currencyPlugin)],
-  outputs: [new CurrencyOutput(currencyPlugin)],
-};
+  conditions: [new AlwaysTrueCondition()],
+} as const);
 
-const engine = new LudiekEngine(config);
 // Extract some neat utility types
 export type EnginePlugins = typeof engine.plugins;
-export type Condition = ConditionShape<typeof config.conditions>;
-export type Input = InputShape<typeof config.inputs>;
-export type Output = OutputShape<typeof config.outputs>;
+
+export type Input = InputShape<typeof engine.inputs>;
+export type Output = OutputShape<typeof engine.outputs>;
+export type Condition = ConditionShape<typeof engine.conditions>;
+
 export type PlantId = (typeof plants)[number]['id'];
 
 // Create your game
