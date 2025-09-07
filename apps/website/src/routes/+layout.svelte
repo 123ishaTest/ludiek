@@ -7,7 +7,7 @@
 
 <div class="flex h-screen flex-col">
   <LudiekNavbar />
-  <div class="flex flex-grow">
+  <div class="flex w-full flex-col">
     {@render children()}
   </div>
 </div>
