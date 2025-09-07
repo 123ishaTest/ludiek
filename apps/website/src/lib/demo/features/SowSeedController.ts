@@ -1,9 +1,10 @@
 import type { BaseRequestShape, LudiekController } from '@123ishatest/ludiek';
-import type { Farming } from '$lib/demo/features/Farming';
 import type { PlantId } from '$lib/demo/demo.svelte';
+import type { Farming } from '$lib/demo/features/Farming.svelte';
 
 export interface SowSeedRequest extends BaseRequestShape {
   type: '/farming/sow-seed';
+  plot: number;
   plant: PlantId;
 }
 
@@ -17,6 +18,6 @@ export class SowSeedController implements LudiekController<SowSeedRequest> {
   }
 
   resolve(request: SowSeedRequest): void {
-    this._farming.sow(request.plant);
+    this._farming.sow(request.plot, request.plant);
   }
 }

@@ -43,78 +43,66 @@
   };
 
   const harvestAll = (): void => {
-    for (let i = 0; i < farming.FARM_PLOTS; i++) {
-      farming.reap(i);
-    }
+    game.request({
+      type: '/farming/reap-all',
+    });
   };
 
   const plantAll = (): void => {
-    for (let i = 0; i < farming.FARM_PLOTS; i++) {
-      farming.sow(i, selectedSeed);
-    }
+    game.request({
+      type: '/farming/sow-all',
+      plant: selectedSeed,
+    });
   };
 </script>
 
-
-<br>
-<br>
 <div class="flex flex-col">
-
   <div class="flex flex-row justify-center">
+    <div class="flex flex-row space-x-8">
+      <div class="flex flex-col">
+        <div class="mb-4 flex flex-row justify-center space-x-4">
+          <button class="btn btn-error">Toggle amounts</button>
+          <button class="btn btn-error">Or something</button>
+        </div>
 
-
-
-      <div class="flex flex-row space-x-8">
-
-        <div class="flex flex-col">
-          <div class="flex flex-row justify-center space-x-4 mb-4">
-
-            <button class="btn btn-success" onclick={() => plantAll()}>Toggle amounts</button>
-            <button class="btn btn-success" onclick={() => harvestAll()}>Or something</button>
-          </div>
-
-        <table class="table w-min h-min">
+        <table class="table h-min w-min">
           <tbody>
-          {#each plants as plant (plant.id)}
-
-            <tr onclick="{() => selectSeed(plant.id)}"
+            {#each plants as plant (plant.id)}
+              <tr
+                onclick={() => selectSeed(plant.id)}
                 class="cursor-pointer {selectedSeed === plant.id ? 'bg-base-200' : ''}"
-            >
-              <td>
-                <div class="flex flex-row items-center space-x-2">
-                  <img class="pixelated h-4 w-4" src={asset(plant.stages[0])} alt={plant.name} />
-                  <span>{plant.name}</span>
-                </div>
-              </td>
-              <td><span>{currency.getBalance(plant.id)}</span>
-              </td>
-              <td>
-                <button class="btn btn-success w-28" onclick={() => buySeed(plant.id)}>
-                  Buy
-                  <CurrencyDisplay amount={plant.seedCost} currency={getCurrency('/currency/money')} />
-                </button>
-              </td>
-            </tr>
-          {/each}
+              >
+                <td>
+                  <div class="flex flex-row items-center space-x-2">
+                    <img class="pixelated h-4 w-4" src={asset(plant.stages[0])} alt={plant.name} />
+                    <span>{plant.name}</span>
+                  </div>
+                </td>
+                <td><span>{currency.getBalance(plant.id)}</span> </td>
+                <td>
+                  <button class="btn btn-success w-28" onclick={() => buySeed(plant.id)}>
+                    Buy
+                    <CurrencyDisplay amount={plant.seedCost} currency={getCurrency('/currency/money')} />
+                  </button>
+                </td>
+              </tr>
+            {/each}
           </tbody>
         </table>
-
+      </div>
+      <div class="flex flex-col">
+        <div class="mb-4 flex flex-row justify-center space-x-4">
+          <button class="btn btn-success" onclick={() => plantAll()}>Plant All</button>
+          <button class="btn btn-success" onclick={() => harvestAll()}>Harvest All</button>
         </div>
-        <div class="flex flex-col">
-
-          <div class="flex flex-row justify-center space-x-4 mb-4">
-
-            <button class="btn btn-success" onclick={() => plantAll()}>Plant All</button>
-            <button class="btn btn-success" onclick={() => harvestAll()}>Harvest All</button>
-          </div>
 
         <div class="grid grid-cols-5 gap-4">
           {#each farming.plots as plot, i (i)}
             <button
               class="cursor-pointer"
               onclick={() => {
-              plotClicked(i);
-            }}
+                plotClicked(i);
+              }}
             >
               <FarmPlot {plot} index={i}></FarmPlot>
             </button>
@@ -122,6 +110,5 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>

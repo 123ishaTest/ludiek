@@ -4,7 +4,7 @@
   import { asset } from '$app/paths';
 
   interface Props {
-    amount: number
+    amount: number;
     currency: CurrencyDetail;
   }
 
@@ -14,6 +14,6 @@
 </script>
 
 <div class="flex flex-row items-center space-x-1">
+  <img class="pixelated h-6 w-6" src={icon} alt={currency.name} />
   <span>{amount}</span>
-  <img class="w-6 h-6 pixelated" src="{icon}" alt="{currency.name}"/>
 </div>

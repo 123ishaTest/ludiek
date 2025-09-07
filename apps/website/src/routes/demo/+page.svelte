@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { achievement, currency, game, statistic } from '$lib/demo/demo.svelte';
+  import { achievement, currency, farming, game, statistic } from '$lib/demo/demo.svelte';
   import FarmDisplay from '$lib/components/farming/FarmDisplay.svelte';
   import { onMount } from 'svelte';
 
@@ -17,30 +17,6 @@
     console.log('Achievement gained:', a);
   });
 
-  const sow = () => {
-    game.request({
-      // TODO(@Isha): Move this into a game.request combined type
-      type: '/farming/sow-seed',
-      plant: '/plant/sunflower',
-    });
-    achievement.checkAchievements();
-  };
-
-  const trade = () => {
-    game.handleTransaction({
-      input: {
-        type: 'currency',
-        id: '/currency/money',
-        amount: 100,
-      },
-      output: {
-        type: 'currency',
-        id: '/currency/compost',
-        amount: 1,
-      },
-    });
-  };
-
   onMount(() => {
     game.loadFromStorage();
     game.start();
@@ -52,6 +28,5 @@
   <p>You have {compost} compost</p>
   <p>You have planted {planted} sunflowers</p>
 
-  <button class="btn btn-secondary" onclick={() => trade()}>Trade 100 money for 1 compost</button>
-  <FarmDisplay farming={game.features.farming} />
+  <FarmDisplay {farming} />
 </div>

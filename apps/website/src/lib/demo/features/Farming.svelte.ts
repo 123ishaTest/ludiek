@@ -1,13 +1,20 @@
 import { LudiekFeature } from '@123ishatest/ludiek';
 import type { EnginePlugins } from '$lib/demo/demo.svelte';
-
 import type { PlantDetail } from '$lib/demo/model/PlantDetail';
 import { emptyPlot, type FarmingState, type FarmPlotState } from '$lib/demo/features/FarmingState';
 import { getPlant, type PlantId } from '$lib/demo/content';
+import { SowSeedController } from '$lib/demo/features/SowSeedController';
+import { SowAllController } from '$lib/demo/features/SowAllController';
+import { ReapAllController } from '$lib/demo/features/ReapAllController';
 
 export class Farming extends LudiekFeature<EnginePlugins> {
   public readonly name: string = 'farming';
+  public readonly config = {
+    controllers: [new SowSeedController(this), new SowAllController(this), new ReapAllController(this)],
+  };
+
   public readonly FARM_PLOTS = 25;
+
   protected _state: FarmingState = $state({
     plots: [],
   });
@@ -27,7 +34,7 @@ export class Farming extends LudiekFeature<EnginePlugins> {
     this.growAllPlants(delta);
   }
 
-  public growAllPlants(amount: number): void {
+  private growAllPlants(amount: number): void {
     this._state.plots.forEach((plot) => {
       if (!plot.plant) {
         return;
