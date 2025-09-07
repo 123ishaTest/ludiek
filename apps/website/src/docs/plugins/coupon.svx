@@ -1,5 +1,5 @@
 ---
-title: CouponDetail Plugin
+title: Coupon Plugin
 ---
 
 <script>

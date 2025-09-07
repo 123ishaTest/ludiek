@@ -9,7 +9,7 @@ export interface SkillDefinition {
   experiencePerLevel: number[];
 
   /**
-   * The experience
+   * The experience this skill starts at
    */
   initialExperience?: number;
 }

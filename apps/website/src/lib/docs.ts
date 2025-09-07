@@ -21,10 +21,11 @@ export const docsLayout: DocsLayout = {
     {
       title: 'Plugins',
       pages: [
-        { title: 'Currency', slug: 'plugins/currency' },
-        { title: 'Statistic', slug: 'plugins/statistic' },
         { title: 'Achievement', slug: 'plugins/achievement' },
         { title: 'Coupon', slug: 'plugins/coupon' },
+        { title: 'Currency', slug: 'plugins/currency' },
+        { title: 'Skill', slug: 'plugins/skill' },
+        { title: 'Statistic', slug: 'plugins/statistic' },
       ],
     },
   ],

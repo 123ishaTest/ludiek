@@ -7,6 +7,7 @@ import { SkillExperience } from '@ludiek/plugins/skill/SkillExperience';
 import { SkillExperienceOutput } from '@ludiek/plugins/skill/SkillExperienceOutput';
 import { HasSkillLevelCondition } from '@ludiek/plugins/skill/HasSkillLevelCondition';
 import { HasSkillExperienceCondition } from '@ludiek/plugins/skill/HasSkillExperienceCondition';
+import { progress, Progress } from '@ludiek/util/progress';
 
 export class SkillPlugin extends LudiekPlugin {
   readonly name = 'skill';
@@ -19,7 +20,8 @@ export class SkillPlugin extends LudiekPlugin {
 
   private readonly _skills: Record<string, SkillDefinition> = {};
 
-  protected _onLevelUp = new EventDispatcher<SkillDefinition, number>();
+  private _onLevelUp = new EventDispatcher<SkillDefinition, number>();
+  private _onExperienceGained = new EventDispatcher<SkillDefinition, number>();
 
   constructor(state: SkillPluginState = createSkillState()) {
     super();
@@ -37,6 +39,8 @@ export class SkillPlugin extends LudiekPlugin {
     const oldLevel = this.getLevel(experience.skill);
     this._state.experience[experience.skill] += experience.amount;
     const newLevel = this.getLevel(experience.skill);
+
+    this._onExperienceGained.dispatch(this._skills[experience.skill], experience.amount);
     if (oldLevel !== newLevel) {
       this._onLevelUp.dispatch(this._skills[experience.skill], newLevel);
     }
@@ -61,8 +65,8 @@ export class SkillPlugin extends LudiekPlugin {
 
     const skill = this._skills[id];
     const experience = this.getExperience(id);
-    // TODO(@Isha): Improve performance?
 
+    // TODO(@Isha): Improve performance?
     const index = skill.experiencePerLevel.findIndex((expNeeded) => {
       return expNeeded > experience;
     });
@@ -70,6 +74,36 @@ export class SkillPlugin extends LudiekPlugin {
       return skill.experiencePerLevel.length - 1;
     }
     return index - 1;
+  }
+
+  public getLevelProgress(id: string): Progress {
+    const currentLevel = this.getLevel(id);
+    return progress(this.getExpThisLevel(id), this.getExpNeededForLevel(id, currentLevel));
+  }
+
+  /**
+   * Get the amount of exp that we have made in this current level
+   * @param id
+   */
+  public getExpThisLevel(id: string): number {
+    const totalExperience = this.getExperience(id);
+    const currentLevel = this.getLevel(id);
+    const currentLevelExperience = this.getTotalExpNeededForLevel(id, currentLevel);
+    return totalExperience - currentLevelExperience;
+  }
+
+  /**
+   * Get the exp that is needed to move from level to level + 1
+   * @param id
+   * @param level
+   */
+  public getExpNeededForLevel(id: string, level: number): number {
+    if (level >= this._skills[id].experiencePerLevel.length - 1) {
+      return Infinity;
+    }
+    const currentLevelExperience = this.getTotalExpNeededForLevel(id, level);
+    const nextLevelExperience = this.getTotalExpNeededForLevel(id, level + 1);
+    return nextLevelExperience - currentLevelExperience;
   }
 
   /**
@@ -99,6 +133,13 @@ export class SkillPlugin extends LudiekPlugin {
    */
   public supportsSkill(id: string): boolean {
     return this._skills[id] != undefined;
+  }
+
+  /**
+   * Emitted when experience is gained
+   */
+  public get onExperienceGained(): IEvent<SkillDefinition, number> {
+    return this._onExperienceGained.asEvent();
   }
 
   /**
