@@ -1,0 +1,56 @@
+---
+title: Skill Plugin
+---
+
+<script>
+  import SkillDemonstration from './SkillDemonstration.svelte';
+</script>
+
+Skills are a mechanic traditionally used in RPGs.
+You perform actions, gain experience and level up, which often unlock new actions or equipment to enjoy.
+
+The skill plugin provides tracking for skills, gaining experience and a bunch of utility methods so you can easily display player progress.
+
+## Demo
+
+<SkillDemonstration/>
+
+## Usage
+
+```ts
+import { SkillPlugin } from '@123ishatest/ludiek';
+
+const skill = new SkillPlugin();
+skill.loadContent([
+  { id: '/skill/fishing', experiencePerLevel: [0, 0, 3, 9, 18, 30, 45, 63, 84] },
+  { id: '/skill/mining', experiencePerLevel: [0, 300, 200], initialExperience: 100 },
+]);
+
+// Gain experience
+skill.gainExperience({ skill: '/skill/fishing', amount: 10 });
+
+// Check our current experience and level
+skill.getExperience('/skill/fishing') // 10
+skill.getLevel('/skill/fishing') // 3
+skill.getExpThisLevel('/skill/fishing') // 1
+
+// Utility methods
+skill.getTotalExpNeededForLevel('/skill/fishing', 2) // 3
+skill.getExpNeededForLevel('/skill/fishing', 4) // 12
+skill.getLevelProgress('/skill/fishing') // { current: 1, target: 9, percentage: 0.111 }
+```
+
+Connect to events.
+```ts
+skill.onExperienceGained.subscribe((skill, exp) => {
+  console.log(`You have gained ${exp} experience in ${skill.id}`)
+});
+
+skill.onLevelUp.subscribe((skill, level) => {
+  console.log(`You have reached level ${level} in ${skill.id`)
+});
+```
+
+## Links
+
+- [src/plugins/skill/SkillPlugin.ts](https://github.com/123ishaTest/ludiek/blob/main/packages/ludiek/src/plugins/skill/SkillPlugin.ts)
