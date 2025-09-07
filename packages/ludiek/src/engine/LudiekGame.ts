@@ -2,16 +2,20 @@ import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 import { PluginMap } from '@ludiek/engine/LudiekEngineConfig';
-import { EngineConditionShape, LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
+import { LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
 import { ISignal, SignalDispatcher } from 'strongly-typed-events';
 import { LudiekFeaturesSaveData, LudiekSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 import { LudiekLocalStorage } from '@ludiek/engine/peristence/LudiekLocalStorage';
 import { LudiekJsonSaveEncoder } from '@ludiek/engine/peristence/LudiekJsonSaveEncoder';
 import { LudiekGameConfig } from '@ludiek/engine/LudiekGameConfig';
-import { EngineInputShape, LudiekInput } from '@ludiek/engine/input/LudiekInput';
-import { EngineOutputShape, LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
+import { LudiekInput } from '@ludiek/engine/input/LudiekInput';
+import { LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
 import { LudiekController } from '@ludiek/engine/request/LudiekRequest';
 import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
+import { RequestShape } from '@ludiek/engine/request/LudiekRequestType';
+import { ConditionShape } from '@ludiek/engine/condition/LudiekConditionType';
+import { InputShape } from '@ludiek/engine/input/LudiekInputType';
+import { OutputShape } from '@ludiek/engine/output/LudiekOutputType';
 
 export type FeatureMap<Features extends LudiekFeature<Record<string, LudiekPlugin>>[]> = {
   [Feature in Features[number] as Feature['name']]: Extract<Features[number], { name: Feature['name'] }>;
@@ -19,15 +23,19 @@ export type FeatureMap<Features extends LudiekFeature<Record<string, LudiekPlugi
 
 export class LudiekGame<
   Plugins extends LudiekPlugin[],
-  Conditions extends LudiekCondition[],
-  Inputs extends LudiekInput[],
-  Outputs extends LudiekOutput[],
-  Controllers extends LudiekController[],
   Features extends LudiekFeature<PluginMap<Plugins>>[],
+  EngineConditions extends LudiekCondition[] | undefined = undefined,
+  EngineInputs extends LudiekInput[] | undefined = undefined,
+  EngineOutputs extends LudiekOutput[] | undefined = undefined,
+  EngineControllers extends LudiekController[] | undefined = undefined,
+  Conditions extends LudiekCondition[] | undefined = undefined,
+  Inputs extends LudiekInput[] | undefined = undefined,
+  Outputs extends LudiekOutput[] | undefined = undefined,
+  Controllers extends LudiekController[] | undefined = undefined,
 > {
   public readonly features: FeatureMap<Features>;
-  public readonly engine: LudiekEngine<Plugins, Conditions, Inputs, Outputs, Controllers>;
-  public readonly config: LudiekGameConfig<Plugins, Features>;
+  private readonly _engine: LudiekEngine<Plugins, EngineConditions, EngineInputs, EngineOutputs, EngineControllers>;
+  public readonly config: LudiekGameConfig<Plugins, Features, Conditions, Inputs, Outputs, Controllers>;
   protected saveEncoder = new LudiekJsonSaveEncoder();
   protected _tickInterval: NodeJS.Timeout | null = null;
 
@@ -36,10 +44,10 @@ export class LudiekGame<
   protected _nextSave: number;
 
   constructor(
-    engine: LudiekEngine<Plugins, Conditions, Inputs, Outputs, Controllers>,
-    config: LudiekGameConfig<Plugins, Features> & { features: Features },
+    engine: LudiekEngine<Plugins, EngineConditions, EngineInputs, EngineOutputs, EngineControllers>,
+    config: LudiekGameConfig<Plugins, Features, Conditions, Inputs, Outputs, Controllers> & { features: Features },
   ) {
-    this.engine = engine;
+    this._engine = engine;
     this.features = Object.fromEntries(config.features?.map((f) => [f.name, f]) ?? []) as FeatureMap<Features>;
 
     this.config = config;
@@ -47,7 +55,7 @@ export class LudiekGame<
     this._nextSave = this.config.saveInterval;
 
     this.featureList.forEach((feature) => {
-      feature.init(this.engine.plugins);
+      feature.init(this._engine.plugins);
 
       feature.config.conditions?.forEach((c) => engine.registerCondition(c));
       feature.config.inputs?.forEach((i) => engine.registerInput(i));
@@ -89,24 +97,42 @@ export class LudiekGame<
     this._onTick.dispatch();
   }
 
-  public request(request: Parameters<this['engine']['request']>[0]): void {
-    return this.engine.request(request);
+  public get engine(): LudiekEngine<Plugins, EngineConditions, EngineInputs, EngineOutputs, EngineControllers> {
+    return this._engine;
   }
 
-  public evaluate(
-    condition: EngineConditionShape<Plugins, Conditions> | EngineConditionShape<Plugins, Conditions>[],
-  ): boolean {
-    return this.engine.evaluate(condition);
+  public request(request: RequestShape<Plugins | Features, Controllers | EngineControllers>): void {
+    return this._engine.request(request as RequestShape<Plugins, EngineControllers>);
+  }
+
+  public evaluate(condition: ConditionShape<Plugins | Features, Conditions | EngineConditions>): boolean {
+    return this._engine.evaluate(condition);
+  }
+
+  public canLoseInput(input: InputShape<Plugins | Features, Inputs | EngineInputs>): boolean {
+    return this._engine.canLoseInput(input);
+  }
+
+  public loseInput(input: InputShape<Plugins | Features, Inputs | EngineInputs>): void {
+    this._engine.loseInput(input);
+  }
+
+  public canGainOutput(output: OutputShape<Plugins | Features, Outputs | EngineOutputs>): boolean {
+    return this._engine.canGainOutput(output);
+  }
+
+  public gainOutput(output: OutputShape<Plugins | Features, Outputs | EngineOutputs>): void {
+    this._engine.gainOutput(output);
   }
 
   public handleTransaction(
     transaction: LudiekTransaction<
-      EngineInputShape<Plugins, Inputs>,
-      EngineOutputShape<Plugins, Outputs>,
-      EngineConditionShape<Plugins, Conditions>
+      InputShape<Plugins, EngineInputs>,
+      OutputShape<Plugins, EngineOutputs>,
+      ConditionShape<Plugins, EngineConditions>
     >,
   ): boolean {
-    return this.engine.handleTransaction(transaction);
+    return this._engine.handleTransaction(transaction);
   }
 
   public save(): LudiekSaveData {
@@ -116,7 +142,7 @@ export class LudiekGame<
     });
 
     return {
-      engine: this.engine.save(),
+      engine: this._engine.save(),
       features: featureData,
     };
   }
@@ -137,7 +163,7 @@ export class LudiekGame<
       }
       feature.load(featureSaveData);
     });
-    this.engine.load(saveData.engine);
+    this._engine.load(saveData.engine);
   }
 
   public get featureList(): LudiekFeature<PluginMap<Plugins>>[] {

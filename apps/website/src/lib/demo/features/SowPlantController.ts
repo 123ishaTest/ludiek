@@ -8,7 +8,7 @@ export interface SowSeedRequest extends BaseRequestShape {
 }
 
 export class SowSeedController implements LudiekController<SowSeedRequest> {
-  type: string = '/farming/sow-seed';
+  readonly type: string = '/farming/sow-seed';
 
   private readonly _farming: Farming;
 
