@@ -8,36 +8,19 @@ export { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 export { LudiekGame } from '@ludiek/engine/LudiekGame';
 
 // Engine.Conditions
-export type {
-  LudiekCondition,
-  ConditionShape,
-  BaseConditionShape,
-  EngineConditions,
-  EngineConditionShape,
-} from '@ludiek/engine/condition/LudiekCondition';
-export { AlwaysTrueCondition } from '@ludiek/engine/condition/AlwaysTrueCondition';
-export { AlwaysFalseCondition } from '@ludiek/engine/condition/AlwaysFalseCondition';
+export type { LudiekCondition, BaseConditionShape } from '@ludiek/engine/condition/LudiekCondition';
+export type { ExtractCondition, ConditionShape } from '@ludiek/engine/condition/LudiekConditionType';
 
 // Engine.Requests
-export type { BaseRequestShape, LudiekController, RequestShape } from '@ludiek/engine/request/LudiekRequest';
+export type { BaseRequestShape, LudiekController } from '@ludiek/engine/request/LudiekRequest';
+export type { ExtractRequest, RequestShape } from '@ludiek/engine/request/LudiekRequestType';
 export { type RequestEvent } from '@ludiek/engine/request/LudiekRequest';
 
 // Engine.Transactions
 export type { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
-export type {
-  LudiekInput,
-  InputShape,
-  BaseInputShape,
-  EngineInputs,
-  EngineInputShape,
-} from '@ludiek/engine/input/LudiekInput';
-export type {
-  LudiekOutput,
-  OutputShape,
-  BaseOutputShape,
-  EngineOutputs,
-  EngineOutputShape,
-} from '@ludiek/engine/output/LudiekOutput';
+export type { LudiekInput, BaseInputShape } from '@ludiek/engine/input/LudiekInput';
+export type { ExtractInput, InputShape } from '@ludiek/engine/input/LudiekInputType';
+export type { ExtractOutput, OutputShape } from '@ludiek/engine/output/LudiekOutputType';
 
 /**
  * Plugins
@@ -78,6 +61,12 @@ export { HasStatisticCondition } from '@ludiek/plugins/statistic/HasStatisticCon
 
 // Statistic.Conditions
 export { HasMapStatisticCondition } from '@ludiek/plugins/statistic/HasMapStatisticCondition';
+
+/**
+ * Standard lib
+ */
+export { AlwaysTrueCondition } from '@ludiek/engine/condition/AlwaysTrueCondition';
+export { AlwaysFalseCondition } from '@ludiek/engine/condition/AlwaysFalseCondition';
 
 /**
  * Util

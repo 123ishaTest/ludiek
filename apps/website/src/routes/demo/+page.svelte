@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { achievement, currency, engine, game, statistic } from '$lib/demo/demo.svelte';
+  import { achievement, currency, game, statistic } from '$lib/demo/demo.svelte';
   import { onMount } from 'svelte';
 
   let money = $derived(currency.getBalance('/currency/money'));
@@ -17,9 +17,8 @@
   });
 
   const sow = () => {
-    engine.request({
+    game.request({
       // TODO(@Isha): Move this into a game.request combined type
-      // @ts-expect-error this should be fixed
       type: '/farming/sow-seed',
       plant: '/plant/sunflower',
     });
@@ -27,7 +26,7 @@
   };
 
   const trade = () => {
-    engine.handleTransaction({
+    game.handleTransaction({
       input: {
         type: 'currency',
         id: '/currency/money',

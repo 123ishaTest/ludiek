@@ -1,17 +1,17 @@
 import {
   AchievementPlugin,
   AlwaysTrueCondition,
-  type ConditionShape,
+  type ExtractOutput,
   CouponPlugin,
   createAchievementState,
   createCouponState,
   createCurrencyState,
   createStatisticState,
   CurrencyPlugin,
-  type InputShape,
+  type ExtractInput,
   LudiekEngine,
   LudiekGame,
-  type OutputShape,
+  type ExtractCondition,
   StatisticPlugin,
 } from '@123ishatest/ludiek';
 import { Farming } from '$lib/demo/features/Farming';
@@ -36,9 +36,9 @@ export const engine = new LudiekEngine({
 // Extract some neat utility types
 export type EnginePlugins = typeof engine.plugins;
 
-export type Input = InputShape<typeof engine.inputs>;
-export type Output = OutputShape<typeof engine.outputs>;
-export type Condition = ConditionShape<typeof engine.conditions>;
+export type Input = ExtractInput<typeof engine.inputs>;
+export type Output = ExtractOutput<typeof engine.outputs>;
+export type Condition = ExtractCondition<typeof engine.conditions>;
 
 export type PlantId = (typeof plants)[number]['id'];
 
