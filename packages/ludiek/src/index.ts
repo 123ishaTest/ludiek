@@ -54,6 +54,12 @@ export { CurrencyOutput } from '@ludiek/plugins/currency/CurrencyOutput';
 export { CouponPlugin } from '@ludiek/plugins/coupon/CouponPlugin';
 export { type CouponPluginState, createCouponState } from '@ludiek/plugins/coupon/CouponPluginState';
 
+// Loot
+export { LootTablePlugin } from '@ludiek/plugins/lootTable/LootTablePlugin';
+
+// Loot.Transactions
+export { LootTableOutput } from '@ludiek/plugins/lootTable/LootTableOutput';
+
 // Skill
 export { SkillPlugin } from '@ludiek/plugins/skill/SkillPlugin';
 export { type SkillPluginState, createSkillState } from '@ludiek/plugins/skill/SkillPluginState';

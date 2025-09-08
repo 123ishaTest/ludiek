@@ -36,8 +36,14 @@ export abstract class LudiekElement implements LudiekSavable {
     LudiekController[]
   >;
 
-  inject(engine: LudiekEngine<LudiekPlugin[], LudiekCondition[], LudiekInput[], LudiekOutput[], LudiekController[]>) {
-    this._engine = engine;
+  inject<Engine>(engine: Engine) {
+    this._engine = engine as LudiekEngine<
+      LudiekPlugin[],
+      LudiekCondition[],
+      LudiekInput[],
+      LudiekOutput[],
+      LudiekController[]
+    >;
   }
 
   /**
@@ -63,6 +69,7 @@ export abstract class LudiekElement implements LudiekSavable {
    * @see LudiekEngine.canLoseInput
    */
   protected canLoseInput(input: BaseInputShape | BaseInputShape[]): boolean {
+    this.ensureEngine();
     return this._engine.canLoseInput(input);
   }
 
@@ -71,6 +78,7 @@ export abstract class LudiekElement implements LudiekSavable {
    * @see LudiekEngine.loseInput
    */
   protected loseInput(input: BaseInputShape | BaseInputShape[]): void {
+    this.ensureEngine();
     this._engine.loseInput(input);
   }
 
@@ -79,6 +87,7 @@ export abstract class LudiekElement implements LudiekSavable {
    * @see LudiekEngine.canGainOutput
    */
   protected canGainOutput(output: BaseOutputShape | BaseOutputShape[]): boolean {
+    this.ensureEngine();
     return this._engine.canGainOutput(output);
   }
 
@@ -87,6 +96,7 @@ export abstract class LudiekElement implements LudiekSavable {
    * @see LudiekEngine.gainOutput
    */
   protected gainOutput(output: BaseOutputShape | BaseOutputShape[]) {
+    this.ensureEngine();
     this._engine.gainOutput(output);
   }
 

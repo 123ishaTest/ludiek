@@ -11,7 +11,7 @@ import { InputNotFoundError } from '@ludiek/engine/input/InputError';
 import { OutputNotFoundError } from '@ludiek/engine/output/OutputError';
 import { ControllerNotFoundError } from '@ludiek/engine/request/RequestError';
 import { CombineConditions, ConditionShape } from '@ludiek/engine/condition/LudiekConditionType';
-import { RequestShape, CombineControllers } from '@ludiek/engine/request/LudiekRequestType';
+import { CombineControllers, RequestShape } from '@ludiek/engine/request/LudiekRequestType';
 import { CombineInputs, InputShape } from '@ludiek/engine/input/LudiekInputType';
 import { CombineOutputs, OutputShape } from '@ludiek/engine/output/LudiekOutputType';
 
@@ -38,9 +38,7 @@ export class LudiekEngine<
 
     // Inject the engine into all plugins so they can access core concepts
     config.plugins?.forEach((plugin) => {
-      plugin.inject(
-        this as LudiekEngine<LudiekPlugin[], LudiekCondition[], LudiekInput[], LudiekOutput[], LudiekController[]>,
-      );
+      plugin.inject(this);
 
       plugin.config.conditions?.forEach((c) => this.registerCondition(c));
       plugin.config.inputs?.forEach((i) => this.registerInput(i));
