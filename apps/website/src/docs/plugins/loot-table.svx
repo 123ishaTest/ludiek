@@ -60,4 +60,4 @@ loot.onRoll.subscribe((output) => {
 
 ## Links
 
-- [src/plugins/loot/LootPlugin.ts](https://github.com/123ishaTest/ludiek/blob/main/packages/ludiek/src/plugins/loot/LootPlugin.ts)
+- [src/plugins/lootTable/LootTablePlugin.ts](https://github.com/123ishaTest/ludiek/blob/main/packages/ludiek/src/plugins/lootTable/LootTablePlugin.ts)

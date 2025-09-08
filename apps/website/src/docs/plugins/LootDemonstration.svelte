@@ -6,7 +6,7 @@
 
   const tables = [
     {
-      id: '/lootTable/demo',
+      id: '/table/demo',
       always: [
         { output: { type: '/output/currency', id: '/currency/money', amount: 1 } },
         { output: { type: '/output/currency', id: '/currency/gems', amount: 1 } },
@@ -30,13 +30,13 @@
   let rollResult: DemoOutput[] = $state([]);
   let sortedRolls = $derived(rollResult.toSorted((a, b) => b.amount - a.amount));
   const rollOnce = () => {
-    rollResult = lootTable.roll('/lootTable/demo', 1, true) as DemoOutput[];
+    rollResult = lootTable.roll('/table/demo', 1, true) as DemoOutput[];
   };
   const rollTen = () => {
-    rollResult = lootTable.roll('/lootTable/demo', 10, true) as DemoOutput[];
+    rollResult = lootTable.roll('/table/demo', 10, true) as DemoOutput[];
   };
   const rollThousand = () => {
-    rollResult = lootTable.roll('/lootTable/demo', 1000, true) as DemoOutput[];
+    rollResult = lootTable.roll('/table/demo', 1000, true) as DemoOutput[];
   };
 </script>
 
