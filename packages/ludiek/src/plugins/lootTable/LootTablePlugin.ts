@@ -53,7 +53,7 @@ export class LootTablePlugin extends LudiekPlugin {
 
   private calculateAlwaysLoot(id: string): LootOutcome[] {
     const always = this._tables[id].always;
-    if (!always) {
+    if (!always || always.length === 0) {
       return [];
     }
     return this.filterRequirements(always);
@@ -61,7 +61,7 @@ export class LootTablePlugin extends LudiekPlugin {
 
   private calculateOneOfLoot(id: string): LootOutcome[] {
     const oneOf = this._tables[id].oneOf;
-    if (!oneOf) {
+    if (!oneOf || oneOf.length === 0) {
       return [];
     }
     const available = this.filterRequirements(oneOf);
@@ -70,7 +70,7 @@ export class LootTablePlugin extends LudiekPlugin {
 
   private calculateAnyOfLoot(id: string): LootOutcome[] {
     const anyOf = this._tables[id].anyOf;
-    if (!anyOf) {
+    if (!anyOf || anyOf.length === 0) {
       return [];
     }
     const available = this.filterRequirements(anyOf);

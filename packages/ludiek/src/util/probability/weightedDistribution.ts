@@ -18,5 +18,5 @@ export const getOneFrom = <Option extends WeightedOption>(options: Option[]): Op
       draw -= options[i].weight;
     }
   }
-  throw new Error('This should never happen');
+  throw new Error('Cannot draw one from an empty array');
 };

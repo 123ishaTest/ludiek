@@ -226,3 +226,21 @@ it('sends events on rolls', () => {
   // After
   unsub();
 });
+
+it('returns nothing on empty tables', () => {
+  // Arrange
+  lootTable.loadContent([
+    {
+      id: '/table/empty',
+      always: [],
+      oneOf: [],
+      anyOf: [],
+    },
+  ]);
+
+  // Act
+  const result = lootTable.roll('/table/empty');
+
+  // Assert
+  expect(result).toHaveLength(0);
+});
