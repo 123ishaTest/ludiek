@@ -1,6 +1,6 @@
 import {
   AchievementPlugin,
-  AlwaysTrueCondition,
+  TrueCondition,
   type ExtractOutput,
   CouponPlugin,
   createAchievementState,
@@ -30,7 +30,7 @@ const couponPlugin = new CouponPlugin(couponState);
 // Create engine with plugins
 export const engine = new LudiekEngine({
   plugins: [currencyPlugin, statisticPlugin, achievementPlugin, couponPlugin],
-  conditions: [new AlwaysTrueCondition()],
+  conditions: [new TrueCondition()],
 } as const);
 
 // Extract some neat utility types

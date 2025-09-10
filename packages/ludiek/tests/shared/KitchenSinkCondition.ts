@@ -6,10 +6,12 @@ export interface HasVariableConditionShape extends BaseConditionShape {
   amount: number;
 }
 
-export class KitchenSinkCondition implements LudiekCondition<HasVariableConditionShape> {
+export class KitchenSinkCondition extends LudiekCondition<HasVariableConditionShape> {
   readonly type = '/condition/has-variable';
 
-  constructor(private readonly _kitchenSink: KitchenSinkPlugin) {}
+  constructor(private readonly _kitchenSink: KitchenSinkPlugin) {
+    super();
+  }
   evaluate(condition: HasVariableConditionShape): boolean {
     return this._kitchenSink.variable >= condition.amount;
   }

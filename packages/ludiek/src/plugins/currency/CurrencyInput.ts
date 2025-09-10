@@ -2,17 +2,18 @@ import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
 import { BaseInputShape, LudiekInput } from '@ludiek/engine/input/LudiekInput';
 
 interface CurrencyInputShape extends BaseInputShape {
-  type: 'currency';
+  type: '/input/currency';
   id: string;
   amount: number;
 }
 
-export class CurrencyInput implements LudiekInput<CurrencyInputShape> {
-  readonly type = 'currency';
+export class CurrencyInput extends LudiekInput<CurrencyInputShape> {
+  readonly type = '/input/currency';
 
   private _currency: CurrencyPlugin;
 
   constructor(currency: CurrencyPlugin) {
+    super();
     this._currency = currency;
   }
 

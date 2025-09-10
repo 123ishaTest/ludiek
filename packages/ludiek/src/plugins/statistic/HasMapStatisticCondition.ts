@@ -2,18 +2,19 @@ import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/condition/Lu
 import { StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
 
 interface HasMapStatisticConditionShape extends BaseConditionShape {
-  type: 'has-map-statistic';
+  type: '/condition/has-map-statistic';
   id: string;
   key: string;
   amount: number;
 }
 
-export class HasMapStatisticCondition implements LudiekCondition<HasMapStatisticConditionShape> {
-  readonly type = 'has-map-statistic';
+export class HasMapStatisticCondition extends LudiekCondition<HasMapStatisticConditionShape> {
+  readonly type = '/condition/has-map-statistic';
 
   private _statistic: StatisticPlugin;
 
   constructor(statistic: StatisticPlugin) {
+    super();
     this._statistic = statistic;
   }
 

@@ -2,17 +2,18 @@ import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/condition/Lu
 import { SkillPlugin } from '@ludiek/plugins/skill/SkillPlugin';
 
 interface HasSkillLevelConditionShape extends BaseConditionShape {
-  type: '/skill/has-level';
+  type: '/condition/has-skill-level';
   skill: string;
   level: number;
 }
 
-export class HasSkillLevelCondition implements LudiekCondition<HasSkillLevelConditionShape> {
-  readonly type = '/skill/has-level';
+export class HasSkillLevelCondition extends LudiekCondition<HasSkillLevelConditionShape> {
+  readonly type = '/condition/has-skill-level';
 
   private _skill: SkillPlugin;
 
   constructor(skill: SkillPlugin) {
+    super();
     this._skill = skill;
   }
 

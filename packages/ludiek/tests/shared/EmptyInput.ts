@@ -4,7 +4,7 @@ export interface EmptyInputShape extends BaseInputShape {
   type: '/input/empty';
 }
 
-export class EmptyInput implements LudiekInput<EmptyInputShape> {
+export class EmptyInput extends LudiekInput<EmptyInputShape> {
   readonly type = '/input/empty';
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

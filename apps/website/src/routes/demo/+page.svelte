@@ -28,12 +28,12 @@
   const trade = () => {
     game.handleTransaction({
       input: {
-        type: 'currency',
+        type: '/input/currency',
         id: '/currency/money',
         amount: 100,
       },
       output: {
-        type: 'currency',
+        type: '/output/currency',
         id: '/currency/gems',
         amount: 1,
       },

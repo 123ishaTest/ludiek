@@ -2,13 +2,13 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import { AchievementPlugin } from '@ludiek/plugins/achievement/AchievementPlugin';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { AlwaysTrueCondition } from '@ludiek/engine/condition/AlwaysTrueCondition';
-import { AlwaysFalseCondition } from '@ludiek/engine/condition/AlwaysFalseCondition';
+import { TrueCondition } from '@ludiek/engine/condition/TrueCondition';
+import { FalseCondition } from '@ludiek/engine/condition/FalseCondition';
 import { UnknownAchievementError } from '@ludiek/plugins/achievement/AchievementErrors';
 
 const achievement = new AchievementPlugin();
 new LudiekEngine({
-  conditions: [new AlwaysTrueCondition(), new AlwaysFalseCondition()],
+  conditions: [new TrueCondition(), new FalseCondition()],
   plugins: [achievement],
 });
 

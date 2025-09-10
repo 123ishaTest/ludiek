@@ -31,7 +31,7 @@ If you need custom functionality, you can override the `save()` and `load()` fun
 
 ```ts
 export class CurrencyPlugin extends LudiekPlugin {
-  readonly name = 'currency';
+  public readonly name = 'currency';
 
   protected _state: CurrencyPluginState = {
     balances: {}

@@ -10,12 +10,13 @@ interface SkillExperienceOutputShape extends BaseOutputShape {
   amount: number;
 }
 
-export class SkillExperienceOutput implements LudiekOutput<SkillExperienceOutputShape> {
+export class SkillExperienceOutput extends LudiekOutput<SkillExperienceOutputShape> {
   readonly type = '/skill/experience';
 
   private _skill: SkillPlugin;
 
   constructor(skill: SkillPlugin) {
+    super();
     this._skill = skill;
   }
 

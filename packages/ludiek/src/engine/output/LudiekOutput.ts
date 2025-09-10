@@ -1,11 +1,22 @@
+import { LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
+
 export interface BaseOutputShape {
   type: string;
   amount: number;
 }
 
-export interface LudiekOutput<Output extends BaseOutputShape = BaseOutputShape> {
-  type: string;
+export abstract class LudiekOutput<Output extends BaseOutputShape = BaseOutputShape> extends LudiekEngineConcept {
+  public abstract readonly type: Output['type'];
 
-  canGain(output: Output): boolean;
-  gain(output: Output): void;
+  /**
+   * Whether this output can be gained
+   * @param output
+   */
+  public abstract canGain(output: Output): boolean;
+
+  /**
+   * Applying the output
+   * @param output
+   */
+  public abstract gain(output: Output): void;
 }

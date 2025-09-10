@@ -20,33 +20,33 @@ import { StatisticPlugin } from '@123ishatest/ludiek';
 
 const statistic = new StatisticPlugin();
 statistic.loadContent([
-  { id: 'total', type: 'scalar' },
-  { id: 'currency', type: 'map' },
+  { id: '/statistic/total-currency', type: 'scalar' },
+  { id: '/statistic/currencies', type: 'map' },
 ]);
 
-// Increment scalar 'total' by 3
-statistic.incrementStatistic('total', 3);
+// Increment scalar total currency by 3
+statistic.incrementStatistic('/statistic/total-currency', 3);
 
-// Increment map statistic 'currency' key 'money' by 4
-statistic.incrementMapStatistic('currency', 'money', 4);
+// Increment map statistic currencies money by 4
+statistic.incrementMapStatistic('/statistic/currencies', '/currency/money', 4);
 
 
 // And read them back
-statistic.getStatistic('total'); // 3
-statistic.getMapStatistic('currency', 'money'); // 4
+statistic.getStatistic('/statistic/total-currency'); // 3
+statistic.getMapStatistic('/statistic/currencies', '/currency/money'); // 4
 
 // Unset map keys return 0
-statistic.getMapStatistic('currency', 'gems'); // 0
+statistic.getMapStatistic('/statistic/currencies', 'gems'); // 0
 ```
 
 Connect incrementing statistics to existing events.
 ```ts
 currency.onCurrencyGain.subscribe(({ id, amount }) => {
   // Track the global total
-  statistic.incrementStatistic('total', amount);
+  statistic.incrementStatistic('/statistic/total-currency', amount);
   
   // Track total per currency
-  statistic.incrementMapStatistic('currency', id, amount);
+  statistic.incrementMapStatistic('/statistic/currencies', id, amount);
 });
 ```
 

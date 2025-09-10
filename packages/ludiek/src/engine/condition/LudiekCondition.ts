@@ -1,3 +1,5 @@
+import { LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
+
 /**
  * Base shape for all conditions.
  */
@@ -8,8 +10,14 @@ export interface BaseConditionShape {
 /**
  * A LudiekCondition evaluates a given condition shape.
  */
-export interface LudiekCondition<Condition extends BaseConditionShape = BaseConditionShape> {
-  type: string;
+export abstract class LudiekCondition<
+  Condition extends BaseConditionShape = BaseConditionShape,
+> extends LudiekEngineConcept {
+  public abstract readonly type: Condition['type'];
 
-  evaluate(condition: Condition): boolean;
+  /**
+   * Calculate whether this condition is true
+   * @param condition
+   */
+  public abstract evaluate(condition: Condition): boolean;
 }

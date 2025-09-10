@@ -4,7 +4,7 @@ export interface EmptyOutputShape extends BaseOutputShape {
   type: '/output/empty';
 }
 
-export class EmptyOutput implements LudiekOutput<EmptyOutputShape> {
+export class EmptyOutput extends LudiekOutput<EmptyOutputShape> {
   readonly type = '/output/empty';
 
   canGain(): boolean {

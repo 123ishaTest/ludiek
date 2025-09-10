@@ -17,18 +17,18 @@
   currency.loadContent(currencies);
 
   const statistics: StatisticDefinition[] = [
-    { id: 'currency', type: 'map' },
-    { id: 'total', type: 'scalar' },
+    { id: '/statistic/currencies', type: 'map' },
+    { id: '/statistic/total-currency', type: 'scalar' },
   ];
   statistic.loadContent(statistics);
 
-  let allStatistic = $derived(statistic.getStatistic('total'));
-  let currenciesStatistic = $state(statistic.getMapStatisticObject('currency'));
+  let allStatistic = $derived(statistic.getStatistic('/statistic/total-currency'));
+  let currenciesStatistic = $state(statistic.getMapStatisticObject('/statistic/currencies'));
 
   $effect(() => {
     currency.onCurrencyGain.sub(({ id, amount }) => {
-      statistic.incrementStatistic('total', amount);
-      statistic.incrementMapStatistic('currency', id, amount);
+      statistic.incrementStatistic('/statistic/total-currency', amount);
+      statistic.incrementMapStatistic('/statistic/currencies', id, amount);
     });
   });
 </script>

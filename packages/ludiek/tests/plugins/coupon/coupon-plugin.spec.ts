@@ -1,8 +1,8 @@
 import { beforeEach, expect, it } from 'vitest';
 import { CouponPlugin } from '@ludiek/plugins/coupon/CouponPlugin';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { AlwaysTrueCondition } from '@ludiek/engine/condition/AlwaysTrueCondition';
-import { AlwaysFalseCondition } from '@ludiek/engine/condition/AlwaysFalseCondition';
+import { TrueCondition } from '@ludiek/engine/condition/TrueCondition';
+import { FalseCondition } from '@ludiek/engine/condition/FalseCondition';
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
 import { CurrencyOutput } from '@ludiek/plugins/currency/CurrencyOutput';
 import { UnknownCouponError } from '@ludiek/plugins/coupon/CouponErrors';
@@ -10,22 +10,22 @@ import { UnknownCouponError } from '@ludiek/plugins/coupon/CouponErrors';
 const coupon = new CouponPlugin();
 const currency = new CurrencyPlugin();
 new LudiekEngine({
-  conditions: [new AlwaysTrueCondition(), new AlwaysFalseCondition()],
+  conditions: [new TrueCondition(), new FalseCondition()],
   outputs: [new CurrencyOutput(currency)],
   plugins: [coupon],
 });
 
-const currencyContent = [{ id: 'money' }];
+const currencyContent = [{ id: '/currency/money' }];
 const couponContent = [
   {
     id: 'always-true',
     hash: 'gain-10-money',
     condition: {
-      type: 'always-true',
+      type: '/condition/true',
     },
     output: {
-      type: 'currency',
-      id: 'money',
+      type: '/output/currency',
+      id: '/currency/money',
       amount: 10,
     },
   },
@@ -34,11 +34,11 @@ const couponContent = [
     hash: '-1504921627',
 
     condition: {
-      type: 'always-false',
+      type: '/condition/false',
     },
     output: {
-      type: 'currency',
-      id: 'money',
+      type: '/output/currency',
+      id: '/currency/money',
       amount: 1,
     },
   },
@@ -46,8 +46,8 @@ const couponContent = [
     id: 'no-condition',
     hash: '-1693392881',
     output: {
-      type: 'currency',
-      id: 'money',
+      type: '/output/currency',
+      id: '/currency/money',
       amount: 5,
     },
   },
@@ -99,7 +99,7 @@ it('awards output when redeeming coupons', () => {
 
   // Act
   coupon.enterCoupon(guess);
-  const money = currency.getBalance('money');
+  const money = currency.getBalance('/currency/money');
 
   // Assert
   expect(money).toBe(5);
@@ -111,7 +111,7 @@ it('ignores wrong coupons', () => {
 
   // Act
   const success = coupon.enterCoupon(guess);
-  const money = currency.getBalance('money');
+  const money = currency.getBalance('/currency/money');
 
   // Assert
   expect(success).toBe(false);

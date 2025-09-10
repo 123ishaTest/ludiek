@@ -29,10 +29,12 @@ interface CurrencyInputShape extends BaseInputShape {
 And we extend a `LudiekInput` for the losing currency logic:
 
 ```ts
-export class CurrencyInput implements LudiekInput<CurrencyInputShape> {
-  readonly type = '/input/currency';
+export class CurrencyInput extends LudiekInput<CurrencyInputShape> {
+  public readonly type = '/input/currency';
 
-  constructor(private readonly _currency: CurrencyPlugin) {}
+  constructor(private readonly _currency: CurrencyPlugin) {
+    super();
+  }
 
   canLose(input: CurrencyInputShape): boolean {
     return this._currency.hasCurrency(input);

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { AlwaysFalseCondition } from '@ludiek/engine/condition/AlwaysFalseCondition';
-import { AlwaysTrueCondition } from '@ludiek/engine/condition/AlwaysTrueCondition';
+import { FalseCondition } from '@ludiek/engine/condition/FalseCondition';
+import { TrueCondition } from '@ludiek/engine/condition/TrueCondition';
 
 const alwaysInput = {
   type: 'always',
@@ -29,7 +29,7 @@ const neverOutput = {
 };
 
 const engine = new LudiekEngine({
-  conditions: [new AlwaysTrueCondition(), new AlwaysFalseCondition()],
+  conditions: [new TrueCondition(), new FalseCondition()],
   inputs: [alwaysInput, neverInput],
   outputs: [alwaysOutput, neverOutput],
 });
@@ -119,7 +119,7 @@ describe('Engine Transactions', () => {
     // Act
     const isCompleted = engine.handleTransaction({
       requirement: {
-        type: 'always-false',
+        type: '/condition/false',
       },
     });
 
@@ -131,7 +131,7 @@ describe('Engine Transactions', () => {
     // Act
     const isCompleted = engine.handleTransaction({
       requirement: {
-        type: 'always-true',
+        type: '/condition/true',
       },
     });
 

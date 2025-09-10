@@ -22,42 +22,42 @@
     plugins: [currency, statistic, achievement],
     conditions: [new HasStatisticCondition(statistic)],
   });
-  currency.loadContent([{ id: 'money' }]);
-  statistic.loadContent([{ id: 'total', type: 'scalar' }]);
+  currency.loadContent([{ id: '/currency/money' }]);
+  statistic.loadContent([{ id: '/statistic/total-currency', type: 'scalar' }]);
 
   const achievements: AchievementDetail[] = [
     {
-      id: 'gain-10-money',
+      id: '/achievement/gain-10-money',
       condition: {
-        type: 'has-statistic',
-        id: 'total',
+        type: '/condition/has-statistic',
+        id: '/statistic/total-currency',
         amount: 10,
       },
     },
     {
-      id: 'gain-50-money',
+      id: '/achievement/gain-50-money',
       condition: {
-        type: 'has-statistic',
-        id: 'total',
+        type: '/condition/has-statistic',
+        id: '/statistic/total-currency',
         amount: 50,
       },
     },
     {
-      id: 'manual-achievement',
+      id: '/achievement/manual',
     },
   ];
   achievement.loadContent(achievements);
 
   currency.onCurrencyGain.sub((currency) => {
-    if (currency.id === 'money') {
-      statistic.incrementStatistic('total', currency.amount);
+    if (currency.id === '/currency/money') {
+      statistic.incrementStatistic('/statistic/total-currency', currency.amount);
     }
     achievement.checkAchievements();
   });
 
-  let hasGain10 = $derived(achievement.hasAchievement('gain-10-money'));
-  let hasGain50 = $derived(achievement.hasAchievement('gain-50-money'));
-  let hasManual = $derived(achievement.hasAchievement('manual-achievement'));
+  let hasGain10 = $derived(achievement.hasAchievement('/achievement/gain-10-money'));
+  let hasGain50 = $derived(achievement.hasAchievement('/achievement/gain-50-money'));
+  let hasManual = $derived(achievement.hasAchievement('/achievement/manual'));
 
   interface Notification {
     type: 'alert-success' | 'alert-error';
@@ -66,10 +66,10 @@
 
   let notifications: Notification[] = $state([]);
 
-  let money = $derived(currency.getBalance('money'));
+  let money = $derived(currency.getBalance('/currency/money'));
 
   const manualEarn = () => {
-    achievement.earnAchievement('manual-achievement');
+    achievement.earnAchievement('/achievement/manual');
   };
 
   $effect(() => {
@@ -86,7 +86,9 @@
   <div class="card-body">
     <span class="card-title">You have <span class="text-primary">{money}</span> money!</span>
     <div class="flex flex-row space-x-4">
-      <button class="btn btn-primary" onclick={() => currency.gainCurrency({ id: 'money', amount: 4 })}>Gain 4</button>
+      <button class="btn btn-primary" onclick={() => currency.gainCurrency({ id: '/currency/money', amount: 4 })}
+        >Gain 4</button
+      >
       <button class="btn btn-info" onclick={() => manualEarn()}>Manual unlock</button>
     </div>
   </div>

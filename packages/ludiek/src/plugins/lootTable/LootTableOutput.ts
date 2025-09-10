@@ -2,17 +2,18 @@ import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/output/LudiekOutpu
 import { LootTablePlugin } from '@ludiek/plugins/lootTable/LootTablePlugin';
 
 export interface LootTableOutputShape extends BaseOutputShape {
-  type: '/output/lootTable-table';
+  type: '/output/loot-table';
   table: string;
   amount: number;
 }
 
-export class LootTableOutput implements LudiekOutput<LootTableOutputShape> {
-  readonly type = '/output/lootTable-table';
+export class LootTableOutput extends LudiekOutput<LootTableOutputShape> {
+  readonly type = '/output/loot-table';
 
   private _loot: LootTablePlugin;
 
   constructor(loot: LootTablePlugin) {
+    super();
     this._loot = loot;
   }
 
