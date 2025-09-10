@@ -7,20 +7,20 @@ describe('Not Has Currency Condition', () => {
   it("evaluates to true on currencies we don't have", () => {
     // Arrange
     const currency = new CurrencyPlugin();
-    currency.loadContent([{ id: 'money' }, { id: 'gems' }]);
+    currency.loadContent([{ id: '/currency/money' }, { id: '/currency/gems' }]);
 
-    currency.gainCurrency({ id: 'money', amount: 3 });
+    currency.gainCurrency({ id: '/currency/money', amount: 3 });
     const condition = new NotHasCurrencyCondition(currency);
 
     // Act
     const has3Money = condition.evaluate({
-      type: 'not-has-currency',
-      id: 'money',
+      type: '/condition/not-has-currency',
+      id: '/currency/money',
       amount: 3,
     });
     const has4Money = condition.evaluate({
-      type: 'not-has-currency',
-      id: 'money',
+      type: '/condition/not-has-currency',
+      id: '/currency/money',
       amount: 4,
     });
 
@@ -33,7 +33,7 @@ describe('Not Has Currency Condition', () => {
     // Arrange
     const currency = new CurrencyPlugin();
     const condition = new NotHasCurrencyCondition(currency);
-    currency.loadContent([{ id: 'money' }, { id: 'gems' }]);
+    currency.loadContent([{ id: '/currency/money' }, { id: '/currency/gems' }]);
 
     expect(() => {
       condition.evaluate({
@@ -45,8 +45,8 @@ describe('Not Has Currency Condition', () => {
     }).toThrow(InvalidCurrencyError);
 
     condition.evaluate({
-      type: 'not-has-currency',
-      id: 'gems',
+      type: '/condition/not-has-currency',
+      id: '/currency/gems',
       amount: 0,
       // @ts-expect-error Object literal may only specify known properties
       unknown: 'unknown',

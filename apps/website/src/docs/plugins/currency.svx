@@ -21,14 +21,14 @@ import { CurrencyPlugin } from '@123ishatest/ludiek';
 
 const currency = new CurrencyPlugin();
 currency.loadContent([
-  { id: 'money' },
-  { id: 'gems' },
+  { id: '/currency/money' },
+  { id: '/currency/gems' },
 ]);
 
-currency.gainCurrency('money', 3);
-currency.loseCurrency('money', 2);
+currency.gainCurrency('/currency/money', 3);
+currency.loseCurrency('/currency/money', 2);
 
-const isPaid = currency.payCurrency('money', 5);
+const isPaid = currency.payCurrency('/currency/money', 5);
 console.log(isPaid); // false, we didn't have enough
 
 currency.onCurrencyGain.sub(({ id, amount }) => {

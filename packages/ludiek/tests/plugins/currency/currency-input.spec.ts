@@ -5,24 +5,24 @@ import { CurrencyInput } from '@ludiek/plugins/currency/CurrencyInput';
 const currency = new CurrencyPlugin();
 
 beforeEach(() => {
-  currency.loadContent([{ id: 'money' }, { id: 'gems' }]);
+  currency.loadContent([{ id: '/currency/money' }, { id: '/currency/gems' }]);
 });
 
 describe('Currency Input', () => {
   it('checks if we can lose currency', () => {
     // Arrange
-    currency.gainCurrency({ id: 'money', amount: 3 });
+    currency.gainCurrency({ id: '/currency/money', amount: 3 });
     const input = new CurrencyInput(currency);
 
     // Act
     const canLose3 = input.canLose({
-      type: 'currency',
-      id: 'money',
+      type: '/input/currency',
+      id: '/currency/money',
       amount: 3,
     });
     const canLose4 = input.canLose({
-      type: 'currency',
-      id: 'money',
+      type: '/input/currency',
+      id: '/currency/money',
       amount: 4,
     });
 
@@ -33,16 +33,16 @@ describe('Currency Input', () => {
 
   it('loses currency', () => {
     // Arrange
-    currency.gainCurrency({ id: 'money', amount: 3 });
+    currency.gainCurrency({ id: '/currency/money', amount: 3 });
     const input = new CurrencyInput(currency);
 
     // Act
     input.lose({
-      type: 'currency',
-      id: 'money',
+      type: '/input/currency',
+      id: '/currency/money',
       amount: 2,
     });
-    const money = currency.getBalance('money');
+    const money = currency.getBalance('/currency/money');
 
     // Assert
     expect(money).toBe(1);

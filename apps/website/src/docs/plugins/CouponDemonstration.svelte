@@ -20,32 +20,32 @@
     plugins: [currency, coupon],
     outputs: [new CurrencyOutput(currency)],
   });
-  currency.loadContent([{ id: 'money' }]);
+  currency.loadContent([{ id: '/currency/money' }]);
 
   const coupons: CouponDetail[] = [
     {
-      id: 'gain-10-money',
+      id: '/coupon/gain-10-money',
       hash: '-1232159358',
       output: {
-        type: 'currency',
-        id: 'money',
+        type: '/output/currency',
+        id: '/currency/money',
         amount: 10,
       },
     },
     {
-      id: 'gain-100-money',
+      id: '/coupon/gain-100-money',
       hash: '-374288946',
       output: {
-        type: 'currency',
-        id: 'money',
+        type: '/output/currency',
+        id: '/currency/money',
         amount: 100,
       },
     },
   ];
   coupon.loadContent(coupons);
 
-  let unlockedGain10 = $derived(coupon.hasRedeemedCoupon('gain-10-money'));
-  let unlockedGain100 = $derived(coupon.hasRedeemedCoupon('gain-100-money'));
+  let unlockedGain10 = $derived(coupon.hasRedeemedCoupon('/coupon/gain-10-money'));
+  let unlockedGain100 = $derived(coupon.hasRedeemedCoupon('/coupon/gain-100-money'));
 
   interface Notification {
     type: 'alert-success' | 'alert-error';
@@ -54,7 +54,7 @@
 
   let notifications: Notification[] = $state([]);
 
-  let money = $derived(currency.getBalance('money'));
+  let money = $derived(currency.getBalance('/currency/money'));
 
   onMount(() => {
     return coupon.onCouponRedeemed.sub((coupon) => {

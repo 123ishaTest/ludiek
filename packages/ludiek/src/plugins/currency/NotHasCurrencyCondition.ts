@@ -2,17 +2,18 @@ import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/condition/Lu
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
 
 interface NotHasCurrencyConditionShape extends BaseConditionShape {
-  type: 'not-has-currency';
+  type: '/condition/not-has-currency';
   id: string;
   amount: number;
 }
 
-export class NotHasCurrencyCondition implements LudiekCondition<NotHasCurrencyConditionShape> {
-  readonly type = 'not-has-currency' as const;
+export class NotHasCurrencyCondition extends LudiekCondition<NotHasCurrencyConditionShape> {
+  readonly type = '/condition/not-has-currency';
 
   private _currency: CurrencyPlugin;
 
   constructor(currency: CurrencyPlugin) {
+    super();
     this._currency = currency;
   }
 

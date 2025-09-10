@@ -6,12 +6,13 @@ interface KitchenSinkOutputShape extends BaseOutputShape {
   amount: number;
 }
 
-export class KitchenSinkOutput implements LudiekOutput<KitchenSinkOutputShape> {
+export class KitchenSinkOutput extends LudiekOutput<KitchenSinkOutputShape> {
   readonly type = '/output/kitchen-sink';
 
   private _kitchenSink: KitchenSinkPlugin;
 
   constructor(kitchenSink: KitchenSinkPlugin) {
+    super();
     this._kitchenSink = kitchenSink;
   }
 

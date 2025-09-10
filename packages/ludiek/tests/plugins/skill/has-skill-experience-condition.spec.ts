@@ -11,13 +11,13 @@ describe('Has Skill Experience Condition', () => {
 
     // Act
     const has100Experience = condition.evaluate({
-      type: '/skill/has-experience',
+      type: '/condition/has-skill-experience',
       skill: '/skill/fishing',
       experience: 100,
     });
 
     const has101Experience = condition.evaluate({
-      type: '/skill/has-experience',
+      type: '/condition/has-skill-experience',
       skill: '/skill/fishing',
       experience: 101,
     });

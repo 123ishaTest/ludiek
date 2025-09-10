@@ -3,9 +3,9 @@ import { StatisticDefinition, StatisticPlugin } from '@ludiek/plugins/statistic/
 
 const statistic = new StatisticPlugin();
 const statisticContent: StatisticDefinition[] = [
-  { id: 'money', type: 'scalar' },
-  { id: 'numbers', type: 'map' },
-  { id: 'monsters', type: 'map' },
+  { id: '/statistic/money', type: 'scalar' },
+  { id: '/statistic/numbers', type: 'map' },
+  { id: '/statistic/monsters', type: 'map' },
 ] as const;
 
 beforeEach(() => {
@@ -14,9 +14,9 @@ beforeEach(() => {
 
 it('initializes at 0', () => {
   // Act
-  const money = statistic.getStatistic('money');
-  const number = statistic.getMapStatistic('numbers', 0);
-  const monster = statistic.getMapStatistic('monsters', 'zombie');
+  const money = statistic.getStatistic('/statistic/money');
+  const number = statistic.getMapStatistic('/statistic/numbers', 0);
+  const monster = statistic.getMapStatistic('/statistic/monsters', '/monster/zombie');
 
   // Assert
   expect(money).toBe(0);
@@ -26,13 +26,13 @@ it('initializes at 0', () => {
 
 it('increments with a delta', () => {
   // Act
-  statistic.incrementStatistic('money', 2);
-  statistic.incrementMapStatistic('numbers', 0, 3);
-  statistic.incrementMapStatistic('monsters', 'zombie', 4);
+  statistic.incrementStatistic('/statistic/money', 2);
+  statistic.incrementMapStatistic('/statistic/numbers', 0, 3);
+  statistic.incrementMapStatistic('/statistic/monsters', '/monster/zombie', 4);
 
-  const money = statistic.getStatistic('money');
-  const number = statistic.getMapStatistic('numbers', 0);
-  const monster = statistic.getMapStatistic('monsters', 'zombie');
+  const money = statistic.getStatistic('/statistic/money');
+  const number = statistic.getMapStatistic('/statistic/numbers', 0);
+  const monster = statistic.getMapStatistic('/statistic/monsters', '/monster/zombie');
 
   // Assert
   expect(money).toBe(2);
@@ -42,13 +42,13 @@ it('increments with a delta', () => {
 
 it('increments with a default of 1', () => {
   // Act
-  statistic.incrementStatistic('money');
-  statistic.incrementMapStatistic('numbers', 0);
-  statistic.incrementMapStatistic('monsters', 'zombie');
+  statistic.incrementStatistic('/statistic/money');
+  statistic.incrementMapStatistic('/statistic/numbers', 0);
+  statistic.incrementMapStatistic('/statistic/monsters', '/monster/zombie');
 
-  const money = statistic.getStatistic('money');
-  const number = statistic.getMapStatistic('numbers', 0);
-  const monster = statistic.getMapStatistic('monsters', 'zombie');
+  const money = statistic.getStatistic('/statistic/money');
+  const number = statistic.getMapStatistic('/statistic/numbers', 0);
+  const monster = statistic.getMapStatistic('/statistic/monsters', '/monster/zombie');
 
   // Assert
   expect(money).toBe(1);
@@ -58,11 +58,11 @@ it('increments with a default of 1', () => {
 
 it('returns map objects', () => {
   // Arrange
-  statistic.incrementMapStatistic('numbers', 'first', 2);
-  statistic.incrementMapStatistic('numbers', 'second', 3);
+  statistic.incrementMapStatistic('/statistic/numbers', 'first', 2);
+  statistic.incrementMapStatistic('/statistic/numbers', 'second', 3);
 
   // Act
-  const numbers = statistic.getMapStatisticObject('numbers');
+  const numbers = statistic.getMapStatisticObject('/statistic/numbers');
 
   // Assert
   expect(numbers).toEqual({

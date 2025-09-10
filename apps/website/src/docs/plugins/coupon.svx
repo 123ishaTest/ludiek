@@ -25,33 +25,28 @@ import { CouponPlugin } from '@123ishatest/ludiek';
 
 const coupon = new CouponPlugin();
 
-new LudiekEngine({
-  plugins: [currency, coupon],
-  outputs: [new CurrencyOutput(currency)],
-});
-
 // Define your coupons
 coupon.loadContent([
   {
-    id: 'gain-10-money',
+    id: '/coupon/gain-10-money',
     hash: '282868016',
-    output: { type: 'currency', id: 'money', amount: 10 },
+    output: { type: '/output/currency', id: '/currency/money', amount: 10 },
   },
   {
-    id: 'super-secret',
+    id: '/coupon/super-secret',
     hash: '1821260852',
-    output: { type: 'achievement', id: 'super-secret' },
+    output: { type: '/output/achievement', id: '/achievement/super-secret' },
   },
 ]);
 
 // Check if a code is supported
-coupon.supportsCode('gain-10-money'); // True
+coupon.supportsCode('/coupon/gain-10-money'); // True
 
 // Enter a code
 coupon.enterCode('SUMMER2025'); // True
 
 // Check whether we have redeemed it
-coupon.hasRedeemedCode('gain-10-money'); // True
+coupon.hasRedeemedCode('/coupon/gain-10-money'); // True
 ```
 
 Hook into the “code redeemed earned” event for UI/popups.

@@ -25,7 +25,7 @@ export const achievements: AchievementDetail[] = [
   {
     id: '/achievement/total-money',
     condition: {
-      type: 'has-currency',
+      type: '/condition/has-currency',
       id: '/currency/money',
       amount: 30,
     },

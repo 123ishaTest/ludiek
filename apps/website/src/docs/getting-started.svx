@@ -21,12 +21,13 @@ const currencies = [
 Then we create our engine with a list of plugins
 ```ts
 // CurrencyPlugin is provided by Ludiek!
-const currency = new CurrencyPlugin(currencies);
+const currency = new CurrencyPlugin();
+currency.loadContent(currencies);
 
 // Create engine and extract a utility type
-const engine = new LudiekEngine({
-  currency: currency,
-});
+const engine = new LudiekEngine([
+  currency,
+]);
 export type EnginePlugins = typeof engine.plugins;
 ```
 

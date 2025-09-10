@@ -20,15 +20,14 @@ It uses your existing [Conditions](../engine/conditions) to determine when an ac
 ## Usage
 
 ```ts
-new LudiekEngine({
-  plugins: [currency, statistic, achievement],
-  conditions: [new HasStatisticCondition(statistic)],
-});
+import { AchievementPlugin } from '@123ishatest/ludiek';
+
+const achievement = new AchievementPlugin();
 
 // Define your achievements
 const achievements: AchievementDetail[] = [
-  { id: '10-total-money', condition: { type: 'has-statistic', id: 'total-money', amount: 10 } },
-  { id: 'manual' },
+  { id: '/achievement/10-total-money', condition: { type: '/condition/has-statistic', id: '/statistic/total-money', amount: 10 } },
+  { id: '/achievement/manual' },
 ];
 achievement.loadContent(achievements);
 
@@ -36,10 +35,10 @@ achievement.loadContent(achievements);
 achievement.checkAchievements()
 
 // Manually earn an achievement
-achievement.earnAchievement('manual')
+achievement.earnAchievement('/achievement/manual')
 
 // Check whether we have them
-achievement.hasAchievement('manual') // true
+achievement.hasAchievement('/achievement/manual') // true
 ```
 
 Hook into the “achievement earned” event for UI/popups

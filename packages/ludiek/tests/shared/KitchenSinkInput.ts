@@ -6,10 +6,12 @@ interface KitchenSinkInputShape extends BaseInputShape {
   amount: number;
 }
 
-export class KitchenSinkInput implements LudiekInput<KitchenSinkInputShape> {
+export class KitchenSinkInput extends LudiekInput<KitchenSinkInputShape> {
   readonly type = '/input/kitchen-sink';
 
-  constructor(private readonly _kitchenSink: KitchenSinkPlugin) {}
+  constructor(private readonly _kitchenSink: KitchenSinkPlugin) {
+    super();
+  }
 
   canLose(input: KitchenSinkInputShape): boolean {
     return this._kitchenSink.variable >= input.amount;

@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
-import { AlwaysTrueCondition } from '@ludiek/engine/condition/AlwaysTrueCondition';
-import { AlwaysFalseCondition } from '@ludiek/engine/condition/AlwaysFalseCondition';
+import { TrueCondition } from '@ludiek/engine/condition/TrueCondition';
+import { FalseCondition } from '@ludiek/engine/condition/FalseCondition';
 import { KitchenSinkPlugin } from '@tests/shared/KitchenSinkPlugin';
 import { ConditionNotFoundError } from '@ludiek/engine/condition/ConditionError';
 
@@ -10,11 +10,11 @@ describe('Engine Conditions', () => {
   it('checks an always true condition', () => {
     // Arrange
     const engine = new LudiekEngine({
-      conditions: [new AlwaysTrueCondition()],
+      conditions: [new TrueCondition()],
     });
 
     // Act
-    const result = engine.evaluate({ type: 'always-true' });
+    const result = engine.evaluate({ type: '/condition/true' });
 
     // Assert
     expect(result).toBe(true);
@@ -23,11 +23,11 @@ describe('Engine Conditions', () => {
   it('checks an always false condition', () => {
     // Arrange
     const engine = new LudiekEngine({
-      conditions: [new AlwaysFalseCondition()],
+      conditions: [new FalseCondition()],
     });
 
     // Act
-    const result = engine.evaluate({ type: 'always-false' });
+    const result = engine.evaluate({ type: '/condition/false' });
 
     // Assert
     expect(result).toBe(false);
@@ -45,11 +45,12 @@ describe('Engine Conditions', () => {
       points: number;
     }
 
-    class MyFeatureEvaluator implements LudiekCondition<MyShape> {
-      type = 'maybe';
+    class MyFeatureEvaluator extends LudiekCondition<MyShape> {
+      readonly type = 'maybe';
       private _feature: MyFeature;
 
       constructor(feature: MyFeature) {
+        super();
         this._feature = feature;
       }
 

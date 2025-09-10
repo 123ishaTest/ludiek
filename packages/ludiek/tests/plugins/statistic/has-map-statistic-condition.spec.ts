@@ -4,9 +4,9 @@ import { StatisticDefinition, StatisticPlugin } from '@ludiek/plugins/statistic/
 
 const statistic = new StatisticPlugin();
 const statisticContent: StatisticDefinition[] = [
-  { id: 'money', type: 'scalar' },
-  { id: 'numbers', type: 'map' },
-  { id: 'monsters', type: 'map' },
+  { id: '/statistic/money', type: 'scalar' },
+  { id: '/statistic/numbers', type: 'map' },
+  { id: '/statistic/monsters', type: 'map' },
 ] as const;
 
 beforeEach(() => {
@@ -16,20 +16,20 @@ beforeEach(() => {
 describe('Has Map Statistic Condition', () => {
   it('evaluates to true on statistics we have', () => {
     // Arrange
-    statistic.incrementMapStatistic('monsters', 'goblin', 3);
+    statistic.incrementMapStatistic('/statistic/monsters', '/monster/goblin', 3);
     const condition = new HasMapStatisticCondition(statistic);
 
     // Act
     const has3Goblins = condition.evaluate({
-      type: 'has-map-statistic',
-      id: 'monsters',
-      key: 'goblin',
+      type: '/condition/has-map-statistic',
+      id: '/statistic/monsters',
+      key: '/monster/goblin',
       amount: 3,
     });
     const has4Goblins = condition.evaluate({
-      type: 'has-map-statistic',
-      id: 'monsters',
-      key: 'goblin',
+      type: '/condition/has-map-statistic',
+      id: '/statistic/monsters',
+      key: '/monster/goblin',
       amount: 4,
     });
 

@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { AlwaysTrueCondition } from '@ludiek/engine/condition/AlwaysTrueCondition';
+import { TrueCondition } from '@ludiek/engine/condition/TrueCondition';
 import { KitchenSinkPlugin } from '@tests/shared/KitchenSinkPlugin';
 import { EmptyPlugin } from '@tests/shared/EmptyPlugin';
 import { ConditionNotFoundError } from '@ludiek/engine/condition/ConditionError';
@@ -9,11 +9,11 @@ it('is type-safe when plugins and condition exists', () => {
   // Arrange
   const engine = new LudiekEngine({
     plugins: [new KitchenSinkPlugin()],
-    conditions: [new AlwaysTrueCondition()],
+    conditions: [new TrueCondition()],
   });
 
   engine.evaluate({ type: '/condition/has-variable', amount: 4 });
-  engine.evaluate({ type: 'always-true' });
+  engine.evaluate({ type: '/condition/true' });
 
   expect(() => {
     // @ts-expect-error unknown type
@@ -67,11 +67,11 @@ it('is type-safe when incomplete plugins exists', () => {
 it('is type-safe when only conditions exists', () => {
   // Arrange
   const engine = new LudiekEngine({
-    conditions: [new AlwaysTrueCondition()],
+    conditions: [new TrueCondition()],
   });
 
   // Valid
-  engine.evaluate({ type: 'always-true' });
+  engine.evaluate({ type: '/condition/true' });
 
   expect(() => {
     // @ts-expect-error unknown type

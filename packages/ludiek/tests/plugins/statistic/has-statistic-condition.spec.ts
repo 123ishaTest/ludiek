@@ -5,9 +5,9 @@ import { UnknownStatisticError } from '@ludiek/plugins/statistic/StatisticErrors
 
 const statistic = new StatisticPlugin();
 const statisticContent: StatisticDefinition[] = [
-  { id: 'money', type: 'scalar' },
-  { id: 'numbers', type: 'map' },
-  { id: 'monsters', type: 'map' },
+  { id: '/statistic/money', type: 'scalar' },
+  { id: '/statistic/numbers', type: 'map' },
+  { id: '/statistic/monsters', type: 'map' },
 ] as const;
 
 beforeEach(() => {
@@ -17,18 +17,18 @@ beforeEach(() => {
 describe('Has Statistic Condition', () => {
   it('evaluates to true on statistics we have', () => {
     // Arrange
-    statistic.incrementStatistic('money', 3);
+    statistic.incrementStatistic('/statistic/money', 3);
     const condition = new HasStatisticCondition(statistic);
 
     // Act
     const has3Money = condition.evaluate({
-      type: 'has-statistic',
-      id: 'money',
+      type: '/condition/has-statistic',
+      id: '/statistic/money',
       amount: 3,
     });
     const has4Money = condition.evaluate({
-      type: 'has-statistic',
-      id: 'money',
+      type: '/condition/has-statistic',
+      id: '/statistic/money',
       amount: 4,
     });
 
@@ -51,8 +51,8 @@ describe('Has Statistic Condition', () => {
     }).toThrow(UnknownStatisticError);
 
     condition.evaluate({
-      type: 'has-statistic',
-      id: 'money',
+      type: '/condition/has-statistic',
+      id: '/statistic/money',
       amount: 0,
       // @ts-expect-error Object literal may only specify known properties
       unknown: 'unknown',

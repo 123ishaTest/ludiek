@@ -82,8 +82,8 @@ export { HasMapStatisticCondition } from '@ludiek/plugins/statistic/HasMapStatis
 /**
  * Standard lib
  */
-export { AlwaysTrueCondition } from '@ludiek/engine/condition/AlwaysTrueCondition';
-export { AlwaysFalseCondition } from '@ludiek/engine/condition/AlwaysFalseCondition';
+export { TrueCondition } from '@ludiek/engine/condition/TrueCondition';
+export { FalseCondition } from '@ludiek/engine/condition/FalseCondition';
 
 /**
  * Util

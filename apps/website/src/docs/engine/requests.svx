@@ -26,10 +26,12 @@ export interface PlantSeedRequest extends BaseRequestShape {
 And we extend a `LudiekController` for the planting logic:
 
 ```ts
-export class PlantSeedController implements LudiekController<PlantSeedRequest> {
+export class PlantSeedController extends LudiekController<PlantSeedRequest> {
   readonly type = '/request/plant-seed';
 
-  constructor(private readonly _farming: Farming) {}
+  constructor(private readonly _farming: Farming) {
+    super();
+  }
 
   resolve(request: PlantSeedRequest): void {
     this._farming.plantSeed(request.plant);

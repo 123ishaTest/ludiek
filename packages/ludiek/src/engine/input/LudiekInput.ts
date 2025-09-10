@@ -1,12 +1,22 @@
+import { LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
+
 export interface BaseInputShape {
   type: string;
   amount: number;
 }
 
-export interface LudiekInput<Input extends BaseInputShape = BaseInputShape> {
-  type: string;
+export abstract class LudiekInput<Input extends BaseInputShape = BaseInputShape> extends LudiekEngineConcept {
+  public abstract readonly type: Input['type'];
 
-  canLose(input: Input): boolean;
+  /**
+   * Whether we can lose the input (i.e. have it)
+   * @param input
+   */
+  abstract canLose(input: Input): boolean;
 
-  lose(input: Input): void;
+  /**
+   * Subtracting the input
+   * @param input
+   */
+  abstract lose(input: Input): void;
 }

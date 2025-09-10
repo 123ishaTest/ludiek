@@ -3,7 +3,7 @@
 
   const currencyState = $state(createCurrencyState());
   const currency = new CurrencyPlugin(currencyState);
-  currency.loadContent([{ id: 'money' }]);
+  currency.loadContent([{ id: '/currency/money' }]);
 
   interface Notification {
     type: 'alert-success' | 'alert-error';
@@ -13,7 +13,7 @@
   let notifications: Notification[] = $state([]);
 
   const pay = () => {
-    const success = currency.payCurrency({ id: 'money', amount: 5 });
+    const success = currency.payCurrency({ id: '/currency/money', amount: 5 });
 
     notifications.push({
       type: success ? 'alert-success' : 'alert-error',
@@ -25,7 +25,7 @@
     }, 2000);
   };
 
-  let money = $derived(currency.getBalance('money'));
+  let money = $derived(currency.getBalance('/currency/money'));
 
   $effect(() => {
     currency.onCurrencyGain.sub(({ id, amount }) => {
@@ -38,8 +38,12 @@
   <div class="card-body">
     <span class="card-title">You have <span class="text-primary">{money}</span> money!</span>
     <div class="flex flex-row space-x-4">
-      <button class="btn btn-primary" onclick={() => currency.gainCurrency({ id: 'money', amount: 3 })}>Gain 3</button>
-      <button class="btn btn-error" onclick={() => currency.loseCurrency({ id: 'money', amount: 2 })}>Lose 2</button>
+      <button class="btn btn-primary" onclick={() => currency.gainCurrency({ id: '/currency/money', amount: 3 })}
+        >Gain 3</button
+      >
+      <button class="btn btn-error" onclick={() => currency.loseCurrency({ id: '/currency/money', amount: 2 })}
+        >Lose 2</button
+      >
       <button class="btn btn-info" onclick={() => pay()}>Pay 5</button>
     </div>
   </div>
