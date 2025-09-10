@@ -6,12 +6,12 @@ import { StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
 const engine = new LudiekEngine({
   plugins: [new CurrencyPlugin(), new StatisticPlugin()],
 });
-engine.plugins.currency.loadContent([{ id: 'money' }]);
+engine.plugins.currency.loadContent([{ id: '/currency/money' }]);
 
 const emptySave = {
   currency: {
     balances: {
-      money: 0,
+      '/currency/money': 0,
     },
   },
   statistic: {
@@ -37,7 +37,7 @@ describe('Persistence', () => {
     engine.load(emptySave);
 
     // Assert
-    expect(engine.plugins.currency.getBalance('money')).toBe(0);
+    expect(engine.plugins.currency.getBalance('/currency/money')).toBe(0);
   });
 
   it('loads a used plugin ', () => {
@@ -46,12 +46,12 @@ describe('Persistence', () => {
     engine.load({
       currency: {
         balances: {
-          money: money,
+          '/currency/money': money,
         },
       },
     });
 
     // Assert
-    expect(engine.plugins.currency.getBalance('money')).toBe(money);
+    expect(engine.plugins.currency.getBalance('/currency/money')).toBe(money);
   });
 });

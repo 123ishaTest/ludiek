@@ -22,7 +22,7 @@ describe('Has Achievement Condition', () => {
 
     // Act
     const hasManual = condition.evaluate({
-      type: 'has-achievement',
+      type: '/condition/has-achievement',
       id: 'manual',
     });
 
@@ -36,7 +36,7 @@ describe('Has Achievement Condition', () => {
 
     // Act
     const hasManual = condition.evaluate({
-      type: 'has-achievement',
+      type: '/condition/has-achievement',
       id: 'manual',
     });
 

@@ -3,17 +3,17 @@ import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
 
 const currency = new CurrencyPlugin();
 beforeEach(() => {
-  currency.loadContent([{ id: 'money' }, { id: 'gems' }]);
+  currency.loadContent([{ id: '/currency/money' }, { id: '/currency/gems' }]);
 });
 
 describe('Multiple currencies', () => {
   it('gains multiple of the same currencies', () => {
     // Act
     currency.gainCurrencies([
-      { id: 'money', amount: 1 },
-      { id: 'money', amount: 2 },
+      { id: '/currency/money', amount: 1 },
+      { id: '/currency/money', amount: 2 },
     ]);
-    const actualMoney = currency.getBalance('money');
+    const actualMoney = currency.getBalance('/currency/money');
 
     // Assert
     expect(actualMoney).toBe(3);
@@ -22,11 +22,11 @@ describe('Multiple currencies', () => {
   it('gains multiple different currencies', () => {
     // Act
     currency.gainCurrencies([
-      { id: 'money', amount: 1 },
-      { id: 'gems', amount: 2 },
+      { id: '/currency/money', amount: 1 },
+      { id: '/currency/gems', amount: 2 },
     ]);
-    const actualMoney = currency.getBalance('money');
-    const actualGems = currency.getBalance('gems');
+    const actualMoney = currency.getBalance('/currency/money');
+    const actualGems = currency.getBalance('/currency/gems');
 
     // Assert
     expect(actualMoney).toBe(1);
@@ -36,10 +36,10 @@ describe('Multiple currencies', () => {
   it('loses multiple of the same currencies', () => {
     // Act
     currency.loseCurrencies([
-      { id: 'money', amount: 1 },
-      { id: 'money', amount: 2 },
+      { id: '/currency/money', amount: 1 },
+      { id: '/currency/money', amount: 2 },
     ]);
-    const actualMoney = currency.getBalance('money');
+    const actualMoney = currency.getBalance('/currency/money');
 
     // Assert
     expect(actualMoney).toBe(-3);
@@ -48,11 +48,11 @@ describe('Multiple currencies', () => {
   it('loses multiple different currencies', () => {
     // Act
     currency.loseCurrencies([
-      { id: 'money', amount: 1 },
-      { id: 'gems', amount: 2 },
+      { id: '/currency/money', amount: 1 },
+      { id: '/currency/gems', amount: 2 },
     ]);
-    const actualMoney = currency.getBalance('money');
-    const actualGems = currency.getBalance('gems');
+    const actualMoney = currency.getBalance('/currency/money');
+    const actualGems = currency.getBalance('/currency/gems');
 
     // Assert
     expect(actualMoney).toBe(-1);
@@ -62,14 +62,14 @@ describe('Multiple currencies', () => {
   it('pays multiple different currencies', () => {
     // Arrange
     currency.gainCurrencies([
-      { id: 'money', amount: 1 },
-      { id: 'gems', amount: 2 },
+      { id: '/currency/money', amount: 1 },
+      { id: '/currency/gems', amount: 2 },
     ]);
 
     // Act
     const isPaid = currency.payCurrencies([
-      { id: 'money', amount: 1 },
-      { id: 'gems', amount: 2 },
+      { id: '/currency/money', amount: 1 },
+      { id: '/currency/gems', amount: 2 },
     ]);
 
     // Assert
@@ -79,14 +79,14 @@ describe('Multiple currencies', () => {
   it('does not pay multiple even if one is enough', () => {
     // Arrange
     currency.gainCurrencies([
-      { id: 'money', amount: 1 },
-      { id: 'gems', amount: 2 },
+      { id: '/currency/money', amount: 1 },
+      { id: '/currency/gems', amount: 2 },
     ]);
 
     // Act
     const isPaid = currency.payCurrencies([
-      { id: 'money', amount: 1 },
-      { id: 'gems', amount: 3 },
+      { id: '/currency/money', amount: 1 },
+      { id: '/currency/gems', amount: 3 },
     ]);
 
     // Assert

@@ -19,7 +19,7 @@ class DummyFeature extends LudiekFeature<never> {
 
   update() {
     this._state.xp++;
-    this._currency.gainCurrency({ id: 'money', amount: 1 });
+    this._currency.gainCurrency({ id: '/currency/money', amount: 1 });
   }
 
   public getXp(): number {
@@ -33,7 +33,7 @@ const createGame = () => {
   const engine = new LudiekEngine({
     plugins: [currency],
   });
-  currency.loadContent([{ id: 'money' }]);
+  currency.loadContent([{ id: '/currency/money' }]);
 
   return new LudiekGame(engine, {
     features: [new DummyFeature(currency)],
@@ -59,7 +59,7 @@ it('allows a consumer to create a basic game', () => {
   }
 
   // Assert
-  expect(game.engine.plugins.currency.getBalance('money')).toBe(TICKS);
+  expect(game.engine.plugins.currency.getBalance('/currency/money')).toBe(TICKS);
 });
 
 it('saves features and plugins', () => {
@@ -74,7 +74,7 @@ it('saves features and plugins', () => {
 
   // Assert
   expect(save).toStrictEqual({
-    engine: { currency: { balances: { money: 1000 } } },
+    engine: { currency: { balances: { '/currency/money': 1000 } } },
     features: { dummy: { xp: 1000 } },
   });
 });
@@ -82,13 +82,13 @@ it('saves features and plugins', () => {
 it('loads features and plugins', () => {
   // Arrange
   const save: LudiekSaveData = {
-    engine: { currency: { balances: { money: 300 } } },
+    engine: { currency: { balances: { '/currency/money': 300 } } },
     features: { dummy: { xp: 400 } },
   };
 
   // Act
   game.load(save);
-  const money = game.engine.plugins.currency.getBalance('money');
+  const money = game.engine.plugins.currency.getBalance('/currency/money');
   const xp = game.features.dummy.getXp();
 
   // Assert

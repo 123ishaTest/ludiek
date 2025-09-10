@@ -8,7 +8,7 @@ interface HasCurrencyConditionShape extends BaseConditionShape {
 }
 
 export class HasCurrencyCondition extends LudiekCondition<HasCurrencyConditionShape> {
-  readonly type = '/condition/has-currency' as const;
+  readonly type = '/condition/has-currency';
 
   private _currency: CurrencyPlugin;
 

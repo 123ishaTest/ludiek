@@ -22,7 +22,7 @@ it('Rolls on a lootTable table', () => {
 
   // Act
   output.gain({
-    type: '/output/lootTable-table',
+    type: '/output/loot-table',
     amount: 3,
     table: '/table/dummy',
   });

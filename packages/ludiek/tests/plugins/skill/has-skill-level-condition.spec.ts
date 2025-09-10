@@ -11,13 +11,13 @@ describe('Has Skill Level Condition', () => {
 
     // Act
     const has1Fishing = condition.evaluate({
-      type: '/skill/has-level',
+      type: '/condition/has-skill-level',
       skill: '/skill/fishing',
       level: 1,
     });
 
     const has2Fishing = condition.evaluate({
-      type: '/skill/has-level',
+      type: '/condition/has-skill-level',
       skill: '/skill/fishing',
       level: 2,
     });

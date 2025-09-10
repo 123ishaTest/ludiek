@@ -36,7 +36,7 @@ statistic.getStatistic('/statistic/total-currency'); // 3
 statistic.getMapStatistic('/statistic/currencies', '/currency/money'); // 4
 
 // Unset map keys return 0
-statistic.getMapStatistic('/statistic/currencies', 'gems'); // 0
+statistic.getMapStatistic('/statistic/currencies', '/currency/gems'); // 0
 ```
 
 Connect incrementing statistics to existing events.

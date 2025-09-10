@@ -26,7 +26,7 @@ describe('Achievement Output', () => {
 
     // Act
     output.gain({
-      type: 'achievement',
+      type: '/output/achievement',
       id: 'example-achievement',
       amount: 1,
     });

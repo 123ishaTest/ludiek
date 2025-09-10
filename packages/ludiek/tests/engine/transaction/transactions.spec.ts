@@ -2,31 +2,15 @@ import { describe, expect, it, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { FalseCondition } from '@ludiek/engine/condition/FalseCondition';
 import { TrueCondition } from '@ludiek/engine/condition/TrueCondition';
+import { AlwaysInput } from '@tests/shared/AlwaysInput';
+import { NeverInput } from '@tests/shared/NeverInput';
+import { AlwaysOutput } from '@tests/shared/AlwaysOutput';
+import { NeverOutput } from '@tests/shared/NeverOutput';
 
-const alwaysInput = {
-  type: 'always',
-  canLose: () => true,
-  lose: () => {},
-};
-
-const neverInput = {
-  type: 'never',
-  canLose: () => false,
-  lose: () => {
-    throw new Error('Method not implemented.');
-  },
-};
-
-const alwaysOutput = {
-  type: 'always',
-  canGain: () => true,
-  gain: () => {},
-};
-const neverOutput = {
-  type: 'never',
-  canGain: () => false,
-  gain: () => {},
-};
+const alwaysInput = new AlwaysInput();
+const neverInput = new NeverInput();
+const alwaysOutput = new AlwaysOutput();
+const neverOutput = new NeverOutput();
 
 const engine = new LudiekEngine({
   conditions: [new TrueCondition(), new FalseCondition()],
@@ -48,7 +32,7 @@ describe('Engine Transactions', () => {
     const loseSpy = vi.spyOn(neverInput, 'lose');
     const transaction = {
       input: {
-        type: 'never',
+        type: '/input/never',
         amount: 0,
       },
     };
@@ -66,7 +50,7 @@ describe('Engine Transactions', () => {
     const loseSpy = vi.spyOn(alwaysInput, 'lose');
     const transaction = {
       input: {
-        type: 'always',
+        type: '/input/always',
         amount: 0,
       },
     };
@@ -84,7 +68,7 @@ describe('Engine Transactions', () => {
     const gainSpy = vi.spyOn(neverOutput, 'gain');
     const transaction = {
       output: {
-        type: 'never',
+        type: '/output/never',
         amount: 0,
       },
     };
@@ -102,7 +86,7 @@ describe('Engine Transactions', () => {
     const gainSpy = vi.spyOn(alwaysOutput, 'gain');
     const transaction = {
       output: {
-        type: 'always',
+        type: '/output/always',
         amount: 0,
       },
     };

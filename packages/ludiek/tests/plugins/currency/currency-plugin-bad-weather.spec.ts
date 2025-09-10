@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 const currency = new CurrencyPlugin();
 beforeEach(() => {
-  currency.loadContent([{ id: 'money' }, { id: 'gems' }]);
+  currency.loadContent([{ id: '/currency/money' }, { id: '/currency/gems' }]);
 });
 
 describe('Bad flow', () => {
@@ -17,11 +17,11 @@ describe('Bad flow', () => {
   });
 
   it('prevents gaining negative currencies', () => {
-    expect(() => currency.gainCurrency({ id: 'money', amount: -1 })).toThrow(NegativeAmountError);
+    expect(() => currency.gainCurrency({ id: '/currency/money', amount: -1 })).toThrow(NegativeAmountError);
   });
 
   it('prevents gaining NaN of a currency', () => {
     // Act
-    currency.gainCurrency({ id: 'money', amount: NaN });
+    currency.gainCurrency({ id: '/currency/money', amount: NaN });
   });
 });

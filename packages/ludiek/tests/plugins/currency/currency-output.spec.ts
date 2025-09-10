@@ -5,7 +5,7 @@ import { CurrencyOutput } from '@ludiek/plugins/currency/CurrencyOutput';
 const currency = new CurrencyPlugin();
 
 beforeEach(() => {
-  currency.loadContent([{ id: 'money' }, { id: 'gems' }]);
+  currency.loadContent([{ id: '/currency/money' }, { id: '/currency/gems' }]);
 });
 
 describe('Currency Output', () => {
@@ -26,11 +26,11 @@ describe('Currency Output', () => {
 
     // Act
     output.gain({
-      type: 'currency',
-      id: 'money',
+      type: '/output/currency',
+      id: '/currency/money',
       amount: 6,
     });
-    const money = currency.getBalance('money');
+    const money = currency.getBalance('/currency/money');
 
     // Assert
     expect(money).toBe(6);
