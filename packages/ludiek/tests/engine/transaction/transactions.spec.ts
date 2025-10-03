@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { FalseCondition } from '@ludiek/engine/condition/FalseCondition';
-import { TrueCondition } from '@ludiek/engine/condition/TrueCondition';
+import { FalseEvaluator } from '@ludiek/stdlib/condition/FalseCondition';
+import { TrueEvaluator } from '@ludiek/stdlib/condition/TrueCondition';
 import { AlwaysInput } from '@tests/shared/AlwaysInput';
 import { NeverInput } from '@tests/shared/NeverInput';
 import { AlwaysOutput } from '@tests/shared/AlwaysOutput';
@@ -13,9 +13,9 @@ const alwaysOutput = new AlwaysOutput();
 const neverOutput = new NeverOutput();
 
 const engine = new LudiekEngine({
-  conditions: [new TrueCondition(), new FalseCondition()],
-  inputs: [alwaysInput, neverInput],
-  outputs: [alwaysOutput, neverOutput],
+  evaluators: [new TrueEvaluator(), new FalseEvaluator()],
+  consumers: [alwaysInput, neverInput],
+  producers: [alwaysOutput, neverOutput],
 });
 
 describe('Engine Transactions', () => {

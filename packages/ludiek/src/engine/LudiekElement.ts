@@ -1,7 +1,7 @@
-import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
+import { BaseCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { LudiekController } from '@ludiek/engine/request/LudiekRequest';
-import { BaseInputShape, LudiekInput } from '@ludiek/engine/input/LudiekInput';
-import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
+import { BaseInput, LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
+import { BaseOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LudiekSavable } from '@ludiek/engine/peristence/LudiekSavable';
 import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
@@ -19,29 +19,22 @@ export abstract class LudiekElement implements LudiekSavable {
    */
   abstract readonly name: string;
 
-  public abstract readonly config: {
-    conditions?: LudiekCondition[];
-    controllers?: LudiekController[];
-    inputs?: LudiekInput[];
-    outputs?: LudiekOutput[];
-  };
-
   protected abstract _state: object;
 
   protected _engine!: LudiekEngine<
     LudiekPlugin[],
-    LudiekCondition[],
-    LudiekInput[],
-    LudiekOutput[],
+    LudiekEvaluator[],
+    LudiekConsumer[],
+    LudiekProducer[],
     LudiekController[]
   >;
 
   inject<Engine>(engine: Engine) {
     this._engine = engine as LudiekEngine<
       LudiekPlugin[],
-      LudiekCondition[],
-      LudiekInput[],
-      LudiekOutput[],
+      LudiekEvaluator[],
+      LudiekConsumer[],
+      LudiekProducer[],
       LudiekController[]
     >;
   }
@@ -50,7 +43,7 @@ export abstract class LudiekElement implements LudiekSavable {
    * @internal
    * @see LudiekEngine.evaluate
    */
-  protected evaluate(condition: BaseConditionShape | BaseConditionShape[]): boolean {
+  protected evaluate(condition: BaseCondition | BaseCondition[]): boolean {
     this.ensureEngine();
     return this._engine.evaluate(condition);
   }
@@ -68,7 +61,7 @@ export abstract class LudiekElement implements LudiekSavable {
    * @internal
    * @see LudiekEngine.canLoseInput
    */
-  protected canLoseInput(input: BaseInputShape | BaseInputShape[]): boolean {
+  protected canLoseInput(input: BaseInput | BaseInput[]): boolean {
     this.ensureEngine();
     return this._engine.canLoseInput(input);
   }
@@ -77,7 +70,7 @@ export abstract class LudiekElement implements LudiekSavable {
    * @internal
    * @see LudiekEngine.loseInput
    */
-  protected loseInput(input: BaseInputShape | BaseInputShape[]): void {
+  protected loseInput(input: BaseInput | BaseInput[]): void {
     this.ensureEngine();
     this._engine.loseInput(input);
   }
@@ -86,7 +79,7 @@ export abstract class LudiekElement implements LudiekSavable {
    * @internal
    * @see LudiekEngine.canGainOutput
    */
-  protected canGainOutput(output: BaseOutputShape | BaseOutputShape[]): boolean {
+  protected canGainOutput(output: BaseOutput | BaseOutput[]): boolean {
     this.ensureEngine();
     return this._engine.canGainOutput(output);
   }
@@ -95,7 +88,7 @@ export abstract class LudiekElement implements LudiekSavable {
    * @internal
    * @see LudiekEngine.gainOutput
    */
-  protected gainOutput(output: BaseOutputShape | BaseOutputShape[]) {
+  protected gainOutput(output: BaseOutput | BaseOutput[]) {
     this.ensureEngine();
     this._engine.gainOutput(output);
   }

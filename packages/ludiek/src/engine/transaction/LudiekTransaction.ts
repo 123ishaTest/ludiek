@@ -1,11 +1,11 @@
-import { BaseInputShape } from '@ludiek/engine/input/LudiekInput';
-import { BaseOutputShape } from '@ludiek/engine/output/LudiekOutput';
-import { BaseConditionShape } from '@ludiek/engine/condition/LudiekCondition';
+import { BaseInput } from '@ludiek/engine/input/LudiekConsumer';
+import { BaseOutput } from '@ludiek/engine/output/LudiekProducer';
+import { BaseCondition } from '@ludiek/engine/condition/LudiekEvaluator';
 
 export interface LudiekTransaction<
-  Input extends BaseInputShape,
-  Output extends BaseOutputShape,
-  Condition extends BaseConditionShape,
+  Input extends BaseInput,
+  Output extends BaseOutput,
+  Condition extends BaseCondition,
 > {
   input?: Input | Input[];
   output?: Output | Output[];

@@ -1,10 +1,10 @@
-import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
+import { BaseOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 
-export interface EmptyOutputShape extends BaseOutputShape {
+export interface EmptyOutputShape extends BaseOutput {
   type: '/output/empty';
 }
 
-export class EmptyOutput extends LudiekOutput<EmptyOutputShape> {
+export class EmptyOutput extends LudiekProducer<EmptyOutputShape> {
   readonly type = '/output/empty';
 
   canGain(): boolean {

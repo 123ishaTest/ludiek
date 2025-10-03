@@ -1,7 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { EmptyInput, EmptyInputShape } from '@tests/shared/EmptyInput';
-import { KitchenSinkPlugin } from '@tests/shared/KitchenSinkPlugin';
 import { InputNotFoundError } from '@ludiek/engine/input/InputError';
 
 describe('Engine Input', () => {
@@ -9,7 +8,7 @@ describe('Engine Input', () => {
     // Arrange
     const emptyInput = new EmptyInput();
     const engine = new LudiekEngine({
-      inputs: [emptyInput],
+      consumers: [emptyInput],
     });
     const input: EmptyInputShape = {
       type: '/input/empty',
@@ -26,25 +25,6 @@ describe('Engine Input', () => {
     expect(canLose).toBe(true);
     expect(canLoseInputSpy).toBeCalledWith(input);
     expect(loseInputSpy).toBeCalledWith(input);
-  });
-
-  it('retrieves input from plugins', () => {
-    // Arrange
-    const kitchenSink = new KitchenSinkPlugin();
-    kitchenSink.increase(4);
-    const engine = new LudiekEngine({
-      plugins: [kitchenSink],
-    });
-    const loseSpy = vi.spyOn(kitchenSink, 'increase');
-
-    // Act
-    engine.loseInput({
-      type: '/input/kitchen-sink',
-      amount: 4,
-    });
-
-    // Assert
-    expect(loseSpy).toHaveBeenCalledWith(-4);
   });
 
   it("throws an error when input doesn't exist on canLoseInput", () => {

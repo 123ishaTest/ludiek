@@ -1,7 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { EmptyOutput, EmptyOutputShape } from '@tests/shared/EmptyOutput';
-import { KitchenSinkPlugin } from '@tests/shared/KitchenSinkPlugin';
 import { OutputNotFoundError } from '@ludiek/engine/output/OutputError';
 
 describe('Engine Output', () => {
@@ -9,7 +8,7 @@ describe('Engine Output', () => {
     // Arrange
     const emptyOutput = new EmptyOutput();
     const engine = new LudiekEngine({
-      outputs: [emptyOutput],
+      producers: [emptyOutput],
     });
     const output: EmptyOutputShape = {
       type: '/output/empty',
@@ -26,25 +25,6 @@ describe('Engine Output', () => {
     expect(canLose).toBe(true);
     expect(canGainOutputSpy).toBeCalledWith(output);
     expect(gainOutputSpy).toBeCalledWith(output);
-  });
-
-  it('retrieves output from plugins', () => {
-    // Arrange
-    const kitchenSink = new KitchenSinkPlugin();
-    const engine = new LudiekEngine({
-      plugins: [kitchenSink],
-    });
-    const gainSpy = vi.spyOn(kitchenSink, 'increase');
-
-    // Act
-    engine.gainOutput({
-      type: '/output/kitchen-sink',
-      amount: 4,
-    });
-
-    // Assert
-    expect(gainSpy).toHaveBeenCalledWith(4);
-    expect(kitchenSink.variable).toBe(4);
   });
 
   it("throws an error when output doesn't exist on canGainOutput", () => {

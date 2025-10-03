@@ -1,9 +1,9 @@
-import { BaseOutputShape } from '@ludiek/engine/output/LudiekOutput';
-import { BaseConditionShape } from '@ludiek/engine/condition/LudiekCondition';
+import { BaseOutput } from '@ludiek/engine/output/LudiekProducer';
+import { BaseCondition } from '@ludiek/engine/condition/LudiekEvaluator';
 
 export interface LootOutcome {
-  output: BaseOutputShape;
-  requirements?: BaseConditionShape | BaseConditionShape[];
+  output: BaseOutput;
+  requirements?: BaseCondition | BaseCondition[];
 }
 
 export type AlwaysLootOutcome = LootOutcome;

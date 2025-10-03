@@ -1,21 +1,19 @@
 import { CouponPlugin } from '@ludiek/plugins/coupon/CouponPlugin';
-import { BaseRequestShape, LudiekController } from '@ludiek/engine/request/LudiekRequest';
+import { BaseRequest, LudiekController } from '@ludiek/engine/request/LudiekRequest';
 
-export interface EnterCouponRequest extends BaseRequestShape {
+export interface EnterCouponRequest extends BaseRequest {
   type: '/request/coupon/enter';
   coupon: string;
 }
 
-export class EnterCouponController implements LudiekController<EnterCouponRequest> {
+type Dependencies = {
+  plugins: [CouponPlugin];
+};
+
+export class EnterCouponController extends LudiekController<EnterCouponRequest, Dependencies> {
   readonly type = '/request/coupon/enter';
 
-  private readonly _coupon: CouponPlugin;
-
-  constructor(coupon: CouponPlugin) {
-    this._coupon = coupon;
-  }
-
   resolve(request: EnterCouponRequest): void {
-    this._coupon.enterCoupon(request.coupon);
+    this.engine.plugins.coupon.enterCoupon(request.coupon);
   }
 }

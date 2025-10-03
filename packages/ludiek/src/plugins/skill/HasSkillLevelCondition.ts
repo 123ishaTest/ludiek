@@ -1,23 +1,20 @@
-import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
+import { BaseCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { SkillPlugin } from '@ludiek/plugins/skill/SkillPlugin';
 
-interface HasSkillLevelConditionShape extends BaseConditionShape {
+interface HasSkillLevelCondition extends BaseCondition {
   type: '/condition/has-skill-level';
   skill: string;
   level: number;
 }
 
-export class HasSkillLevelCondition extends LudiekCondition<HasSkillLevelConditionShape> {
+type Dependencies = {
+  plugins: [SkillPlugin];
+};
+
+export class HasSkillLevelEvaluator extends LudiekEvaluator<HasSkillLevelCondition, Dependencies> {
   readonly type = '/condition/has-skill-level';
 
-  private _skill: SkillPlugin;
-
-  constructor(skill: SkillPlugin) {
-    super();
-    this._skill = skill;
-  }
-
-  evaluate(condition: HasSkillLevelConditionShape): boolean {
-    return this._skill.getLevel(condition.skill) >= condition.level;
+  evaluate(condition: HasSkillLevelCondition): boolean {
+    return this.engine.plugins.skill.getLevel(condition.skill) >= condition.level;
   }
 }

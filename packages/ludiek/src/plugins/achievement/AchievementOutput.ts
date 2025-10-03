@@ -1,26 +1,23 @@
 import { AchievementPlugin } from '@ludiek/plugins/achievement/AchievementPlugin';
-import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
+import { BaseOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 
-interface AchievementOutputShape extends BaseOutputShape {
+interface AchievementOutput extends BaseOutput {
   type: '/output/achievement';
   id: string;
 }
 
-export class AchievementOutput extends LudiekOutput<AchievementOutputShape> {
+type Dependencies = {
+  plugins: [AchievementPlugin];
+};
+
+export class AchievementProducer extends LudiekProducer<AchievementOutput, Dependencies> {
   readonly type = '/output/achievement';
-
-  private _achievement: AchievementPlugin;
-
-  constructor(achievement: AchievementPlugin) {
-    super();
-    this._achievement = achievement;
-  }
 
   canGain(): boolean {
     return true;
   }
 
-  gain(output: AchievementOutputShape): void {
-    this._achievement.earnAchievement(output.id);
+  gain(output: AchievementOutput): void {
+    this.engine.plugins.achievement.earnAchievement(output.id);
   }
 }

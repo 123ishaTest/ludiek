@@ -4,7 +4,6 @@ import { LudiekSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 
 class DummyFeature extends LudiekFeature<never> {
   name = 'dummy';
-  public config = {};
 
   protected _state = {
     xp: 0,

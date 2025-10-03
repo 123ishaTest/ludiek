@@ -1,12 +1,12 @@
 import { beforeEach, expect, it } from 'vitest';
 import { AchievementPlugin } from '@ludiek/plugins/achievement/AchievementPlugin';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { TrueCondition } from '@ludiek/engine/condition/TrueCondition';
-import { FalseCondition } from '@ludiek/engine/condition/FalseCondition';
+import { TrueEvaluator } from '@ludiek/stdlib/condition/TrueCondition';
+import { FalseEvaluator } from '@ludiek/stdlib/condition/FalseCondition';
 
 const achievement = new AchievementPlugin();
 new LudiekEngine({
-  conditions: [new TrueCondition(), new FalseCondition()],
+  evaluators: [new TrueEvaluator(), new FalseEvaluator()],
   plugins: [achievement],
 });
 

@@ -1,8 +1,15 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { AchievementPlugin } from '@ludiek/plugins/achievement/AchievementPlugin';
-import { AchievementOutput } from '@ludiek/plugins/achievement/AchievementOutput';
+import { AchievementProducer } from '@ludiek/plugins/achievement/AchievementOutput';
+import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 
 const achievement = new AchievementPlugin();
+const producer = new AchievementProducer();
+
+new LudiekEngine({
+  plugins: [achievement],
+  producers: [producer],
+});
 
 beforeEach(() => {
   achievement.loadContent([{ id: 'example-achievement' }]);
@@ -11,21 +18,17 @@ beforeEach(() => {
 describe('Achievement Output', () => {
   it('checks if we can earn achievement', () => {
     // Arrange
-    const output = new AchievementOutput(achievement);
 
     // Act
-    const canGain = output.canGain();
+    const canGain = producer.canGain();
 
     // Assert
     expect(canGain).toBe(true);
   });
 
   it('earns achievement', () => {
-    // Arrange
-    const output = new AchievementOutput(achievement);
-
     // Act
-    output.gain({
+    producer.gain({
       type: '/output/achievement',
       id: 'example-achievement',
       amount: 1,

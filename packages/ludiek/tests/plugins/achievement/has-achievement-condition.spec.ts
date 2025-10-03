@@ -1,27 +1,27 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { AchievementPlugin } from '@ludiek/plugins/achievement/AchievementPlugin';
-import { HasAchievementCondition } from '@ludiek/plugins/achievement/HasAchievementCondition';
+import { HasAchievementEvaluator } from '@ludiek/plugins/achievement/HasAchievementCondition';
+import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 
 const achievement = new AchievementPlugin();
+const evaluator = new HasAchievementEvaluator();
 
-const achievementContent = [
-  {
-    id: 'manual',
-  },
-];
+new LudiekEngine({
+  plugins: [achievement],
+  evaluators: [evaluator],
+});
 
 beforeEach(() => {
-  achievement.loadContent(achievementContent);
+  achievement.loadContent([{ id: 'manual' }]);
 });
 
 describe('Has Achievement Condition', () => {
   it('evaluates to true on statistics we have', () => {
     // Arrange
     achievement.earnAchievement('manual');
-    const condition = new HasAchievementCondition(achievement);
 
     // Act
-    const hasManual = condition.evaluate({
+    const hasManual = evaluator.evaluate({
       type: '/condition/has-achievement',
       id: 'manual',
     });
@@ -31,11 +31,8 @@ describe('Has Achievement Condition', () => {
   });
 
   it('evaluates to false on statistics we have', () => {
-    // Arrange
-    const condition = new HasAchievementCondition(achievement);
-
     // Act
-    const hasManual = condition.evaluate({
+    const hasManual = evaluator.evaluate({
       type: '/condition/has-achievement',
       id: 'manual',
     });

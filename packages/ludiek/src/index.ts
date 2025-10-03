@@ -8,19 +8,14 @@ export { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 export { LudiekGame } from '@ludiek/engine/LudiekGame';
 
 // Engine.Conditions
-export type { LudiekCondition, BaseConditionShape } from '@ludiek/engine/condition/LudiekCondition';
-export type { ExtractCondition, ConditionShape } from '@ludiek/engine/condition/LudiekConditionType';
+export type { LudiekEvaluator, BaseCondition } from '@ludiek/engine/condition/LudiekEvaluator';
 
 // Engine.Requests
-export type { BaseRequestShape, LudiekController } from '@ludiek/engine/request/LudiekRequest';
-export type { ExtractRequest, RequestShape } from '@ludiek/engine/request/LudiekRequestType';
-export { type RequestEvent } from '@ludiek/engine/request/LudiekRequest';
+export type { BaseRequest, LudiekController } from '@ludiek/engine/request/LudiekRequest';
 
 // Engine.Transactions
 export type { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
-export type { LudiekInput, BaseInputShape } from '@ludiek/engine/input/LudiekInput';
-export type { ExtractInput, InputShape } from '@ludiek/engine/input/LudiekInputType';
-export type { ExtractOutput, OutputShape } from '@ludiek/engine/output/LudiekOutputType';
+export type { LudiekConsumer, BaseInput } from '@ludiek/engine/input/LudiekConsumer';
 
 /**
  * Plugins
@@ -33,22 +28,22 @@ export {
 } from '@ludiek/plugins/achievement/AchievementPluginState';
 
 // Achievement.Conditions
-export { HasAchievementCondition } from '@ludiek/plugins/achievement/HasAchievementCondition';
+export { HasAchievementEvaluator } from '@ludiek/plugins/achievement/HasAchievementCondition';
 
 // Achievement.Transactions
-export { AchievementOutput } from '@ludiek/plugins/achievement/AchievementOutput';
+export { AchievementProducer } from '@ludiek/plugins/achievement/AchievementOutput';
 
 // Currency
 export { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
 export { type CurrencyPluginState, createCurrencyState } from '@ludiek/plugins/currency/CurrencyPluginState';
 
 // Currency.Conditions
-export { HasCurrencyCondition } from '@ludiek/plugins/currency/HasCurrencyCondition';
-export { NotHasCurrencyCondition } from '@ludiek/plugins/currency/NotHasCurrencyCondition';
+export { HasCurrencyEvaluator } from '@ludiek/plugins/currency/HasCurrencyCondition';
+export { NotHasCurrencyEvaluator } from '@ludiek/plugins/currency/NotHasCurrencyCondition';
 
 // Currency.Transactions
-export { CurrencyInput } from '@ludiek/plugins/currency/CurrencyInput';
-export { CurrencyOutput } from '@ludiek/plugins/currency/CurrencyOutput';
+export { CurrencyConsumer } from '@ludiek/plugins/currency/CurrencyInput';
+export { CurrencyProducer } from '@ludiek/plugins/currency/CurrencyOutput';
 
 // Coupon
 export { CouponPlugin } from '@ludiek/plugins/coupon/CouponPlugin';
@@ -58,7 +53,7 @@ export { type CouponPluginState, createCouponState } from '@ludiek/plugins/coupo
 export { LootTablePlugin } from '@ludiek/plugins/lootTable/LootTablePlugin';
 
 // Loot.Transactions
-export { LootTableOutput } from '@ludiek/plugins/lootTable/LootTableOutput';
+export { LootTableProducer } from '@ludiek/plugins/lootTable/LootTableOutput';
 
 // Skill
 export { SkillPlugin } from '@ludiek/plugins/skill/SkillPlugin';
@@ -66,24 +61,24 @@ export { type SkillPluginState, createSkillState } from '@ludiek/plugins/skill/S
 
 // Skill.Conditions
 export { HasSkillExperienceCondition } from '@ludiek/plugins/skill/HasSkillExperienceCondition';
-export { HasSkillLevelCondition } from '@ludiek/plugins/skill/HasSkillLevelCondition';
+export { HasSkillLevelEvaluator } from '@ludiek/plugins/skill/HasSkillLevelCondition';
 
 // Skill.Output
-export { SkillExperienceOutput } from '@ludiek/plugins/skill/SkillExperienceOutput';
+export { SkillExperienceProducer } from '@ludiek/plugins/skill/SkillExperienceOutput';
 
 // Statistic
 export { StatisticPlugin, type StatisticDefinition } from '@ludiek/plugins/statistic/StatisticPlugin';
 export { type StatisticPluginState, createStatisticState } from '@ludiek/plugins/statistic/StatisticPluginState';
-export { HasStatisticCondition } from '@ludiek/plugins/statistic/HasStatisticCondition';
+export { HasStatisticEvaluator } from '@ludiek/plugins/statistic/HasStatisticCondition';
 
 // Statistic.Conditions
-export { HasMapStatisticCondition } from '@ludiek/plugins/statistic/HasMapStatisticCondition';
+export { HasMapStatisticEvaluator } from '@ludiek/plugins/statistic/HasMapStatisticCondition';
 
 /**
  * Standard lib
  */
-export { TrueCondition } from '@ludiek/engine/condition/TrueCondition';
-export { FalseCondition } from '@ludiek/engine/condition/FalseCondition';
+export { TrueEvaluator } from '@ludiek/stdlib/condition/TrueCondition';
+export { FalseEvaluator } from '@ludiek/stdlib/condition/FalseCondition';
 
 /**
  * Util

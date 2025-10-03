@@ -1,20 +1,20 @@
-import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
-import { LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
-import { LudiekInput } from '@ludiek/engine/input/LudiekInput';
-import { LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
+import { LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
+import { LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
+import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 import { LudiekController } from '@ludiek/engine/request/LudiekRequest';
+import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 
 export interface LudiekEngineConfig<
-  Plugins extends LudiekPlugin[] | undefined = undefined,
-  Conditions extends LudiekCondition[] | undefined = undefined,
-  Inputs extends LudiekInput[] | undefined = undefined,
-  Outputs extends LudiekOutput[] | undefined = undefined,
-  Controllers extends LudiekController[] | undefined = undefined,
+  Plugins extends readonly LudiekPlugin[] = [],
+  Evaluators extends readonly LudiekEvaluator[] = [],
+  Consumers extends readonly LudiekConsumer[] = [],
+  Producers extends readonly LudiekProducer[] = [],
+  Controllers extends readonly LudiekController[] = [],
 > {
   plugins?: Plugins;
-  conditions?: Conditions;
-  inputs?: Inputs;
-  outputs?: Outputs;
+  evaluators?: Evaluators;
+  consumers?: Consumers;
+  producers?: Producers;
   controllers?: Controllers;
 }
 

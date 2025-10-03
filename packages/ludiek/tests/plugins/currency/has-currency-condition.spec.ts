@@ -1,16 +1,23 @@
 import { describe, expect, it } from 'vitest';
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
-import { HasCurrencyCondition } from '@ludiek/plugins/currency/HasCurrencyCondition';
+import { HasCurrencyEvaluator } from '@ludiek/plugins/currency/HasCurrencyCondition';
 import { InvalidCurrencyError } from '@ludiek/plugins/currency/CurrencyErrors';
+import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
+
+const currency = new CurrencyPlugin();
+const condition = new HasCurrencyEvaluator();
+
+new LudiekEngine({
+  plugins: [currency],
+  evaluators: [condition],
+});
 
 describe('Has Currency Condition', () => {
   it('evaluates to true on currencies we have', () => {
     // Arrange
-    const currency = new CurrencyPlugin();
     currency.loadContent([{ id: '/currency/money' }, { id: '/currency/gems' }]);
 
     currency.gainCurrency({ id: '/currency/money', amount: 3 });
-    const condition = new HasCurrencyCondition(currency);
 
     // Act
     const has3Money = condition.evaluate({
@@ -31,8 +38,6 @@ describe('Has Currency Condition', () => {
 
   it('retains full type-safety', () => {
     // Arrange
-    const currency = new CurrencyPlugin();
-    const condition = new HasCurrencyCondition(currency);
     currency.loadContent([{ id: '/currency/money' }, { id: '/currency/gems' }]);
 
     expect(() => {

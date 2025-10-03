@@ -1,7 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { EmptyController, EmptyRequest } from '@tests/shared/EmptyController';
-import { KitchenSinkPlugin } from '@tests/shared/KitchenSinkPlugin';
 import { ControllerNotFoundError } from '@ludiek/engine/request/RequestError';
 
 const engine = new LudiekEngine({
@@ -23,26 +22,6 @@ describe('Engine Requests', () => {
 
     // Assert
     expect(controllerSpy).toBeCalledWith(request);
-  });
-
-  it('retrieves request from plugins', () => {
-    // Arrange
-    const kitchenSink = new KitchenSinkPlugin();
-    const engine = new LudiekEngine({
-      plugins: [kitchenSink],
-    });
-    const increaseSpy = vi.spyOn(kitchenSink, 'increase');
-
-    // Act
-    engine.request({
-      type: '/request/increase-variable',
-      amount: 4,
-    });
-
-    // Act
-    expect(increaseSpy).toBeCalledWith(4);
-
-    // Assert
   });
 
   it('throws an error when performing an unknown request', () => {

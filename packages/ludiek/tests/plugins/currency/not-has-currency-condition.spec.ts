@@ -1,24 +1,34 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
-import { NotHasCurrencyCondition } from '@ludiek/plugins/currency/NotHasCurrencyCondition';
+import { NotHasCurrencyEvaluator } from '@ludiek/plugins/currency/NotHasCurrencyCondition';
 import { InvalidCurrencyError } from '@ludiek/plugins/currency/CurrencyErrors';
+import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
+
+const currency = new CurrencyPlugin();
+const evaluator = new NotHasCurrencyEvaluator();
+
+new LudiekEngine({
+  plugins: [currency],
+  evaluators: [evaluator],
+});
+
+beforeEach(() => {
+  currency.loadContent([{ id: '/currency/money' }, { id: '/currency/gems' }]);
+});
 
 describe('Not Has Currency Condition', () => {
   it("evaluates to true on currencies we don't have", () => {
     // Arrange
-    const currency = new CurrencyPlugin();
     currency.loadContent([{ id: '/currency/money' }, { id: '/currency/gems' }]);
-
     currency.gainCurrency({ id: '/currency/money', amount: 3 });
-    const condition = new NotHasCurrencyCondition(currency);
 
     // Act
-    const has3Money = condition.evaluate({
+    const has3Money = evaluator.evaluate({
       type: '/condition/not-has-currency',
       id: '/currency/money',
       amount: 3,
     });
-    const has4Money = condition.evaluate({
+    const has4Money = evaluator.evaluate({
       type: '/condition/not-has-currency',
       id: '/currency/money',
       amount: 4,
@@ -31,12 +41,9 @@ describe('Not Has Currency Condition', () => {
 
   it('retains full type-safety', () => {
     // Arrange
-    const currency = new CurrencyPlugin();
-    const condition = new NotHasCurrencyCondition(currency);
-    currency.loadContent([{ id: '/currency/money' }, { id: '/currency/gems' }]);
 
     expect(() => {
-      condition.evaluate({
+      evaluator.evaluate({
         // @ts-expect-error 'wrong' is not a valid type
         type: 'wrong',
         // @ts-expect-error Type string is not assignable to type number
@@ -44,7 +51,7 @@ describe('Not Has Currency Condition', () => {
       });
     }).toThrow(InvalidCurrencyError);
 
-    condition.evaluate({
+    evaluator.evaluate({
       type: '/condition/not-has-currency',
       id: '/currency/gems',
       amount: 0,

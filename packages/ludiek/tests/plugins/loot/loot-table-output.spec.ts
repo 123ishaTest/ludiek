@@ -1,12 +1,17 @@
 import { expect, it, vi } from 'vitest';
-import { LootTableOutput } from '@ludiek/plugins/lootTable/LootTableOutput';
+import { LootTableProducer } from '@ludiek/plugins/lootTable/LootTableOutput';
 import { LootTablePlugin } from '@ludiek/plugins/lootTable/LootTablePlugin';
+import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
+
+const loot = new LootTablePlugin();
+const output = new LootTableProducer();
+
+new LudiekEngine({
+  plugins: [loot],
+  producers: [output],
+});
 
 it('Can always gain', () => {
-  // Arrange
-  const loot = new LootTablePlugin();
-  const output = new LootTableOutput(loot);
-
   // Act
   const canGain = output.canGain();
 
@@ -16,8 +21,6 @@ it('Can always gain', () => {
 
 it('Rolls on a lootTable table', () => {
   // Arrange
-  const loot = new LootTablePlugin();
-  const output = new LootTableOutput(loot);
   const spy = vi.spyOn(loot, 'roll').mockReturnValue([]);
 
   // Act

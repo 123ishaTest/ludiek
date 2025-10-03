@@ -1,68 +1,12 @@
 import { expect, it } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { KitchenSinkPlugin } from '@tests/shared/KitchenSinkPlugin';
-import { EmptyPlugin } from '@tests/shared/EmptyPlugin';
 import { EmptyOutput } from '@tests/shared/EmptyOutput';
 import { OutputNotFoundError } from '@ludiek/engine/output/OutputError';
 
-it('is type-safe when plugins and output exists', () => {
+it('is type-safe', () => {
   // Arrange
   const engine = new LudiekEngine({
-    plugins: [new KitchenSinkPlugin()],
-    outputs: [new EmptyOutput()],
-  });
-
-  engine.gainOutput({ type: '/output/kitchen-sink', amount: 4 });
-  engine.gainOutput({ type: '/output/empty', amount: 3 });
-
-  expect(() => {
-    // @ts-expect-error unknown type
-    engine.gainOutput({ type: 'wrong' });
-  }).toThrow(OutputNotFoundError);
-});
-
-it('is type-safe when only plugins exists', () => {
-  // Arrange
-  const engine = new LudiekEngine({
-    plugins: [new KitchenSinkPlugin()],
-  });
-
-  engine.gainOutput({ type: '/output/kitchen-sink', amount: 4 });
-
-  expect(() => {
-    // @ts-expect-error unknown type
-    engine.gainOutput({ type: 'wrong' });
-  }).toThrow(OutputNotFoundError);
-});
-
-it('is type-safe when plugins without output exists', () => {
-  // Arrange
-  const engine = new LudiekEngine({
-    plugins: [new EmptyPlugin()],
-  });
-
-  expect(() => {
-    // @ts-expect-error unknown type
-    engine.gainOutput({ type: 'wrong' });
-  }).toThrow(OutputNotFoundError);
-});
-
-it('is type-safe when incomplete plugins exists', () => {
-  // Arrange
-  const engine = new LudiekEngine({
-    plugins: [new KitchenSinkPlugin(), new EmptyPlugin()],
-  });
-
-  expect(() => {
-    // @ts-expect-error unknown type
-    engine.gainOutput({ type: 'wrong' });
-  }).toThrow(OutputNotFoundError);
-});
-
-it('is type-safe when only output exists', () => {
-  // Arrange
-  const engine = new LudiekEngine({
-    outputs: [new EmptyOutput()],
+    producers: [new EmptyOutput()],
   });
 
   // Valid
@@ -74,7 +18,7 @@ it('is type-safe when only output exists', () => {
   }).toThrow(OutputNotFoundError);
 });
 
-it('it collapses to never when neither exist', () => {
+it('it collapses to never when no output', () => {
   // Arrange
   const engine = new LudiekEngine({});
 

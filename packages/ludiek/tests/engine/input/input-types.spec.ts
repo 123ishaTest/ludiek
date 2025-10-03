@@ -1,68 +1,12 @@
 import { expect, it } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { KitchenSinkPlugin } from '@tests/shared/KitchenSinkPlugin';
-import { EmptyPlugin } from '@tests/shared/EmptyPlugin';
 import { EmptyInput } from '@tests/shared/EmptyInput';
 import { InputNotFoundError } from '@ludiek/engine/input/InputError';
 
-it('is type-safe when plugins and input exists', () => {
+it('is type-safe', () => {
   // Arrange
   const engine = new LudiekEngine({
-    plugins: [new KitchenSinkPlugin()],
-    inputs: [new EmptyInput()],
-  });
-
-  engine.loseInput({ type: '/input/kitchen-sink', amount: 4 });
-  engine.loseInput({ type: '/input/empty', amount: 3 });
-
-  expect(() => {
-    // @ts-expect-error unknown type
-    engine.loseInput({ type: 'wrong' });
-  }).toThrow(InputNotFoundError);
-});
-
-it('is type-safe when only plugins exists', () => {
-  // Arrange
-  const engine = new LudiekEngine({
-    plugins: [new KitchenSinkPlugin()],
-  });
-
-  engine.loseInput({ type: '/input/kitchen-sink', amount: 4 });
-
-  expect(() => {
-    // @ts-expect-error unknown type
-    engine.loseInput({ type: 'wrong' });
-  }).toThrow(InputNotFoundError);
-});
-
-it('is type-safe when plugins without input exists', () => {
-  // Arrange
-  const engine = new LudiekEngine({
-    plugins: [new EmptyPlugin()],
-  });
-
-  expect(() => {
-    // @ts-expect-error unknown type
-    engine.loseInput({ type: 'wrong' });
-  }).toThrow(InputNotFoundError);
-});
-
-it('is type-safe when incomplete plugins exists', () => {
-  // Arrange
-  const engine = new LudiekEngine({
-    plugins: [new KitchenSinkPlugin(), new EmptyPlugin()],
-  });
-
-  expect(() => {
-    // @ts-expect-error unknown type
-    engine.loseInput({ type: 'wrong' });
-  }).toThrow(InputNotFoundError);
-});
-
-it('is type-safe when only inputs exists', () => {
-  // Arrange
-  const engine = new LudiekEngine({
-    inputs: [new EmptyInput()],
+    consumers: [new EmptyInput()],
   });
 
   // Valid
@@ -74,12 +18,12 @@ it('is type-safe when only inputs exists', () => {
   }).toThrow(InputNotFoundError);
 });
 
-it('it collapses to never when neither exist', () => {
+it('it collapses to never when no input exist', () => {
   // Arrange
   const engine = new LudiekEngine({});
 
   expect(() => {
     // @ts-expect-error unknown type
-    engine.loseInput({ type: 'wrong' });
+    engine.loseInput({ type: 'wrong', amount: 4 });
   }).toThrow(InputNotFoundError);
 });

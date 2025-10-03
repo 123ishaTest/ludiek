@@ -1,6 +1,6 @@
-import { LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
+import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 
-export class NeverOutput extends LudiekOutput<{ type: '/output/never'; amount: number }> {
+export class NeverOutput extends LudiekProducer<{ type: '/output/never'; amount: number }> {
   readonly type = '/output/never';
 
   public canGain(): boolean {

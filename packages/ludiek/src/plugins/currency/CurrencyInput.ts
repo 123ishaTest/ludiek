@@ -1,27 +1,24 @@
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
-import { BaseInputShape, LudiekInput } from '@ludiek/engine/input/LudiekInput';
+import { BaseInput, LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
 
-interface CurrencyInputShape extends BaseInputShape {
+interface CurrencyInput extends BaseInput {
   type: '/input/currency';
   id: string;
   amount: number;
 }
 
-export class CurrencyInput extends LudiekInput<CurrencyInputShape> {
+type Dependencies = {
+  plugins: [CurrencyPlugin];
+};
+
+export class CurrencyConsumer extends LudiekConsumer<CurrencyInput, Dependencies> {
   readonly type = '/input/currency';
 
-  private _currency: CurrencyPlugin;
-
-  constructor(currency: CurrencyPlugin) {
-    super();
-    this._currency = currency;
+  canLose(input: CurrencyInput): boolean {
+    return this.engine.plugins.currency.hasCurrency(input);
   }
 
-  canLose(input: CurrencyInputShape): boolean {
-    return this._currency.hasCurrency(input);
-  }
-
-  lose(input: CurrencyInputShape): void {
-    return this._currency.loseCurrency(input);
+  lose(input: CurrencyInput): void {
+    return this.engine.plugins.currency.loseCurrency(input);
   }
 }

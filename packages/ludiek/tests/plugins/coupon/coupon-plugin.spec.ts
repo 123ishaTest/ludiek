@@ -1,18 +1,18 @@
 import { beforeEach, expect, it } from 'vitest';
 import { CouponPlugin } from '@ludiek/plugins/coupon/CouponPlugin';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { TrueCondition } from '@ludiek/engine/condition/TrueCondition';
-import { FalseCondition } from '@ludiek/engine/condition/FalseCondition';
+import { TrueEvaluator } from '@ludiek/stdlib/condition/TrueCondition';
+import { FalseEvaluator } from '@ludiek/stdlib/condition/FalseCondition';
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
-import { CurrencyOutput } from '@ludiek/plugins/currency/CurrencyOutput';
+import { CurrencyProducer } from '@ludiek/plugins/currency/CurrencyOutput';
 import { UnknownCouponError } from '@ludiek/plugins/coupon/CouponErrors';
 
 const coupon = new CouponPlugin();
 const currency = new CurrencyPlugin();
 new LudiekEngine({
-  conditions: [new TrueCondition(), new FalseCondition()],
-  outputs: [new CurrencyOutput(currency)],
-  plugins: [coupon],
+  plugins: [coupon, currency],
+  evaluators: [new TrueEvaluator(), new FalseEvaluator()],
+  producers: [new CurrencyProducer()],
 });
 
 const currencyContent = [{ id: '/currency/money' }];

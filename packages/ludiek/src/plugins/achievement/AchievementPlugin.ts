@@ -1,6 +1,6 @@
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
-import { BaseConditionShape } from '@ludiek/engine/condition/LudiekCondition';
+import { BaseCondition } from '@ludiek/engine/condition/LudiekEvaluator';
 import { UnknownAchievementError } from '@ludiek/plugins/achievement/AchievementErrors';
 import { AchievementPluginState, createAchievementState } from '@ludiek/plugins/achievement/AchievementPluginState';
 
@@ -10,7 +10,7 @@ export interface AchievementDefinition {
    * Optional condition to automatically unlock.
    * If left empty it can only be unlocked manually
    */
-  condition?: BaseConditionShape;
+  condition?: BaseCondition;
 }
 
 export class AchievementPlugin extends LudiekPlugin {
