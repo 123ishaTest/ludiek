@@ -1,12 +1,12 @@
 import { expect, it } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { EmptyInput } from '@tests/shared/EmptyInput';
+import { EmptyConsumer } from '@tests/shared/EmptyInput';
 import { InputNotFoundError } from '@ludiek/engine/input/InputError';
 
 it('is type-safe', () => {
   // Arrange
   const engine = new LudiekEngine({
-    consumers: [new EmptyInput()],
+    consumers: [new EmptyConsumer()],
   });
 
   // Valid

@@ -1,6 +1,6 @@
 import { LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
 
-export class AlwaysInput extends LudiekConsumer<{ type: '/input/always'; amount: number }> {
+export class AlwaysConsumer extends LudiekConsumer<{ type: '/input/always'; amount: number }> {
   readonly type = '/input/always';
 
   canLose(): boolean {

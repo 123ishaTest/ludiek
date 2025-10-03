@@ -1,16 +1,16 @@
 import { describe, expect, it, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { EmptyInput, EmptyInputShape } from '@tests/shared/EmptyInput';
+import { EmptyConsumer, EmptyInput } from '@tests/shared/EmptyInput';
 import { InputNotFoundError } from '@ludiek/engine/input/InputError';
 
 describe('Engine Input', () => {
   it('loses input', () => {
     // Arrange
-    const emptyInput = new EmptyInput();
+    const emptyInput = new EmptyConsumer();
     const engine = new LudiekEngine({
       consumers: [emptyInput],
     });
-    const input: EmptyInputShape = {
+    const input: EmptyInput = {
       type: '/input/empty',
       amount: 3,
     };

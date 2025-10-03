@@ -12,11 +12,11 @@ import { OutputNotFoundError } from '@ludiek/engine/output/OutputError';
 import { ControllerNotFoundError } from '@ludiek/engine/request/RequestError';
 
 export class LudiekEngine<
-  Plugins extends readonly LudiekPlugin[],
-  Evaluators extends readonly LudiekEvaluator[],
-  Consumers extends readonly LudiekConsumer[],
-  Producers extends readonly LudiekProducer[],
-  Controllers extends readonly LudiekController[],
+  Plugins extends readonly LudiekPlugin[] = [],
+  Evaluators extends readonly LudiekEvaluator[] = [],
+  Consumers extends readonly LudiekConsumer[] = [],
+  Producers extends readonly LudiekProducer[] = [],
+  Controllers extends readonly LudiekController[] = [],
 > {
   public plugins: PluginMap<Plugins>;
   private readonly _evaluators: Record<string, LudiekEvaluator> = {};

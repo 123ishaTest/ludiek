@@ -1,4 +1,5 @@
 import { LudiekDependencies, LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
+import { IsNonEmpty } from '@ludiek/util/types';
 
 export interface BaseInput {
   type: string;
@@ -28,4 +29,4 @@ export abstract class LudiekConsumer<
  * Given a tuple of LudiekConsumers, produce a union of their inputs.
  */
 export type Input<Consumers extends readonly LudiekConsumer[]> =
-  Consumers[number] extends LudiekConsumer<infer Input> ? Input : never;
+  IsNonEmpty<Consumers> extends false ? never : Consumers[number] extends LudiekConsumer<infer Input> ? Input : never;

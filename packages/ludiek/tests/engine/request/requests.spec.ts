@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { EmptyController, EmptyRequest } from '@tests/shared/EmptyController';
+import { EmptyController, EmptyRequest } from '@tests/shared/EmptyRequest';
 import { ControllerNotFoundError } from '@ludiek/engine/request/RequestError';
 
 const engine = new LudiekEngine({

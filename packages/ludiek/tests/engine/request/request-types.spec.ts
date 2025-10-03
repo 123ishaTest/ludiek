@@ -1,12 +1,13 @@
 import { expect, it } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { EmptyController } from '@tests/shared/EmptyController';
+import { EmptyController } from '@tests/shared/EmptyRequest';
 import { ControllerNotFoundError } from '@ludiek/engine/request/RequestError';
+import { EnterCouponController } from '@ludiek/plugins/coupon/EnterCouponController';
 
 it('is type-safe', () => {
   // Arrange
   const engine = new LudiekEngine({
-    controllers: [new EmptyController()],
+    controllers: [new EmptyController(), new EnterCouponController()],
   });
 
   // Valid
@@ -20,7 +21,9 @@ it('is type-safe', () => {
 
 it('it collapses to never when no controllers', () => {
   // Arrange
-  const engine = new LudiekEngine({});
+  const engine = new LudiekEngine({
+    controllers: [],
+  });
 
   expect(() => {
     // @ts-expect-error unknown type

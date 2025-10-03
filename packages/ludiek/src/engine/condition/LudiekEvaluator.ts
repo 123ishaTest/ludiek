@@ -1,4 +1,5 @@
 import { LudiekDependencies, LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
+import { IsNonEmpty } from '@ludiek/util/types';
 
 /**
  * Base shape for all conditions.
@@ -27,4 +28,8 @@ export abstract class LudiekEvaluator<
  * Given a tuple of LudiekEvaluators, produce a union of their Conditions.
  */
 export type Condition<Evaluators extends readonly LudiekEvaluator[]> =
-  Evaluators[number] extends LudiekEvaluator<infer Condition> ? Condition : never;
+  IsNonEmpty<Evaluators> extends false
+    ? never
+    : Evaluators[number] extends LudiekEvaluator<infer Condition>
+      ? Condition
+      : never;

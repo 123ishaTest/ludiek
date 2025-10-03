@@ -1,16 +1,16 @@
 import { describe, expect, it, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { EmptyOutput, EmptyOutputShape } from '@tests/shared/EmptyOutput';
+import { EmptyOutput, EmptyProducer } from '@tests/shared/EmptyOutput';
 import { OutputNotFoundError } from '@ludiek/engine/output/OutputError';
 
 describe('Engine Output', () => {
   it('gains output', () => {
     // Arrange
-    const emptyOutput = new EmptyOutput();
+    const emptyOutput = new EmptyProducer();
     const engine = new LudiekEngine({
       producers: [emptyOutput],
     });
-    const output: EmptyOutputShape = {
+    const output: EmptyOutput = {
       type: '/output/empty',
       amount: 3,
     };

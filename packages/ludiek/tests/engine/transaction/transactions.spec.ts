@@ -2,15 +2,15 @@ import { describe, expect, it, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { FalseEvaluator } from '@ludiek/stdlib/condition/FalseCondition';
 import { TrueEvaluator } from '@ludiek/stdlib/condition/TrueCondition';
-import { AlwaysInput } from '@tests/shared/AlwaysInput';
-import { NeverInput } from '@tests/shared/NeverInput';
-import { AlwaysOutput } from '@tests/shared/AlwaysOutput';
-import { NeverOutput } from '@tests/shared/NeverOutput';
+import { AlwaysConsumer } from '@tests/shared/AlwaysInput';
+import { NeverConsumer } from '@tests/shared/NeverInput';
+import { AlwaysProducer } from '@tests/shared/AlwaysOutput';
+import { NeverProducer } from '@tests/shared/NeverOutput';
 
-const alwaysInput = new AlwaysInput();
-const neverInput = new NeverInput();
-const alwaysOutput = new AlwaysOutput();
-const neverOutput = new NeverOutput();
+const alwaysInput = new AlwaysConsumer();
+const neverInput = new NeverConsumer();
+const alwaysOutput = new AlwaysProducer();
+const neverOutput = new NeverProducer();
 
 const engine = new LudiekEngine({
   evaluators: [new TrueEvaluator(), new FalseEvaluator()],

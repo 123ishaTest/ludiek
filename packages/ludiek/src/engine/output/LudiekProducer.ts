@@ -1,4 +1,5 @@
 import { LudiekDependencies, LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
+import { IsNonEmpty } from '@ludiek/util/types';
 
 export interface BaseOutput {
   type: string;
@@ -28,4 +29,4 @@ export abstract class LudiekProducer<
  * Given a tuple of LudiekProducers, produce a union of their outputs.
  */
 export type Output<Producers extends readonly LudiekProducer[]> =
-  Producers[number] extends LudiekProducer<infer Output> ? Output : never;
+  IsNonEmpty<Producers> extends false ? never : Producers[number] extends LudiekProducer<infer Output> ? Output : never;
