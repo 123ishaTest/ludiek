@@ -10,11 +10,11 @@ it('is type-safe', () => {
   });
 
   // Valid
-  engine.gainOutput({ type: '/output/empty', amount: 2 });
+  engine.produce({ type: '/output/empty', amount: 2 });
 
   expect(() => {
     // @ts-expect-error unknown type
-    engine.gainOutput({ type: 'wrong' });
+    engine.produce({ type: 'wrong' });
   }).toThrow(OutputNotFoundError);
 });
 
@@ -24,6 +24,6 @@ it('it collapses to never when no output', () => {
 
   expect(() => {
     // @ts-expect-error unknown type
-    engine.gainOutput({ type: 'wrong' });
+    engine.produce({ type: 'wrong' });
   }).toThrow(OutputNotFoundError);
 });

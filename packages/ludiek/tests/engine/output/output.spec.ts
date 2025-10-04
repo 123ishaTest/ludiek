@@ -14,38 +14,38 @@ describe('Engine Output', () => {
       type: '/output/empty',
       amount: 3,
     };
-    const canGainOutputSpy = vi.spyOn(emptyOutput, 'canGain');
-    const gainOutputSpy = vi.spyOn(emptyOutput, 'gain');
+    const canProduceSpy = vi.spyOn(emptyOutput, 'canProduce');
+    const produceSpy = vi.spyOn(emptyOutput, 'produce');
 
     // Act
-    const canLose = engine.canGainOutput(output);
-    engine.gainOutput(output);
+    const canConsume = engine.canProduce(output);
+    engine.produce(output);
 
     // Assert
-    expect(canLose).toBe(true);
-    expect(canGainOutputSpy).toBeCalledWith(output);
-    expect(gainOutputSpy).toBeCalledWith(output);
+    expect(canConsume).toBe(true);
+    expect(canProduceSpy).toBeCalledWith(output);
+    expect(produceSpy).toBeCalledWith(output);
   });
 
-  it("throws an error when output doesn't exist on canGainOutput", () => {
+  it("throws an error when output doesn't exist on canProduce", () => {
     // Arrange
     const engine = new LudiekEngine({});
 
     // Act
     expect(() => {
       // @ts-expect-error unknown type
-      engine.canGainOutput({ type: 'wrong', amount: 1 });
+      engine.canProduce({ type: 'wrong', amount: 1 });
     }).toThrow(OutputNotFoundError);
   });
 
-  it("throws an error when output doesn't exist on gainOutput", () => {
+  it("throws an error when output doesn't exist on produce", () => {
     // Arrange
     const engine = new LudiekEngine({});
 
     // Act
     expect(() => {
       // @ts-expect-error unknown type
-      engine.gainOutput({ type: 'wrong', amount: 1 });
+      engine.produce({ type: 'wrong', amount: 1 });
     }).toThrow(OutputNotFoundError);
   });
 });

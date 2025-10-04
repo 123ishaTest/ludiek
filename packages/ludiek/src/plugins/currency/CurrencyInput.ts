@@ -14,11 +14,11 @@ type Dependencies = {
 export class CurrencyConsumer extends LudiekConsumer<CurrencyInput, Dependencies> {
   readonly type = '/input/currency';
 
-  canLose(input: CurrencyInput): boolean {
+  canConsume(input: CurrencyInput): boolean {
     return this.engine.plugins.currency.hasCurrency(input);
   }
 
-  lose(input: CurrencyInput): void {
+  consume(input: CurrencyInput): void {
     return this.engine.plugins.currency.loseCurrency(input);
   }
 }

@@ -13,20 +13,20 @@ export abstract class LudiekConsumer<
   public abstract readonly type: Input['type'];
 
   /**
-   * Whether we can lose the input (i.e. have it)
+   * Whether we can consume the input (i.e. have it)
    * @param input
    */
-  abstract canLose(input: Input): boolean;
+  abstract canConsume(input: Input): boolean;
 
   /**
-   * Subtracting the input
+   * Consume the input
    * @param input
    */
-  abstract lose(input: Input): void;
+  abstract consume(input: Input): void;
 }
 
 /**
  * Given a tuple of LudiekConsumers, produce a union of their inputs.
  */
-export type Input<Consumers extends readonly LudiekConsumer[]> =
+export type LudiekInput<Consumers extends readonly LudiekConsumer[]> =
   IsNonEmpty<Consumers> extends false ? never : Consumers[number] extends LudiekConsumer<infer Input> ? Input : never;

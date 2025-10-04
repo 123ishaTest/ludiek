@@ -2,15 +2,16 @@ import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 import { PluginMap } from '@ludiek/engine/LudiekEngineConfig';
-import { LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
+import { LudiekCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { ISignal, SignalDispatcher } from 'strongly-typed-events';
 import { LudiekFeaturesSaveData, LudiekSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 import { LudiekLocalStorage } from '@ludiek/engine/peristence/LudiekLocalStorage';
 import { LudiekJsonSaveEncoder } from '@ludiek/engine/peristence/LudiekJsonSaveEncoder';
 import { LudiekGameConfig } from '@ludiek/engine/LudiekGameConfig';
-import { LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
-import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
-import { LudiekController } from '@ludiek/engine/request/LudiekRequest';
+import { LudiekConsumer, LudiekInput } from '@ludiek/engine/input/LudiekConsumer';
+import { LudiekOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
+import { LudiekController, LudiekRequest } from '@ludiek/engine/request/LudiekRequest';
+import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
 
 export type FeatureMap<Features extends LudiekFeature<Record<string, LudiekPlugin>>[]> = {
   [Feature in Features[number] as Feature['name']]: Extract<Features[number], { name: Feature['name'] }>;
@@ -77,6 +78,20 @@ export class LudiekGame<
     }
 
     this._onTick.dispatch();
+  }
+
+  public evaluate(condition: LudiekCondition<Evaluators> | LudiekCondition<Evaluators>[]): boolean {
+    return this._engine.evaluate(condition);
+  }
+
+  public handleTransaction(
+    transaction: LudiekTransaction<LudiekInput<Consumers>, LudiekOutput<Producers>, LudiekCondition<Evaluators>>,
+  ): boolean {
+    return this._engine.handleTransaction(transaction);
+  }
+
+  public request(request: LudiekRequest<Controllers>): void {
+    this._engine.request(request);
   }
 
   public get engine(): LudiekEngine<Plugins, Evaluators, Consumers, Producers, Controllers> {

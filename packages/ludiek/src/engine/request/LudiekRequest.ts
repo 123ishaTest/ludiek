@@ -18,7 +18,7 @@ export abstract class LudiekController<
 /**
  * Given a tuple of LudiekControllers, produce a union of their requests.
  */
-export type Request<Controllers extends readonly LudiekController[] = []> =
+export type LudiekRequest<Controllers extends readonly LudiekController[] = []> =
   IsNonEmpty<Controllers> extends false
     ? never
     : Controllers[number] extends LudiekController<infer Request>

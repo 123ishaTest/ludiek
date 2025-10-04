@@ -59,11 +59,11 @@ export class CouponPlugin extends LudiekPlugin {
       return false;
     }
 
-    if (!this.canGainOutput(coupon.output)) {
+    if (!this.canProduce(coupon.output)) {
       return false;
     }
 
-    this.gainOutput(coupon.output);
+    this.produce(coupon.output);
 
     this._state.record[id] = true;
     this._onCouponRedeemed.dispatch(coupon);

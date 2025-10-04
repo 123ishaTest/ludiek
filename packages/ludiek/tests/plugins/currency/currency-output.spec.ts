@@ -18,15 +18,15 @@ beforeEach(() => {
 describe('Currency Output', () => {
   it('checks if we can gain currency', () => {
     // Act
-    const canGain = producer.canGain();
+    const canProduce = producer.canProduce();
 
     // Assert
-    expect(canGain).toBe(true);
+    expect(canProduce).toBe(true);
   });
 
   it('gains currency', () => {
     // Act
-    producer.gain({
+    producer.produce({
       type: '/output/currency',
       id: '/currency/money',
       amount: 6,

@@ -16,11 +16,11 @@ export class LootTableProducer extends LudiekProducer<LootTableOutput, Dependenc
 
   // TODO(@Isha): How should we calculate this?
   //  Leave it up to the caller to know what lootTable table has which restrictions?
-  canGain(): boolean {
+  canProduce(): boolean {
     return true;
   }
 
-  gain(output: LootTableOutput): void {
+  produce(output: LootTableOutput): void {
     this.engine.plugins.lootTable.roll(output.table, output.amount, true);
   }
 }

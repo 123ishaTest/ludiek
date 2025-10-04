@@ -21,7 +21,7 @@ export class SkillExperienceProducer extends LudiekProducer<SkillExperienceOutpu
    * Experience can always be gained
    * TODO: Should there be an experience cap?
    */
-  canGain(): boolean {
+  canProduce(): boolean {
     return true;
   }
 
@@ -29,7 +29,7 @@ export class SkillExperienceProducer extends LudiekProducer<SkillExperienceOutpu
    * Gain the experience
    * @param output
    */
-  gain(output: SkillExperienceOutput): void {
+  produce(output: SkillExperienceOutput): void {
     this.engine.plugins.skill.gainExperience(output);
   }
 }

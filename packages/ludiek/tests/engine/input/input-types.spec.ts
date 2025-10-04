@@ -10,11 +10,11 @@ it('is type-safe', () => {
   });
 
   // Valid
-  engine.loseInput({ type: '/input/empty', amount: 2 });
+  engine.consume({ type: '/input/empty', amount: 2 });
 
   expect(() => {
     // @ts-expect-error unknown type
-    engine.loseInput({ type: 'wrong' });
+    engine.consume({ type: 'wrong' });
   }).toThrow(InputNotFoundError);
 });
 
@@ -24,6 +24,6 @@ it('it collapses to never when no input exist', () => {
 
   expect(() => {
     // @ts-expect-error unknown type
-    engine.loseInput({ type: 'wrong', amount: 4 });
+    engine.consume({ type: 'wrong', amount: 4 });
   }).toThrow(InputNotFoundError);
 });

@@ -3,11 +3,11 @@ import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 export class AlwaysProducer extends LudiekProducer<{ type: '/output/always'; amount: number }> {
   readonly type = '/output/always';
 
-  public canGain(): boolean {
+  public canProduce(): boolean {
     return true;
   }
 
-  public gain(): void {
+  public produce(): void {
     // Nothing interesting happens.
   }
 }

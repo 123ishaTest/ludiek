@@ -27,7 +27,7 @@ export abstract class LudiekEvaluator<
 /**
  * Given a tuple of LudiekEvaluators, produce a union of their Conditions.
  */
-export type Condition<Evaluators extends readonly LudiekEvaluator[]> =
+export type LudiekCondition<Evaluators extends readonly LudiekEvaluator[]> =
   IsNonEmpty<Evaluators> extends false
     ? never
     : Evaluators[number] extends LudiekEvaluator<infer Condition>

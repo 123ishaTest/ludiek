@@ -13,20 +13,20 @@ export abstract class LudiekProducer<
   public abstract readonly type: Output['type'];
 
   /**
-   * Whether this output can be gained
+   * Whether this output can be produced
    * @param output
    */
-  public abstract canGain(output: Output): boolean;
+  public abstract canProduce(output: Output): boolean;
 
   /**
-   * Applying the output
+   * Produce the output
    * @param output
    */
-  public abstract gain(output: Output): void;
+  public abstract produce(output: Output): void;
 }
 
 /**
  * Given a tuple of LudiekProducers, produce a union of their outputs.
  */
-export type Output<Producers extends readonly LudiekProducer[]> =
+export type LudiekOutput<Producers extends readonly LudiekProducer[]> =
   IsNonEmpty<Producers> extends false ? never : Producers[number] extends LudiekProducer<infer Output> ? Output : never;

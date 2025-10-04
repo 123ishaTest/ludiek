@@ -59,38 +59,38 @@ export abstract class LudiekElement implements LudiekSavable {
 
   /**
    * @internal
-   * @see LudiekEngine.canLoseInput
+   * @see LudiekEngine.canConsume
    */
-  protected canLoseInput(input: BaseInput | BaseInput[]): boolean {
+  protected canConsume(input: BaseInput | BaseInput[]): boolean {
     this.ensureEngine();
-    return this._engine.canLoseInput(input);
+    return this._engine.canConsume(input);
   }
 
   /**
    * @internal
-   * @see LudiekEngine.loseInput
+   * @see LudiekEngine.consume
    */
-  protected loseInput(input: BaseInput | BaseInput[]): void {
+  protected consume(input: BaseInput | BaseInput[]): void {
     this.ensureEngine();
-    this._engine.loseInput(input);
+    this._engine.consume(input);
   }
 
   /**
    * @internal
-   * @see LudiekEngine.canGainOutput
+   * @see LudiekEngine.canProduce
    */
-  protected canGainOutput(output: BaseOutput | BaseOutput[]): boolean {
+  protected canProduce(output: BaseOutput | BaseOutput[]): boolean {
     this.ensureEngine();
-    return this._engine.canGainOutput(output);
+    return this._engine.canProduce(output);
   }
 
   /**
    * @internal
-   * @see LudiekEngine.gainOutput
+   * @see LudiekEngine.produce
    */
-  protected gainOutput(output: BaseOutput | BaseOutput[]) {
+  protected produce(output: BaseOutput | BaseOutput[]) {
     this.ensureEngine();
-    this._engine.gainOutput(output);
+    this._engine.produce(output);
   }
 
   /**

@@ -7,12 +7,12 @@ export interface EmptyOutput extends BaseOutput {
 export class EmptyProducer extends LudiekProducer<EmptyOutput> {
   readonly type = '/output/empty';
 
-  canGain(): boolean {
+  canProduce(): boolean {
     return true;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  gain(output: EmptyOutput): void {
+  produce(output: EmptyOutput): void {
     return;
   }
 }

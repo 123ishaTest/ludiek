@@ -35,7 +35,7 @@ export class LootTablePlugin extends LudiekPlugin {
 
     const loot = simplifyItems(filteredOutputs);
     if (!subTable) {
-      this.gainOutput(loot);
+      this.produce(loot);
       this._onRoll.dispatch(loot);
     }
 

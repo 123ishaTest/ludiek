@@ -3,40 +3,46 @@ title: Conditions
 ---
 
 `Conditions` let you express and verify boolean requirements within your game.
-For example when you are checking if a player holds a specific key, meets a skill threshold, or can unlock an achievement.
+For example
+
+- Whether a player has a key in their inventory.
+- Whether a door is unlocked.
+- Whether it is wednesday.
 
 In <span class="text-primary">Ludiek</span>, Conditions are an abstract `Engine` concept.
-You provide a data shape and logic to `evaluate` whether this condition is true or false.
+You provide a condition shape and logic to `evaluate` whether this condition is true or false.
 At runtime, the Engine queries the registered evaluators and invokes their evaluate method.
 
 Sounds complicated? It's really not!
-Let's take a look at the `Currency Plugin`.
+Let's take a look at the Currency Plugin.
 It provides the `HasCurrencyCondition`.
 
 First we define the shape of what an instance of our condition should look like:
 
 ```ts
-interface HasCurrencyConditionShape extends BaseConditionShape {
+interface HasCurrencyCondition extends BaseCondition {
   type: '/condition/has-currency';
   id: string;
   amount: number;
 }
 ```
 
-And we extend a `LudiekCondition` to check whether it is true:
+And we extend a `LudiekEvaluator` to check whether it is true:
 
 ```ts
-export class HasCurrencyCondition extends LudiekCondition<HasCurrencyConditionShape> {
+// This tells the engine that this evaluator depends on the currency plugin
+type Dependencies = {
+  plugins: [CurrencyPlugin];
+};
+
+export class HasCurrencyEvaluator extends LudiekEvaluator<HasCurrencyCondition, Dependencies> {
   readonly type = '/condition/has-currency';
 
-  constructor(private readonly _currency: CurrencyPlugin) {
-    super();
-  }
-
-  evaluate(condition: HasCurrencyConditionShape): boolean {
-    return this._currency.hasCurrency(condition);
+  evaluate(condition: HasCurrencyCondition): boolean {
+    return this.engine.plugins.currency.hasCurrency(condition);
   }
 }
+
 ```
 
 And we can use it fully type-safe!
@@ -46,7 +52,7 @@ game.engine.evaluate({
   type: '/condition/has-currency',
   id: '/currency/money',
   amount: 100,
-})
+});
 ```
 
 Any game content can now use this condition as a requirement!

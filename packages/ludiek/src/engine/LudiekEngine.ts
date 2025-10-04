@@ -1,11 +1,11 @@
 import { LudiekEngineConfig, PluginMap } from '@ludiek/engine/LudiekEngineConfig';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
-import { Condition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
+import { LudiekCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { LudiekEngineSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
-import { Input, LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
-import { LudiekProducer, Output } from '@ludiek/engine/output/LudiekProducer';
+import { LudiekInput, LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
+import { LudiekProducer, LudiekOutput } from '@ludiek/engine/output/LudiekProducer';
 import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
-import { LudiekController, Request } from '@ludiek/engine/request/LudiekRequest';
+import { LudiekController, LudiekRequest } from '@ludiek/engine/request/LudiekRequest';
 import { ConditionNotFoundError } from '@ludiek/engine/condition/ConditionError';
 import { InputNotFoundError } from '@ludiek/engine/input/InputError';
 import { OutputNotFoundError } from '@ludiek/engine/output/OutputError';
@@ -34,6 +34,22 @@ export class LudiekEngine<
     config.controllers?.forEach((c) => this.registerController(c));
   }
 
+  public get evaluators(): Evaluators {
+    return Object.values(this._evaluators) as unknown as Evaluators;
+  }
+
+  public get consumers(): Consumers {
+    return Object.values(this._consumers) as unknown as Consumers;
+  }
+
+  public get producers(): Producers {
+    return Object.values(this._producers) as unknown as Producers;
+  }
+
+  public get controllers(): Controllers {
+    return Object.values(this._controllers) as unknown as Controllers;
+  }
+
   public registerEvaluator(evaluator: LudiekEvaluator): void {
     evaluator.inject(this);
     this._evaluators[evaluator.type] = evaluator;
@@ -57,147 +73,172 @@ export class LudiekEngine<
   /**
    * Evaluate one or multiple condition and evaluates whether they are all true.
    */
-  public evaluate(condition: Condition<Evaluators> | Condition<Evaluators>[]): boolean {
+  public evaluate(condition: LudiekCondition<Evaluators> | LudiekCondition<Evaluators>[]): boolean {
     if (!Array.isArray(condition)) {
       condition = [condition];
     }
 
     return condition.every((condition) => {
-      const evaluator = this._evaluators[condition.type];
-
-      if (evaluator == null) {
-        const registeredEvaluators = Object.keys(this._evaluators).join(', ');
-        throw new ConditionNotFoundError(
-          `Cannot evaluate condition of type '${condition.type}' because its evaluator is not registered. Registered evaluators are: ${registeredEvaluators}`,
-        );
-      }
+      const evaluator = this.getEvaluator(condition.type);
       return evaluator.evaluate(condition);
     });
   }
 
-  public request(request: Request<Controllers>): void {
-    const controller = this._controllers[request.type];
-    if (!controller) {
-      const registeredResolvers = Object.keys(this._controllers).join(', ');
-      throw new ControllerNotFoundError(
-        `Cannot resolve request of type '${request.type}' because its resolver is not registered. Registered processors are: ${registeredResolvers}`,
-      );
-    }
-
+  public request(request: LudiekRequest<Controllers>): void {
+    const controller = this.getController(request.type);
     controller.resolve(request);
   }
 
   public handleTransaction(
-    transaction: LudiekTransaction<Input<Consumers>, Output<Producers>, Condition<Evaluators>>,
+    transaction: LudiekTransaction<LudiekInput<Consumers>, LudiekOutput<Producers>, LudiekCondition<Evaluators>>,
   ): boolean {
     if (transaction.requirement && !this.evaluate(transaction.requirement)) {
       return false;
     }
 
-    if (transaction.input && !this.canLoseInput(transaction.input)) {
+    if (transaction.input && !this.canConsume(transaction.input)) {
       return false;
     }
 
-    if (transaction.output && !this.canGainOutput(transaction.output)) {
+    if (transaction.output && !this.canProduce(transaction.output)) {
       return false;
     }
 
     if (transaction.input) {
-      this.loseInput(transaction.input);
+      this.consume(transaction.input);
     }
 
     if (transaction.output) {
-      this.gainOutput(transaction.output);
+      this.produce(transaction.output);
     }
     return true;
   }
 
   /**
-   * Checks whether we can lose the input
+   * Checks whether we can consume the input
    * @param input
    */
-  public canLoseInput(input: Input<Consumers> | Input<Consumers>[]): boolean {
+  public canConsume(input: LudiekInput<Consumers> | LudiekInput<Consumers>[]): boolean {
     if (!Array.isArray(input)) {
       input = [input];
     }
 
     return input.every((i) => {
-      const processor = this._consumers[i.type];
-
-      if (processor == null) {
-        const registeredProcessors = Object.keys(this._consumers).join(', ');
-        throw new InputNotFoundError(
-          `Cannot process input of type '${i.type}' because its processor is not registered. Registered processors are: ${registeredProcessors}`,
-        );
-      }
-      return processor.canLose(i);
+      const consumer = this.getConsumer(i.type);
+      return consumer.canConsume(i);
     });
   }
 
   /**
-   * Loses the input with no regards for whether we can lose it.
+   * Consume the input with no regards for whether we can consume it.
    * @param input
    */
-  public loseInput(input: Input<Consumers> | Input<Consumers>[]): void {
+  public consume(input: LudiekInput<Consumers> | LudiekInput<Consumers>[]): void {
     if (!Array.isArray(input)) {
       input = [input];
     }
 
     input.forEach((i) => {
-      const processor = this._consumers[i.type];
-
-      if (processor == null) {
-        const registeredProcessors = Object.keys(this._consumers).join(', ');
-        throw new InputNotFoundError(
-          `Cannot process input of type '${i.type}' because its processor is not registered. Registered processors are: ${registeredProcessors}`,
-        );
-      }
-      processor.lose(i);
+      const processor = this.getConsumer(i.type);
+      processor.consume(i);
     });
   }
 
   /**
-   * Checks whether we can gain the output
+   * Checks whether we can produce the output
    * @param output
    */
-  public canGainOutput(output: Output<Producers> | Output<Producers>[]): boolean {
+  public canProduce(output: LudiekOutput<Producers> | LudiekOutput<Producers>[]): boolean {
     if (!Array.isArray(output)) {
       output = [output];
     }
 
     return output.every((o) => {
-      const processor = this._producers[o.type];
-
-      if (processor == null) {
-        const registeredProcessors = Object.keys(this._producers).join(', ');
-        throw new OutputNotFoundError(
-          `Cannot process output of type '${o.type}' because its processor is not registered. Registered processors are: ${registeredProcessors}`,
-        );
-      }
-      return processor.canGain(o);
+      const producer = this.getProducer(o.type);
+      return producer.canProduce(o);
     });
   }
 
   /**
-   * Gains the output with no regards for whether we can take it.
+   * Produce the output with no regards for whether we can take it.
    * @param output
    */
-  public gainOutput(output: Output<Producers> | Output<Producers>[]): void {
+  public produce(output: LudiekOutput<Producers> | LudiekOutput<Producers>[]): void {
     if (!Array.isArray(output)) {
       output = [output];
     }
 
     output.forEach((o) => {
-      const processor = this._producers[o.type];
-
-      if (processor == null) {
-        const registeredProcessors = Object.keys(this._producers).join(', ');
-        throw new OutputNotFoundError(
-          `Cannot process output of type '${o.type}' because its processor is not registered. Registered processors are: ${registeredProcessors}`,
-        );
-      }
-      processor.gain(o);
+      const producer = this.getProducer(o.type);
+      producer.produce(o);
     });
+  }
+
+  /**
+   * Get an evaluator or throw an error if it doesn't exist
+   * @param type
+   * @private
+   */
+  private getEvaluator(type: string): LudiekEvaluator {
+    const evaluator = this._evaluators[type];
+
+    if (evaluator == null) {
+      const registeredEvaluators = Object.keys(this._evaluators).join(', ');
+      throw new ConditionNotFoundError(
+        `Cannot evaluate condition of type '${type}' because its evaluator is not registered. Registered evaluators are: ${registeredEvaluators}`,
+      );
+    }
+    return evaluator;
+  }
+
+  /**
+   * Get a producer or throw an error if it doesn't exist
+   * @param type
+   * @private
+   */
+  private getProducer(type: string): LudiekProducer {
+    const producer = this._producers[type];
+
+    if (producer == null) {
+      const registeredProcessors = Object.keys(this._producers).join(', ');
+      throw new OutputNotFoundError(
+        `Cannot process output of type '${type}' because its processor is not registered. Registered processors are: ${registeredProcessors}`,
+      );
+    }
+    return producer;
+  }
+
+  /**
+   * Get a consumer or throw an error if it doesn't exist
+   * @param type
+   * @private
+   */
+  private getConsumer(type: string): LudiekConsumer {
+    const consumer = this._consumers[type];
+
+    if (consumer == null) {
+      const registeredConsumers = Object.keys(this._consumers).join(', ');
+      throw new InputNotFoundError(
+        `Cannot consumee input of type '${type}' because its consumer is not registered. Registered consumers are: ${registeredConsumers}`,
+      );
+    }
+    return consumer;
+  }
+
+  /**
+   * Get a controller or throw an error if it doesn't exist
+   * @param type
+   * @private
+   */
+  private getController(type: string): LudiekController {
+    const controller = this._controllers[type];
+    if (!controller) {
+      const registeredControllers = Object.keys(this._controllers).join(', ');
+      throw new ControllerNotFoundError(
+        `Cannot resolve request of type '${type}' because its controller is not registered. Registered controllers are: ${registeredControllers}`,
+      );
+    }
+    return controller;
   }
 
   // Saving and loading

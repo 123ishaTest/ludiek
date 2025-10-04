@@ -5,7 +5,7 @@ import { LootTableDefinition } from '@ludiek/plugins/lootTable/LootTableDefiniti
 import { BaseOutput } from '@ludiek/engine/output/LudiekProducer';
 
 const engine = new LudiekEngine({});
-const gainOutputSpy = vi.spyOn(engine, 'gainOutput').mockReturnValue();
+const produceSpy = vi.spyOn(engine, 'produce').mockReturnValue();
 
 const lootTable = new LootTablePlugin();
 lootTable.inject(engine);
@@ -148,7 +148,7 @@ it('supports recursion', () => {
   const result = lootTable.roll('/table/main', 2);
 
   // Assert
-  expect(gainOutputSpy).toHaveBeenCalledOnce();
+  expect(produceSpy).toHaveBeenCalledOnce();
   expect(result).toHaveLength(2);
   expect(result[0]).toEqual({
     type: '/output/a',
@@ -192,8 +192,8 @@ it('supports deep recursion', () => {
     amount: 1,
   };
 
-  expect(gainOutputSpy).toHaveBeenCalledOnce();
-  expect(gainOutputSpy).toHaveBeenCalledWith([expectedOutput]);
+  expect(produceSpy).toHaveBeenCalledOnce();
+  expect(produceSpy).toHaveBeenCalledWith([expectedOutput]);
   expect(result).toHaveLength(1);
 
   expect(result[0]).toEqual(expectedOutput);

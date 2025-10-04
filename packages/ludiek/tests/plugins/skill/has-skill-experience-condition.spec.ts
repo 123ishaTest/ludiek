@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { SkillPlugin } from '@ludiek/plugins/skill/SkillPlugin';
-import { HasSkillExperienceCondition } from '@ludiek/plugins/skill/HasSkillExperienceCondition';
+import { HasSkillExperienceEvaluator } from '@ludiek/plugins/skill/HasSkillExperienceCondition';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 
 const skill = new SkillPlugin();
-const condition = new HasSkillExperienceCondition();
+const condition = new HasSkillExperienceEvaluator();
 
 new LudiekEngine({
   plugins: [skill],

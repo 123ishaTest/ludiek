@@ -20,15 +20,15 @@ describe('Achievement Output', () => {
     // Arrange
 
     // Act
-    const canGain = producer.canGain();
+    const canProduce = producer.canProduce();
 
     // Assert
-    expect(canGain).toBe(true);
+    expect(canProduce).toBe(true);
   });
 
   it('earns achievement', () => {
     // Act
-    producer.gain({
+    producer.produce({
       type: '/output/achievement',
       id: 'example-achievement',
       amount: 1,

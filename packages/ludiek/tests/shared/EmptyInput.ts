@@ -8,12 +8,12 @@ export class EmptyConsumer extends LudiekConsumer<EmptyInput> {
   readonly type = '/input/empty';
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  canLose(input: EmptyInput): boolean {
+  canConsume(input: EmptyInput): boolean {
     return true;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  lose(input: EmptyInput): void {
+  consume(input: EmptyInput): void {
     return;
   }
 }

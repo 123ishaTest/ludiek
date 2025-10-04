@@ -1,21 +1,27 @@
 import {
   AchievementPlugin,
-  TrueCondition,
-  type ExtractOutput,
   CouponPlugin,
   createAchievementState,
   createCouponState,
   createCurrencyState,
   createStatisticState,
+  CurrencyConsumer,
   CurrencyPlugin,
-  type ExtractInput,
+  CurrencyProducer,
+  EnterCouponController,
+  HasCurrencyEvaluator,
+  HasStatisticEvaluator,
+  type LudiekCondition,
   LudiekEngine,
   LudiekGame,
-  type ExtractCondition,
+  type LudiekInput,
+  type LudiekOutput,
   StatisticPlugin,
+  TrueEvaluator,
 } from '@123ishatest/ludiek';
 import { Farming } from '$lib/demo/features/Farming';
 import { achievements, currencies, plants, statistics } from '$lib/demo/content';
+import { SowSeedController } from '$lib/demo/features/SowPlantController';
 
 // Define plugins with reactive state
 const currencyState = $state(createCurrencyState());
@@ -27,23 +33,25 @@ const achievementPlugin = new AchievementPlugin(achievementState);
 const couponState = $state(createCouponState());
 const couponPlugin = new CouponPlugin(couponState);
 
+// Create your game
+const farming = new Farming(plants);
+
 // Create engine with plugins
 export const engine = new LudiekEngine({
   plugins: [currencyPlugin, statisticPlugin, achievementPlugin, couponPlugin],
-  conditions: [new TrueCondition()],
-} as const);
+  evaluators: [new TrueEvaluator(), new HasCurrencyEvaluator(), new HasStatisticEvaluator()],
+  consumers: [new CurrencyConsumer()],
+  producers: [new CurrencyProducer()],
+  controllers: [new EnterCouponController(), new SowSeedController(farming)],
+});
 
 // Extract some neat utility types
 export type EnginePlugins = typeof engine.plugins;
-
-export type Input = ExtractInput<typeof engine.inputs>;
-export type Output = ExtractOutput<typeof engine.outputs>;
-export type Condition = ExtractCondition<typeof engine.conditions>;
+export type Condition = LudiekCondition<typeof engine.evaluators>;
+export type Input = LudiekInput<typeof engine.consumers>;
+export type Output = LudiekOutput<typeof engine.producers>;
 
 export type PlantId = (typeof plants)[number]['id'];
-
-// Create your game
-const farming = new Farming(plants);
 
 export const game = new LudiekGame(engine, {
   features: [farming],

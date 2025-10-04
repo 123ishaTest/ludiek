@@ -21,20 +21,20 @@ describe('Currency Input', () => {
     currency.gainCurrency({ id: '/currency/money', amount: 3 });
 
     // Act
-    const canLose3 = consumer.canLose({
+    const canConsume3 = consumer.canConsume({
       type: '/input/currency',
       id: '/currency/money',
       amount: 3,
     });
-    const canLose4 = consumer.canLose({
+    const canConsume4 = consumer.canConsume({
       type: '/input/currency',
       id: '/currency/money',
       amount: 4,
     });
 
     // Assert
-    expect(canLose3).toBe(true);
-    expect(canLose4).toBe(false);
+    expect(canConsume3).toBe(true);
+    expect(canConsume4).toBe(false);
   });
 
   it('loses currency', () => {
@@ -42,7 +42,7 @@ describe('Currency Input', () => {
     currency.gainCurrency({ id: '/currency/money', amount: 3 });
 
     // Act
-    consumer.lose({
+    consumer.consume({
       type: '/input/currency',
       id: '/currency/money',
       amount: 2,

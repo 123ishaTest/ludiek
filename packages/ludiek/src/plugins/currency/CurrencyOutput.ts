@@ -14,11 +14,11 @@ type Dependencies = {
 export class CurrencyProducer extends LudiekProducer<CurrencyOutputShape, Dependencies> {
   readonly type = '/output/currency';
 
-  canGain(): boolean {
+  canProduce(): boolean {
     return true;
   }
 
-  gain(output: CurrencyOutputShape): void {
+  produce(output: CurrencyOutputShape): void {
     this.engine.plugins.currency.gainCurrency(output);
   }
 }

@@ -2,8 +2,8 @@
   import {
     createCurrencyState,
     createCouponState,
-    CurrencyOutput,
     CurrencyPlugin,
+    CurrencyProducer,
     LudiekEngine,
     CouponPlugin,
     hash,
@@ -18,7 +18,7 @@
 
   new LudiekEngine({
     plugins: [currency, coupon],
-    outputs: [new CurrencyOutput(currency)],
+    producers: [new CurrencyProducer()],
   });
   currency.loadContent([{ id: '/currency/money' }]);
 

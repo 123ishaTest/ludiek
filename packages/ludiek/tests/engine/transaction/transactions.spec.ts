@@ -27,9 +27,9 @@ describe('Engine Transactions', () => {
     expect(completed).toBe(true);
   });
 
-  it('stops if we cannot lose', () => {
+  it('stops if we cannot cpmsi,e', () => {
     // Arrange
-    const loseSpy = vi.spyOn(neverInput, 'lose');
+    const consumeSpy = vi.spyOn(neverInput, 'consume');
     const transaction = {
       input: {
         type: '/input/never',
@@ -42,12 +42,12 @@ describe('Engine Transactions', () => {
 
     // Assert
     expect(completed).toBe(false);
-    expect(loseSpy).not.toHaveBeenCalled();
+    expect(consumeSpy).not.toHaveBeenCalled();
   });
 
-  it('continues if we can lose', () => {
+  it('continues if we can consume', () => {
     // Arrange
-    const loseSpy = vi.spyOn(alwaysInput, 'lose');
+    const consumeSpy = vi.spyOn(alwaysInput, 'consume');
     const transaction = {
       input: {
         type: '/input/always',
@@ -60,12 +60,12 @@ describe('Engine Transactions', () => {
 
     // Assert
     expect(completed).toBe(true);
-    expect(loseSpy).toHaveBeenCalledOnce();
+    expect(consumeSpy).toHaveBeenCalledOnce();
   });
 
   it('stops if we cannot gain', () => {
     // Arrange
-    const gainSpy = vi.spyOn(neverOutput, 'gain');
+    const gainSpy = vi.spyOn(neverOutput, 'produce');
     const transaction = {
       output: {
         type: '/output/never',
@@ -83,7 +83,7 @@ describe('Engine Transactions', () => {
 
   it('continues if we can gain', () => {
     // Arrange
-    const gainSpy = vi.spyOn(alwaysOutput, 'gain');
+    const gainSpy = vi.spyOn(alwaysOutput, 'produce');
     const transaction = {
       output: {
         type: '/output/always',

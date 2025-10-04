@@ -13,11 +13,11 @@ type Dependencies = {
 export class AchievementProducer extends LudiekProducer<AchievementOutput, Dependencies> {
   readonly type = '/output/achievement';
 
-  canGain(): boolean {
+  canProduce(): boolean {
     return true;
   }
 
-  gain(output: AchievementOutput): void {
+  produce(output: AchievementOutput): void {
     this.engine.plugins.achievement.earnAchievement(output.id);
   }
 }

@@ -4,7 +4,7 @@ import { EmptyConsumer, EmptyInput } from '@tests/shared/EmptyInput';
 import { InputNotFoundError } from '@ludiek/engine/input/InputError';
 
 describe('Engine Input', () => {
-  it('loses input', () => {
+  it('consumes input', () => {
     // Arrange
     const emptyInput = new EmptyConsumer();
     const engine = new LudiekEngine({
@@ -14,38 +14,38 @@ describe('Engine Input', () => {
       type: '/input/empty',
       amount: 3,
     };
-    const canLoseInputSpy = vi.spyOn(emptyInput, 'canLose');
-    const loseInputSpy = vi.spyOn(emptyInput, 'lose');
+    const canConsumeSpy = vi.spyOn(emptyInput, 'canConsume');
+    const consumeSpy = vi.spyOn(emptyInput, 'consume');
 
     // Act
-    const canLose = engine.canLoseInput(input);
-    engine.loseInput(input);
+    const canConsume = engine.canConsume(input);
+    engine.consume(input);
 
     // Assert
-    expect(canLose).toBe(true);
-    expect(canLoseInputSpy).toBeCalledWith(input);
-    expect(loseInputSpy).toBeCalledWith(input);
+    expect(canConsume).toBe(true);
+    expect(canConsumeSpy).toBeCalledWith(input);
+    expect(consumeSpy).toBeCalledWith(input);
   });
 
-  it("throws an error when input doesn't exist on canLoseInput", () => {
+  it("throws an error when input doesn't exist on canConsume", () => {
     // Arrange
     const engine = new LudiekEngine({});
 
     // Act
     expect(() => {
       // @ts-expect-error unknown type
-      engine.canLoseInput({ type: 'wrong' });
+      engine.canConsume({ type: 'wrong' });
     }).toThrow(InputNotFoundError);
   });
 
-  it("throws an error when input doesn't exist on loseInput", () => {
+  it("throws an error when input doesn't exist on consume", () => {
     // Arrange
     const engine = new LudiekEngine({});
 
     // Act
     expect(() => {
       // @ts-expect-error unknown type
-      engine.loseInput({ type: 'wrong', amount: 1 });
+      engine.consume({ type: 'wrong', amount: 1 });
     }).toThrow(InputNotFoundError);
   });
 });
