@@ -1,23 +1,20 @@
-import { BaseConditionShape, LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
+import { BaseCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { SkillPlugin } from '@ludiek/plugins/skill/SkillPlugin';
 
-interface HasSkillExperienceConditionShape extends BaseConditionShape {
+interface HasSkillExperienceCondition extends BaseCondition {
   type: '/condition/has-skill-experience';
   skill: string;
   experience: number;
 }
 
-export class HasSkillExperienceCondition extends LudiekCondition<HasSkillExperienceConditionShape> {
+type Dependencies = {
+  plugins: [SkillPlugin];
+};
+
+export class HasSkillExperienceEvaluator extends LudiekEvaluator<HasSkillExperienceCondition, Dependencies> {
   readonly type = '/condition/has-skill-experience';
 
-  private _skill: SkillPlugin;
-
-  constructor(skill: SkillPlugin) {
-    super();
-    this._skill = skill;
-  }
-
-  evaluate(condition: HasSkillExperienceConditionShape): boolean {
-    return this._skill.getExperience(condition.skill) >= condition.experience;
+  evaluate(condition: HasSkillExperienceCondition): boolean {
+    return this.engine.plugins.skill.getExperience(condition.skill) >= condition.experience;
   }
 }

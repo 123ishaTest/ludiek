@@ -1,0 +1,62 @@
+---
+title: Output
+---
+`Output` lets you produces resources within your game.
+For example
+
+- Currency that can be gained.
+- The unlocking of achievements.
+- Rolling on a loot table.
+
+Its counterpart, [Input](./input), can be used to consume resources.
+
+In <span class="text-primary">Ludiek</span>, Outputs are an abstract `Engine` concept.
+You provide an output shape and logic to `produce` the output.
+At runtime, the Engine queries the registered producers and invokes their produce method.
+
+Sounds complicated? It's really not!
+Let's take a look at the Currency Plugin.
+It provides the `CurrencyOutput`.
+
+First we define the shape of what an instance of our output should look like:
+
+```ts
+interface CurrencyOutput extends BaseOutput {
+  type: '/output/currency';
+  id: string;
+  amount: number;
+}
+```
+
+And we extend a `LudiekProducer` for the consuming currency logic:
+
+```ts
+// This tells the engine that this producer depends on the currency plugin
+type Dependencies = {
+  plugins: [CurrencyPlugin];
+};
+
+export class CurrencyProducer extends LudiekProducer<CurrencyOutputShape, Dependencies> {
+  readonly type = '/output/currency';
+
+  canProduce(): boolean {
+    return true;
+  }
+
+  produce(output: CurrencyOutputShape): void {
+    this.engine.plugins.currency.gainCurrency(output);
+  }
+}
+```
+
+And we can use it fully type-safe!
+
+```ts
+game.engine.produce({
+  type: '/output/currency',
+  id: '/currency/money',
+  amount: 100,
+});
+```
+
+Any game content can now use this output!

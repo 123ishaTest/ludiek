@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { LootTablePlugin } from '@123ishatest/ludiek';
-  import type { BaseOutputShape } from '@123ishatest/ludiek/dist/engine/output/LudiekOutput';
+  import { type BaseOutput, LootTablePlugin } from '@123ishatest/ludiek';
 
   const lootTable = new LootTablePlugin();
 
@@ -25,7 +24,7 @@
   ];
   lootTable.loadContent(tables);
 
-  type DemoOutput = BaseOutputShape & { id: string };
+  type DemoOutput = BaseOutput & { id: string };
 
   let rollResult: DemoOutput[] = $state([]);
   let sortedRolls = $derived(rollResult.toSorted((a, b) => b.amount - a.amount));

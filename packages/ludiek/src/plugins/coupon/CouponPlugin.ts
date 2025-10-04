@@ -1,24 +1,20 @@
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
-import { BaseConditionShape } from '@ludiek/engine/condition/LudiekCondition';
-import { BaseOutputShape } from '@ludiek/engine/output/LudiekOutput';
+import { BaseCondition } from '@ludiek/engine/condition/LudiekEvaluator';
+import { BaseOutput } from '@ludiek/engine/output/LudiekProducer';
 import { CouponPluginState, createCouponState } from '@ludiek/plugins/coupon/CouponPluginState';
 import { hash } from '@ludiek/util/hash';
 import { UnknownCouponError } from '@ludiek/plugins/coupon/CouponErrors';
-import { EnterCouponController } from '@ludiek/plugins/coupon/EnterCouponController';
 
 export interface CouponDefinition {
   id: string;
   hash: string;
-  output: BaseOutputShape | BaseOutputShape[];
-  condition?: BaseConditionShape;
+  output: BaseOutput | BaseOutput[];
+  condition?: BaseCondition;
 }
 
 export class CouponPlugin extends LudiekPlugin {
   readonly name = 'coupon';
-  public readonly config = {
-    controllers: [new EnterCouponController(this)],
-  };
 
   protected _state: CouponPluginState;
 
@@ -63,11 +59,11 @@ export class CouponPlugin extends LudiekPlugin {
       return false;
     }
 
-    if (!this.canGainOutput(coupon.output)) {
+    if (!this.canProduce(coupon.output)) {
       return false;
     }
 
-    this.gainOutput(coupon.output);
+    this.produce(coupon.output);
 
     this._state.record[id] = true;
     this._onCouponRedeemed.dispatch(coupon);

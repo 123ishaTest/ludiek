@@ -2,10 +2,10 @@ import { LootTablePlugin } from '@ludiek/plugins/lootTable/LootTablePlugin';
 import { beforeEach, expect, it, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LootTableDefinition } from '@ludiek/plugins/lootTable/LootTableDefinition';
-import { BaseOutputShape } from '@ludiek/engine/output/LudiekOutput';
+import { BaseOutput } from '@ludiek/engine/output/LudiekProducer';
 
 const engine = new LudiekEngine({});
-const gainOutputSpy = vi.spyOn(engine, 'gainOutput').mockReturnValue();
+const produceSpy = vi.spyOn(engine, 'produce').mockReturnValue();
 
 const lootTable = new LootTablePlugin();
 lootTable.inject(engine);
@@ -148,7 +148,7 @@ it('supports recursion', () => {
   const result = lootTable.roll('/table/main', 2);
 
   // Assert
-  expect(gainOutputSpy).toHaveBeenCalledOnce();
+  expect(produceSpy).toHaveBeenCalledOnce();
   expect(result).toHaveLength(2);
   expect(result[0]).toEqual({
     type: '/output/a',
@@ -192,8 +192,8 @@ it('supports deep recursion', () => {
     amount: 1,
   };
 
-  expect(gainOutputSpy).toHaveBeenCalledOnce();
-  expect(gainOutputSpy).toHaveBeenCalledWith([expectedOutput]);
+  expect(produceSpy).toHaveBeenCalledOnce();
+  expect(produceSpy).toHaveBeenCalledWith([expectedOutput]);
   expect(result).toHaveLength(1);
 
   expect(result[0]).toEqual(expectedOutput);
@@ -212,7 +212,7 @@ it('sends events on rolls', () => {
     always: [{ output: { type: '/output/demo', amount: 2 } }],
   };
   lootTable.loadContent([mainTable, subTable]);
-  const unsub = lootTable.onRoll.subscribe((loot: BaseOutputShape[]) => {
+  const unsub = lootTable.onRoll.subscribe((loot: BaseOutput[]) => {
     expect(loot).toHaveLength(1);
     expect(loot[0]).toEqual({
       type: '/output/demo',

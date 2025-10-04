@@ -1,15 +1,26 @@
-export interface BaseRequestShape {
+import { LudiekDependencies, LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
+import { IsNonEmpty } from '@ludiek/util/types';
+
+export interface BaseRequest {
   type: string;
 }
 
-export interface LudiekController<Request extends BaseRequestShape = BaseRequestShape> {
-  type: string;
+export abstract class LudiekController<
+  Request extends BaseRequest = BaseRequest,
+  Dependencies extends LudiekDependencies = object,
+> extends LudiekEngineConcept<Dependencies> {
+  public abstract readonly type: Request['type'];
 
   // TODO(@Isha): LudiekResponse object?
-  resolve(request: Request): void;
+  abstract resolve(request: Request): void;
 }
 
-export interface RequestEvent {
-  timestamp: Date;
-  request: BaseRequestShape;
-}
+/**
+ * Given a tuple of LudiekControllers, produce a union of their requests.
+ */
+export type LudiekRequest<Controllers extends readonly LudiekController[] = []> =
+  IsNonEmpty<Controllers> extends false
+    ? never
+    : Controllers[number] extends LudiekController<infer Request>
+      ? Request
+      : never;

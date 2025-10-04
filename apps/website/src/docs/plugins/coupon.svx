@@ -11,7 +11,7 @@ A player enters a coupon (e.g. `SUMMER2025`) and they are rewarded with somethin
 boost.
 
 The Coupon plugin handles the checking of coupons and awards the player with your
-existing [Output](../engine/transactions).
+existing [Output](../engine/output).
 Coupons are hashed so that snoops cannot infer them from your source code.
 
 ## Demo

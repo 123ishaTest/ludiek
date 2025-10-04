@@ -1,21 +1,21 @@
 import { describe, expect, it, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { FalseCondition } from '@ludiek/engine/condition/FalseCondition';
-import { TrueCondition } from '@ludiek/engine/condition/TrueCondition';
-import { AlwaysInput } from '@tests/shared/AlwaysInput';
-import { NeverInput } from '@tests/shared/NeverInput';
-import { AlwaysOutput } from '@tests/shared/AlwaysOutput';
-import { NeverOutput } from '@tests/shared/NeverOutput';
+import { FalseEvaluator } from '@ludiek/stdlib/condition/FalseCondition';
+import { TrueEvaluator } from '@ludiek/stdlib/condition/TrueCondition';
+import { AlwaysConsumer } from '@tests/shared/AlwaysInput';
+import { NeverConsumer } from '@tests/shared/NeverInput';
+import { AlwaysProducer } from '@tests/shared/AlwaysOutput';
+import { NeverProducer } from '@tests/shared/NeverOutput';
 
-const alwaysInput = new AlwaysInput();
-const neverInput = new NeverInput();
-const alwaysOutput = new AlwaysOutput();
-const neverOutput = new NeverOutput();
+const alwaysInput = new AlwaysConsumer();
+const neverInput = new NeverConsumer();
+const alwaysOutput = new AlwaysProducer();
+const neverOutput = new NeverProducer();
 
 const engine = new LudiekEngine({
-  conditions: [new TrueCondition(), new FalseCondition()],
-  inputs: [alwaysInput, neverInput],
-  outputs: [alwaysOutput, neverOutput],
+  evaluators: [new TrueEvaluator(), new FalseEvaluator()],
+  consumers: [alwaysInput, neverInput],
+  producers: [alwaysOutput, neverOutput],
 });
 
 describe('Engine Transactions', () => {
@@ -27,9 +27,9 @@ describe('Engine Transactions', () => {
     expect(completed).toBe(true);
   });
 
-  it('stops if we cannot lose', () => {
+  it('stops if we cannot cpmsi,e', () => {
     // Arrange
-    const loseSpy = vi.spyOn(neverInput, 'lose');
+    const consumeSpy = vi.spyOn(neverInput, 'consume');
     const transaction = {
       input: {
         type: '/input/never',
@@ -42,12 +42,12 @@ describe('Engine Transactions', () => {
 
     // Assert
     expect(completed).toBe(false);
-    expect(loseSpy).not.toHaveBeenCalled();
+    expect(consumeSpy).not.toHaveBeenCalled();
   });
 
-  it('continues if we can lose', () => {
+  it('continues if we can consume', () => {
     // Arrange
-    const loseSpy = vi.spyOn(alwaysInput, 'lose');
+    const consumeSpy = vi.spyOn(alwaysInput, 'consume');
     const transaction = {
       input: {
         type: '/input/always',
@@ -60,12 +60,12 @@ describe('Engine Transactions', () => {
 
     // Assert
     expect(completed).toBe(true);
-    expect(loseSpy).toHaveBeenCalledOnce();
+    expect(consumeSpy).toHaveBeenCalledOnce();
   });
 
   it('stops if we cannot gain', () => {
     // Arrange
-    const gainSpy = vi.spyOn(neverOutput, 'gain');
+    const gainSpy = vi.spyOn(neverOutput, 'produce');
     const transaction = {
       output: {
         type: '/output/never',
@@ -83,7 +83,7 @@ describe('Engine Transactions', () => {
 
   it('continues if we can gain', () => {
     // Arrange
-    const gainSpy = vi.spyOn(alwaysOutput, 'gain');
+    const gainSpy = vi.spyOn(alwaysOutput, 'produce');
     const transaction = {
       output: {
         type: '/output/always',

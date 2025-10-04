@@ -4,17 +4,10 @@ import { UnknownSkillError } from '@ludiek/plugins/skill/SkillErrors';
 import { createSkillState, SkillPluginState } from '@ludiek/plugins/skill/SkillPluginState';
 import { SkillDefinition } from '@ludiek/plugins/skill/SkillDefinition';
 import { SkillExperience } from '@ludiek/plugins/skill/SkillExperience';
-import { SkillExperienceOutput } from '@ludiek/plugins/skill/SkillExperienceOutput';
-import { HasSkillLevelCondition } from '@ludiek/plugins/skill/HasSkillLevelCondition';
-import { HasSkillExperienceCondition } from '@ludiek/plugins/skill/HasSkillExperienceCondition';
 import { progress, Progress } from '@ludiek/util/progress';
 
 export class SkillPlugin extends LudiekPlugin {
   readonly name = 'skill';
-  public readonly config = {
-    conditions: [new HasSkillExperienceCondition(this), new HasSkillLevelCondition(this)],
-    outputs: [new SkillExperienceOutput(this)],
-  };
 
   protected _state: SkillPluginState;
 

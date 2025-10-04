@@ -1,15 +1,22 @@
 import { expect, it } from 'vitest';
 import { SkillPlugin } from '@ludiek/plugins/skill/SkillPlugin';
-import { SkillExperienceOutput } from '@ludiek/plugins/skill/SkillExperienceOutput';
+import { SkillExperienceProducer } from '@ludiek/plugins/skill/SkillExperienceOutput';
+import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
+
+const skill = new SkillPlugin();
+const output = new SkillExperienceProducer();
+
+new LudiekEngine({
+  plugins: [skill],
+  producers: [output],
+});
 
 it('gains experience', () => {
   // Arrange
-  const skill = new SkillPlugin();
   skill.loadContent([{ id: '/skill/fishing', experiencePerLevel: [0, 100, 200] }]);
-  const output = new SkillExperienceOutput(skill);
 
   // Act
-  output.gain({
+  output.produce({
     type: '/skill/experience',
     skill: '/skill/fishing',
     amount: 100,
@@ -18,6 +25,6 @@ it('gains experience', () => {
   const fishingExperience = skill.getExperience('/skill/fishing');
 
   // Assert
-  expect(output.canGain()).toBe(true);
+  expect(output.canProduce()).toBe(true);
   expect(fishingExperience).toBe(100);
 });

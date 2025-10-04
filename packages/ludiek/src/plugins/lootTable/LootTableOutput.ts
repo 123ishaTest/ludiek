@@ -1,29 +1,26 @@
-import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
+import { BaseOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 import { LootTablePlugin } from '@ludiek/plugins/lootTable/LootTablePlugin';
 
-export interface LootTableOutputShape extends BaseOutputShape {
+export interface LootTableOutput extends BaseOutput {
   type: '/output/loot-table';
   table: string;
   amount: number;
 }
 
-export class LootTableOutput extends LudiekOutput<LootTableOutputShape> {
+type Dependencies = {
+  plugins: [LootTablePlugin];
+};
+
+export class LootTableProducer extends LudiekProducer<LootTableOutput, Dependencies> {
   readonly type = '/output/loot-table';
-
-  private _loot: LootTablePlugin;
-
-  constructor(loot: LootTablePlugin) {
-    super();
-    this._loot = loot;
-  }
 
   // TODO(@Isha): How should we calculate this?
   //  Leave it up to the caller to know what lootTable table has which restrictions?
-  canGain(): boolean {
+  canProduce(): boolean {
     return true;
   }
 
-  gain(output: LootTableOutputShape): void {
-    this._loot.roll(output.table, output.amount, true);
+  produce(output: LootTableOutput): void {
+    this.engine.plugins.lootTable.roll(output.table, output.amount, true);
   }
 }

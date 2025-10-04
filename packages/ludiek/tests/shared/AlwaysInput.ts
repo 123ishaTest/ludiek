@@ -1,13 +1,13 @@
-import { LudiekInput } from '@ludiek/engine/input/LudiekInput';
+import { LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
 
-export class AlwaysInput extends LudiekInput<{ type: '/input/always'; amount: number }> {
+export class AlwaysConsumer extends LudiekConsumer<{ type: '/input/always'; amount: number }> {
   readonly type = '/input/always';
 
-  canLose(): boolean {
+  canConsume(): boolean {
     return true;
   }
 
-  lose(): void {
+  consume(): void {
     // Nothing interesting happens.
   }
 }

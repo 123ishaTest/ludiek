@@ -1,13 +1,13 @@
-import { LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
+import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 
-export class AlwaysOutput extends LudiekOutput<{ type: '/output/always'; amount: number }> {
+export class AlwaysProducer extends LudiekProducer<{ type: '/output/always'; amount: number }> {
   readonly type = '/output/always';
 
-  public canGain(): boolean {
+  public canProduce(): boolean {
     return true;
   }
 
-  public gain(): void {
+  public produce(): void {
     // Nothing interesting happens.
   }
 }

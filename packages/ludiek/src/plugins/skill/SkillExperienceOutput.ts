@@ -1,30 +1,27 @@
-import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
+import { BaseOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 import { SkillPlugin } from '@ludiek/plugins/skill/SkillPlugin';
 
 /**
  * Awards Skill Experience
  */
-interface SkillExperienceOutputShape extends BaseOutputShape {
+interface SkillExperienceOutput extends BaseOutput {
   type: '/skill/experience';
   skill: string;
   amount: number;
 }
 
-export class SkillExperienceOutput extends LudiekOutput<SkillExperienceOutputShape> {
+type Dependencies = {
+  plugins: [SkillPlugin];
+};
+
+export class SkillExperienceProducer extends LudiekProducer<SkillExperienceOutput, Dependencies> {
   readonly type = '/skill/experience';
-
-  private _skill: SkillPlugin;
-
-  constructor(skill: SkillPlugin) {
-    super();
-    this._skill = skill;
-  }
 
   /**
    * Experience can always be gained
    * TODO: Should there be an experience cap?
    */
-  canGain(): boolean {
+  canProduce(): boolean {
     return true;
   }
 
@@ -32,7 +29,7 @@ export class SkillExperienceOutput extends LudiekOutput<SkillExperienceOutputSha
    * Gain the experience
    * @param output
    */
-  gain(output: SkillExperienceOutputShape): void {
-    this._skill.gainExperience(output);
+  produce(output: SkillExperienceOutput): void {
+    this.engine.plugins.skill.gainExperience(output);
   }
 }

@@ -1,18 +1,18 @@
-import { BaseOutputShape, LudiekOutput } from '@ludiek/engine/output/LudiekOutput';
+import { BaseOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 
-export interface EmptyOutputShape extends BaseOutputShape {
+export interface EmptyOutput extends BaseOutput {
   type: '/output/empty';
 }
 
-export class EmptyOutput extends LudiekOutput<EmptyOutputShape> {
+export class EmptyProducer extends LudiekProducer<EmptyOutput> {
   readonly type = '/output/empty';
 
-  canGain(): boolean {
+  canProduce(): boolean {
     return true;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  gain(output: EmptyOutputShape): void {
+  produce(output: EmptyOutput): void {
     return;
   }
 }

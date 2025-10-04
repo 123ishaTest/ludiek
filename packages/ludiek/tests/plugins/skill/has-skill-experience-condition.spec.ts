@@ -1,13 +1,20 @@
 import { describe, expect, it } from 'vitest';
 import { SkillPlugin } from '@ludiek/plugins/skill/SkillPlugin';
-import { HasSkillExperienceCondition } from '@ludiek/plugins/skill/HasSkillExperienceCondition';
+import { HasSkillExperienceEvaluator } from '@ludiek/plugins/skill/HasSkillExperienceCondition';
+import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
+
+const skill = new SkillPlugin();
+const condition = new HasSkillExperienceEvaluator();
+
+new LudiekEngine({
+  plugins: [skill],
+  evaluators: [condition],
+});
 
 describe('Has Skill Experience Condition', () => {
   it('evaluates skills', () => {
     // Arrange
-    const skill = new SkillPlugin();
     skill.loadContent([{ id: '/skill/fishing', experiencePerLevel: [0, 100, 200], initialExperience: 100 }]);
-    const condition = new HasSkillExperienceCondition(skill);
 
     // Act
     const has100Experience = condition.evaluate({

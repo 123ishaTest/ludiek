@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { EngineNotInjectedError } from '@ludiek/engine/LudiekError';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
-import { BaseConditionShape } from '@ludiek/engine/condition/LudiekCondition';
+import { BaseCondition } from '@ludiek/engine/condition/LudiekEvaluator';
 
 class ExamplePlugin extends LudiekPlugin {
   name = 'example';
@@ -11,7 +11,7 @@ class ExamplePlugin extends LudiekPlugin {
 
   loadContent() {}
 
-  public evaluate(condition: BaseConditionShape) {
+  public evaluate(condition: BaseCondition) {
     return super.evaluate(condition);
   }
 }

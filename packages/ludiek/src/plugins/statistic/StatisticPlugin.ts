@@ -5,8 +5,6 @@ import {
   UnknownStatisticError,
 } from '@ludiek/plugins/statistic/StatisticErrors';
 import { createStatisticState, StatisticPluginState } from '@ludiek/plugins/statistic/StatisticPluginState';
-import { HasStatisticCondition } from '@ludiek/plugins/statistic/HasStatisticCondition';
-import { HasMapStatisticCondition } from '@ludiek/plugins/statistic/HasMapStatisticCondition';
 
 export interface StatisticDefinition {
   id: string;
@@ -15,9 +13,6 @@ export interface StatisticDefinition {
 
 export class StatisticPlugin extends LudiekPlugin {
   readonly name = 'statistic';
-  public readonly config = {
-    conditions: [new HasStatisticCondition(this), new HasMapStatisticCondition(this)],
-  };
 
   protected _state: StatisticPluginState;
 

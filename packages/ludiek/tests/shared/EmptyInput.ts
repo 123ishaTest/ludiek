@@ -1,19 +1,19 @@
-import { BaseInputShape, LudiekInput } from '@ludiek/engine/input/LudiekInput';
+import { BaseInput, LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
 
-export interface EmptyInputShape extends BaseInputShape {
+export interface EmptyInput extends BaseInput {
   type: '/input/empty';
 }
 
-export class EmptyInput extends LudiekInput<EmptyInputShape> {
+export class EmptyConsumer extends LudiekConsumer<EmptyInput> {
   readonly type = '/input/empty';
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  canLose(input: EmptyInputShape): boolean {
+  canConsume(input: EmptyInput): boolean {
     return true;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  lose(input: EmptyInputShape): void {
+  consume(input: EmptyInput): void {
     return;
   }
 }

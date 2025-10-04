@@ -5,7 +5,7 @@
     createCurrencyState,
     createStatisticState,
     CurrencyPlugin,
-    HasStatisticCondition,
+    HasStatisticEvaluator,
     LudiekEngine,
     StatisticPlugin,
   } from '@123ishatest/ludiek';
@@ -20,7 +20,7 @@
 
   new LudiekEngine({
     plugins: [currency, statistic, achievement],
-    conditions: [new HasStatisticCondition(statistic)],
+    evaluators: [new HasStatisticEvaluator()],
   });
   currency.loadContent([{ id: '/currency/money' }]);
   statistic.loadContent([{ id: '/statistic/total-currency', type: 'scalar' }]);

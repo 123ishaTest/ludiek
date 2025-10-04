@@ -1,16 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { LudiekCondition } from '@ludiek/engine/condition/LudiekCondition';
-import { TrueCondition } from '@ludiek/engine/condition/TrueCondition';
-import { FalseCondition } from '@ludiek/engine/condition/FalseCondition';
-import { KitchenSinkPlugin } from '@tests/shared/KitchenSinkPlugin';
+import { LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
+import { TrueEvaluator } from '@ludiek/stdlib/condition/TrueCondition';
+import { FalseEvaluator } from '@ludiek/stdlib/condition/FalseCondition';
 import { ConditionNotFoundError } from '@ludiek/engine/condition/ConditionError';
 
 describe('Engine Conditions', () => {
   it('checks an always true condition', () => {
     // Arrange
     const engine = new LudiekEngine({
-      conditions: [new TrueCondition()],
+      evaluators: [new TrueEvaluator()],
     });
 
     // Act
@@ -23,7 +22,7 @@ describe('Engine Conditions', () => {
   it('checks an always false condition', () => {
     // Arrange
     const engine = new LudiekEngine({
-      conditions: [new FalseCondition()],
+      evaluators: [new FalseEvaluator()],
     });
 
     // Act
@@ -45,7 +44,7 @@ describe('Engine Conditions', () => {
       points: number;
     }
 
-    class MyFeatureEvaluator extends LudiekCondition<MyShape> {
+    class MyFeatureEvaluator extends LudiekEvaluator<MyShape> {
       readonly type = 'maybe';
       private _feature: MyFeature;
 
@@ -64,7 +63,7 @@ describe('Engine Conditions', () => {
     };
 
     const engine = new LudiekEngine({
-      conditions: [new MyFeatureEvaluator(myFeature)],
+      evaluators: [new MyFeatureEvaluator(myFeature)],
     });
 
     // Act
@@ -77,22 +76,6 @@ describe('Engine Conditions', () => {
     expect(has4).toBe(true);
     expect(has5).toBe(false);
     expect(has4Again).toBe(false);
-  });
-
-  it('retrieves condition from plugins', () => {
-    // Arrange
-    const engine = new LudiekEngine({
-      plugins: [new KitchenSinkPlugin()],
-    });
-
-    // Act
-    const condition = engine.evaluate({
-      type: '/condition/has-variable',
-      amount: 1,
-    });
-
-    // Assert
-    expect(condition).toBe(false);
   });
 
   it('errors when an evaluator does not exist', () => {

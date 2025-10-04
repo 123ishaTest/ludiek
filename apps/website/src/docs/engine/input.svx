@@ -1,0 +1,62 @@
+---
+title: Input
+---
+`Input` lets you consume resources within your game.
+For example
+
+- Currency that can be spent.
+- Items that can be sold.
+- Experience that can be lost.
+
+Its counterpart, [Output](./output), can be used to produces resources.
+
+In <span class="text-primary">Ludiek</span>, Inputs are an abstract `Engine` concept.
+You provide an input shape and logic to `consume` the input.
+At runtime, the Engine queries the registered consumers and invokes their consume method.
+
+Sounds complicated? It's really not!
+Let's take a look at the Currency Plugin.
+It provides the `CurrencyInput`.
+
+First we define the shape of what an instance of our input should look like:
+
+```ts
+interface CurrencyInput extends BaseInput {
+  type: '/input/currency';
+  id: string;
+  amount: number;
+}
+```
+
+And we extend a `LudiekConsumer` for the consuming currency logic:
+
+```ts
+// This tells the engine that this consumer depends on the currency plugin
+type Dependencies = {
+  plugins: [CurrencyPlugin];
+};
+
+export class CurrencyConsumer extends LudiekConsumer<CurrencyInput, Dependencies> {
+  readonly type = '/input/currency';
+
+  canConsume(input: CurrencyInput): boolean {
+    return this.engine.plugins.currency.hasCurrency(input);
+  }
+
+  consume(input: CurrencyInput): void {
+    return this.engine.plugins.currency.loseCurrency(input);
+  }
+}
+```
+
+And we can use it fully type-safe!
+
+```ts
+game.engine.consume({
+  type: '/input/currency',
+  id: '/currency/money',
+  amount: 100,
+});
+```
+
+Any game content can now use this input!

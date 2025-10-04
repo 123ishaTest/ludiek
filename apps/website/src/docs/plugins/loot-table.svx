@@ -9,7 +9,7 @@ title: Loot Table Plugin
 Loot Tables can be used for monster drops, opening card packs in a CCG ~~, or when you cash out and sell loot boxes~~.
 The Loot Tables allow you to combine different rewards. So you can gain an [Achievement](./achievement) or [Currency](./currency) from the same table.
 
-The Loot plugin calculates rolls on Loot tables and returns a list of [Outputs](../engine/transactions) that can be applied.
+The Loot plugin calculates rolls on Loot tables and returns a list of [Outputs](../engine/output) that can be applied.
 There are three kinds of optional entries on a loot table:
 
 - `always`, items which always get picked.
