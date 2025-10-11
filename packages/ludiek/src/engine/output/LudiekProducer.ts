@@ -13,6 +13,14 @@ export abstract class LudiekProducer<
   public abstract readonly type: Output['type'];
 
   /**
+   * Apply modifiers to this output.
+   * Override to define your modifiers
+   */
+  public modify(output: Output): Output {
+    return output;
+  }
+
+  /**
    * Whether this output can be produced
    * @param output
    */
