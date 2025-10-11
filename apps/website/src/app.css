@@ -1,4 +1,6 @@
+@import url('/themes/darcula.css');
 @import 'tailwindcss';
+
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
