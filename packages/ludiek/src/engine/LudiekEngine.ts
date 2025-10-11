@@ -2,14 +2,17 @@ import { LudiekEngineConfig, PluginMap } from '@ludiek/engine/LudiekEngineConfig
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { LudiekEngineSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
-import { LudiekInput, LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
-import { LudiekProducer, LudiekOutput } from '@ludiek/engine/output/LudiekProducer';
+import { LudiekConsumer, LudiekInput } from '@ludiek/engine/input/LudiekConsumer';
+import { LudiekOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
 import { LudiekController, LudiekRequest } from '@ludiek/engine/request/LudiekRequest';
 import { ConditionNotFoundError } from '@ludiek/engine/condition/ConditionError';
 import { InputNotFoundError } from '@ludiek/engine/input/InputError';
 import { OutputNotFoundError } from '@ludiek/engine/output/OutputError';
 import { ControllerNotFoundError } from '@ludiek/engine/request/RequestError';
+import { LudiekBonus, LudiekModifier, BonusContribution } from '@ludiek/engine/modifier/LudiekModifier';
+import { ModifierNotFoundError } from '@ludiek/engine/modifier/ModifierError';
+import { cloneDeep } from 'es-toolkit';
 
 export class LudiekEngine<
   Plugins extends readonly LudiekPlugin[] = [],
@@ -17,14 +20,17 @@ export class LudiekEngine<
   Consumers extends readonly LudiekConsumer[] = [],
   Producers extends readonly LudiekProducer[] = [],
   Controllers extends readonly LudiekController[] = [],
+  Modifiers extends readonly LudiekModifier[] = [],
 > {
   public plugins: PluginMap<Plugins>;
   private readonly _evaluators: Record<string, LudiekEvaluator> = {};
   private readonly _consumers: Record<string, LudiekConsumer> = {};
   private readonly _producers: Record<string, LudiekProducer> = {};
   private readonly _controllers: Record<string, LudiekController> = {};
+  private readonly _modifiers: Record<string, LudiekModifier> = {};
+  private readonly _activeBonuses: Record<string, Record<string, BonusContribution[]>> = {};
 
-  constructor(config: LudiekEngineConfig<Plugins, Evaluators, Consumers, Producers, Controllers>) {
+  constructor(config: LudiekEngineConfig<Plugins, Evaluators, Consumers, Producers, Controllers, Modifiers>) {
     this.plugins = Object.fromEntries(config.plugins?.map((p) => [p.name, p]) ?? []) as PluginMap<Plugins>;
     config.plugins?.forEach((p) => p.inject(this));
 
@@ -32,6 +38,7 @@ export class LudiekEngine<
     config.consumers?.forEach((i) => this.registerConsumer(i));
     config.producers?.forEach((o) => this.registerProducer(o));
     config.controllers?.forEach((c) => this.registerController(c));
+    config.modifiers?.forEach((m) => this.registerModifier(m));
   }
 
   public get evaluators(): Evaluators {
@@ -48,6 +55,10 @@ export class LudiekEngine<
 
   public get controllers(): Controllers {
     return Object.values(this._controllers) as unknown as Controllers;
+  }
+
+  public get modifiers(): Modifiers {
+    return Object.values(this._modifiers) as unknown as Modifiers;
   }
 
   public registerEvaluator(evaluator: LudiekEvaluator): void {
@@ -70,6 +81,11 @@ export class LudiekEngine<
     this._controllers[controller.type] = controller;
   }
 
+  public registerModifier(modifier: LudiekModifier): void {
+    modifier.inject(this);
+    this._modifiers[modifier.type] = modifier;
+  }
+
   /**
    * Evaluate one or multiple condition and evaluates whether they are all true.
    */
@@ -80,7 +96,8 @@ export class LudiekEngine<
 
     return condition.every((condition) => {
       const evaluator = this.getEvaluator(condition.type);
-      return evaluator.evaluate(condition);
+      const modified = evaluator.modify(cloneDeep(condition));
+      return evaluator.evaluate(modified);
     });
   }
 
@@ -125,7 +142,8 @@ export class LudiekEngine<
 
     return input.every((i) => {
       const consumer = this.getConsumer(i.type);
-      return consumer.canConsume(i);
+      const modified = consumer.modify(cloneDeep(i));
+      return consumer.canConsume(modified);
     });
   }
 
@@ -140,7 +158,8 @@ export class LudiekEngine<
 
     input.forEach((i) => {
       const processor = this.getConsumer(i.type);
-      processor.consume(i);
+      const modified = processor.modify(cloneDeep(i));
+      processor.consume(modified);
     });
   }
 
@@ -155,7 +174,8 @@ export class LudiekEngine<
 
     return output.every((o) => {
       const producer = this.getProducer(o.type);
-      return producer.canProduce(o);
+      const modified = producer.modify(cloneDeep(o));
+      return producer.canProduce(modified);
     });
   }
 
@@ -170,8 +190,74 @@ export class LudiekEngine<
 
     output.forEach((o) => {
       const producer = this.getProducer(o.type);
-      producer.produce(o);
+      const modified = producer.modify(cloneDeep(o));
+      producer.produce(modified);
     });
+  }
+
+  public getBonus(bonus: LudiekBonus<Modifiers>): number {
+    // TODO(@Isha): Cache and mark dirty
+    this.calculateModifiers();
+    const modifier = this.getModifier(bonus.type);
+
+    const identifier = modifier.stringify(bonus);
+    const values = Object.values(this._activeBonuses).flatMap((record) => {
+      return record[identifier] ?? [];
+    });
+
+    switch (modifier.variant) {
+      case 'additive':
+        return values.reduce((sum, modifier) => sum + modifier.amount, modifier.default);
+      case 'multiplicative':
+        return values.reduce((sum, modifier) => sum * (1 + modifier.amount), modifier.default);
+      default:
+        console.error(`Unknown variant '${modifier.variant}' for resolver ${modifier}`);
+        return 0;
+    }
+  }
+
+  /**
+   * Calculates all modifiers from plugins and stores them in a local dictionary
+   * @private
+   */
+  public calculateModifiers(): void {
+    // TODO(@Isha): Check all features too
+
+    this.pluginList.forEach((plugin) => {
+      // Reset all previous bonuses
+      this._activeBonuses[plugin.name] = {};
+
+      const bonuses = plugin.getBonuses?.();
+
+      bonuses?.forEach((bonus) => {
+        const modifier = this.getModifier(bonus.type);
+        const identifier = modifier.stringify(bonus);
+        if (this._activeBonuses[plugin.name][identifier]) {
+          this._activeBonuses[plugin.name][identifier].push(bonus);
+        } else {
+          this._activeBonuses[plugin.name][identifier] = [bonus];
+        }
+      });
+    });
+  }
+
+  public modifyCondition<Condition extends LudiekCondition<Evaluators>>(condition: Condition): Condition {
+    const evaluator = this.getEvaluator(condition.type);
+    return evaluator.modify(cloneDeep(condition)) as Condition;
+  }
+
+  public modifyInput<Input extends LudiekInput<Consumers>>(input: Input): Input {
+    const consumer = this.getConsumer(input.type);
+    return consumer.modify(cloneDeep(input)) as Input;
+  }
+
+  public modifyOutput<Output extends LudiekOutput<Producers>>(output: Output): Output {
+    const producer = this.getProducer(output.type);
+    return producer.modify(cloneDeep(output)) as Output;
+  }
+
+  public get activeBonuses(): Record<string, Record<string, BonusContribution[]>> {
+    return this._activeBonuses;
   }
 
   /**
@@ -239,6 +325,22 @@ export class LudiekEngine<
       );
     }
     return controller;
+  }
+
+  /**
+   * Get a modifier or throw an error if it doesn't exist
+   * @param type
+   * @private
+   */
+  private getModifier(type: string): LudiekModifier {
+    const modifier = this._modifiers[type];
+    if (!modifier) {
+      const registeredModifiers = Object.keys(this._modifiers).join(', ');
+      throw new ModifierNotFoundError(
+        `Cannot modify bonus of type '${type}' because its modifier is not registered. Registered modifiers are: ${registeredModifiers}`,
+      );
+    }
+    return modifier;
   }
 
   // Saving and loading

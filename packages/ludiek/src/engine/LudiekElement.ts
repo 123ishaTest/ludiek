@@ -8,6 +8,7 @@ import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction'
 import { EngineNotInjectedError } from '@ludiek/engine/LudiekError';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { merge } from 'es-toolkit';
+import { BonusContribution } from '@ludiek/engine/modifier/LudiekModifier';
 
 /**
  * A shared base class for plugins and features
@@ -37,6 +38,13 @@ export abstract class LudiekElement implements LudiekSavable {
       LudiekProducer[],
       LudiekController[]
     >;
+  }
+
+  /**
+   *  Return a list of bonuses
+   */
+  public getBonuses(): BonusContribution[] {
+    return [];
   }
 
   /**

@@ -11,6 +11,7 @@ import {
   EnterCouponController,
   HasCurrencyEvaluator,
   HasStatisticEvaluator,
+  type LudiekBonusContribution,
   type LudiekCondition,
   LudiekEngine,
   LudiekGame,
@@ -22,6 +23,9 @@ import {
 import { Farming } from '$lib/demo/features/Farming';
 import { achievements, currencies, plants, statistics } from '$lib/demo/content';
 import { SowSeedController } from '$lib/demo/features/SowPlantController';
+import { SeedProducer } from '$lib/demo/features/SeedOutput';
+import { GlobalSeedModifier } from '$lib/demo/features/GlobalSeedBonus';
+import { SeedModifier } from '$lib/demo/features/SeedBonus';
 
 // Define plugins with reactive state
 const currencyState = $state(createCurrencyState());
@@ -41,8 +45,9 @@ export const engine = new LudiekEngine({
   plugins: [currencyPlugin, statisticPlugin, achievementPlugin, couponPlugin],
   evaluators: [new TrueEvaluator(), new HasCurrencyEvaluator(), new HasStatisticEvaluator()],
   consumers: [new CurrencyConsumer()],
-  producers: [new CurrencyProducer()],
+  producers: [new SeedProducer(), new CurrencyProducer()],
   controllers: [new EnterCouponController(), new SowSeedController(farming)],
+  modifiers: [new GlobalSeedModifier(), new SeedModifier()],
 });
 
 // Extract some neat utility types
@@ -50,6 +55,7 @@ export type EnginePlugins = typeof engine.plugins;
 export type Condition = LudiekCondition<typeof engine.evaluators>;
 export type Input = LudiekInput<typeof engine.consumers>;
 export type Output = LudiekOutput<typeof engine.producers>;
+export type Bonus = LudiekBonusContribution<typeof engine.modifiers>;
 
 export type PlantId = (typeof plants)[number]['id'];
 

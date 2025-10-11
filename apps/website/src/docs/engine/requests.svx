@@ -17,7 +17,7 @@ It provides the `PlantSeedController`.
 First we define the shape of what an instance of our request should look like:
 
 ```ts
-export interface PlantSeedRequest extends BaseRequestShape {
+export interface PlantSeedRequest extends BaseRequest {
   type: '/request/plant-seed'
   plant: PlantId;
 }
