@@ -40,15 +40,20 @@ const couponPlugin = new CouponPlugin(couponState);
 // Create your game
 const farming = new Farming(plants);
 
+const engineState = $state({});
+
 // Create engine with plugins
-export const engine = new LudiekEngine({
-  plugins: [currencyPlugin, statisticPlugin, achievementPlugin, couponPlugin],
-  evaluators: [new TrueEvaluator(), new HasCurrencyEvaluator(), new HasStatisticEvaluator()],
-  consumers: [new CurrencyConsumer()],
-  producers: [new SeedProducer(), new CurrencyProducer()],
-  controllers: [new EnterCouponController(), new SowSeedController(farming)],
-  modifiers: [new GlobalSeedModifier(), new SeedModifier()],
-});
+export const engine = new LudiekEngine(
+  {
+    plugins: [currencyPlugin, statisticPlugin, achievementPlugin, couponPlugin],
+    evaluators: [new TrueEvaluator(), new HasCurrencyEvaluator(), new HasStatisticEvaluator()],
+    consumers: [new CurrencyConsumer()],
+    producers: [new SeedProducer(), new CurrencyProducer()],
+    controllers: [new EnterCouponController(), new SowSeedController(farming)],
+    modifiers: [new GlobalSeedModifier(), new SeedModifier()],
+  },
+  engineState,
+);
 
 // Extract some neat utility types
 export type EnginePlugins = typeof engine.plugins;

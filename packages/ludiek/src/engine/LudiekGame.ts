@@ -69,6 +69,7 @@ export class LudiekGame<
   }
 
   public tick(delta: number): void {
+    this.engine.preTick();
     this.featureList.forEach((feature) => feature.update?.(delta));
 
     this._nextSave -= delta;

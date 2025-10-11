@@ -16,11 +16,15 @@
   const keyItemState = $state(createKeyItemState());
   const keyItem = new KeyItemPlugin(keyItemState);
 
-  const engine = new LudiekEngine({
-    plugins: [currency, keyItem],
-    producers: [new SeedProducer()],
-    modifiers: [new SeedModifier(), new GlobalSeedModifier()],
-  });
+  const engineState = $state({});
+  const engine = new LudiekEngine(
+    {
+      plugins: [currency, keyItem],
+      producers: [new SeedProducer()],
+      modifiers: [new SeedModifier(), new GlobalSeedModifier()],
+    },
+    engineState,
+  );
   currency.loadContent([{ id: '/plant/sunflower' }]);
 
   const keyItems: KeyItemDetail[] = [
@@ -53,48 +57,44 @@
 
   let money = $derived(currency.getBalance('/plant/sunflower'));
 
-  let modifiers = $state(engine.activeBonuses);
-
   setInterval(() => {
-    engine.calculateModifiers();
-    modifiers = engine.activeBonuses;
+    engine.preTick();
   }, 100);
 </script>
 
-<pre>
-{JSON.stringify(modifiers, null, 2)}
-</pre>
-<div class="card card-border bg-base-200 w-96">
-  <div class="card-body">
-    <span class="card-title">You have <span class="text-primary">{money.toFixed(2)}</span> money!</span>
-    <div class="flex flex-row space-x-4">
-      <button class="btn btn-primary" onclick={() => produceOutput()}>Gain {transformedOutput.amount}</button>
+<div class="flex flex-col space-y-4">
+  <div class="card card-border bg-base-200 w-96">
+    <div class="card-body">
+      <span class="card-title">You have <span class="text-primary">{money.toFixed(2)}</span> money!</span>
+      <div class="flex flex-row space-x-4">
+        <button class="btn btn-primary" onclick={() => produceOutput()}>Gain {transformedOutput.amount}</button>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="card card-border bg-base-200 w-96">
-  <div class="card-body">
-    <div class="flex flex-row space-x-4">
-      {#each keyItems as item (item.id)}
-        {@const isUnlocked = keyItem.hasKeyItem(item.id)}
+  <div class="card card-border bg-base-200 w-96">
+    <div class="card-body">
+      <div class="flex flex-row space-x-4">
+        {#each keyItems as item (item.id)}
+          {@const isUnlocked = keyItem.hasKeyItem(item.id)}
 
-        <div class="flex flex-col items-center">
-          <div class="p-4">
-            <button class="btn btn-primary" onclick={() => keyItem.gainKeyItem(item.id)}>Unlock!</button>
+          <div class="flex flex-col items-center">
+            <div class="p-4">
+              <button class="btn btn-primary" onclick={() => keyItem.gainKeyItem(item.id)}>Unlock!</button>
+            </div>
+
+            <div
+              class="bg-base-100 flex h-36 w-36 flex-col items-center justify-around border-2 p-2 {isUnlocked
+                ? 'border-primary'
+                : 'border-secondary'}"
+            >
+              <span class="text-center">{item.name}</span>
+              <span class="text-center">{item.description}</span>
+              <span class={isUnlocked ? 'text-primary' : 'text-secondary'}>{isUnlocked ? 'Earned' : 'Not earned'}</span>
+            </div>
           </div>
-
-          <div
-            class="bg-base-100 flex h-36 w-36 flex-col items-center justify-around border-2 p-2 {isUnlocked
-              ? 'border-primary'
-              : 'border-secondary'}"
-          >
-            <span class="text-center">{item.name}</span>
-            <span class="text-center">{item.description}</span>
-            <span class={isUnlocked ? 'text-primary' : 'text-secondary'}>{isUnlocked ? 'Earned' : 'Not earned'}</span>
-          </div>
-        </div>
-      {/each}
+        {/each}
+      </div>
     </div>
   </div>
 </div>

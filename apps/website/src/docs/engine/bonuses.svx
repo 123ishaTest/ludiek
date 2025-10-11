@@ -2,56 +2,136 @@
 title: Bonuses
 ---
 
-`Bonuses` let you express dynamic changes in your game
+`Bonuses` let you express dynamic changes as the player progresses in your game.
+Bonuses can include:
 
 - How much damage you do per strength level
 - A base amount of money you get each harvest.
 - How many monsters need to be defeated before you can progress to the next zone
 
-In <span class="text-primary">Ludiek</span>, Conditions are an abstract `Engine` concept.
-<!--You provide a condition shape and logic to `evaluate` whether this condition is true or false.-->
-<!--At runtime, the Engine queries the registered evaluators and invokes their evaluate method.-->
+In <span class="text-primary">Ludiek</span>, Bonuses are an advanced abstract `Engine` concept.
 
-<!--Sounds complicated? It's really not!-->
-<!--Let's take a look at the Currency Plugin.-->
-<!--It provides the `HasCurrencyCondition`.-->
+While they are defined by extending from the `LudiekModifier`, the actual modifying is done by other concepts, such as the [Output](./output).
 
-<!--First we define the shape of what an instance of our condition should look like:-->
+Sounds complicated? It's really not!
+Let's take a look at a `SeedOutput` for our farming game.
+It defines an Output which produces some seeds for the [Currency Plugin](../plugins/currency)
 
-<!--```ts-->
-<!--interface HasCurrencyCondition extends BaseCondition {-->
-<!--  type: '/condition/has-currency';-->
-<!--  id: string;-->
-<!--  amount: number;-->
-<!--}-->
-<!--```-->
+```ts
+export interface SeedOutput extends BaseOutput {
+  type: '/output/seed';
+  plant: PlantId;
+  amount: number;
+}
 
-<!--And we extend a `LudiekEvaluator` to check whether it is true:-->
+interface Dependencies extends LudiekDependencies {
+  plugins: [CurrencyPlugin];
+}
 
-<!--```ts-->
-<!--// This tells the engine that this evaluator depends on the currency plugin-->
-<!--type Dependencies = {-->
-<!--  plugins: [CurrencyPlugin];-->
-<!--};-->
+export class SeedProducer extends LudiekProducer<SeedOutput, Dependencies> {
+  readonly type = '/output/seed';
 
-<!--export class HasCurrencyEvaluator extends LudiekEvaluator<HasCurrencyCondition, Dependencies> {-->
-<!--  readonly type = '/condition/has-currency';-->
+  produce(output: SeedOutput): void {
+    this.engine.plugins.currency.gainCurrency({
+      amount: output.amount,
+      id: output.plant,
+    });
+  }
+}
+```
 
-<!--  evaluate(condition: HasCurrencyCondition): boolean {-->
-<!--    return this.engine.plugins.currency.hasCurrency(condition);-->
-<!--  }-->
-<!--}-->
+If we want to introduce a bonus that gives us more seeds, we first have to define two things.
 
-<!--```-->
+The shape that identifies this bonus
 
-<!--And we can use it fully type-safe!-->
+```ts
+export interface SeedBonus extends BaseBonus {
+  type: '/bonus/seed';
+  seed: PlantId;
+}
+```
+And the configuration for this modifier
 
-<!--```ts-->
-<!--game.engine.evaluate({-->
-<!--  type: '/condition/has-currency',-->
-<!--  id: '/currency/money',-->
-<!--  amount: 100,-->
-<!--});-->
-<!--```-->
+```ts
+export class SeedModifier extends LudiekModifier<SeedBonus> {
+  readonly type = '/bonus/seed';
+  readonly default = 1;
+  readonly variant = 'multiplicative';
 
-<!--Any game content can now use this condition as a requirement!-->
+  stringify(bonus: SeedBonus): string {
+    return `${this.type}${bonus.seed}`;
+  }
+}
+```
+
+And add it to our engine
+```ts
+const engine = new LudiekEngine({
+  plugins: [new CurrencyPlugin()],
+  outputs: [new SeedOutput()],
+  modifiers: [new SeedModifier()],
+})
+```
+
+We can update our `SeedProducer` to make use of the modifier
+
+```ts
+interface Dependencies extends LudiekDependencies {
+  plugins: [CurrencyPlugin];
+  modifiers: [SeedModifier];
+}
+
+export class SeedProducer extends LudiekProducer<SeedOutput, Dependencies> {
+
+  modify(output: SeedOutput): SeedOutput {
+    output.amount *= this.getBonus({ type: '/bonus/seed', seed: output.plant });
+    return output;
+  }
+
+  // ...
+}
+```
+
+From now on, the engine will modify the output automatically whenever it is produced!
+
+Now that we have the `SeedModifier` declared, you can get its current value with
+```ts
+engine.getBonus({
+  type: '/bonus/seed',
+  seed: '/plant/sunflower',
+});
+```
+
+This value is currently 1, the default we declared earlier.
+
+To calculate the value of a bonus, the engine asks all `Plugins` and `Features` for a list of the bonuses they
+contribute.
+The [Key Item Plugin](../plugins/key-item) provides bonuses for unlocked Key Items, which could make
+`engine.activeBonuses` looks like this:
+
+```json
+{
+  "currency": {},
+  "keyItem": {
+    "/bonus/seed": [
+      {
+        "type": "/bonus/seed",
+        "plant": "/plant/sunflower",
+        "amount": 0.1,
+        "source": "/key-item/seed-collector"
+      },
+      {
+        "type": "/bonus/seed",
+        "plant": "/plant/cauliflower",
+        "amount": 0.2,
+        "source": "/key-item/watering-can"
+      }
+    ]
+  }
+}
+```
+
+All bonus contributions are combined using the strategy defined by the modifier, which gives you the final value!
+
+It might look like a bunch of boilerplate to simply multiply a few values, but consider the impact of this setup.
+Any piece of content can provide any type of bonus, meaning you can change an item from `+10% seeds` to `+20% plantValue` without touching any code!

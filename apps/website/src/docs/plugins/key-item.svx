@@ -2,16 +2,14 @@
 title: Key Item Plugin
 ---
 
-<script>
+<script lang="ts">
   import KeyItemDemonstration from './KeyItemDemonstration.svelte';
   import { KeyItemPlugin } from '@123ishatest/ludiek';
 </script>
 
-KeyItems are great.
-Not only is it a way to reward the player for exploring and experimenting, they also provide a sense of purpose.
-If your players can see they have many keyItems left to complete, they will keep playing for a longer time.
+KeyItems are one-off unlock that mark the progression of a player up to a certain point.
 
-The keyItem plugin handles the earning of KeyItems. When unlocked, key items provide [Bonuses](../engine/bonuses) which you can use
+The keyItem plugin handles the earning of KeyItems. When unlocked, key items provide [Bonuses](../engine/bonuses).
 
 ## Demo
 
@@ -44,11 +42,12 @@ keyItem.loadContent(keyItems);
 // Manually earn an keyItem
 keyItem.gainKeyItem('/key-item/silver-coin')
 
-// Check whether we have them
+// Check whether we have it
 keyItem.hasKeyItem('/key-item/silver-coin') // true
 ```
 
 Hook into the “keyItem earned” event for UI/popups
+
 ```ts
 currency.onKeyItemEarn.subscribe(({ id }) => {
   console.log(`Congratulations, you have earned keyItem ${id}!`)

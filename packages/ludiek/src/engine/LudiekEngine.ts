@@ -28,9 +28,12 @@ export class LudiekEngine<
   private readonly _producers: Record<string, LudiekProducer> = {};
   private readonly _controllers: Record<string, LudiekController> = {};
   private readonly _modifiers: Record<string, LudiekModifier> = {};
-  private readonly _activeBonuses: Record<string, Record<string, BonusContribution[]>> = {};
+  private readonly _activeBonuses: Record<string, Record<string, BonusContribution[]>>;
 
-  constructor(config: LudiekEngineConfig<Plugins, Evaluators, Consumers, Producers, Controllers, Modifiers>) {
+  constructor(
+    config: LudiekEngineConfig<Plugins, Evaluators, Consumers, Producers, Controllers, Modifiers>,
+    state = {},
+  ) {
     this.plugins = Object.fromEntries(config.plugins?.map((p) => [p.name, p]) ?? []) as PluginMap<Plugins>;
     config.plugins?.forEach((p) => p.inject(this));
 
@@ -39,6 +42,8 @@ export class LudiekEngine<
     config.producers?.forEach((o) => this.registerProducer(o));
     config.controllers?.forEach((c) => this.registerController(c));
     config.modifiers?.forEach((m) => this.registerModifier(m));
+
+    this._activeBonuses = state;
   }
 
   public get evaluators(): Evaluators {
@@ -196,8 +201,7 @@ export class LudiekEngine<
   }
 
   public getBonus(bonus: LudiekBonus<Modifiers>): number {
-    // TODO(@Isha): Cache and mark dirty
-    this.calculateModifiers();
+    // TODO(@Isha): Should this be cached between ticks too?
     const modifier = this.getModifier(bonus.type);
 
     const identifier = modifier.stringify(bonus);
@@ -220,7 +224,7 @@ export class LudiekEngine<
    * Calculates all modifiers from plugins and stores them in a local dictionary
    * @private
    */
-  public calculateModifiers(): void {
+  private calculateModifiers(): void {
     // TODO(@Isha): Check all features too
 
     this.pluginList.forEach((plugin) => {
@@ -365,5 +369,13 @@ export class LudiekEngine<
 
   public get pluginList(): LudiekPlugin[] {
     return Object.values(this.plugins);
+  }
+
+  /**
+   * Do calculations before the features tick
+   */
+  public preTick(): void {
+    // TODO(@Isha): For now this is called by the Game, might switch up when Features are moved to the engine
+    this.calculateModifiers();
   }
 }
