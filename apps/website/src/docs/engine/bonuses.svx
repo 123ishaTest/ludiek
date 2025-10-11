@@ -1,0 +1,57 @@
+---
+title: Bonuses
+---
+
+`Bonuses` let you express dynamic changes in your game
+
+- How much damage you do per strength level
+- A base amount of money you get each harvest.
+- How many monsters need to be defeated before you can progress to the next zone
+
+In <span class="text-primary">Ludiek</span>, Conditions are an abstract `Engine` concept.
+<!--You provide a condition shape and logic to `evaluate` whether this condition is true or false.-->
+<!--At runtime, the Engine queries the registered evaluators and invokes their evaluate method.-->
+
+<!--Sounds complicated? It's really not!-->
+<!--Let's take a look at the Currency Plugin.-->
+<!--It provides the `HasCurrencyCondition`.-->
+
+<!--First we define the shape of what an instance of our condition should look like:-->
+
+<!--```ts-->
+<!--interface HasCurrencyCondition extends BaseCondition {-->
+<!--  type: '/condition/has-currency';-->
+<!--  id: string;-->
+<!--  amount: number;-->
+<!--}-->
+<!--```-->
+
+<!--And we extend a `LudiekEvaluator` to check whether it is true:-->
+
+<!--```ts-->
+<!--// This tells the engine that this evaluator depends on the currency plugin-->
+<!--type Dependencies = {-->
+<!--  plugins: [CurrencyPlugin];-->
+<!--};-->
+
+<!--export class HasCurrencyEvaluator extends LudiekEvaluator<HasCurrencyCondition, Dependencies> {-->
+<!--  readonly type = '/condition/has-currency';-->
+
+<!--  evaluate(condition: HasCurrencyCondition): boolean {-->
+<!--    return this.engine.plugins.currency.hasCurrency(condition);-->
+<!--  }-->
+<!--}-->
+
+<!--```-->
+
+<!--And we can use it fully type-safe!-->
+
+<!--```ts-->
+<!--game.engine.evaluate({-->
+<!--  type: '/condition/has-currency',-->
+<!--  id: '/currency/money',-->
+<!--  amount: 100,-->
+<!--});-->
+<!--```-->
+
+<!--Any game content can now use this condition as a requirement!-->

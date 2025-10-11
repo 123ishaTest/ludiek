@@ -1,7 +1,7 @@
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
 import { BaseInput, LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
 
-interface CurrencyInput extends BaseInput {
+export interface CurrencyInput extends BaseInput {
   type: '/input/currency';
   id: string;
   amount: number;
