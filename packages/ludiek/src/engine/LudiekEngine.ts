@@ -221,10 +221,10 @@ export class LudiekEngine<
   }
 
   /**
-   * Calculates all modifiers from plugins and stores them in a local dictionary
+   * Collects all bonuses from plugins and stores them in a local dictionary
    * @private
    */
-  private calculateModifiers(): void {
+  private collectBonuses(): void {
     // TODO(@Isha): Check all features too
 
     this.pluginList.forEach((plugin) => {
@@ -309,7 +309,7 @@ export class LudiekEngine<
     if (consumer == null) {
       const registeredConsumers = Object.keys(this._consumers).join(', ');
       throw new InputNotFoundError(
-        `Cannot consumee input of type '${type}' because its consumer is not registered. Registered consumers are: ${registeredConsumers}`,
+        `Cannot consume input of type '${type}' because its consumer is not registered. Registered consumers are: ${registeredConsumers}`,
       );
     }
     return consumer;
@@ -376,6 +376,6 @@ export class LudiekEngine<
    */
   public preTick(): void {
     // TODO(@Isha): For now this is called by the Game, might switch up when Features are moved to the engine
-    this.calculateModifiers();
+    this.collectBonuses();
   }
 }

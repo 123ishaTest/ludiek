@@ -8,7 +8,7 @@ export interface BaseBonus {
 export interface BonusContribution {
   type: string;
   amount: number;
-  source: string;
+  source?: string;
 }
 
 export abstract class LudiekModifier<

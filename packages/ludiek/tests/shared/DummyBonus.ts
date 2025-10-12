@@ -1,11 +1,7 @@
 import { BaseBonus, LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
 
-/**
- * Multiplies the gain of a specific seed
- */
 export interface DummyBonus extends BaseBonus {
   type: '/bonus/dummy';
-  seed: string;
 }
 
 export class DummyModifier extends LudiekModifier<DummyBonus> {
@@ -13,7 +9,8 @@ export class DummyModifier extends LudiekModifier<DummyBonus> {
   readonly default = 1;
   readonly variant = 'multiplicative';
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   stringify(bonus: DummyBonus): string {
-    return `${this.type}${bonus.seed}`;
+    return `${this.type}`;
   }
 }

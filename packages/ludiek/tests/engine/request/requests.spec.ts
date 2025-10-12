@@ -8,6 +8,20 @@ const engine = new LudiekEngine({
 });
 
 describe('Engine Requests', () => {
+  it('registers provided controllers', () => {
+    // Arrange
+    const controllers = [new EmptyController()];
+
+    // Act
+    const engine = new LudiekEngine({
+      controllers: controllers,
+    });
+    const registeredControllers = engine.controllers;
+
+    // Assert
+    expect(registeredControllers).toEqual(controllers);
+  });
+
   it('resolves a request', () => {
     // Arrange
     const emptyController = new EmptyController();

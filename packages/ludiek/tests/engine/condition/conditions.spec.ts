@@ -6,6 +6,20 @@ import { FalseEvaluator } from '@ludiek/stdlib/condition/FalseCondition';
 import { ConditionNotFoundError } from '@ludiek/engine/condition/ConditionError';
 
 describe('Engine Conditions', () => {
+  it('registers provided evaluators', () => {
+    // Arrange
+    const evaluators = [new TrueEvaluator(), new FalseEvaluator()];
+
+    // Act
+    const engine = new LudiekEngine({
+      evaluators: evaluators,
+    });
+    const registeredEvaluators = engine.evaluators;
+
+    // Assert
+    expect(registeredEvaluators).toEqual(evaluators);
+  });
+
   it('checks an always true condition', () => {
     // Arrange
     const engine = new LudiekEngine({

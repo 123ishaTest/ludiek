@@ -16,7 +16,7 @@ export abstract class LudiekConsumer<
    * Apply modifiers to this input.
    * Override to define your modifiers
    */
-  public modify<I extends Input>(input: I): I {
+  public modify(input: Input): Input {
     return input;
   }
 
