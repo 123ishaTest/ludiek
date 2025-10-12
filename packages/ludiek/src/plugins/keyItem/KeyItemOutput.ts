@@ -6,14 +6,15 @@ interface KeyItemOutput extends BaseOutput {
   item: string;
 }
 
-export class KeyItemProducer extends LudiekProducer<KeyItemOutput> {
+type Dependencies = {
+  plugins: [KeyItemPlugin];
+};
+
+export class KeyItemProducer extends LudiekProducer<KeyItemOutput, Dependencies> {
   readonly type = '/output/key-item';
 
-  private _keyItem: KeyItemPlugin;
-
-  constructor(keyItem: KeyItemPlugin) {
+  constructor() {
     super();
-    this._keyItem = keyItem;
   }
 
   canProduce(): boolean {
@@ -21,6 +22,6 @@ export class KeyItemProducer extends LudiekProducer<KeyItemOutput> {
   }
 
   produce(output: KeyItemOutput): void {
-    this._keyItem.gainKeyItem(output.item);
+    this.engine.plugins.keyItem.gainKeyItem(output.item);
   }
 }

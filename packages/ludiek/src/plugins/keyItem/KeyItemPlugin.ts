@@ -20,7 +20,7 @@ export class KeyItemPlugin extends LudiekPlugin {
 
   private readonly _keyItems: Record<string, KeyItemDefinition> = {};
 
-  protected _onKeyItemEarn = new SimpleEventDispatcher<KeyItemDefinition>();
+  protected _onKeyItemGain = new SimpleEventDispatcher<KeyItemDefinition>();
 
   constructor(state: KeyItemPluginState = createKeyItemState()) {
     super();
@@ -35,7 +35,7 @@ export class KeyItemPlugin extends LudiekPlugin {
   }
 
   /**
-   * Earns the keyItem
+   * Gain the keyItem
    * @param id
    */
   public gainKeyItem(id: string): void {
@@ -46,11 +46,11 @@ export class KeyItemPlugin extends LudiekPlugin {
     }
 
     this._state.record[id] = true;
-    this._onKeyItemEarn.dispatch(this._keyItems[id]);
+    this._onKeyItemGain.dispatch(this._keyItems[id]);
   }
 
   getBonuses(): BonusContribution[] {
-    return this.earnedKeyItems.flatMap((keyItem) => {
+    return this.gainedKeyItems.flatMap((keyItem) => {
       return (
         keyItem.rewards?.map((reward) => {
           return {
@@ -63,7 +63,7 @@ export class KeyItemPlugin extends LudiekPlugin {
   }
 
   /**
-   * Return whether we have earned the keyItem
+   * Return whether we have gained the keyItem
    * @param id
    */
   public hasKeyItem(id: string): boolean {
@@ -94,11 +94,11 @@ export class KeyItemPlugin extends LudiekPlugin {
   /**
    * Emitted when an keyItem is gained
    */
-  public get onKeyItemEarn(): ISimpleEvent<KeyItemDefinition> {
-    return this._onKeyItemEarn.asEvent();
+  public get onKeyItemGain(): ISimpleEvent<KeyItemDefinition> {
+    return this._onKeyItemGain.asEvent();
   }
 
-  public get earnedKeyItems(): KeyItemDefinition[] {
+  public get gainedKeyItems(): KeyItemDefinition[] {
     return this.keyItemList.filter((item) => this.hasKeyItem(item.id));
   }
 
