@@ -2,8 +2,24 @@ import { describe, expect, it, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { EmptyOutput, EmptyProducer } from '@tests/shared/EmptyOutput';
 import { OutputNotFoundError } from '@ludiek/engine/output/OutputError';
+import { AlwaysProducer } from '@tests/shared/AlwaysOutput';
+import { NeverProducer } from '@tests/shared/NeverOutput';
 
 describe('Engine Output', () => {
+  it('registers provided producers', () => {
+    // Arrange
+    const producers = [new AlwaysProducer(), new NeverProducer()];
+
+    // Act
+    const engine = new LudiekEngine({
+      producers: producers,
+    });
+    const registeredProducers = engine.producers;
+
+    // Assert
+    expect(registeredProducers).toEqual(producers);
+  });
+
   it('gains output', () => {
     // Arrange
     const emptyOutput = new EmptyProducer();

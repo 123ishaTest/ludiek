@@ -7,7 +7,7 @@ export { HasCurrencyEvaluator } from '@ludiek/plugins/currency/HasCurrencyCondit
 export { NotHasCurrencyEvaluator } from '@ludiek/plugins/currency/NotHasCurrencyCondition';
 
 // Input
-export { CurrencyConsumer } from '@ludiek/plugins/currency/CurrencyInput';
+export { CurrencyConsumer, type CurrencyInput } from '@ludiek/plugins/currency/CurrencyInput';
 
 // Output
-export { CurrencyProducer } from '@ludiek/plugins/currency/CurrencyOutput';
+export { CurrencyProducer, type CurrencyOutput } from '@ludiek/plugins/currency/CurrencyOutput';

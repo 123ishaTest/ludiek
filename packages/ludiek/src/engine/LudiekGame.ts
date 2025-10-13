@@ -12,6 +12,7 @@ import { LudiekConsumer, LudiekInput } from '@ludiek/engine/input/LudiekConsumer
 import { LudiekOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 import { LudiekController, LudiekRequest } from '@ludiek/engine/request/LudiekRequest';
 import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
+import { LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
 
 export type FeatureMap<Features extends LudiekFeature<Record<string, LudiekPlugin>>[]> = {
   [Feature in Features[number] as Feature['name']]: Extract<Features[number], { name: Feature['name'] }>;
@@ -24,9 +25,10 @@ export class LudiekGame<
   Consumers extends readonly LudiekConsumer[],
   Producers extends readonly LudiekProducer[],
   Controllers extends readonly LudiekController[],
+  Modifiers extends readonly LudiekModifier[],
 > {
   public readonly features: FeatureMap<Features>;
-  private readonly _engine: LudiekEngine<Plugins, Evaluators, Consumers, Producers, Controllers>;
+  private readonly _engine: LudiekEngine<Plugins, Evaluators, Consumers, Producers, Controllers, Modifiers>;
   public readonly config: LudiekGameConfig<Plugins, Features>;
   protected saveEncoder = new LudiekJsonSaveEncoder();
   protected _tickInterval: NodeJS.Timeout | null = null;
@@ -36,7 +38,7 @@ export class LudiekGame<
   protected _nextSave: number;
 
   constructor(
-    engine: LudiekEngine<Plugins, Evaluators, Consumers, Producers, Controllers>,
+    engine: LudiekEngine<Plugins, Evaluators, Consumers, Producers, Controllers, Modifiers>,
     config: LudiekGameConfig<Plugins, Features>,
   ) {
     this._engine = engine;
@@ -67,6 +69,7 @@ export class LudiekGame<
   }
 
   public tick(delta: number): void {
+    this.engine.preTick();
     this.featureList.forEach((feature) => feature.update?.(delta));
 
     this._nextSave -= delta;
@@ -94,7 +97,7 @@ export class LudiekGame<
     this._engine.request(request);
   }
 
-  public get engine(): LudiekEngine<Plugins, Evaluators, Consumers, Producers, Controllers> {
+  public get engine(): LudiekEngine<Plugins, Evaluators, Consumers, Producers, Controllers, Modifiers> {
     return this._engine;
   }
 

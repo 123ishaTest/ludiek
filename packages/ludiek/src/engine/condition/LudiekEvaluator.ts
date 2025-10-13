@@ -18,6 +18,14 @@ export abstract class LudiekEvaluator<
   public abstract readonly type: Condition['type'];
 
   /**
+   * Apply modifiers to this condition.
+   * Override to define your modifiers
+   */
+  public modify(condition: Condition): Condition {
+    return condition;
+  }
+
+  /**
    * Calculate whether the condition is true
    * @param condition
    */

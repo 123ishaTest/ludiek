@@ -1,0 +1,59 @@
+---
+title: Key Item Plugin
+---
+
+<script lang="ts">
+  import KeyItemDemonstration from './KeyItemDemonstration.svelte';
+  import { KeyItemPlugin } from '@123ishatest/ludiek';
+</script>
+
+KeyItems are one-off unlock that mark the progression of a player up to a certain point.
+
+The keyItem plugin handles the earning of KeyItems. When unlocked, key items provide [Bonuses](../engine/bonuses).
+
+## Demo
+
+<KeyItemDemonstration />
+
+## Usage
+
+```ts
+import { KeyItemPlugin } from '@123ishatest/ludiek';
+
+const keyItem = new KeyItemPlugin();
+
+// Define your keyItems
+const keyItems: KeyItemDetail[] = [
+  {
+    id: '/key-item/silver-coin',
+    name: 'Silver coin',
+    description: '+10% coins gain',
+    rewards: [{ type: '/bonus/seed-global', amount: +0.1 }],
+  },
+  {
+    id: '/key-item/gold-coin',
+    name: 'Gold coin',
+    description: '+20% money gain',
+    rewards: [{ type: '/bonus/seed-global', amount: +0.2 }],
+  },
+];
+keyItem.loadContent(keyItems);
+
+// Manually earn an keyItem
+keyItem.gainKeyItem('/key-item/silver-coin')
+
+// Check whether we have it
+keyItem.hasKeyItem('/key-item/silver-coin') // true
+```
+
+Hook into the “keyItem earned” event for UI/popups
+
+```ts
+currency.onKeyItemEarn.subscribe(({ id }) => {
+  console.log(`Congratulations, you have earned keyItem ${id}!`)
+});
+```
+
+## Links
+
+- [src/plugins/keyItem/KeyItemPlugin.ts](https://github.com/123ishaTest/ludiek/blob/main/packages/ludiek/src/plugins/keyItem/KeyItemPlugin.ts)

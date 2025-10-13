@@ -1,7 +1,7 @@
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
 import { BaseOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 
-interface CurrencyOutputShape extends BaseOutput {
+export interface CurrencyOutput extends BaseOutput {
   type: '/output/currency';
   id: string;
   amount: number;
@@ -11,14 +11,14 @@ type Dependencies = {
   plugins: [CurrencyPlugin];
 };
 
-export class CurrencyProducer extends LudiekProducer<CurrencyOutputShape, Dependencies> {
+export class CurrencyProducer extends LudiekProducer<CurrencyOutput, Dependencies> {
   readonly type = '/output/currency';
 
   canProduce(): boolean {
     return true;
   }
 
-  produce(output: CurrencyOutputShape): void {
+  produce(output: CurrencyOutput): void {
     this.engine.plugins.currency.gainCurrency(output);
   }
 }
