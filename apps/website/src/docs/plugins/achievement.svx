@@ -43,7 +43,7 @@ achievement.hasAchievement('/achievement/manual') // true
 
 Hook into the “achievement earned” event for UI/popups
 ```ts
-currency.onAchievementEarned.subscribe(({ id }) => {
+achievement.onAchievementEarned.subscribe(({ id }) => {
   console.log(`Congratulations, you have earned achievement ${id}!`)
 });
 ```
