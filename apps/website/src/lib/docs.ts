@@ -24,6 +24,7 @@ export const docsLayout: DocsLayout = {
       title: 'Plugins',
       pages: [
         { title: 'Achievement', slug: 'plugins/achievement' },
+        { title: 'Buff', slug: 'plugins/buff' },
         { title: 'Coupon', slug: 'plugins/coupon' },
         { title: 'Currency', slug: 'plugins/currency' },
         { title: 'Key Item', slug: 'plugins/key-item' },

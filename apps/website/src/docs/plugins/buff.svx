@@ -1,0 +1,83 @@
+---
+title: Buff Plugin
+---
+
+<script lang="ts">
+  import BuffDemonstration from './BuffDemonstration.svelte';
+  import { BuffPlugin } from '@123ishatest/ludiek';
+</script>
+
+Buffs are temporary boosts that award [Bonuses](../engine/bonuses) to the player.
+You can use them to:
+
+- Click a golden biscuit to gain x7 production for 77 seconds.
+- Add charges to a weapon that are consumed with each hit.
+- Drink a potion that gives fire immunity for 5 minutes.
+
+The buff plugin handles the lifetime of buffs; when they activate, when they expire.
+When active, buffs provide [Bonuses](../engine/bonuses).
+
+## Demo
+
+<BuffDemonstration />
+
+## Usage
+
+```ts
+import { BuffPlugin } from '@123ishatest/ludiek';
+
+const buff = new BuffPlugin();
+
+// Define your buffs
+const buffs: BuffDetail[] = [
+  {
+    id: '/buff/green-thumb',
+    name: 'Green Thumb',
+    description: '+10% seed gain',
+    durationPerUse: 10,
+    effects: [{ type: '/bonus/seed-global', amount: +0.1 }],
+  },
+  {
+    id: '/buff/force-of-nature',
+    name: 'Force of Nature',
+    description: '+20% seed gain',
+    durationPerUse: 5,
+    effects: [{ type: '/bonus/seed-global', amount: +0.2 }],
+  },
+];
+buff.loadContent(buffs);
+
+// Increase the duration of a buff
+buff.increaseBuff('/buff/force-of-nature', 1)
+
+// Check if it is active
+buff.isBuffActive('/buff/force-of-nature') // true
+
+// Get a list of bonuses the active buffs provide.
+buff.getBonuses();
+
+// Decrease a buff so it becomes inactive
+buff.decreaseBuff('/buff/force-of-nature', 1)
+buff.isBuffActive('/buff/force-of-nature') // false
+
+// Set a buff to a specific duration
+buff.setBuff('/buff/force-of-nature', 8)
+```
+
+Hook into the buff event for UI/popups
+
+```ts
+buff.onBuffActivated.subscribe(({ id }) => {
+  console.log(`${id} activated!`)
+});
+buff.onBuffExtended.subscribe(({ id }) => {
+  console.log(`${id} extended!`)
+});
+buff.onBuffExpired.subscribe(({ id }) => {
+  console.log(`${id} expired!`)
+});
+```
+
+## Links
+
+- [src/plugins/buff/BuffPlugin.ts](https://github.com/123ishaTest/ludiek/blob/main/packages/ludiek/src/plugins/buff/BuffPlugin.ts)

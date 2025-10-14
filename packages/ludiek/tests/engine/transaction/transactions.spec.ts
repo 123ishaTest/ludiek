@@ -30,15 +30,14 @@ describe('Engine Transactions', () => {
   it('stops if we cannot cpmsi,e', () => {
     // Arrange
     const consumeSpy = vi.spyOn(neverInput, 'consume');
-    const transaction = {
+
+    // Act
+    const completed = engine.handleTransaction({
       input: {
         type: '/input/never',
         amount: 0,
       },
-    };
-
-    // Act
-    const completed = engine.handleTransaction(transaction);
+    });
 
     // Assert
     expect(completed).toBe(false);
@@ -48,15 +47,14 @@ describe('Engine Transactions', () => {
   it('continues if we can consume', () => {
     // Arrange
     const consumeSpy = vi.spyOn(alwaysInput, 'consume');
-    const transaction = {
+
+    // Act
+    const completed = engine.handleTransaction({
       input: {
         type: '/input/always',
         amount: 0,
       },
-    };
-
-    // Act
-    const completed = engine.handleTransaction(transaction);
+    });
 
     // Assert
     expect(completed).toBe(true);
@@ -66,15 +64,14 @@ describe('Engine Transactions', () => {
   it('stops if we cannot gain', () => {
     // Arrange
     const gainSpy = vi.spyOn(neverOutput, 'produce');
-    const transaction = {
+
+    // Act
+    const completed = engine.handleTransaction({
       output: {
         type: '/output/never',
         amount: 0,
       },
-    };
-
-    // Act
-    const completed = engine.handleTransaction(transaction);
+    });
 
     // Assert
     expect(completed).toBe(false);
@@ -84,15 +81,14 @@ describe('Engine Transactions', () => {
   it('continues if we can gain', () => {
     // Arrange
     const gainSpy = vi.spyOn(alwaysOutput, 'produce');
-    const transaction = {
+
+    // Act
+    const completed = engine.handleTransaction({
       output: {
         type: '/output/always',
         amount: 0,
       },
-    };
-
-    // Act
-    const completed = engine.handleTransaction(transaction);
+    });
 
     // Assert
     expect(completed).toBe(true);
