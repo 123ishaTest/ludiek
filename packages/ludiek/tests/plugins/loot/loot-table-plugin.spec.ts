@@ -1,18 +1,19 @@
 import { LootTablePlugin } from '@ludiek/plugins/lootTable/LootTablePlugin';
-import { beforeEach, expect, it, vi } from 'vitest';
+import { beforeEach, expect, it, MockInstance, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LootTableDefinition } from '@ludiek/plugins/lootTable/LootTableDefinition';
 import { BaseOutput } from '@ludiek/engine/output/LudiekProducer';
 
-const engine = new LudiekEngine({});
-const produceSpy = vi.spyOn(engine, 'produce').mockReturnValue();
-
 const lootTable = new LootTablePlugin();
-lootTable.inject(engine);
+const engine = new LudiekEngine({
+  plugins: [lootTable],
+});
 
+let produceSpy: MockInstance;
 beforeEach(() => {
+  vi.resetAllMocks();
   lootTable.loadContent([]);
-  vi.clearAllMocks();
+  produceSpy = vi.spyOn(engine, 'produce').mockReturnValue();
 });
 
 it('rolls nothing on an empty table', () => {

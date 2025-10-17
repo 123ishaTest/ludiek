@@ -7,7 +7,7 @@ import { EmptyPlugin } from '@tests/shared/EmptyPlugin';
 import { MultiplicativeModifier } from '@tests/shared/MultiplicativeBonus';
 
 beforeEach(() => {
-  vi.clearAllMocks();
+  vi.resetAllMocks();
 });
 
 describe('Engine Bonuses', () => {

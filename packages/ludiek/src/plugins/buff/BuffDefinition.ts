@@ -1,4 +1,4 @@
-import { LudiekBonusContribution, LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
+import { BonusContribution } from '@ludiek/engine/modifier/LudiekModifier';
 
 export interface BuffDefinition {
   id: string;
@@ -6,5 +6,5 @@ export interface BuffDefinition {
   /**
    * List of bonuses to apply when this buff is active
    */
-  effects: LudiekBonusContribution<LudiekModifier[]>[];
+  effects: BonusContribution[];
 }

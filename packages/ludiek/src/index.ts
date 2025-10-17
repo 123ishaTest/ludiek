@@ -41,6 +41,7 @@ export * from '@ludiek/plugins/keyItem/keyItem';
 export * from '@ludiek/plugins/lootTable/lootTable';
 export * from '@ludiek/plugins/skill/skill';
 export * from '@ludiek/plugins/statistic/statistic';
+export * from '@ludiek/plugins/upgrade/upgrade';
 
 /**
  * Stdlib
