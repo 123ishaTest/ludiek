@@ -10,7 +10,7 @@
   import type { BuffDetail } from '$lib/demo/model/BuffDetail';
   import { type SeedOutput, SeedProducer } from '$lib/demo/features/SeedOutput';
   import { GlobalSeedModifier } from '$lib/demo/features/GlobalSeedBonus';
-  import { SeedModifier } from '$lib/demo/features/SeedBonus.js';
+  import { SeedModifier } from '$lib/demo/features/SeedBonus';
   import LudiekProgress from '$lib/components/atoms/LudiekProgress.svelte';
 
   const currencyState = $state(createCurrencyState());

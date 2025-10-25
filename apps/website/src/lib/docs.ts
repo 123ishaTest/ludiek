@@ -31,6 +31,7 @@ export const docsLayout: DocsLayout = {
         { title: 'Loot Table', slug: 'plugins/loot-table' },
         { title: 'Skill', slug: 'plugins/skill' },
         { title: 'Statistic', slug: 'plugins/statistic' },
+        { title: 'Upgrade', slug: 'plugins/upgrade' },
       ],
     },
   ],

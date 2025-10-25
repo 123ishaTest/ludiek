@@ -1,0 +1,74 @@
+---
+title: Upgrade Plugin
+---
+
+<script lang="ts">
+  import UpgradeDemonstration from './UpgradeDemonstration.svelte';
+  import { UpgradePlugin } from '@123ishatest/ludiek';
+</script>
+
+Upgrades are one of the most fundamental concepts of games:
+The player can spend some of their resources to gain a permanent bonus.
+
+The upgrade plugin handles the buying of Upgrades.
+When bought, the upgrade level increases and new bonuses are applied.
+Bonuses can be `accumulated` up to the level of the upgrade, or only provide the bonus of the current level.
+
+## Demo
+
+<UpgradeDemonstration />
+
+## Usage
+
+```ts
+import { UpgradePlugin } from '@123ishatest/ludiek';
+
+const upgrade = new UpgradePlugin();
+const upgrades = [
+  {
+    id: '/upgrade/shovel',
+    name: 'Shovel',
+    description: '+10% money',
+    bonusPerLevel: [
+      { type: '/bonus/seed-global', amount: +0.1 },
+      { type: '/bonus/seed-global', amount: +0.1 },
+      { type: '/bonus/seed-global', amount: +0.1 },
+    ],
+    costPerLevel: [
+      { type: '/input/currency', id: '/plant/sunflower', amount: 10 },
+      { type: '/input/currency', id: '/plant/sunflower', amount: 20 },
+      { type: '/input/currency', id: '/plant/sunflower', amount: 30 },
+    ],
+    accumulateBonuses: true,
+  },
+  {
+    id: '/upgrade/watering-can',
+    name: 'Watering Can',
+    description: '+20% money',
+    bonusPerLevel: [
+      { type: '/bonus/seed-global', amount: +0.2 },
+      { type: '/bonus/seed-global', amount: +0.4 },
+      { type: '/bonus/seed-global', amount: +0.6 },
+    ],
+    costPerLevel: [
+      { type: '/input/currency', id: '/plant/sunflower', amount: 20 },
+      { type: '/input/currency', id: '/plant/sunflower', amount: 40 },
+      { type: '/input/currency', id: '/plant/sunflower', amount: 60 },
+    ],
+    accumulateBonuses: false,
+  },
+];
+upgrade.loadContent(upgrades);
+```
+
+Hook into the “upgrade bought” event for UI/popups
+
+```ts
+currency.onUpgradeBought.subscribe(({ id, level }) => {
+  console.log(`Congratulations, you have upgraded ${id} to level ${level}!`)
+});
+```
+
+## Links
+
+- [src/plugins/upgrade/UpgradePlugin.ts](https://github.com/123ishaTest/ludiek/blob/main/packages/ludiek/src/plugins/upgrade/UpgradePlugin.ts)

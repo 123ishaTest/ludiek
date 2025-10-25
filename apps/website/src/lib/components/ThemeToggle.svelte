@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { localStore } from '$lib/util/localStorage.svelte.js';
+  import { localStore } from '$lib/util/localStorage.svelte';
 
   let isDark = localStore('dark-mode', true);
 </script>
