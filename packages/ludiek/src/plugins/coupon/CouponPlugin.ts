@@ -1,17 +1,10 @@
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
-import { BaseCondition } from '@ludiek/engine/condition/LudiekEvaluator';
-import { BaseOutput } from '@ludiek/engine/output/LudiekProducer';
 import { CouponPluginState, createCouponState } from '@ludiek/plugins/coupon/CouponPluginState';
 import { hash } from '@ludiek/util/hash';
 import { UnknownCouponError } from '@ludiek/plugins/coupon/CouponErrors';
-
-export interface CouponDefinition {
-  id: string;
-  hash: string;
-  output: BaseOutput | BaseOutput[];
-  condition?: BaseCondition;
-}
+import { CouponDefinition } from '@ludiek/plugins/coupon/CouponDefinition';
+import { CouponRedeemed } from '@ludiek/plugins/coupon/CouponEvents';
 
 export class CouponPlugin extends LudiekPlugin {
   readonly name = 'coupon';
@@ -19,8 +12,6 @@ export class CouponPlugin extends LudiekPlugin {
   protected _state: CouponPluginState;
 
   private readonly _coupons: Record<string, CouponDefinition> = {};
-
-  protected _onCouponRedeemed = new SimpleEventDispatcher<CouponDefinition>();
 
   constructor(state: CouponPluginState = createCouponState()) {
     super();
@@ -81,6 +72,15 @@ export class CouponPlugin extends LudiekPlugin {
   }
 
   /**
+   * Get a CouponDefinition
+   * @param id
+   */
+  public getCoupon(id: string): CouponDefinition {
+    this.validate(id);
+    return this._coupons[id];
+  }
+
+  /**
    * Throws an error if the id does not exist
    * @param id
    * @private
@@ -99,10 +99,13 @@ export class CouponPlugin extends LudiekPlugin {
     return this._coupons[id] != undefined;
   }
 
+  // Events
+  protected _onCouponRedeemed = new SimpleEventDispatcher<CouponRedeemed>();
+
   /**
-   * Emitted when an achievement is gained
+   * Emitted when a coupon is redeemed
    */
-  public get onCouponRedeemed(): ISimpleEvent<CouponDefinition> {
+  public get onCouponRedeemed(): ISimpleEvent<CouponRedeemed> {
     return this._onCouponRedeemed.asEvent();
   }
 }

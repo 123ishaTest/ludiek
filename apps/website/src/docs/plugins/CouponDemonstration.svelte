@@ -3,7 +3,7 @@
     createCurrencyState,
     createCouponState,
     CurrencyPlugin,
-    CurrencyProducer,
+    GainCurrencyProducer,
     LudiekEngine,
     CouponPlugin,
     hash,
@@ -18,7 +18,7 @@
 
   new LudiekEngine({
     plugins: [currency, coupon],
-    producers: [new CurrencyProducer()],
+    producers: [new GainCurrencyProducer()],
   });
   currency.loadContent([{ id: '/currency/money' }]);
 
@@ -27,7 +27,7 @@
       id: '/coupon/gain-10-money',
       hash: '-1232159358',
       output: {
-        type: '/output/currency',
+        type: '/output/gain-currency',
         id: '/currency/money',
         amount: 10,
       },
@@ -36,7 +36,7 @@
       id: '/coupon/gain-100-money',
       hash: '-374288946',
       output: {
-        type: '/output/currency',
+        type: '/output/gain-currency',
         id: '/currency/money',
         amount: 100,
       },

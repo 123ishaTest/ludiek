@@ -2,7 +2,7 @@ import { expect, it } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { EmptyController } from '@tests/shared/EmptyRequest';
 import { ControllerNotFoundError } from '@ludiek/engine/request/RequestError';
-import { EnterCouponController } from '@ludiek/plugins/coupon/EnterCouponController';
+import { EnterCouponController } from '@ludiek/plugins/coupon/contributions/EnterCouponRequest';
 
 it('is type-safe', () => {
   // Arrange

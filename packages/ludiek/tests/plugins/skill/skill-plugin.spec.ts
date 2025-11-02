@@ -128,9 +128,9 @@ it('sends events on experience gain', () => {
   // Arrange
   expect.assertions(2);
 
-  const unsub = skill.onExperienceGained.subscribe((skill, experience) => {
-    expect(skill.id).toBe('/skill/fishing');
-    expect(experience).toBe(20);
+  const unsub = skill.onExperienceGain.subscribe((event) => {
+    expect(event.id).toBe('/skill/fishing');
+    expect(event.experience).toBe(20);
   });
 
   // Act
@@ -144,9 +144,9 @@ it('sends events on level up', () => {
   // Arrange
   expect.assertions(2);
 
-  const unsub = skill.onLevelUp.subscribe((skill, level) => {
-    expect(skill.id).toBe('/skill/fishing');
-    expect(level).toBe(1);
+  const unsub = skill.onLevelUp.subscribe((event) => {
+    expect(event.id).toBe('/skill/fishing');
+    expect(event.level).toBe(1);
   });
 
   // Act

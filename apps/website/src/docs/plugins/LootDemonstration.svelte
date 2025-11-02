@@ -7,16 +7,16 @@
     {
       id: '/table/demo',
       always: [
-        { output: { type: '/output/currency', id: '/currency/money', amount: 1 } },
-        { output: { type: '/output/currency', id: '/currency/gems', amount: 1 } },
+        { output: { type: '/output/gain-currency', id: '/currency/money', amount: 1 } },
+        { output: { type: '/output/gain-currency', id: '/currency/gems', amount: 1 } },
       ],
       oneOf: [
         { output: { type: '/output/item', id: '/item/fish', amount: 3 }, weight: 10 },
         { output: { type: '/output/item', id: '/item/wood', amount: 2 }, weight: 1 },
       ],
       anyOf: [
-        { output: { type: '/output/currency', id: '/currency/money', amount: 10 }, percentage: 1 / 2 },
-        { output: { type: '/output/currency', id: '/currency/gems', amount: 10 }, percentage: 1 / 3 },
+        { output: { type: '/output/gain-currency', id: '/currency/money', amount: 10 }, percentage: 1 / 2 },
+        { output: { type: '/output/gain-currency', id: '/currency/gems', amount: 10 }, percentage: 1 / 3 },
         { output: { type: '/output/item', id: '/item/rare', amount: 1 }, percentage: 1 / 100 },
         { output: { type: '/output/item', id: '/item/ultra-rare', amount: 1 }, percentage: 1 / 10000 },
       ],

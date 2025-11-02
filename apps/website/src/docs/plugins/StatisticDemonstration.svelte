@@ -22,8 +22,8 @@
   ];
   statistic.loadContent(statistics);
 
-  let allStatistic = $derived(statistic.getStatistic('/statistic/total-currency'));
-  let currenciesStatistic = $state(statistic.getMapStatisticObject('/statistic/currencies'));
+  let allStatistic = $derived(statistic.getScalarValue('/statistic/total-currency'));
+  let currenciesStatistic = $state(statistic.getMap('/statistic/currencies'));
 
   $effect(() => {
     currency.onCurrencyGain.sub(({ id, amount }) => {

@@ -1,10 +1,11 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { StatisticDefinition, StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
+import { StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
 import {
   InvalidStatisticTypeError,
   UnknownMapStatisticError,
   UnknownStatisticError,
 } from '@ludiek/plugins/statistic/StatisticErrors';
+import { StatisticDefinition } from '@ludiek/plugins/statistic/StatisticDefinition';
 
 const statistic = new StatisticPlugin();
 const statisticContent: StatisticDefinition[] = [
@@ -29,11 +30,11 @@ describe('Bad flow', () => {
   });
 
   it('throws an error when accessing an unknown statistic ', () => {
-    expect(() => statistic.getStatistic('/statistic/numbers')).toThrow(UnknownStatisticError);
+    expect(() => statistic.getScalarValue('/statistic/numbers')).toThrow(UnknownStatisticError);
   });
 
   it('throws an error when accessing an unknown mapStatistic ', () => {
     // @ts-expect-error '/statistic/money' is not a valid MapStatisticId
-    expect(() => statistic.getMapStatistic('/statistic/money')).toThrow(UnknownMapStatisticError);
+    expect(() => statistic.getMapValue('/statistic/money')).toThrow(UnknownMapStatisticError);
   });
 });

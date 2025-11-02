@@ -1,10 +1,11 @@
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
-import { EventDispatcher, IEvent } from 'strongly-typed-events';
+import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
 import { UnknownSkillError } from '@ludiek/plugins/skill/SkillErrors';
 import { createSkillState, SkillPluginState } from '@ludiek/plugins/skill/SkillPluginState';
 import { SkillDefinition } from '@ludiek/plugins/skill/SkillDefinition';
 import { SkillExperience } from '@ludiek/plugins/skill/SkillExperience';
 import { progress, Progress } from '@ludiek/util/progress';
+import { ExperienceGained, LevelUp } from '@ludiek/plugins/skill/SkillEvents';
 
 export class SkillPlugin extends LudiekPlugin {
   readonly name = 'skill';
@@ -12,9 +13,6 @@ export class SkillPlugin extends LudiekPlugin {
   protected _state: SkillPluginState;
 
   private readonly _skills: Record<string, SkillDefinition> = {};
-
-  private _onLevelUp = new EventDispatcher<SkillDefinition, number>();
-  private _onExperienceGained = new EventDispatcher<SkillDefinition, number>();
 
   constructor(state: SkillPluginState = createSkillState()) {
     super();
@@ -33,9 +31,15 @@ export class SkillPlugin extends LudiekPlugin {
     this._state.experience[experience.skill] += experience.amount;
     const newLevel = this.getLevel(experience.skill);
 
-    this._onExperienceGained.dispatch(this._skills[experience.skill], experience.amount);
+    this._onExperienceGain.dispatch({
+      ...this._skills[experience.skill],
+      experience: experience.amount,
+    });
     if (oldLevel !== newLevel) {
-      this._onLevelUp.dispatch(this._skills[experience.skill], newLevel);
+      this._onLevelUp.dispatch({
+        ...this._skills[experience.skill],
+        level: newLevel,
+      });
     }
   }
 
@@ -128,17 +132,25 @@ export class SkillPlugin extends LudiekPlugin {
     return this._skills[id] != undefined;
   }
 
+  public getSkill(id: string): SkillDefinition {
+    return this._skills[id];
+  }
+
+  // Events
+  private _onLevelUp = new SimpleEventDispatcher<LevelUp>();
+  private _onExperienceGain = new SimpleEventDispatcher<ExperienceGained>();
+
   /**
    * Emitted when experience is gained
    */
-  public get onExperienceGained(): IEvent<SkillDefinition, number> {
-    return this._onExperienceGained.asEvent();
+  public get onExperienceGain(): ISimpleEvent<ExperienceGained> {
+    return this._onExperienceGain.asEvent();
   }
 
   /**
    * Emitted when a skill is leveled up
    */
-  public get onLevelUp(): IEvent<SkillDefinition, number> {
+  public get onLevelUp(): ISimpleEvent<LevelUp> {
     return this._onLevelUp.asEvent();
   }
 }

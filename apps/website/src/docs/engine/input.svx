@@ -22,7 +22,7 @@ First we define the shape of what an instance of our input should look like:
 
 ```ts
 interface CurrencyInput extends BaseInput {
-  type: '/input/currency';
+  type: '/input/lose-currency';
   id: string;
   amount: number;
 }
@@ -37,7 +37,7 @@ type Dependencies = {
 };
 
 export class CurrencyConsumer extends LudiekConsumer<CurrencyInput, Dependencies> {
-  readonly type = '/input/currency';
+  readonly type = '/input/lose-currency';
 
   canConsume(input: CurrencyInput): boolean {
     return this.engine.plugins.currency.hasCurrency(input);
@@ -53,7 +53,7 @@ And we can use it fully type-safe!
 
 ```ts
 game.engine.consume({
-  type: '/input/currency',
+  type: '/input/lose-currency',
   id: '/currency/money',
   amount: 100,
 });

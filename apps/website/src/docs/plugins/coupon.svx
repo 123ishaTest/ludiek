@@ -30,12 +30,12 @@ coupon.loadContent([
   {
     id: '/coupon/gain-10-money',
     hash: '282868016',
-    output: { type: '/output/currency', id: '/currency/money', amount: 10 },
+    output: { type: '/output/gain-currency', id: '/currency/money', amount: 10 },
   },
   {
     id: '/coupon/super-secret',
     hash: '1821260852',
-    output: { type: '/output/achievement', id: '/achievement/super-secret' },
+    output: { type: '/output/earn-achievement', id: '/achievement/super-secret' },
   },
 ]);
 

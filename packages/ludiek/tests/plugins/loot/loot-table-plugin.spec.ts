@@ -2,7 +2,7 @@ import { LootTablePlugin } from '@ludiek/plugins/lootTable/LootTablePlugin';
 import { beforeEach, expect, it, MockInstance, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LootTableDefinition } from '@ludiek/plugins/lootTable/LootTableDefinition';
-import { BaseOutput } from '@ludiek/engine/output/LudiekProducer';
+import { LootTableRolled } from '@ludiek/plugins/lootTable/LootTableEvents';
 
 const lootTable = new LootTablePlugin();
 const engine = new LudiekEngine({
@@ -32,7 +32,7 @@ it('rolls for always lootTable', () => {
   const lootTables = [
     {
       id: '/table/basic',
-      always: [{ output: { type: '/output/currency', id: '/currency/money', amount: 10 } }],
+      always: [{ output: { type: '/output/gain-currency', id: '/currency/money', amount: 10 } }],
     },
   ];
   lootTable.loadContent(lootTables);
@@ -46,7 +46,7 @@ it('rolls for always lootTable', () => {
     {
       amount: 10,
       id: '/currency/money',
-      type: '/output/currency',
+      type: '/output/gain-currency',
     },
   ]);
 });
@@ -202,7 +202,7 @@ it('supports deep recursion', () => {
 
 it('sends events on rolls', () => {
   // Arrange
-  expect.assertions(2);
+  expect.assertions(3);
   const mainTable = {
     id: '/table/main',
     always: [{ output: { type: '/output/lootTable-table', table: '/table/sub', amount: 3 } }],
@@ -213,9 +213,10 @@ it('sends events on rolls', () => {
     always: [{ output: { type: '/output/demo', amount: 2 } }],
   };
   lootTable.loadContent([mainTable, subTable]);
-  const unsub = lootTable.onRoll.subscribe((loot: BaseOutput[]) => {
-    expect(loot).toHaveLength(1);
-    expect(loot[0]).toEqual({
+  const unsub = lootTable.onRoll.subscribe((event: LootTableRolled) => {
+    expect(event.id).toBe('/table/main');
+    expect(event.result).toHaveLength(1);
+    expect(event.result[0]).toEqual({
       type: '/output/demo',
       amount: 6,
     });

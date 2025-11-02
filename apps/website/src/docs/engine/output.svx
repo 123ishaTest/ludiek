@@ -22,7 +22,7 @@ First we define the shape of what an instance of our output should look like:
 
 ```ts
 interface CurrencyOutput extends BaseOutput {
-  type: '/output/currency';
+  type: '/output/gain-currency';
   id: string;
   amount: number;
 }
@@ -37,7 +37,7 @@ type Dependencies = {
 };
 
 export class CurrencyProducer extends LudiekProducer<CurrencyOutput, Dependencies> {
-  readonly type = '/output/currency';
+  readonly type = '/output/gain-currency';
 
   canProduce(): boolean {
     return true;
@@ -53,7 +53,7 @@ And we can use it fully type-safe!
 
 ```ts
 game.engine.produce({
-  type: '/output/currency',
+  type: '/output/gain-currency',
   id: '/currency/money',
   amount: 100,
 });
