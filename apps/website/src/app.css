@@ -4,18 +4,18 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
-@plugin "daisyui" {
+@plugin 'daisyui' {
   themes:
     light --default,
     dark --prefersdark;
 }
 
-@plugin "daisyui/theme" {
+@plugin 'daisyui/theme' {
   name: 'dark';
   --color-primary: oklch(62% 0.194 149.214);
 }
 
-@plugin "daisyui/theme" {
+@plugin 'daisyui/theme' {
   name: 'light';
   --color-primary: oklch(62% 0.194 149.214);
 }
