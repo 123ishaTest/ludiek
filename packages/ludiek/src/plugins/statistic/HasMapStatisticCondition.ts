@@ -16,6 +16,6 @@ export class HasMapStatisticEvaluator extends LudiekEvaluator<HasMapStatisticCon
   readonly type = '/condition/has-map-statistic';
 
   evaluate(condition: HasMapStatisticCondition): boolean {
-    return this.engine.plugins.statistic.getMapStatistic(condition.id, condition.key) >= condition.amount;
+    return this.engine.plugins.statistic.getMapValue(condition.id, condition.key) >= condition.amount;
   }
 }

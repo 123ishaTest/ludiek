@@ -2,6 +2,8 @@ import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { InvalidCurrencyError, NegativeAmountError } from '@ludiek/plugins/currency/CurrencyErrors';
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
 import { createCurrencyState, CurrencyPluginState } from '@ludiek/plugins/currency/CurrencyPluginState';
+import { CurrencyDefinition } from '@ludiek/plugins/currency/CurrencyDefinition';
+import { CurrencyChanged, CurrencyGained } from '@ludiek/plugins/currency/CurrencyEvents';
 
 export type Currency = {
   id: string;
@@ -12,16 +14,19 @@ export class CurrencyPlugin extends LudiekPlugin {
   readonly name = 'currency';
 
   protected _state: CurrencyPluginState;
+  private readonly _currencies: Record<string, CurrencyDefinition> = {};
 
-  protected _onCurrencyGain = new SimpleEventDispatcher<Currency>();
+  protected _onCurrencyGain = new SimpleEventDispatcher<CurrencyGained>();
+  protected _onCurrencyChanged = new SimpleEventDispatcher<CurrencyChanged>();
 
   constructor(state: CurrencyPluginState = createCurrencyState()) {
     super();
     this._state = state;
   }
 
-  public loadContent(currencies: { id: string }[]): void {
+  public loadContent(currencies: CurrencyDefinition[]): void {
     currencies.forEach((currency) => {
+      this._currencies[currency.id] = currency;
       this._state.balances[currency.id] = 0;
     });
   }
@@ -32,7 +37,17 @@ export class CurrencyPlugin extends LudiekPlugin {
   public gainCurrency(currency: Currency): void {
     this.validate(currency, 'gain');
     this._state.balances[currency.id] += currency.amount;
-    this._onCurrencyGain.dispatch(currency);
+
+    this._onCurrencyGain.dispatch({
+      ...this._currencies[currency.id],
+      amount: currency.amount,
+      balance: this.getBalance(currency.id),
+    });
+    this._onCurrencyChanged.dispatch({
+      ...this._currencies[currency.id],
+      amount: currency.amount,
+      balance: this.getBalance(currency.id),
+    });
   }
 
   /**
@@ -51,6 +66,11 @@ export class CurrencyPlugin extends LudiekPlugin {
   public loseCurrency(currency: Currency): void {
     this.validate(currency, 'lose');
     this._state.balances[currency.id] -= currency.amount;
+    this._onCurrencyChanged.dispatch({
+      ...this._currencies[currency.id],
+      amount: -currency.amount,
+      balance: this.getBalance(currency.id),
+    });
   }
 
   /**
@@ -115,7 +135,7 @@ export class CurrencyPlugin extends LudiekPlugin {
    */
   public getBalance(id: string): number {
     if (!this.supportsCurrency(id)) {
-      throw new InvalidCurrencyError(`Cannot currency '${id}' as it does not exist`);
+      throw new InvalidCurrencyError(`Cannot get '${id}' as it does not exist`);
     }
     return this._state.balances[id];
   }
@@ -140,9 +160,28 @@ export class CurrencyPlugin extends LudiekPlugin {
   }
 
   /**
+   * Get the currency definition
+   * @param id
+   */
+  public getCurrency(id: string): CurrencyDefinition {
+    return this._currencies[id];
+  }
+
+  public get currencies(): CurrencyDefinition[] {
+    return Object.values(this._currencies);
+  }
+
+  /**
    * Emitted when a currency is gained
    */
-  public get onCurrencyGain(): ISimpleEvent<Currency> {
+  public get onCurrencyGain(): ISimpleEvent<CurrencyGained> {
     return this._onCurrencyGain.asEvent();
+  }
+
+  /**
+   * Emitted when a currency changes
+   */
+  public get onCurrencyChange(): ISimpleEvent<CurrencyChanged> {
+    return this._onCurrencyChanged.asEvent();
   }
 }

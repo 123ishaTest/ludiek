@@ -5,16 +5,13 @@ import {
   UnknownStatisticError,
 } from '@ludiek/plugins/statistic/StatisticErrors';
 import { createStatisticState, StatisticPluginState } from '@ludiek/plugins/statistic/StatisticPluginState';
-
-export interface StatisticDefinition {
-  id: string;
-  type: 'scalar' | 'map';
-}
+import { StatisticDefinition } from '@ludiek/plugins/statistic/StatisticDefinition';
 
 export class StatisticPlugin extends LudiekPlugin {
   readonly name = 'statistic';
 
   protected _state: StatisticPluginState;
+  private readonly _statistics: Record<string, StatisticDefinition> = {};
 
   constructor(state: StatisticPluginState = createStatisticState()) {
     super();
@@ -38,21 +35,25 @@ export class StatisticPlugin extends LudiekPlugin {
     });
   }
 
-  public getStatistic(id: string): number {
+  public getStatistic(id: string): StatisticDefinition {
+    return this._statistics[id];
+  }
+
+  public getScalarValue(id: string): number {
     if (!(id in this._state.scalar)) {
       throw new UnknownStatisticError(`Unknown statistic with id '${id}'`);
     }
     return this._state.scalar[id];
   }
 
-  public getMapStatistic(id: string, key: string | number): number {
+  public getMapValue(id: string, key: string | number): number {
     if (!(id in this._state.map)) {
       throw new UnknownMapStatisticError(`Unknown map statistic with id '${id}'`);
     }
     return this._state.map[id][key] ?? 0;
   }
 
-  public getMapStatisticObject(id: string): Record<string | number, number> {
+  public getMap(id: string): Record<string | number, number> {
     return this._state.map[id];
   }
 
@@ -67,6 +68,6 @@ export class StatisticPlugin extends LudiekPlugin {
    * Increment a map statistic with an amount of delta
    */
   public incrementMapStatistic(id: string, key: string | number, delta: number = 1): void {
-    this._state.map[id][key] = this.getMapStatistic(id, key) + delta;
+    this._state.map[id][key] = this.getMapValue(id, key) + delta;
   }
 }

@@ -4,24 +4,27 @@ import {
   createAchievementState,
   createCouponState,
   createCurrencyState,
+  createSkillState,
   createStatisticState,
   CurrencyConsumer,
   CurrencyPlugin,
   CurrencyProducer,
   EnterCouponController,
   HasCurrencyEvaluator,
-  HasStatisticEvaluator,
+  HasScalarStatisticEvaluator,
   type LudiekBonusContribution,
   type LudiekCondition,
   LudiekEngine,
   LudiekGame,
   type LudiekInput,
   type LudiekOutput,
+  SkillExperienceProducer,
+  SkillPlugin,
   StatisticPlugin,
   TrueEvaluator,
 } from '@123ishatest/ludiek';
 import { Farming } from '$lib/demo/features/Farming';
-import { achievements, currencies, plants, statistics } from '$lib/demo/content';
+import { achievements, currencies, plants, skills, statistics } from '$lib/demo/content';
 import { SowSeedController } from '$lib/demo/features/SowPlantController';
 import { SeedProducer } from '$lib/demo/features/SeedOutput';
 import { GlobalSeedModifier } from '$lib/demo/features/GlobalSeedBonus';
@@ -36,6 +39,8 @@ const achievementState = $state(createAchievementState());
 const achievementPlugin = new AchievementPlugin(achievementState);
 const couponState = $state(createCouponState());
 const couponPlugin = new CouponPlugin(couponState);
+const skillState = $state(createSkillState());
+const skillPlugin = new SkillPlugin(skillState);
 
 // Create your game
 const farming = new Farming(plants);
@@ -45,10 +50,10 @@ const engineState = $state({});
 // Create engine with plugins
 export const engine = new LudiekEngine(
   {
-    plugins: [currencyPlugin, statisticPlugin, achievementPlugin, couponPlugin],
-    evaluators: [new TrueEvaluator(), new HasCurrencyEvaluator(), new HasStatisticEvaluator()],
+    plugins: [currencyPlugin, statisticPlugin, achievementPlugin, couponPlugin, skillPlugin],
+    evaluators: [new TrueEvaluator(), new HasCurrencyEvaluator(), new HasScalarStatisticEvaluator()],
     consumers: [new CurrencyConsumer()],
-    producers: [new SeedProducer(), new CurrencyProducer()],
+    producers: [new SeedProducer(), new CurrencyProducer(), new SkillExperienceProducer()],
     controllers: [new EnterCouponController(), new SowSeedController(farming)],
     modifiers: [new GlobalSeedModifier(), new SeedModifier()],
   },
@@ -74,5 +79,6 @@ export const game = new LudiekGame(engine, {
 engine.plugins.currency.loadContent(currencies);
 engine.plugins.statistic.loadContent(statistics);
 engine.plugins.achievement.loadContent(achievements);
+engine.plugins.skill.loadContent(skills);
 
-export const { currency, statistic, achievement } = engine.plugins;
+export const { currency, statistic, achievement, skill } = engine.plugins;

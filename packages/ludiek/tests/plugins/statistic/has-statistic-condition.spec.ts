@@ -1,11 +1,12 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { StatisticDefinition, StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
-import { HasStatisticEvaluator } from '@ludiek/plugins/statistic/HasStatisticCondition';
+import { StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
+import { HasScalarStatisticEvaluator } from '@ludiek/plugins/statistic/HasScalarStatisticCondition';
 import { UnknownStatisticError } from '@ludiek/plugins/statistic/StatisticErrors';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
+import { StatisticDefinition } from '@ludiek/plugins/statistic/StatisticDefinition';
 
 const statistic = new StatisticPlugin();
-const condition = new HasStatisticEvaluator();
+const condition = new HasScalarStatisticEvaluator();
 
 const statisticContent: StatisticDefinition[] = [
   { id: '/statistic/money', type: 'scalar' },

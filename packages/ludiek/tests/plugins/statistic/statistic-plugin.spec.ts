@@ -14,9 +14,9 @@ beforeEach(() => {
 
 it('initializes at 0', () => {
   // Act
-  const money = statistic.getStatistic('/statistic/money');
-  const number = statistic.getMapStatistic('/statistic/numbers', 0);
-  const monster = statistic.getMapStatistic('/statistic/monsters', '/monster/zombie');
+  const money = statistic.getScalarValue('/statistic/money');
+  const number = statistic.getMapValue('/statistic/numbers', 0);
+  const monster = statistic.getMapValue('/statistic/monsters', '/monster/zombie');
 
   // Assert
   expect(money).toBe(0);
@@ -30,9 +30,9 @@ it('increments with a delta', () => {
   statistic.incrementMapStatistic('/statistic/numbers', 0, 3);
   statistic.incrementMapStatistic('/statistic/monsters', '/monster/zombie', 4);
 
-  const money = statistic.getStatistic('/statistic/money');
-  const number = statistic.getMapStatistic('/statistic/numbers', 0);
-  const monster = statistic.getMapStatistic('/statistic/monsters', '/monster/zombie');
+  const money = statistic.getScalarValue('/statistic/money');
+  const number = statistic.getMapValue('/statistic/numbers', 0);
+  const monster = statistic.getMapValue('/statistic/monsters', '/monster/zombie');
 
   // Assert
   expect(money).toBe(2);
@@ -46,9 +46,9 @@ it('increments with a default of 1', () => {
   statistic.incrementMapStatistic('/statistic/numbers', 0);
   statistic.incrementMapStatistic('/statistic/monsters', '/monster/zombie');
 
-  const money = statistic.getStatistic('/statistic/money');
-  const number = statistic.getMapStatistic('/statistic/numbers', 0);
-  const monster = statistic.getMapStatistic('/statistic/monsters', '/monster/zombie');
+  const money = statistic.getScalarValue('/statistic/money');
+  const number = statistic.getMapValue('/statistic/numbers', 0);
+  const monster = statistic.getMapValue('/statistic/monsters', '/monster/zombie');
 
   // Assert
   expect(money).toBe(1);
@@ -62,7 +62,7 @@ it('returns map objects', () => {
   statistic.incrementMapStatistic('/statistic/numbers', 'second', 3);
 
   // Act
-  const numbers = statistic.getMapStatisticObject('/statistic/numbers');
+  const numbers = statistic.getMap('/statistic/numbers');
 
   // Assert
   expect(numbers).toEqual({

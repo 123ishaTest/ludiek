@@ -16,7 +16,7 @@ export interface LudiekDependencies {
   modifiers?: readonly LudiekModifier[];
 }
 
-type DependencyEngine<Dependencies extends LudiekDependencies> = LudiekEngine<
+export type DependencyEngine<Dependencies extends LudiekDependencies> = LudiekEngine<
   NonNullable<Dependencies['plugins']>,
   NonNullable<Dependencies['conditions']>,
   NonNullable<Dependencies['inputs']>,

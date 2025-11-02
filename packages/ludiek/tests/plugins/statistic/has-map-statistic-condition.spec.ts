@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { HasMapStatisticEvaluator } from '@ludiek/plugins/statistic/HasMapStatisticCondition';
-import { StatisticDefinition, StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
+import { StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
+import { StatisticDefinition } from '@ludiek/plugins/statistic/StatisticDefinition';
 
 const statistic = new StatisticPlugin();
 const condition = new HasMapStatisticEvaluator();

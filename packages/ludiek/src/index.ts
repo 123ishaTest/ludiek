@@ -30,6 +30,12 @@ export {
   type LudiekBonusContribution,
 } from '@ludiek/engine/modifier/LudiekModifier';
 
+// Engine.Types
+export type { LudiekDependencies, DependencyEngine } from '@ludiek/engine/LudiekEngineConcept';
+
+// Engine.Errors
+export { LudiekError } from '@ludiek/engine/LudiekError';
+
 /**
  * Plugins
  */
@@ -52,4 +58,4 @@ export * from '@ludiek/stdlib/stdlib';
  * Util
  */
 export { hash } from '@ludiek/util/hash';
-export { progress } from '@ludiek/util/progress';
+export { type Progress, progress } from '@ludiek/util/progress';

@@ -2,9 +2,10 @@
   import { achievement, currency, game, statistic } from '$lib/demo/demo.svelte';
   import { onMount } from 'svelte';
 
+  let planted = $derived(statistic.getMapValue('/statistic/plants-planted', '/plant/sunflower'));
+
   let money = $derived(currency.getBalance('/currency/money'));
   let gems = $derived(currency.getBalance('/currency/gems'));
-  let planted = $derived(statistic.getMapStatistic('/statistic/plants-planted', '/plant/sunflower'));
 
   currency.onCurrencyGain.sub((c) => {
     if (c.id === '/currency/money') {
@@ -22,7 +23,14 @@
       type: '/farming/sow-seed',
       plant: '/plant/sunflower',
     });
+
     achievement.checkAchievements();
+
+    game.engine.produce({
+      type: '/skill/experience',
+      skill: '/skill/farming',
+      amount: 1,
+    });
   };
 
   const trade = () => {

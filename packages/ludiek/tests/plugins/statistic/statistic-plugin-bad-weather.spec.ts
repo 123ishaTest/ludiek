@@ -29,11 +29,11 @@ describe('Bad flow', () => {
   });
 
   it('throws an error when accessing an unknown statistic ', () => {
-    expect(() => statistic.getStatistic('/statistic/numbers')).toThrow(UnknownStatisticError);
+    expect(() => statistic.getScalarValue('/statistic/numbers')).toThrow(UnknownStatisticError);
   });
 
   it('throws an error when accessing an unknown mapStatistic ', () => {
     // @ts-expect-error '/statistic/money' is not a valid MapStatisticId
-    expect(() => statistic.getMapStatistic('/statistic/money')).toThrow(UnknownMapStatisticError);
+    expect(() => statistic.getMapValue('/statistic/money')).toThrow(UnknownMapStatisticError);
   });
 });
