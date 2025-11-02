@@ -8,5 +8,5 @@ export type {
 export { type StatisticPluginState, createStatisticState } from '@ludiek/plugins/statistic/StatisticPluginState';
 
 // Conditions
-export { HasScalarStatisticEvaluator } from '@ludiek/plugins/statistic/HasScalarStatisticCondition';
-export { HasMapStatisticEvaluator } from '@ludiek/plugins/statistic/HasMapStatisticCondition';
+export { HasScalarStatisticEvaluator } from '@ludiek/plugins/statistic/contributions/HasScalarStatisticCondition';
+export { HasMapStatisticEvaluator } from '@ludiek/plugins/statistic/contributions/HasMapStatisticCondition';

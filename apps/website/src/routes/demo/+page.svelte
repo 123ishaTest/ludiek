@@ -27,7 +27,7 @@
     achievement.checkAchievements();
 
     game.engine.produce({
-      type: '/skill/experience',
+      type: '/skill/gain-experience',
       skill: '/skill/farming',
       amount: 1,
     });
@@ -36,12 +36,12 @@
   const trade = () => {
     game.handleTransaction({
       input: {
-        type: '/input/currency',
+        type: '/input/lose-currency',
         id: '/currency/money',
         amount: 100,
       },
       output: {
-        type: '/output/currency',
+        type: '/output/gain-currency',
         id: '/currency/gems',
         amount: 1,
       },

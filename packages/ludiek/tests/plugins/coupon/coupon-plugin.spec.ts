@@ -4,7 +4,7 @@ import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { TrueEvaluator } from '@ludiek/stdlib/condition/TrueCondition';
 import { FalseEvaluator } from '@ludiek/stdlib/condition/FalseCondition';
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
-import { CurrencyProducer } from '@ludiek/plugins/currency/CurrencyOutput';
+import { GainCurrencyProducer } from '@ludiek/plugins/currency/contributions/GainCurrencyOutput';
 import { UnknownCouponError } from '@ludiek/plugins/coupon/CouponErrors';
 
 const coupon = new CouponPlugin();
@@ -12,7 +12,7 @@ const currency = new CurrencyPlugin();
 new LudiekEngine({
   plugins: [coupon, currency],
   evaluators: [new TrueEvaluator(), new FalseEvaluator()],
-  producers: [new CurrencyProducer()],
+  producers: [new GainCurrencyProducer()],
 });
 
 const currencyContent = [{ id: '/currency/money' }];
@@ -24,7 +24,7 @@ const couponContent = [
       type: '/condition/true',
     },
     output: {
-      type: '/output/currency',
+      type: '/output/gain-currency',
       id: '/currency/money',
       amount: 10,
     },
@@ -37,7 +37,7 @@ const couponContent = [
       type: '/condition/false',
     },
     output: {
-      type: '/output/currency',
+      type: '/output/gain-currency',
       id: '/currency/money',
       amount: 1,
     },
@@ -46,7 +46,7 @@ const couponContent = [
     id: 'no-condition',
     hash: '-1693392881',
     output: {
-      type: '/output/currency',
+      type: '/output/gain-currency',
       id: '/currency/money',
       amount: 5,
     },

@@ -3,15 +3,8 @@ import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
 import { UnknownKeyItemError } from '@ludiek/plugins/keyItem/KeyItemErrors';
 import { createKeyItemState, KeyItemPluginState } from '@ludiek/plugins/keyItem/KeyItemPluginState';
 import { BonusContribution } from '@ludiek/engine/modifier/LudiekModifier';
-
-export interface KeyItemDefinition {
-  id: string;
-
-  /**
-   * Optional modifiers when this KeyItem is unlocked
-   */
-  rewards?: Omit<BonusContribution, 'source'>[];
-}
+import { KeyItemDefinition } from '@ludiek/plugins/keyItem/KeyItemDefinition';
+import { KeyItemGained } from '@ludiek/plugins/keyItem/KeyItemEvents';
 
 export class KeyItemPlugin extends LudiekPlugin {
   readonly name = 'keyItem';
@@ -19,8 +12,6 @@ export class KeyItemPlugin extends LudiekPlugin {
   protected _state: KeyItemPluginState;
 
   private readonly _keyItems: Record<string, KeyItemDefinition> = {};
-
-  protected _onKeyItemGain = new SimpleEventDispatcher<KeyItemDefinition>();
 
   constructor(state: KeyItemPluginState = createKeyItemState()) {
     super();
@@ -62,6 +53,14 @@ export class KeyItemPlugin extends LudiekPlugin {
     });
   }
 
+  public get gainedKeyItems(): KeyItemDefinition[] {
+    return this.keyItemList.filter((item) => this.hasKeyItem(item.id));
+  }
+
+  public get keyItemList(): KeyItemDefinition[] {
+    return Object.values(this._keyItems);
+  }
+
   /**
    * Return whether we have gained the keyItem
    * @param id
@@ -91,18 +90,13 @@ export class KeyItemPlugin extends LudiekPlugin {
     return this._keyItems[id] != undefined;
   }
 
+  // Events
+  protected _onKeyItemGain = new SimpleEventDispatcher<KeyItemGained>();
+
   /**
    * Emitted when an keyItem is gained
    */
-  public get onKeyItemGain(): ISimpleEvent<KeyItemDefinition> {
+  public get onKeyItemGain(): ISimpleEvent<KeyItemGained> {
     return this._onKeyItemGain.asEvent();
-  }
-
-  public get gainedKeyItems(): KeyItemDefinition[] {
-    return this.keyItemList.filter((item) => this.hasKeyItem(item.id));
-  }
-
-  public get keyItemList(): KeyItemDefinition[] {
-    return Object.values(this._keyItems);
   }
 }

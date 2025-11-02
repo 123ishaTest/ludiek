@@ -16,9 +16,6 @@ export class CurrencyPlugin extends LudiekPlugin {
   protected _state: CurrencyPluginState;
   private readonly _currencies: Record<string, CurrencyDefinition> = {};
 
-  protected _onCurrencyGain = new SimpleEventDispatcher<CurrencyGained>();
-  protected _onCurrencyChanged = new SimpleEventDispatcher<CurrencyChanged>();
-
   constructor(state: CurrencyPluginState = createCurrencyState()) {
     super();
     this._state = state;
@@ -141,6 +138,14 @@ export class CurrencyPlugin extends LudiekPlugin {
   }
 
   /**
+   * Get the currency definition
+   * @param id
+   */
+  public getCurrency(id: string): CurrencyDefinition {
+    return this._currencies[id];
+  }
+
+  /**
    * Whether the plugin supports this type of currency
    * @param id
    */
@@ -159,17 +164,13 @@ export class CurrencyPlugin extends LudiekPlugin {
     }
   }
 
-  /**
-   * Get the currency definition
-   * @param id
-   */
-  public getCurrency(id: string): CurrencyDefinition {
-    return this._currencies[id];
-  }
-
   public get currencies(): CurrencyDefinition[] {
     return Object.values(this._currencies);
   }
+
+  //
+  protected _onCurrencyGain = new SimpleEventDispatcher<CurrencyGained>();
+  protected _onCurrencyChanged = new SimpleEventDispatcher<CurrencyChanged>();
 
   /**
    * Emitted when a currency is gained

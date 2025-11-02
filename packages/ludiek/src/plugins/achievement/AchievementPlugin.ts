@@ -1,25 +1,15 @@
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
-import { BaseCondition } from '@ludiek/engine/condition/LudiekEvaluator';
 import { UnknownAchievementError } from '@ludiek/plugins/achievement/AchievementErrors';
 import { AchievementPluginState, createAchievementState } from '@ludiek/plugins/achievement/AchievementPluginState';
-
-export interface AchievementDefinition {
-  id: string;
-  /**
-   * Optional condition to automatically unlock.
-   * If left empty it can only be unlocked manually
-   */
-  condition?: BaseCondition;
-}
+import { AchievementDefinition } from '@ludiek/plugins/achievement/AchievementDefinition';
+import { AchievementEarned } from '@ludiek/plugins/achievement/AchievementEvents';
 
 export class AchievementPlugin extends LudiekPlugin {
   readonly name = 'achievement';
   protected _state: AchievementPluginState;
 
   private readonly _achievements: Record<string, AchievementDefinition> = {};
-
-  protected _onAchievementEarn = new SimpleEventDispatcher<AchievementDefinition>();
 
   constructor(state: AchievementPluginState = createAchievementState()) {
     super();
@@ -90,6 +80,15 @@ export class AchievementPlugin extends LudiekPlugin {
   }
 
   /**
+   * Get an AchievementDefinition
+   * @param id
+   */
+  public getAchievement(id: string): AchievementDefinition {
+    this.validate(id);
+    return this._achievements[id];
+  }
+
+  /**
    * Throws an error if the id does not exist
    * @param id
    * @private
@@ -108,10 +107,13 @@ export class AchievementPlugin extends LudiekPlugin {
     return this._achievements[id] != undefined;
   }
 
+  // Events
+  protected _onAchievementEarn = new SimpleEventDispatcher<AchievementEarned>();
+
   /**
-   * Emitted when an achievement is gained
+   * Emitted when an achievement is earned
    */
-  public get onAchievementEarn(): ISimpleEvent<AchievementDefinition> {
+  public get onAchievementEarn(): ISimpleEvent<AchievementEarned> {
     return this._onAchievementEarn.asEvent();
   }
 }

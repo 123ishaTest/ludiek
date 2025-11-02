@@ -39,15 +39,15 @@ export { LudiekError } from '@ludiek/engine/LudiekError';
 /**
  * Plugins
  */
-export * from '@ludiek/plugins/achievement/achievement';
-export * from '@ludiek/plugins/buff/buff';
-export * from '@ludiek/plugins/coupon/coupon';
-export * from '@ludiek/plugins/currency/currency';
-export * from '@ludiek/plugins/keyItem/keyItem';
-export * from '@ludiek/plugins/lootTable/lootTable';
-export * from '@ludiek/plugins/skill/skill';
+export * from '@ludiek/plugins/achievement';
+export * from '@ludiek/plugins/buff';
+export * from '@ludiek/plugins/coupon';
+export * from '@ludiek/plugins/currency';
+export * from '@ludiek/plugins/keyItem';
+export * from '@ludiek/plugins/lootTable';
+export * from '@ludiek/plugins/skill';
 export * from '@ludiek/plugins/statistic/statistic';
-export * from '@ludiek/plugins/upgrade/upgrade';
+export * from '@ludiek/plugins/upgrade';
 
 /**
  * Stdlib

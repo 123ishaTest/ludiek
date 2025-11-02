@@ -128,7 +128,7 @@ it('sends events on experience gain', () => {
   // Arrange
   expect.assertions(2);
 
-  const unsub = skill.onExperienceGained.subscribe((event) => {
+  const unsub = skill.onExperienceGain.subscribe((event) => {
     expect(event.id).toBe('/skill/fishing');
     expect(event.experience).toBe(20);
   });

@@ -14,9 +14,6 @@ export class SkillPlugin extends LudiekPlugin {
 
   private readonly _skills: Record<string, SkillDefinition> = {};
 
-  private _onLevelUp = new SimpleEventDispatcher<LevelUp>();
-  private _onExperienceGained = new SimpleEventDispatcher<ExperienceGained>();
-
   constructor(state: SkillPluginState = createSkillState()) {
     super();
     this._state = state;
@@ -34,7 +31,7 @@ export class SkillPlugin extends LudiekPlugin {
     this._state.experience[experience.skill] += experience.amount;
     const newLevel = this.getLevel(experience.skill);
 
-    this._onExperienceGained.dispatch({
+    this._onExperienceGain.dispatch({
       ...this._skills[experience.skill],
       experience: experience.amount,
     });
@@ -139,11 +136,15 @@ export class SkillPlugin extends LudiekPlugin {
     return this._skills[id];
   }
 
+  // Events
+  private _onLevelUp = new SimpleEventDispatcher<LevelUp>();
+  private _onExperienceGain = new SimpleEventDispatcher<ExperienceGained>();
+
   /**
    * Emitted when experience is gained
    */
-  public get onExperienceGained(): ISimpleEvent<ExperienceGained> {
-    return this._onExperienceGained.asEvent();
+  public get onExperienceGain(): ISimpleEvent<ExperienceGained> {
+    return this._onExperienceGain.asEvent();
   }
 
   /**

@@ -125,6 +125,15 @@ export class BuffPlugin extends LudiekPlugin {
   }
 
   /**
+   * Get a BuffDefinition
+   * @param id
+   */
+  public getBuff(id: string): BuffDefinition {
+    this.validate(id);
+    return this._buffs[id];
+  }
+
+  /**
    * Throws an error if the id does not exist
    * @param id
    * @private

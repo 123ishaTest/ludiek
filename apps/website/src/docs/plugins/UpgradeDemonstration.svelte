@@ -2,7 +2,7 @@
   import {
     createCurrencyState,
     createUpgradeState,
-    CurrencyConsumer,
+    LoseCurrencyConsumer,
     CurrencyPlugin,
     LudiekEngine,
     UpgradePlugin,
@@ -20,7 +20,7 @@
   const engine = new LudiekEngine(
     {
       plugins: [currency, upgrade],
-      consumers: [new CurrencyConsumer()],
+      consumers: [new LoseCurrencyConsumer()],
       producers: [new SeedProducer()],
       modifiers: [new SeedModifier(), new GlobalSeedModifier()],
     },
@@ -39,9 +39,9 @@
         { type: '/bonus/seed-global', amount: +0.1 },
       ],
       costPerLevel: [
-        { type: '/input/currency', id: '/plant/sunflower', amount: 10 },
-        { type: '/input/currency', id: '/plant/sunflower', amount: 20 },
-        { type: '/input/currency', id: '/plant/sunflower', amount: 30 },
+        { type: '/input/lose-currency', id: '/plant/sunflower', amount: 10 },
+        { type: '/input/lose-currency', id: '/plant/sunflower', amount: 20 },
+        { type: '/input/lose-currency', id: '/plant/sunflower', amount: 30 },
       ],
       accumulateBonuses: true,
     },
@@ -55,9 +55,9 @@
         { type: '/bonus/seed-global', amount: +0.6 },
       ],
       costPerLevel: [
-        { type: '/input/currency', id: '/plant/sunflower', amount: 20 },
-        { type: '/input/currency', id: '/plant/sunflower', amount: 40 },
-        { type: '/input/currency', id: '/plant/sunflower', amount: 60 },
+        { type: '/input/lose-currency', id: '/plant/sunflower', amount: 20 },
+        { type: '/input/lose-currency', id: '/plant/sunflower', amount: 40 },
+        { type: '/input/lose-currency', id: '/plant/sunflower', amount: 60 },
       ],
       accumulateBonuses: false,
     },

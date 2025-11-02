@@ -4,9 +4,11 @@ import { getOneFrom } from '@ludiek/util/probability/weightedDistribution';
 import { booleanWithProbability } from '@ludiek/util/probability/random';
 import { LootOutcome } from '@ludiek/plugins/lootTable/LootOutcome';
 import { BaseOutput } from '@ludiek/engine/output/LudiekProducer';
-import { LootTableOutput } from '@ludiek/plugins/lootTable/LootTableOutput';
+import { RollLootTableOutput } from '@ludiek/plugins/lootTable/contributions/RollLootTableOutput';
 import { simplifyItems } from '@ludiek/util/equality';
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
+import { LootTableRolled } from '@ludiek/plugins/lootTable/LootTableEvents';
+import { UnknownLootTableError } from '@ludiek/plugins/lootTable/LootTableErrors';
 
 export class LootTablePlugin extends LudiekPlugin {
   readonly name = 'lootTable';
@@ -14,8 +16,6 @@ export class LootTablePlugin extends LudiekPlugin {
   protected _state = {};
 
   private _tables: Record<string, LootTableDefinition> = {};
-
-  protected _onRoll = new SimpleEventDispatcher<BaseOutput[]>();
 
   public roll(id: string, amount: number = 1, subTable: boolean = false): BaseOutput[] {
     const outcomes: LootOutcome[] = [];
@@ -26,7 +26,7 @@ export class LootTablePlugin extends LudiekPlugin {
 
     const outputs = outcomes.map((l) => l.output);
 
-    const tableOutputs = outputs.filter((output) => output.type === '/output/lootTable-table') as LootTableOutput[];
+    const tableOutputs = outputs.filter((output) => output.type === '/output/lootTable-table') as RollLootTableOutput[];
     const filteredOutputs = outputs.filter((output) => output.type !== '/output/lootTable-table');
 
     tableOutputs.forEach((output) => {
@@ -36,7 +36,10 @@ export class LootTablePlugin extends LudiekPlugin {
     const loot = simplifyItems(filteredOutputs);
     if (!subTable) {
       this.produce(loot);
-      this._onRoll.dispatch(loot);
+      this._onRoll.dispatch({
+        ...this.getLootTable(id),
+        result: loot,
+      });
     }
 
     return loot;
@@ -89,9 +92,30 @@ export class LootTablePlugin extends LudiekPlugin {
   }
 
   /**
+   * Get the LootTableDefinition
+   * @param id
+   */
+  public getLootTable(id: string): LootTableDefinition {
+    this.validate(id);
+    return this._tables[id];
+  }
+
+  public supportsLootTable(id: string): boolean {
+    return id in this._tables;
+  }
+
+  private validate(id: string): void {
+    if (!this.supportsLootTable(id)) {
+      throw new UnknownLootTableError(`Unknown lootTable with id '${id}'`);
+    }
+  }
+  // Events
+  protected _onRoll = new SimpleEventDispatcher<LootTableRolled>();
+
+  /**
    * Emitted when a table is rolled
    */
-  public get onRoll(): ISimpleEvent<BaseOutput[]> {
+  public get onRoll(): ISimpleEvent<LootTableRolled> {
     return this._onRoll.asEvent();
   }
 }

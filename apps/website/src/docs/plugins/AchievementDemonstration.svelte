@@ -29,7 +29,7 @@
     {
       id: '/achievement/gain-10-money',
       condition: {
-        type: '/condition/has-statistic',
+        type: '/condition/has-scalar-statistic',
         id: '/statistic/total-currency',
         amount: 10,
       },
@@ -37,7 +37,7 @@
     {
       id: '/achievement/gain-50-money',
       condition: {
-        type: '/condition/has-statistic',
+        type: '/condition/has-scalar-statistic',
         id: '/statistic/total-currency',
         amount: 50,
       },

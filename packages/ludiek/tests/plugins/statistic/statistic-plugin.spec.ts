@@ -1,5 +1,6 @@
 import { beforeEach, expect, it } from 'vitest';
-import { StatisticDefinition, StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
+import { StatisticPlugin } from '@ludiek/plugins/statistic/StatisticPlugin';
+import { StatisticDefinition } from '@ludiek/plugins/statistic/StatisticDefinition';
 
 const statistic = new StatisticPlugin();
 const statisticContent: StatisticDefinition[] = [
