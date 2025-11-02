@@ -40,6 +40,8 @@ it('modifies evaluated condition', () => {
     type: '/condition/modified',
     value: 1,
   });
+  // TODO(@Isha): Research why this is needed, it counts the evaluation before the function is spied on
+  vi.resetAllMocks();
 
   // Apply the bonus
   const evaluateMock = vi.spyOn(evaluator, 'evaluate');
