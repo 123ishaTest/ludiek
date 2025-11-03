@@ -52,7 +52,7 @@ export * from '@ludiek/plugins/upgrade';
 /**
  * Stdlib
  */
-export * from '@ludiek/stdlib/stdlib';
+export * from '@ludiek/stdlib';
 
 /**
  * Util
