@@ -6,7 +6,6 @@ export type { CurrencyGained, CurrencyChanged } from '@ludiek/plugins/currency/C
 
 // Conditions
 export { HasCurrencyEvaluator } from '@ludiek/plugins/currency/contributions/HasCurrencyCondition';
-export { NotHasCurrencyEvaluator } from '@ludiek/plugins/currency/contributions/NotHasCurrencyCondition';
 
 // Input
 export { LoseCurrencyConsumer, type LoseCurrencyInput } from '@ludiek/plugins/currency/contributions/LoseCurrencyInput';

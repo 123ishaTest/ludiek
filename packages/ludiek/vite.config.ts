@@ -27,6 +27,7 @@ export default defineConfig({
     environment: 'jsdom',
     coverage: {
       provider: 'v8',
+      include: ['./src/**/*.ts'],
     },
     watch: false,
   },
