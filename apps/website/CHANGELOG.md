@@ -1,5 +1,17 @@
 # @123ishatest/ludiek-website
 
+## 0.2.0
+
+### Minor Changes
+
+- 21a91df: Add documentation and currency plugin
+- 21a91df: Deploy on GitHub pages
+- 1d5798a: Hello world!
+
+### Patch Changes
+
+- b93f642: Initial engine setup
+
 ## 0.1.0
 
 ### Minor Changes
