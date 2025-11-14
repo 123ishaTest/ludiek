@@ -1,7 +1,7 @@
 {
   "name": "@123ishatest/ludiek",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
