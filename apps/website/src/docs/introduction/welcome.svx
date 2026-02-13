@@ -32,7 +32,8 @@ Ludiek has a complementary UI framework call <span class="text-secondary">Lui</s
 Honestly, probably not.
 Ludiek was made such that the people at [123IshaTest](https://123ishatest.com/) could create their style of data-driven incremental games at a record pace. If you are looking to do the same, great!
 
-Otherwise, there are many general purpose game engines out there such [Godot](https://godotengine.org), [Unity3D](https://unity.com/) or [GameMaker](https://gamemaker.io/en). Large studios use these and if you are looking to create something graphically impressive, they are a much more stable bet.
+Otherwise, there are many general purpose game engines out there such [Godot](https://godotengine.org), [Unity3D](https://unity.com/) or [GameMaker](https://gamemaker.io/en).
+Large studios use these and if you are looking to create something graphically impressive, they are made for that.
 For beginning programmers, there are many excellent tutorials out there to show you the ropes, which these docs will not do. Once you are more comfortable with programming itself, the source code of Ludiek can be a great resource of study for game design patterns.
 
 That said, Ludiek is an excellent choice for prototyping your game. Because it has support for nearly every imaginable gameplay element built-in, you can quickly scaffold your game as an incremental game!
