@@ -16,19 +16,13 @@ title: Adding a Plugin
 <span class="text-primary">Ludiek</span> is designed as a plugin first-architecture.
 Common game mechanics are distilled to their core and captured in plugins that focus on one thing only!
 
-Don't worry if that sounds too abstract. We will take a look at the simplest plugin first: The [Currency Plugin](./[plugins/currency)!
+Don't worry if that sounds too abstract. We will take a look at the simplest plugin first: The [Currency Plugin](../plugins/currency)!
 
 ### Currency Plugin
 Nearly every game needs to deal with some sort of currency management:
-gold coins dropped by slain monsters, quest points from completed quests, or the amount of antimatter produced.
+gold coins dropped by slain monsters, quest points from completed quests, or the amount of antimatter in the universe.
 
 It contains functionality for gaining, losing and paying specific amounts of money.
-
-Before we take a look at the usage of the Currency Plugin, we have to take a detour into an important concept in Ludiek: `Content`!
-
-
-### Usage
-Now that we understand content, we can focus on the API of the CurrencyPlugin!
 
 
 ```ts
@@ -62,3 +56,6 @@ console.log(isPaid); // false, we didn't have enough
   </div>
 </div>
 
+## Content
+There is one thing we glossed over: we have to tell the plugin which Currencies exist in our game.
+The data that plugins (and your game) operate over is called `Content` and will be explained in the next section!

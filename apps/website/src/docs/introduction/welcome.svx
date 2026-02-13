@@ -6,7 +6,6 @@ title: Welcome
 Welcome to the documentation of <span class="text-primary">Ludiek</span>, the engine that focuses on the fun! Ludiek is a free and open-source tool that you can use to develop any kind of game you are brave enough to imagine.
 
 This page gives a broad overview of the engine and will teach you how to use the documentation.
-Whether you are a beginning game developer or seasoned veteran, you've come to the right place!
 
 ### Join the community
 The [Discord](https://discord.gg/cGkAUZAvDH) is a great place to talk to the developers directly.
@@ -21,7 +20,8 @@ Instead it is a tightly-woven, opinionated framework used to create data-driven 
 - `Condition`: Something that can be true or false.
 - `Request`: Something the user wants to do.
 
-Based on these abstract building blocks, it contains plugins that make use of them to provide common gameplay functionality such as [`Upgrades`](./plugins/upgrade), [`Skill`](./plugins/skill), [`Setting`](./plugins/settings), [`Inventory`](./plugins/inventory).
+Based on these abstract building blocks, it contains plugins that make use of them to provide common gameplay functionality such as [`Upgrades`](../plugins/upgrade), [`Skill`](../plugins/skill), `Setting`, `Inventory`.
+<!--[`Setting`](../plugins/settings), [`Inventory`](../plugins/inventory).-->
 Game Developers can combine and extend these plugins to create their dream game.
 
 ### Technical details
@@ -43,11 +43,11 @@ The documentation is organised into several sections:
 - *Getting Started* introduces core concepts and gets you started on creating your first game.
 - *Plugins* contains reference documentation for every available plugin.
 - *Engine* expands on the core concepts and explains the internals of the engine.
-<!-- - *Community* contains links to external resources.-->
+- *Complementaries* showcases additional projects related to Ludiek.
 
 ### Get involved
 I have big plans for <span class="text-primary">Ludiek</span>, and could use all the help I can get.
 If this project has been helpful to you, consider contributing via [Patreon](https://patreon.com/123ishatest)
-or through [Development Contributions](https://github.com/123ishaTest/ludiek/issues).
+or through [development](https://github.com/123ishaTest/ludiek/issues).
 
 ## Have fun!

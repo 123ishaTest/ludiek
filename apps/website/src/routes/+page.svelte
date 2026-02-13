@@ -28,8 +28,8 @@
 
     <div class="card card-border bg-base-300 h-36 flex-1">
       <div class="card-body">
-        <h2 class="card-title text-primary">Free-form</h2>
-        <p>Requires minimal structure so you can organize your game however you like!</p>
+        <h2 class="card-title text-primary">Data-driven</h2>
+        <p>Configure your game through static data files!</p>
       </div>
     </div>
 

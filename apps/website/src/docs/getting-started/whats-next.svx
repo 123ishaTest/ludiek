@@ -1,0 +1,13 @@
+---
+title: What's next?
+---
+
+<script lang="ts">
+
+</script>
+
+Congratulations, you have survived the introduction to Ludiek!
+
+There are many ways to progress further: You could learn more about the [engine internals](../engine/conditions), create your own game, [contribute to Ludiek](https://github.com/123ishaTest/ludiek/issues?q=state%3Aopen%20label%3A%22good%20first%20issue%22), or [yell at me](mailto:info@123ishatest.com) for making this monstrosity.
+
+If you have any questions or encounter a bug, feel free to [Join the Discord](https://discord.gg/cGkAUZAvDH) or [open an issue on GitHub](https://github.com/123ishaTest/ludiek)!

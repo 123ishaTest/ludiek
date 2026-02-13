@@ -1,0 +1,120 @@
+---
+title: Our first Feature
+---
+<script lang="ts">
+
+</script>
+
+`Features` are what makes your game, well, *your* game.
+They built on top of plugins to create gameplay!
+
+If you are creating a farming game, you might have a `Farming`, `SeedTrader`, and `CrossBreeding` feature.
+These features in their turn make use of the `Currency`, `Shop`, and `Crafting` plugins!
+
+We have a `Plant` content type
+```ts
+class Plant {
+  id: PlantId;
+  growthTime: number;
+
+  // Whatever it costs to plant (e.g. seeds, money)
+  plantCost: Input[];
+
+  // Requirements to plant (e.g. farming level, upgrade bought)
+  plantCondition: Condition[];
+
+  // Whatever is gained when harvest (e.g. currencies, experience)
+  harvestReward: Output[];
+}
+```
+
+An minimal feature could look like this: Planting a seed and harvesting it a few moments later.
+```ts
+class Farming extends LudiekFeature {
+  public readonly name: string = 'farming';
+
+  // The state of our feature is automatically persisted by Ludiek
+  protected _state = {
+    plantId: null,
+    timeLeft: 0,
+  };
+
+  // Called every game tick
+  public update(delta: number) {
+    this._state.timeLeft -= delta;
+  }
+
+  // Attempt to plant a seed and pay the costs
+  public sow(id: PlantId): void {
+    if (this._state.plantId !== null) {
+      return;
+    }
+
+    const plant = getPlant(id);
+
+    if (!this._engine.evaluate(plant.plantCondition)) {
+      return;
+    }
+
+    if (!this._engine.tryConsume(plant.plantCost)) {
+      return;
+    }
+
+    this._state.plantId = id;
+    this._state.timeLeft = plant.growthTime;
+  }
+
+  // Harvest a fully grown plant and reap the rewards
+  public reap(): void {
+    if (this._state.timeLeft > 0) {
+      return;
+    }
+
+    const plant = getPlant(this._state.plantId);
+
+    this._engine.produce(plant.harvestReward);
+    this._state.plantId = null;
+  }
+}
+```
+
+## Data-driven
+As you can see, our feature is still relatively generic.
+We check a plants "conditions", pay its "cost" and gain its "reward".
+
+Because of this approach, we can configure the game through our static content.
+You can imagine the following 2 plants leading to different gameplay!
+
+```yaml
+# Classical farming game
+id: /plant/sunflower
+growthTime: 4
+
+plantCost:
+  - type: /input/currency
+    currency: /currency/seed/sunflower
+    amount: 1
+
+harvestReward:
+  - type: /output/currency
+    currency: /currency/flower/sunflower
+    amount: 1-3
+```
+
+```yaml
+# RPG-like game
+id: /plant/sunflower
+growthTime: 4
+
+plantCondition:
+  - type: /condition/skill-level
+    skill: /skill/farming
+    level: 5
+
+harvestReward:
+  - type: /output/experience
+    skill: /skill/farming
+    experience: 10
+```
+
+And that is the true power of Ludiek!

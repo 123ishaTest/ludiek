@@ -2,7 +2,6 @@
   import { getNext, getPrevious } from '$lib/docs';
 
   let { data } = $props();
-  console.log(data);
 
   let slug = $derived(data.slug);
   let previous = $derived(getPrevious(slug));
@@ -22,6 +21,7 @@
 
   <div class="mt-8 flex flex-row justify-between space-x-8">
     {#if previous}
+      <!-- eslint-disable svelte/no-navigation-without-resolve-->
       <a
         href="/docs/{previous.slug}"
         class="border-base-content/20 hover:border-base-content/30 flex grow flex-col rounded-xl border p-4 no-underline"

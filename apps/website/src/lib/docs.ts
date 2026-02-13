@@ -9,10 +9,13 @@ export const docsLayout: DocsLayout = {
     {
       title: 'Getting Started',
       pages: [
-        { title: 'Introduction', slug: 'getting-started/introduction' },
+        { title: 'Overview', slug: 'getting-started/overview' },
         { title: 'Setting Up', slug: 'getting-started/setting-up' },
         { title: 'Adding a Plugin', slug: 'getting-started/adding-a-plugin' },
         { title: 'Content', slug: 'getting-started/content' },
+        { title: 'Engine Concepts', slug: 'getting-started/engine-concepts' },
+        { title: 'Our first feature', slug: 'getting-started/our-first-feature' },
+        { title: "What's next?", slug: 'getting-started/whats-next' },
       ],
     },
     {
