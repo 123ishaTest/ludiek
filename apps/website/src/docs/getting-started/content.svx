@@ -1,0 +1,42 @@
+---
+title: Content
+---
+
+<script lang="ts">
+  import LudiekAlert from '$lib/components/atoms/LudiekAlert.svelte';
+
+</script>
+Content is a catch all name for data provided to the game when it is running.
+In the same way that the Ludiek engine can operate without knowing exactly what plugins will exist at runtime, plugins must be able to run without knowing what content will exist at runtime.
+
+<LudiekAlert type="warning">
+  This has the consequence that you cannot directly refer to specific content (e.g. coins) within your code.
+  This is intentional. If you find you need to directly refer to content you are likely misusing Ludiek.
+</LudiekAlert>
+
+Ludiek was designed to be data-driven. You can customise a large amount of gameplay through content alone.
+Plugins work with the smallest amount of data possible to provide their functionality, to assume as little as possible about your game.
+
+In the case of the CurrencyPlugin, all that is needed is the `id` of the currency to keep track of how many you have.
+
+Your game might need an icon and an actual name for each type of currency, and that is perfectly fine of course.
+As long as it has an id, the CurrencyPlugin can work with it!
+
+```yaml
+# money.currency.yaml
+id: /currency/money
+name: Money
+description: Gold and shiny!
+
+# gems.currency.yaml
+id: /currency/gems
+name: Gems
+description: Precious gemstones.
+```
+
+<LudiekAlert type="info">
+  Every type of content must have at least an `id` attribute!<br>
+  It is recommended to prefix all ids with the type of content (e.g. "/currency/money") for readability.
+</LudiekAlert>
+
+Ludiek comes with an

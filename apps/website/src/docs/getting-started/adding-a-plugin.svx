@@ -1,0 +1,64 @@
+---
+title: Adding a Plugin
+---
+<script lang="ts">
+
+  import { createCurrencyState, CurrencyPlugin } from '@123ishatest/ludiek';
+
+  const currencyState = $state(createCurrencyState());
+  const currency = new CurrencyPlugin(currencyState);
+  currency.loadContent([{ id: '/currency/money' }]);
+
+  let money = $derived(currency.getBalance('/currency/money'));
+
+</script>
+
+<span class="text-primary">Ludiek</span> is designed as a plugin first-architecture.
+Common game mechanics are distilled to their core and captured in plugins that focus on one thing only!
+
+Don't worry if that sounds too abstract. We will take a look at the simplest plugin first: The [Currency Plugin](./[plugins/currency)!
+
+### Currency Plugin
+Nearly every game needs to deal with some sort of currency management:
+gold coins dropped by slain monsters, quest points from completed quests, or the amount of antimatter produced.
+
+It contains functionality for gaining, losing and paying specific amounts of money.
+
+Before we take a look at the usage of the Currency Plugin, we have to take a detour into an important concept in Ludiek: `Content`!
+
+
+### Usage
+Now that we understand content, we can focus on the API of the CurrencyPlugin!
+
+
+```ts
+import { CurrencyPlugin } from '@123ishatest/ludiek';
+
+// Create the plugin and load in content
+const currencyPlugin = new CurrencyPlugin();
+currencyPlugin.loadContent([{ id: '/currency/money' }]);
+
+// Gain and lose some money
+currencyPlugin.gainCurrency('/currency/money', 3);
+currencyPlugin.loseCurrency('/currency/money', 2);
+
+// Paying can only be done if we have enough money
+const isPaid = currencyPlugin.payCurrency('/currency/money', 5);
+console.log(isPaid); // false, we didn't have enough
+```
+
+### Demo
+<div class="card card-border bg-base-200 w-96">
+  <div class="card-body">
+    <span class="card-title">You have <span class="text-primary">{money}</span> money!</span>
+    <div class="flex flex-row space-x-4">
+      <button class="btn btn-primary" onclick={() => currency.gainCurrency({ id: '/currency/money', amount: 3 })}>
+        Gain 3
+      </button>
+      <button class="btn btn-error" onclick={() => currency.loseCurrency({ id: '/currency/money', amount: 2 })}>
+        Lose 2
+      </button>
+    </div>
+  </div>
+</div>
+

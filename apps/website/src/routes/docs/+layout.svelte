@@ -14,9 +14,9 @@
     </div>
   </div>
 
-  <div class="drawer-side">
+  <div class="drawer-side bg-base-200">
     <label for="sidebar-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
-    <div class="bg-base-200 h-full w-64">
+    <div class=" h-full w-64">
       <DocsSidebar docs={docsLayout}></DocsSidebar>
     </div>
   </div>

@@ -12,6 +12,7 @@ export async function load({ params }) {
     }
 
     return {
+      slug: params.slug,
       content: doc.default,
       meta: doc.metadata,
     };
