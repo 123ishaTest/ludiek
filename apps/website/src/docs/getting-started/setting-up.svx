@@ -1,0 +1,43 @@
+---
+title: Setting Up!
+---
+<script lang="ts">
+</script>
+
+We start by installing Ludiek in our project.
+As Ludiek is provided as a library, you can integrate it in any project, using any frontend framework of your choosing!
+
+### Installation
+Install the library through npm or your favourite package manager.
+
+```bash
+npm install @123ishatest/ludiek
+```
+
+### Usage
+The `Engine` is the main component of Ludiek.
+It is where you register your `Plugins`, [`Conditions`](../engine/conditions) and other engine concepts!
+
+The `Game` is an optional utility component that provides functionality such as starting and stopping the game loop.
+It is also where you register your `Features`, Game mechanics that make use of plugins that define your game.
+```ts
+import { LudiekEngine } from '@123ishatest/ludiek'
+
+// Create a barebones engine
+const engine = new LudiekEngine();
+
+// Create a new game with some configuration
+const game = new LudiekGame(engine, {
+  tickDuration: 0.1,
+  saveKey: '123ishatest/ludiek-demo',
+  saveInterval: 30,
+});
+
+// Let's go!
+game.start()
+```
+
+
+We have just created our first game!
+As we haven't registered any plugins or features, it does not do anything yet.
+Let's change that by adding our first plugin, the [Currency Plugin](../plugins/currency)!

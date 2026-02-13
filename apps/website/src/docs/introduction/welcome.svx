@@ -1,0 +1,53 @@
+---
+title: Welcome
+---
+
+
+Welcome to the documentation of <span class="text-primary">Ludiek</span>, the engine that focuses on the fun! Ludiek is a free and open-source tool that you can use to develop any kind of game you are brave enough to imagine.
+
+This page gives a broad overview of the engine and will teach you how to use the documentation.
+
+### Join the community
+The [Discord](https://discord.gg/cGkAUZAvDH) is a great place to talk to the developers directly.
+It is a tight community and everyone is willing to help you out! [Join Today!](https://discord.gg/cGkAUZAvDH)
+
+### About Ludiek
+When you hear "game engine", you might think of an integrated application containing a 3D renderer.
+Ludiek is none of that.
+Instead it is a tightly-woven, opinionated framework used to create data-driven games. It abstracts the highest level of gameplay mechanics such as:
+
+- `Input/Output`: Resources you can gain or lose.
+- `Condition`: Something that can be true or false.
+- `Request`: Something the user wants to do.
+
+Based on these abstract building blocks, it contains plugins that make use of them to provide common gameplay functionality such as [`Upgrades`](../plugins/upgrade), [`Skill`](../plugins/skill), `Setting`, `Inventory`.
+<!--[`Setting`](../plugins/settings), [`Inventory`](../plugins/inventory).-->
+Game Developers can combine and extend these plugins to create their dream game.
+
+### Technical details
+Ludiek is available as an [npm package](https://www.npmjs.com/package/@123ishatest/Ludiek) and can be used in combination with or without the Javascript framework of your choice.
+Ludiek has a complementary UI framework call <span class="text-secondary">Lui</span> which is written in [Svelte](https://svelte.dev). Using this is completely optional.
+
+### Should you use Ludiek?
+Honestly, probably not.
+Ludiek was made such that the people at [123IshaTest](https://123ishatest.com/) could create their style of data-driven incremental games at a record pace. If you are looking to do the same, great!
+
+Otherwise, there are many general purpose game engines out there such [Godot](https://godotengine.org), [Unity3D](https://unity.com/) or [GameMaker](https://gamemaker.io/en). Large studios use these and if you are looking to create something graphically impressive, they are a much more stable bet.
+For beginning programmers, there are many excellent tutorials out there to show you the ropes, which these docs will not do. Once you are more comfortable with programming itself, the source code of Ludiek can be a great resource of study for game design patterns.
+
+That said, Ludiek is an excellent choice for prototyping your game. Because it has support for nearly every imaginable gameplay element built-in, you can quickly scaffold your game as an incremental game!
+
+### Using the documentation
+The documentation is organised into several sections:
+- *Introduction* contains information about the engine.
+- *Getting Started* introduces core concepts and gets you started on creating your first game.
+- *Plugins* contains reference documentation for every available plugin.
+- *Engine* expands on the core concepts and explains the internals of the engine.
+- *Complementaries* showcases additional projects related to Ludiek.
+
+### Get involved
+I have big plans for <span class="text-primary">Ludiek</span>, and could use all the help I can get.
+If this project has been helpful to you, consider contributing via [Patreon](https://patreon.com/123ishatest)
+or through [development](https://github.com/123ishaTest/ludiek/issues).
+
+## Have fun!

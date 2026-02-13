@@ -1,0 +1,49 @@
+---
+title: Content
+---
+
+<script lang="ts">
+  import LudiekAlert from '$lib/components/atoms/LudiekAlert.svelte';
+</script>
+
+Content is a catch all name for data provided to the game when it is running.
+In the same way that the Ludiek engine can operate without knowing exactly what plugins will exist at runtime, plugins must be able to run without knowing what content will exist at runtime.
+
+<LudiekAlert type="warning">
+  This has the consequence that you cannot directly refer to specific content (e.g. coins) within your code.
+  This is intentional. If you find you need to directly refer to content you are likely misusing Ludiek.
+</LudiekAlert>
+
+Ludiek was designed to be data-driven. You can customise a large amount of gameplay through content alone.
+Plugins work with the smallest amount of data possible to provide their functionality, to assume as little as possible about your game.
+
+In the case of the Currency Plugin, all that is needed is the `id` of the currency to keep track of how many you have.
+Your game might need an icon and an actual name for each type of currency, and that is perfectly fine of course.
+As long as it has an id, the Currency Plugin knows how to handle it.
+
+
+<LudiekAlert type="info">
+  Every type of content must have at least an <code>id</code> attribute!<br>
+  It is recommended to prefix all ids with the type of content (e.g. <code>/currency/money</code>) for readability.
+</LudiekAlert>
+
+## Static game data
+This approach means that all your game data is completely static and can be captured in a file format such as JSON or YAML.
+Updating or balancing your game is a matter of changing these data files, and you can built tools on top of them!
+```yaml
+# money.currency.yaml
+id: /currency/money
+name: Money
+description: Gold and shiny!
+
+# gems.currency.yaml
+id: /currency/gems
+name: Gems
+description: Precious gemstones.
+```
+
+These content files are parsed by Ludiek and provided to the relevant plugins and features through the built-in content manager.
+The content manager provides hot-reloading and live editing of your content!
+
+In the above example data we can only change the name and description of our currencies.
+You might be wondering how we can drive logic and gameplay through static data, and for that we will take a look at Engine Concepts.

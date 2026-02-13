@@ -25,3 +25,11 @@
   image-rendering: pixelated;
   -ms-interpolation-mode: nearest-neighbor;
 }
+
+h2 {
+  color: var(--color-primary);
+}
+
+h3 {
+  color: var(--color-primary);
+}

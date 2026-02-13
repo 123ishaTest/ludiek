@@ -1,0 +1,14 @@
+---
+title: Lyrisch
+---
+
+<script lang="ts">
+  import LudiekAlert from '$lib/components/atoms/LudiekAlert.svelte';
+  import { resolve } from '$app/paths';
+</script>
+
+Louter is a dialog manager interfacing with the Ludiek engine
+
+<LudiekAlert type="danger">
+  <a href={resolve('/docs/other/roadmap')}>TODO</a>
+</LudiekAlert>

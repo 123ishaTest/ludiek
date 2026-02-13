@@ -1,0 +1,15 @@
+---
+title: Overview
+---
+<script lang="ts">
+</script>
+
+In this series we will go through the process of creating our first game with <span class="text-primary">Ludiek</span>!
+
+We will learn how to:
+- Set up the project and use the engine
+- Register a plugin
+- Use Engine Concepts such as `Output` and `Condition`
+- Create a custom `Feature` to interact with the engine
+
+Let's dive in!

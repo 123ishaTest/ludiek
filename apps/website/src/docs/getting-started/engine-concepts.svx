@@ -1,0 +1,91 @@
+---
+title: Engine Concepts
+---
+<script lang="ts">
+  import LudiekAlert from '$lib/components/atoms/LudiekAlert.svelte';
+</script>
+Ludiek is a game engine based on the most abstract of game mechanics.
+Therefor the most abstract name is given to these `Engine Concepts`, the most basic building blocks of any game.
+
+- `Condition`, whether something is true.
+- `Request`, something the user wants to do.
+- `Input/output`, things that can be gained or lost.
+
+If that sounds incredibly vague to you, you'd be absolutely right!
+The point of these concepts is that they can be applied and combined in many situations, making every type of game possible to be made.
+
+Let's understand these concepts better by creating our own `Condition` and provide it to the engine.
+
+## Has Currency
+
+Assume that our game has a piece of content called `Achievement`, it has a `condition` field which determines if it can be awarded.
+
+```ts
+interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  condition: Condition;
+}
+```
+
+We can create a type of Condition in Ludiek with the following code:
+```ts
+import { BaseCondition } from '@123ishatest/ludiek';
+
+// First we define the 'shape' of this condition (i.e. what attributes can it have)
+interface HasCurrencyCondition extends BaseCondition {
+  type: '/condition/has-currency';
+  id: string;
+  amount: number;
+}
+
+// Conditions can depend on plugins, but also other conditions
+type Dependencies = {
+  plugins: [CurrencyPlugin];
+};
+
+// The evaluator that is provided to the engine
+export class HasCurrencyEvaluator extends LudiekEvaluator<HasCurrencyCondition, Dependencies> {
+  readonly type = '/condition/has-currency';
+
+  // The actual evaluation
+  evaluate(condition: HasCurrencyCondition): boolean {
+    return this.engine.plugins.currency.hasCurrency(condition);
+  }
+}
+```
+
+With our first condition, we can spice up our engine quite a bit!
+
+```ts
+const engine = new LudiekEngine({
+  plugins: [new CurrencyPlugin()],
+  evaluators: [new HasCurrencyEvaluator()],
+});
+
+Ludiek provides full type-safety over all engine concepts:
+```ts
+engine.evaluate({
+  type: '/condition/has-currency',
+  id: '/currency/money',
+  amount: 100,
+});
+```
+
+## The consequences of our actions
+This might seem like a lot of boilerplate in order to compare a single number.
+But think about the consequences of providing this `condition` to the engine.
+Any piece of content that takes a condition, can now use our `HasCurrencyCondition`!
+
+If our game has an inventory/equipment system, we could make a fancy monocle item that can only be equipped if the player has enough diamonds!
+
+<LudiekAlert type="success">
+  The possibilities that we can configure with our data-driven content grows quadratically through our features and contributions!
+</LudiekAlert>
+
+Ludiek comes with many plugins, each extending the engine in their own way!
+
+## Features
+Ludiek plugin and engine are purely functional, written in the most generic way possible.
+The real fun begins with the features!

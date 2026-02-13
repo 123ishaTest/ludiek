@@ -1,9 +1,0 @@
----
-title: Setup
----
-
-Install <span class="text-primary">Ludiek</span> through your favourite package manager.
-
-```bash
-npm i @123ishatest/ludiek
-```

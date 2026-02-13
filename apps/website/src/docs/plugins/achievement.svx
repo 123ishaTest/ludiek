@@ -7,7 +7,7 @@ title: Achievement Plugin
 </script>
 
 Achievements are great.
-Not only is it a way to reward the player for exploring and experimenting, they also provide a sense of purpose.
+Not only are they a way to reward the player for exploring and experimenting, they also provide a sense of purpose.
 If your players can see they have many achievements left to complete, they will keep playing for a longer time.
 
 The achievement plugin handles the earning of Achievements.
