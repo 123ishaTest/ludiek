@@ -1,0 +1,87 @@
+<script lang="ts">
+  import TimelineElement from '$lib/components/atoms/TimelineElement.svelte';
+</script>
+
+<article class="prose">
+  <h1 class="text-primary">Roadmap</h1>
+
+<ul class="timeline timeline-vertical">
+  <TimelineElement
+    title="First release of the Incremental Game Template"
+    date="2020"
+    isCompleted="true"
+  >
+    The Incremental Game Template was released containing as an all-in-one toolkit to help the community create
+    incremental games!
+  </TimelineElement>
+
+  <TimelineElement
+    title="IGT goes frontend"
+    date="2022"
+    place="end"
+    isCompleted="true"
+  >
+    The Incremental Game Template is updated to become a Vue-first approach to making UIs instead of pure game logic.
+    <a class="link" href="https://123ishatest.github.io/igt-docs/showcase/" rel="external">Many jam games</a> are made.
+  </TimelineElement>
+
+  <TimelineElement
+    title="IGT development concludes"
+    date="2023"
+    isCompleted="true"
+  >
+    The interwoven architecture of IGT hits its limit and the project is considered completed.
+    To improve upon it, it would need a more modular approach.
+  </TimelineElement>
+
+  <TimelineElement
+    title="First Ludiek release!"
+    date="Almost"
+    place="end"
+  >
+    After many, many rewrites, Ludiek is released!
+    It is more modular, composable and data driven, but still allows for the same development speed as IGT.
+  </TimelineElement>
+
+  <TimelineElement
+    title="First Game"
+    date="2026"
+  >
+    Ludiek is ready! The first complex game will be made with it.
+    This will bring light to underlying issues that can be smoothed out to make the engine even better!
+  </TimelineElement>
+
+  <TimelineElement
+    title="More engine concepts"
+    date="Next"
+    place="end"
+  >
+    New engine concepts make Ludiek even more data-driven.<br>
+    <code>Value</code> for resolving variables<br>
+    <code>Event</code> to throw events with data<br>
+    <code>Trigger</code> to react to these events
+  </TimelineElement>
+
+  <TimelineElement
+    title="Content Management System"
+    date="Soon"
+  >
+    Ludiek will come with a CMS that allows you to edit your content while playing the game!
+  </TimelineElement>
+
+  <TimelineElement
+    title="Lui"
+    date="Soon"
+    place="end"
+  >
+    Lui is a headless component library made in Svelte, providing easy access to Ludiek state in the frontend
+  </TimelineElement>
+
+  <TimelineElement
+    title="Lyriek"
+    date="Later"
+  >
+    Lyriek is a dialog manager that interacts with Ludieks engine concepts to resolve data and emit events
+  </TimelineElement>
+</ul>
+</article>
