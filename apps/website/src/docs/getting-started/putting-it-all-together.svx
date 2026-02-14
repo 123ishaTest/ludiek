@@ -1,0 +1,48 @@
+---
+title: Putting it all together
+---
+
+We have seen how to add a plugin to Ludiek, learned about what content entails, dabbled in engine concepts, and even created our first feature!
+
+With your knowledge, you should be able to understand the following snippet, putting it all together.
+```ts
+// Create the engine!
+export const engine = new LudiekEngine({
+  plugins: [new CurrencyPlugin(), new AchievementPlugin()],
+  evaluators: [new HasCurrencyEvaluator(), new HasCurrencyEvaluator()],
+  producers: [new GainCurrencyProducer()],
+});
+
+// Create your game
+export const game = new LudiekGame(engine, {
+  features: [new Farming(plants)],
+  saveKey: 'your-first-game',
+  tickDuration: 0.1,
+  saveInterval: 30,
+});
+
+// Load the content
+engine.plugins.currency.loadContent([{ id: '/currency/money' }]);
+engine.plugins.achievement.loadContent([{
+  id: '/achievement/have-10-money',
+  condition: [{
+    type: '/condition/has-currency'
+    currency: '/currency/money',
+    amount: 10,
+  }]
+}]);
+
+// And use it fully type-safe
+engine.produce({
+  type: '/output/gain-currency',
+  currency: '/currency/money',
+  amount: 10,
+})
+
+engine.plugins.achievement.checkAchievements();
+
+engine.evaluate({
+  type: '/condition/has-achievement',
+  achievement: '/achievement/have-10-money',
+}) // true
+```

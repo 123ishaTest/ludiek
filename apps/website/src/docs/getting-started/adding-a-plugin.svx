@@ -18,7 +18,7 @@ Common game mechanics are distilled to their core and captured in plugins that f
 
 Don't worry if that sounds too abstract. We will take a look at the simplest plugin first: The [Currency Plugin](../plugins/currency)!
 
-### Currency Plugin
+## Currency Plugin
 Nearly every game needs to deal with some sort of currency management:
 gold coins dropped by slain monsters, quest points from completed quests, or the amount of antimatter in the universe.
 
@@ -41,7 +41,7 @@ const isPaid = currencyPlugin.payCurrency('/currency/money', 5);
 console.log(isPaid); // false, we didn't have enough
 ```
 
-### Demo
+## Demo
 <div class="card card-border bg-base-200 w-96">
   <div class="card-body">
     <span class="card-title">You have <span class="text-primary">{money}</span> money!</span>

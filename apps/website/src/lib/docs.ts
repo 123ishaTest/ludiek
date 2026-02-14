@@ -15,6 +15,7 @@ export const docsLayout: DocsLayout = {
         { title: 'Content', slug: 'getting-started/content' },
         { title: 'Engine Concepts', slug: 'getting-started/engine-concepts' },
         { title: 'Our first feature', slug: 'getting-started/our-first-feature' },
+        { title: 'Putting it all together', slug: 'getting-started/putting-it-all-together' },
         { title: "What's next?", slug: 'getting-started/whats-next' },
       ],
     },

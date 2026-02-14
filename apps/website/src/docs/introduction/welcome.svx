@@ -36,7 +36,9 @@ Otherwise, there are many general purpose game engines out there such [Godot](ht
 Large studios use these and if you are looking to create something graphically impressive, they are made for that.
 For beginning programmers, there are many excellent tutorials out there to show you the ropes, which these docs will not do. Once you are more comfortable with programming itself, the source code of Ludiek can be a great resource of study for game design patterns.
 
-That said, Ludiek is an excellent choice for prototyping your game. Because it has support for nearly every imaginable gameplay element built-in, you can quickly scaffold your game as an incremental game!
+That said, Ludiek is an excellent choice for prototyping your game.
+Even if your game is not incremental, you can use this engine to make a quick mockup to tweak the pacing.
+It will be more realistic than excel and faster than building tools yourself.
 
 ### Using the documentation
 The documentation is organised into several sections:

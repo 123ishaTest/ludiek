@@ -7,14 +7,14 @@ title: Setting Up!
 We start by installing Ludiek in our project.
 As Ludiek is provided as a library, you can integrate it in any project, using any frontend framework of your choosing!
 
-### Installation
+## Installation
 Install the library through npm or your favourite package manager.
 
 ```bash
 npm install @123ishatest/ludiek
 ```
 
-### Usage
+## Usage
 The `Engine` is the main component of Ludiek.
 It is where you register your `Plugins`, [`Conditions`](../engine/conditions) and other engine concepts!
 
