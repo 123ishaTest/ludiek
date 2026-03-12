@@ -1,15 +1,15 @@
 {
-  "extends": "./.svelte-kit/tsconfig.json",
+  "extends": ["@123ishatest/ludiek-typescript-config/svelte.json"],
   "compilerOptions": {
-    "rewriteRelativeImportExtensions": true,
-    "allowJs": true,
-    "checkJs": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext"
-  }
+    "paths": {
+      "@louter/*": ["./src/*"],
+      "@tests/*": ["./tests/*"]
+    },
+    "declaration": true,
+    "declarationMap": true,
+    "rootDir": ".",
+    "outDir": "dist",
+    "composite": true
+  },
+  "include": ["src", "tests"]
 }

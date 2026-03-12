@@ -1,20 +1,34 @@
 import { defineConfig } from 'vitest/config';
-import { sveltekit } from '@sveltejs/kit/vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
+import dts from 'vite-plugin-dts';
 
 export default defineConfig({
-  plugins: [sveltekit()],
+  plugins: [
+    tsconfigPaths(),
+    dts({
+      tsconfigPath: './tsconfig.build.json',
+    }),
+  ],
+  build: {
+    lib: {
+      entry: 'src/index.ts',
+      name: 'ludiek',
+      formats: ['es', 'cjs'],
+      fileName: (format) => `index.${format}.js`,
+    },
+  },
+  server: {
+    fs: {
+      allow: ['.'],
+    },
+  },
+
   test: {
-    expect: { requireAssertions: true },
-    projects: [
-      {
-        extends: './vite.config.ts',
-        test: {
-          name: 'server',
-          environment: 'node',
-          include: ['src/**/*.{test,spec}.{js,ts}'],
-          exclude: ['src/**/*.svelte.{test,spec}.{js,ts}'],
-        },
-      },
-    ],
+    environment: 'jsdom',
+    coverage: {
+      provider: 'v8',
+      include: ['./src/**/*.ts'],
+    },
+    watch: false,
   },
 });
