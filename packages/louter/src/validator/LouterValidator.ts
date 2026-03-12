@@ -7,8 +7,8 @@ import { LouterWarningType } from '@louter/core/LouterWarningType';
 /**
  * Validate all LouterObjects through their Zod schemas
  */
-export class LouterValidator<Kinds extends KindDefinitions> implements LouterStage<Kinds> {
-  run(ctx: LouterContext<Kinds>): void {
+export class LouterValidator implements LouterStage {
+  run<Kinds extends KindDefinitions>(ctx: LouterContext<Kinds>): void {
     ctx.objects.forEach((object) => {
       const schema = ctx.kinds[object.kind];
       if (!schema) {

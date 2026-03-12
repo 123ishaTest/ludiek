@@ -8,8 +8,8 @@ import { LouterWarningType } from '@louter/core/LouterWarningType';
 /**
  * Turns loaded files into objects by parsing JSON parsing them
  */
-export class LouterJsonParser<Kinds extends KindDefinitions> implements LouterStage<Kinds> {
-  public run(ctx: LouterContext<Kinds>): void {
+export class LouterJsonParser implements LouterStage {
+  public run<Kinds extends KindDefinitions>(ctx: LouterContext<Kinds>): void {
     ctx.objects = ctx.files.flatMap((file: LouterFile) => {
       const extension = getExtension(file);
 

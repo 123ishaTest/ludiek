@@ -5,6 +5,8 @@ import { LouterYamlParser } from '@louter/parser/LouterYamlParser';
 import { LouterValidator } from '@louter/validator/LouterValidator';
 import { CurrencySchema } from '@tests/mock/model/Currency';
 import { UpgradeSchema } from '@tests/mock/model/Upgrade';
+import { ContentManager } from '@louter/content/ContentManager';
+import { KindDefinitions } from '@louter/core/types';
 
 it('performs a full pipeline', () => {
   // Arrange
@@ -15,10 +17,14 @@ it('performs a full pipeline', () => {
   ]);
 
   // Act
-  const result = louter.run({
+  const kinds = {
     currency: CurrencySchema,
     upgrade: UpgradeSchema,
-  });
+  } satisfies KindDefinitions;
+  const result = louter.run(kinds);
+
+  const manager = new ContentManager(kinds);
+  manager.load(result.content);
 
   // Assert
   expect(result.warnings).toStrictEqual([]);

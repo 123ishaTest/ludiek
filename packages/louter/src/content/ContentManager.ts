@@ -12,6 +12,10 @@ export class ContentManager<const Kinds extends Record<string, ZodType<{ id: str
     this.clear();
   }
 
+  public get content(): Partial<ContentMapFromKinds<Kinds>> {
+    return this._content;
+  }
+
   public load(content: ContentMapFromKinds<Kinds>): void {
     for (const kind in content) {
       this.loadKind(kind, Object.values(content[kind]));
@@ -37,7 +41,7 @@ export class ContentManager<const Kinds extends Record<string, ZodType<{ id: str
    * Return the content for this kind as a list
    * @param kind
    */
-  public getList<K extends keyof Kinds>(kind: K) {
+  public getList<Kind extends keyof Kinds>(kind: Kind) {
     return Object.values(this.getMap(kind));
   }
 

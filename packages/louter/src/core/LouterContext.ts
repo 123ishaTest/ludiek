@@ -6,19 +6,16 @@ import type { LouterObject } from '@louter/core/LouterObject';
 
 export interface LouterContext<Kinds extends KindDefinitions> {
   config: LouterConfig;
-
   kinds: Kinds;
 
-  /**
-   * Raw loaded files
-   */
+  // Raw files
   files: LouterFile[];
 
-  /**
-   * Objects
-   */
+  // Parsed objects
   objects: LouterObject[];
 
-  warnings: LouterWarning[];
+  // Validated content
   content: ContentMapFromKinds<Kinds>;
+
+  warnings: LouterWarning[];
 }

@@ -7,14 +7,14 @@ import type { LouterContext } from '@louter/core/LouterContext';
 /**
  * Write all content to a big JSON file
  */
-export class LouterContentWriter<Kinds extends KindDefinitions> implements LouterStage<Kinds> {
+export class LouterContentWriter implements LouterStage {
   private readonly _directory: string;
 
   constructor(directory: string) {
     this._directory = directory;
   }
 
-  run(ctx: LouterContext<Kinds>): void {
+  run<Kinds extends KindDefinitions>(ctx: LouterContext<Kinds>): void {
     ctx.warnings.forEach((warning) => {
       console.warn(warning.path, warning.message);
     });
