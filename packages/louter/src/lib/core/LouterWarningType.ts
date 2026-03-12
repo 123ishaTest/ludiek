@@ -1,6 +1,8 @@
-export enum ParserWarningType {
-  UnrecognizedContentType = 'UnrecognizedContentType',
+export enum LouterWarningType {
+  MissingKind = 'MissingKind',
+  InvalidKind = 'InvalidKind',
   InvalidYaml = 'InvalidYaml',
+  InvalidJson = 'InvalidJson',
   MissingGlobalIdKey = 'MissingGlobalIdKey',
   ZodValidationFailed = 'ZodValidationFailed',
   DuplicateId = 'DuplicateId',

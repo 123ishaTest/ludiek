@@ -1,84 +1,65 @@
-import type { z } from 'zod';
-import type { ContentKind } from '$lib/core/ContentKind.js';
+import type { z, ZodType } from 'zod';
 import { ContentKindNotFoundError, ContentNotFoundError } from '$lib/core/LouterError.js';
+import type { ContentMapFromKinds } from '$lib/core/types.js';
 
-export class ContentManager<
-	Schema extends z.ZodType<{ id: string }>,
-	KindDescription extends ContentKind<Schema>,
-	KindMap extends Record<string, KindDescription>
-> {
-	private _content: Partial<{
-		[Kind in keyof KindMap]: Record<string, z.infer<KindMap[Kind]['schema']>>;
-	}> = {};
+export class ContentManager<const Kinds extends Record<string, ZodType<{ id: string }>>> {
+  private readonly _content: Partial<ContentMapFromKinds<Kinds>> = {};
 
-	private readonly _kinds: KindMap;
+  private readonly _kinds: Kinds;
 
-	constructor(kinds: KindMap) {
-		this._kinds = kinds;
-		this.clear();
-	}
+  constructor(kinds: Kinds) {
+    this._kinds = kinds;
+    this.clear();
+  }
 
-	public load(content: {
-		[Kind in keyof KindMap]: Record<string, z.infer<KindMap[Kind]['schema']>>;
-	}): void {
-		for (const kind in content) {
-			this.loadKind(kind, Object.values(content[kind]));
-		}
-	}
+  public load(content: ContentMapFromKinds<Kinds>): void {
+    for (const kind in content) {
+      this.loadKind(kind, Object.values(content[kind]));
+    }
+  }
 
-	public loadKind<const Kind extends keyof KindMap>(
-		kind: Kind,
-		content: z.infer<KindMap[Kind]['schema']>[]
-	): void {
-		content.forEach((item) => {
-			this.getMap(kind)[item.id] = item;
-		});
-	}
+  public loadKind<Kind extends keyof Kinds>(kind: Kind, content: z.infer<Kinds[Kind]>[]) {
+    const map = this.getMap(kind);
+    for (const item of content) {
+      map[item.id] = item;
+    }
+  }
 
-	/**
-	 * Return the content for this kind as a list
-	 * @param kind
-	 */
-	public getMap<const Kind extends keyof KindMap>(
-		kind: Kind
-	): Record<string, z.infer<KindMap[Kind]['schema']>> {
-		const map = this._content[kind];
-		if (!map) {
-			throw new ContentKindNotFoundError(`Could not get map of ${kind.toString()}`);
-		}
-		return map;
-	}
+  public getMap<Kind extends keyof Kinds>(kind: Kind): Record<string, z.infer<Kinds[Kind]>> {
+    const map = this._content[kind];
+    if (!map) {
+      throw new ContentKindNotFoundError(`Could not get map of ${kind.toString()}`);
+    }
+    return map;
+  }
 
-	/**
-	 * Return the content for this kind as a list
-	 * @param kind
-	 */
-	public getList<const Kind extends keyof KindMap>(kind: Kind): z.infer<KindMap[Kind]['schema']>[] {
-		return Object.values(this.getMap(kind));
-	}
+  /**
+   * Return the content for this kind as a list
+   * @param kind
+   */
+  public getList<K extends keyof Kinds>(kind: K) {
+    return Object.values(this.getMap(kind));
+  }
 
-	/**
-	 * Return the specified piece of content
-	 * @param id
-	 * @param kind
-	 */
-	public get<const Kind extends keyof KindMap>(
-		id: string,
-		kind: Kind
-	): z.infer<KindMap[Kind]['schema']> {
-		const content = this._content[kind]?.[id];
-		if (!content) {
-			throw new ContentNotFoundError(`Could not get '${kind.toString()}' with id '${id}'`);
-		}
-		return content;
-	}
+  /**
+   * Return the specified piece of content
+   * @param id
+   * @param kind
+   */
+  public get<Kind extends keyof Kinds>(id: string, kind: Kind): z.infer<Kinds[Kind]> {
+    const content = this._content[kind]?.[id];
+    if (!content) {
+      throw new ContentNotFoundError(`Could not get '${kind.toString()}' with id '${id}'`);
+    }
+    return content;
+  }
 
-	/**
-	 * Throw away all currently managed content
-	 */
-	public clear(): void {
-		for (const key in this._kinds) {
-			this._content[key] = {};
-		}
-	}
+  /**
+   * Throw away all currently managed content
+   */
+  public clear() {
+    for (const kind in this._kinds) {
+      this._content[kind] = {};
+    }
+  }
 }

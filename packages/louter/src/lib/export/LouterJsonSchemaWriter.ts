@@ -1,0 +1,27 @@
+import { mkdirSync, writeFileSync } from 'node:fs';
+import path from 'node:path';
+import type { KindDefinitions } from '$lib/core/types.js';
+import type { LouterStage } from '$lib/core/LouterStage.js';
+import type { LouterContext } from '../core/LouterContext.ts';
+
+/**
+ * Write all JSON schemas to the specified directory
+ */
+export class LouterJsonSchemaWriter<Kinds extends KindDefinitions> implements LouterStage<Kinds> {
+  private readonly _directory: string;
+
+  constructor(directory: string) {
+    this._directory = directory;
+  }
+
+  run(ctx: LouterContext<Kinds>): void {
+    mkdirSync(this._directory, { recursive: true });
+    for (const kind in ctx.kinds) {
+      const jsonSchema = ctx.kinds[kind].toJSONSchema({
+        io: 'input',
+      });
+      const fileName = path.join(this._directory, `${kind}.schema.json`);
+      writeFileSync(fileName, JSON.stringify(jsonSchema, null, 2));
+    }
+  }
+}
