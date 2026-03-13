@@ -30,18 +30,29 @@ export class LouterYamlParser implements LouterStage {
       }
 
       try {
+        const parsedData = parse(file.data);
+
+        if (parsedData == undefined) {
+          ctx.warnings.push({
+            path: file.path,
+            type: LouterWarningType.InvalidYaml,
+            message: `Yaml file is empty`,
+          });
+          return [];
+        }
+
         return [
           {
             path: file.path,
             kind: kind,
-            data: parse(file.data),
+            data: parsedData,
           },
         ];
       } catch {
         ctx.warnings.push({
           path: file.path,
           type: LouterWarningType.InvalidYaml,
-          message: `Could not parse file. Is it valid Yaml?`,
+          message: `Could not parse Yaml file`,
         });
         return [];
       }

@@ -77,3 +77,18 @@ it('adds a warning on invalid yaml', () => {
   expect(ctx.warnings[0].type).toBe(LouterWarningType.InvalidYaml);
   expect(ctx.objects).toHaveLength(0);
 });
+
+it('adds a warning on empty yaml', () => {
+  // Arrange
+  const parser = new LouterYamlParser();
+  const ctx = createContext({});
+  ctx.files = [{ path: 'a.kind.yaml', data: '' }];
+
+  // Act
+  parser.run(ctx);
+
+  // Assert
+  expect(ctx.warnings).toHaveLength(1);
+  expect(ctx.warnings[0].type).toBe(LouterWarningType.InvalidYaml);
+  expect(ctx.objects).toHaveLength(0);
+});
