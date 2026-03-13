@@ -10,6 +10,9 @@ export default defineConfig({
     }),
   ],
   build: {
+    rollupOptions: {
+      external: ['node:fs', 'node:path'],
+    },
     lib: {
       entry: 'src/index.ts',
       name: 'ludiek',
