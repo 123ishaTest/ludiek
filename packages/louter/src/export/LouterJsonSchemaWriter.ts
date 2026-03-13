@@ -10,7 +10,7 @@ import type { LouterContext } from '../core/LouterContext.ts';
 export class LouterJsonSchemaWriter implements LouterStage {
   private readonly _directory: string;
 
-  constructor(directory: string) {
+  constructor(directory: string = '.louter') {
     this._directory = directory;
   }
 

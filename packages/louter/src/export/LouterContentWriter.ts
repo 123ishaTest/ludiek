@@ -10,7 +10,7 @@ import type { LouterContext } from '@louter/core/LouterContext';
 export class LouterContentWriter implements LouterStage {
   private readonly _directory: string;
 
-  constructor(directory: string) {
+  constructor(directory: string = '.louter') {
     this._directory = directory;
   }
 
