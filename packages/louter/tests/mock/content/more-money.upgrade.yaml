@@ -1,0 +1,5 @@
+id: /upgrade/more-money
+name: More Money
+cost:
+  currency: /currency/money
+  amount: 4

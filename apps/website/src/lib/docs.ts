@@ -47,6 +47,7 @@ export const docsLayout: DocsLayout = {
     {
       title: 'Complementaries',
       pages: [
+        { title: 'Louter', slug: 'complementaries/louter' },
         { title: 'Lui', slug: 'complementaries/lui' },
         { title: 'Lyrisch', slug: 'complementaries/lyrisch' },
       ],

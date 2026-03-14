@@ -1,0 +1,46 @@
+{
+  "name": "@123ishatest/louter",
+  "private": false,
+  "version": "0.0.0",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.cjs.js"
+    },
+    "./node": {
+      "types": "./dist/node.d.ts",
+      "import": "./dist/node.es.js",
+      "require": "./dist/node.cjs.js"
+    }
+  },
+  "imports": {
+    "@louter/*": "./src/*"
+  },
+  "scripts": {
+    "build": "npm run check && vite build",
+    "check": "tsc -p ./tsconfig.build.json --noEmit",
+    "dev": "vite build --watch",
+    "lint": "prettier --check . && eslint .",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@123ishatest/ludiek-eslint-config": "*",
+    "@123ishatest/ludiek-typescript-config": "*",
+    "@vitest/coverage-v8": "^4.0.6",
+    "jsdom": "^27.1.0",
+    "memfs": "^4.56.11",
+    "vite": "^7.0.5",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^4.0.6"
+  },
+  "dependencies": {
+    "yaml": "^2.8.2",
+    "zod": "^4.3.6"
+  }
+}
