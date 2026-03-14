@@ -37,7 +37,8 @@ export class LouterFileLoader implements LouterStage {
 
       if (entry.isDirectory()) {
         files.push(...this.getAllFiles(fullPath));
-      } else if (entry.isFile()) {
+      }
+      if (entry.isFile()) {
         files.push(fullPath);
       }
     }
