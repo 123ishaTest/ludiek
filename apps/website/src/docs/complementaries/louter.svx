@@ -1,0 +1,92 @@
+---
+title: Louter
+---
+
+Louter is a zod-based content parser that transforms YAML into type-safe runtime data.
+
+It consists of 2 parts:
+- A build step, running in a node-only context such as a vite plugin or the `server` context of SvelteKit.
+- A content manager, providing fully-typed access to your content at run-time.
+
+## Installation
+```bash
+npm install @123ishatest/louter
+```
+
+## Setup
+Define your content kinds, a mapping between the `kind` of content and the Zod schema that represents it.
+```ts
+import { z } from 'zod';
+
+const schemas = {
+  currency: z.strictObject({ id: z.string(), name: z.string() }),
+  upgrade: z.strictObject({
+    id: z.string(),
+    name: z.string(),
+    cost: z.strictObject({
+      currency: z.string(),
+      amount: z.number().default(4),
+    }),
+  })
+};
+```
+
+Add your content!
+```yaml
+# money.currency.yaml
+id: /currency/money
+name: Money
+
+# more-money.upgrade.yaml
+id: /upgrade/more-money
+name: More money
+cost:
+  currency: /currency/money
+  amount: 4
+```
+
+## Usage (node)
+Louter comes with a composable pipeline, so you can add or remove behaviour to your heart's desire.
+```ts
+import { Louter, LouterValidator, LouterYamlParser } from "@123ishatest/louter";
+import { LouterContentWriter, LouterFileLoader, LouterJsonSchemaWriter } from "@123ishatest/louter/node";
+
+const louter = new Louter([
+  // Loads all files in the specified folder
+  new LouterFileLoader('content'),
+
+  // Parses the YAML that was found
+  new LouterYamlParser(),
+
+  // Validates it against the schemas
+  new LouterValidator(),
+
+  // Writes a big content object to the specified folder
+  new LouterContentWriter('.generated'),
+
+  // Writes utility JSON Schemas to the specified folder
+  new LouterJsonSchemaWriter('.generated'),
+]);
+
+const result = louter.run(schemas);
+
+// Check for warnings
+result.warnings.forEach(console.warn);
+```
+This result contains all parsed content, which can be used by your game!
+
+## Usage (browser)
+```ts
+import { ContentManager } from "@123ishatest/louter";
+
+const manager = new ContentManager(schemas);
+manager.load(result.content);
+
+// Type-safe accessors
+const currencies = manager.getList('currency');
+const currencyMap = manager.getMap('currency');
+
+// Fully typed objects
+const money = manager.get('/currency/money', 'currency');
+console.log(money.name);
+```
