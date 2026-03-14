@@ -14,10 +14,12 @@ export default defineConfig({
       external: ['node:fs', 'node:path'],
     },
     lib: {
-      entry: 'src/index.ts',
-      name: 'ludiek',
+      entry: {
+        index: 'src/index.ts',
+        node: 'src/node.ts',
+      },
       formats: ['es', 'cjs'],
-      fileName: (format) => `index.${format}.js`,
+      fileName: (format, entryName) => `${entryName}.${format}.js`,
     },
   },
   server: {

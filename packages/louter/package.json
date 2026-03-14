@@ -2,12 +2,21 @@
   "name": "@123ishatest/louter",
   "private": false,
   "version": "0.0.0",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.es.js",
-  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.cjs.js"
+    },
+    "./node": {
+      "types": "./dist/node.d.ts",
+      "import": "./dist/node.es.js",
+      "require": "./dist/node.cjs.js"
+    }
+  },
   "imports": {
     "@louter/*": "./src/*"
   },
