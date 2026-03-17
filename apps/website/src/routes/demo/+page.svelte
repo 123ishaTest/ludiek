@@ -1,6 +1,10 @@
 <script lang="ts">
   import { achievement, currency, game, statistic } from '$lib/demo/demo.svelte';
   import { onMount } from 'svelte';
+  import { setEngine } from '@123ishatest/lui';
+  import MyCurrencyDisplay from './MyCurrencyDisplay.svelte';
+  import MySkillDisplay from './MySkillDisplay.svelte';
+  import { CurrencyListComponent } from '@123ishatest/lui';
 
   let planted = $derived(statistic.getMapValue('/statistic/plants-planted', '/plant/sunflower'));
 
@@ -52,12 +56,25 @@
     game.loadFromStorage();
     game.start();
   });
+
+  setEngine(game.engine);
 </script>
 
 <div class="p-4">
-  <p>You have {money} money</p>
-  <p>You have {gems} gems</p>
+  <CurrencyListComponent>
+    {#snippet render(currencies)}
+      <div class="flex flex-col space-x-4">
+        {#each currencies as currency (currency.id)}
+          <MyCurrencyDisplay currencyId={currency.id} />
+        {/each}
+      </div>
+    {/snippet}
+  </CurrencyListComponent>
+
   <p>You have planted {planted} sunflowers</p>
+
+  <!--  <MyStatisticDisplay statisticId="/statistic/total-money"/>-->
+  <MySkillDisplay skillId="/skill/farming" />
 
   <button class="btn btn-primary" onclick={() => sow()}>Sow</button>
   <button class="btn btn-secondary" onclick={() => trade()}>Trade 100 money for 1 gem</button>
