@@ -71,7 +71,7 @@
 
   <TimelineElement
     title="Lui"
-    date="Soon"
+    date="Not Soon"
     place="end"
   >
     Lui is a headless component library made in Svelte, providing easy access to Ludiek state in the frontend
