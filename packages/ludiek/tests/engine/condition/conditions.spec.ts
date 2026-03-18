@@ -4,6 +4,7 @@ import { LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { TrueEvaluator } from '@ludiek/stdlib/condition/TrueCondition';
 import { FalseEvaluator } from '@ludiek/stdlib/condition/FalseCondition';
 import { ConditionNotFoundError } from '@ludiek/engine/condition/ConditionError';
+import { z } from 'zod';
 
 describe('Engine Conditions', () => {
   it('registers provided evaluators', () => {
@@ -49,6 +50,11 @@ describe('Engine Conditions', () => {
   it('checks a condition', () => {
     // Arrange
 
+    const MySchema = z.strictObject({
+      type: z.literal('maybe'),
+      value: z.number(),
+    });
+
     interface MyShape {
       type: 'maybe';
       value: number;
@@ -59,7 +65,7 @@ describe('Engine Conditions', () => {
     }
 
     class MyFeatureEvaluator extends LudiekEvaluator<MyShape> {
-      readonly type = 'maybe';
+      readonly schema = MySchema;
       private _feature: MyFeature;
 
       constructor(feature: MyFeature) {

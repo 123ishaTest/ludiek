@@ -1,12 +1,15 @@
+import { z } from 'zod';
 import { LudiekDependencies, LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
 import { IsNonEmpty } from '@ludiek/util/types';
 
 /**
  * Base shape for all conditions.
  */
-export interface BaseCondition {
-  type: string;
-}
+export const BaseConditionSchema = z.strictObject({
+  type: z.string(),
+});
+
+export type BaseCondition = z.infer<typeof BaseConditionSchema>;
 
 /**
  * A LudiekEvaluator evaluates a given condition.
@@ -15,7 +18,13 @@ export abstract class LudiekEvaluator<
   Condition extends BaseCondition = BaseCondition,
   Dependencies extends LudiekDependencies = object,
 > extends LudiekEngineConcept<Dependencies> {
-  public abstract readonly type: Condition['type'];
+  public abstract readonly schema: z.ZodObject<{
+    type: z.ZodLiteral<Condition['type']>;
+  }>;
+
+  get type(): Condition['type'] {
+    return this.schema.shape.type.value;
+  }
 
   /**
    * Apply modifiers to this condition.

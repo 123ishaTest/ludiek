@@ -1,17 +1,20 @@
+import { z } from 'zod';
+import { LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { KeyItemPlugin } from '@ludiek/plugins/keyItem/KeyItemPlugin';
-import { BaseCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 
-interface HasKeyItemCondition extends BaseCondition {
-  type: '/condition/has-key-item';
-  item: string;
-}
+export const HasKeyItemConditionSchema = z.strictObject({
+  type: z.literal('/condition/has-key-item'),
+  item: z.string(),
+});
+
+export type HasKeyItemCondition = z.infer<typeof HasKeyItemConditionSchema>;
 
 type Dependencies = {
   plugins: [KeyItemPlugin];
 };
 
 export class HasKeyItemEvaluator extends LudiekEvaluator<HasKeyItemCondition, Dependencies> {
-  readonly type = '/condition/has-key-item';
+  readonly schema = HasKeyItemConditionSchema;
 
   evaluate(condition: HasKeyItemCondition): boolean {
     return this.engine.plugins.keyItem.hasKeyItem(condition.item);

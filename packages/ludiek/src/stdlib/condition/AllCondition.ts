@@ -1,9 +1,12 @@
-import { BaseCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
+import { BaseConditionSchema, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
+import { z } from 'zod';
 
-interface AllCondition extends BaseCondition {
-  type: '/condition/all';
-  conditions: BaseCondition[];
-}
+export const AllConditionSchema = z.strictObject({
+  type: z.literal('/condition/all'),
+  conditions: z.array(BaseConditionSchema),
+});
+
+export type AllCondition = z.infer<typeof AllConditionSchema>;
 
 type Dependencies = {
   conditions: [LudiekEvaluator];
@@ -13,7 +16,7 @@ type Dependencies = {
  * A condition which requires all conditions to be true
  */
 export class AllEvaluator extends LudiekEvaluator<AllCondition, Dependencies> {
-  readonly type = '/condition/all';
+  readonly schema = AllConditionSchema;
 
   evaluate(object: AllCondition): boolean {
     return this.engine.evaluate(object.conditions);

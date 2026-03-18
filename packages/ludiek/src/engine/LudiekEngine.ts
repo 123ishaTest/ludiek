@@ -1,6 +1,6 @@
 import { LudiekEngineConfig, PluginMap } from '@ludiek/engine/LudiekEngineConfig';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
-import { LudiekCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
+import { BaseCondition, LudiekCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { LudiekEngineSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 import { LudiekConsumer, LudiekInput } from '@ludiek/engine/input/LudiekConsumer';
 import { LudiekOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
@@ -10,9 +10,10 @@ import { ConditionNotFoundError } from '@ludiek/engine/condition/ConditionError'
 import { InputNotFoundError } from '@ludiek/engine/input/InputError';
 import { OutputNotFoundError } from '@ludiek/engine/output/OutputError';
 import { ControllerNotFoundError } from '@ludiek/engine/request/RequestError';
-import { LudiekBonus, LudiekModifier, BonusContribution } from '@ludiek/engine/modifier/LudiekModifier';
+import { BonusContribution, LudiekBonus, LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
 import { ModifierNotFoundError } from '@ludiek/engine/modifier/ModifierError';
 import { cloneDeep } from 'es-toolkit';
+import { z, ZodLiteral, ZodObject, ZodUnion } from 'zod';
 
 export class LudiekEngine<
   Plugins extends readonly LudiekPlugin[] = [],
@@ -48,6 +49,11 @@ export class LudiekEngine<
 
   public get evaluators(): Evaluators {
     return Object.values(this._evaluators) as unknown as Evaluators;
+  }
+
+  public conditionSchema(): ZodUnion<ZodObject<{ type: ZodLiteral<BaseCondition['type']> }>[]> {
+    const schemas = this.evaluators.map((evaluator) => evaluator.schema);
+    return z.union(schemas);
   }
 
   public get consumers(): Consumers {

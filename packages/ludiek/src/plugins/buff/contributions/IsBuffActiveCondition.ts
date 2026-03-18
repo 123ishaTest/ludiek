@@ -1,17 +1,20 @@
-import { BaseCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
+import { z } from 'zod';
+import { LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { BuffPlugin } from '@ludiek/plugins/buff/BuffPlugin';
 
-interface IsBuffActiveCondition extends BaseCondition {
-  type: '/condition/is-buff-active';
-  buff: string;
-}
+export const IsBuffActiveConditionSchema = z.strictObject({
+  type: z.literal('/condition/is-buff-active'),
+  buff: z.string(),
+});
+
+export type IsBuffActiveCondition = z.infer<typeof IsBuffActiveConditionSchema>;
 
 type Dependencies = {
   plugins: [BuffPlugin];
 };
 
 export class IsBuffActiveEvaluator extends LudiekEvaluator<IsBuffActiveCondition, Dependencies> {
-  readonly type = '/condition/is-buff-active';
+  readonly schema = IsBuffActiveConditionSchema;
 
   evaluate(condition: IsBuffActiveCondition): boolean {
     return this.engine.plugins.buff.isBuffActive(condition.buff);
