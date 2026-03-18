@@ -1,18 +1,21 @@
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
-import { BaseInput, LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
+import { LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
+import { z } from 'zod';
 
-export interface LoseCurrencyInput extends BaseInput {
-  type: '/input/lose-currency';
-  id: string;
-  amount: number;
-}
+export const LoseCurrencyInputSchema = z.strictObject({
+  type: z.literal('/input/lose-currency'),
+  id: z.string(),
+  amount: z.number(),
+});
+
+export type LoseCurrencyInput = z.infer<typeof LoseCurrencyInputSchema>;
 
 type Dependencies = {
   plugins: [CurrencyPlugin];
 };
 
 export class LoseCurrencyConsumer extends LudiekConsumer<LoseCurrencyInput, Dependencies> {
-  readonly type = '/input/lose-currency';
+  readonly schema = LoseCurrencyInputSchema;
 
   canConsume(input: LoseCurrencyInput): boolean {
     return this.engine.plugins.currency.hasCurrency(input);

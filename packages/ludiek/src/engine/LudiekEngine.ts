@@ -1,8 +1,8 @@
 import { LudiekEngineConfig, PluginMap } from '@ludiek/engine/LudiekEngineConfig';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
-import { BaseCondition, LudiekCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
+import { EvaluatorSchemas, LudiekCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { LudiekEngineSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
-import { LudiekConsumer, LudiekInput } from '@ludiek/engine/input/LudiekConsumer';
+import { ConsumerSchemas, LudiekConsumer, LudiekInput } from '@ludiek/engine/input/LudiekConsumer';
 import { LudiekOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
 import { LudiekController, LudiekRequest } from '@ludiek/engine/request/LudiekRequest';
@@ -13,7 +13,7 @@ import { ControllerNotFoundError } from '@ludiek/engine/request/RequestError';
 import { BonusContribution, LudiekBonus, LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
 import { ModifierNotFoundError } from '@ludiek/engine/modifier/ModifierError';
 import { cloneDeep } from 'es-toolkit';
-import { z, ZodLiteral, ZodObject, ZodUnion } from 'zod';
+import { z, ZodDiscriminatedUnion, ZodNever } from 'zod';
 
 export class LudiekEngine<
   Plugins extends readonly LudiekPlugin[] = [],
@@ -51,13 +51,18 @@ export class LudiekEngine<
     return Object.values(this._evaluators) as unknown as Evaluators;
   }
 
-  public conditionSchema(): ZodUnion<ZodObject<{ type: ZodLiteral<BaseCondition['type']> }>[]> {
-    const schemas = this.evaluators.map((evaluator) => evaluator.schema);
-    return z.union(schemas);
+  public conditionSchema(): ZodNever | ZodDiscriminatedUnion<EvaluatorSchemas<Evaluators>, 'type'> {
+    const schemas = this.evaluators.map((e) => e.schema);
+    return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
   }
 
   public get consumers(): Consumers {
     return Object.values(this._consumers) as unknown as Consumers;
+  }
+
+  public inputSchema(): ZodNever | ZodDiscriminatedUnion<ConsumerSchemas<Consumers>, 'type'> {
+    const schemas = this.consumers.map((c) => c.schema);
+    return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
   }
 
   public get producers(): Producers {
