@@ -3,7 +3,7 @@ import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { EvaluatorSchemas, LudiekCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { LudiekEngineSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 import { ConsumerSchemas, LudiekConsumer, LudiekInput } from '@ludiek/engine/input/LudiekConsumer';
-import { LudiekOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
+import { LudiekOutput, LudiekProducer, ProducerSchemas } from '@ludiek/engine/output/LudiekProducer';
 import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
 import { LudiekController, LudiekRequest } from '@ludiek/engine/request/LudiekRequest';
 import { ConditionNotFoundError } from '@ludiek/engine/condition/ConditionError';
@@ -67,6 +67,11 @@ export class LudiekEngine<
 
   public get producers(): Producers {
     return Object.values(this._producers) as unknown as Producers;
+  }
+
+  public outputSchema(): ZodNever | ZodDiscriminatedUnion<ProducerSchemas<Producers>, 'type'> {
+    const schemas = this.producers.map((c) => c.schema);
+    return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
   }
 
   public get controllers(): Controllers {

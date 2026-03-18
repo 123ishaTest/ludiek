@@ -1,18 +1,21 @@
+import { z } from 'zod';
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
-import { BaseOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
+import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 
-export interface GainCurrencyOutput extends BaseOutput {
-  type: '/output/gain-currency';
-  id: string;
-  amount: number;
-}
+export const GainCurrencyOutputSchema = z.strictObject({
+  type: z.literal('/output/gain-currency'),
+  id: z.string(),
+  amount: z.number().positive(),
+});
+
+export type GainCurrencyOutput = z.infer<typeof GainCurrencyOutputSchema>;
 
 type Dependencies = {
   plugins: [CurrencyPlugin];
 };
 
 export class GainCurrencyProducer extends LudiekProducer<GainCurrencyOutput, Dependencies> {
-  readonly type = '/output/gain-currency';
+  readonly schema = GainCurrencyOutputSchema;
 
   canProduce(): boolean {
     return true;

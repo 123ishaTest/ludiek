@@ -1,18 +1,21 @@
-import { BaseOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
+import { z } from 'zod';
+import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 import { SkillPlugin } from '@ludiek/plugins/skill/SkillPlugin';
 
-interface GainSkillExperienceOutput extends BaseOutput {
-  type: '/skill/gain-experience';
-  skill: string;
-  amount: number;
-}
+export const GainSkillExperienceOutputSchema = z.strictObject({
+  type: z.literal('/skill/gain-experience'),
+  skill: z.string(),
+  amount: z.number().positive(),
+});
+
+export type GainSkillExperienceOutput = z.infer<typeof GainSkillExperienceOutputSchema>;
 
 type Dependencies = {
   plugins: [SkillPlugin];
 };
 
 export class GainSkillExperienceProducer extends LudiekProducer<GainSkillExperienceOutput, Dependencies> {
-  readonly type = '/skill/gain-experience';
+  readonly schema = GainSkillExperienceOutputSchema;
 
   /**
    * Experience can always be gained

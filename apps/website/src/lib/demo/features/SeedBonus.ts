@@ -1,5 +1,5 @@
 import { type BaseBonus, LudiekModifier } from '@123ishatest/ludiek';
-import type { PlantId } from '$lib/demo/demo.svelte';
+import type { PlantId } from '$lib/demo/content';
 
 /**
  * Multiplies the gain of a specific seed

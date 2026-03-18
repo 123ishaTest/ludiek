@@ -1,6 +1,6 @@
 import { type BaseRequest, LudiekController } from '@123ishatest/ludiek';
 import type { Farming } from '$lib/demo/features/Farming';
-import type { PlantId } from '$lib/demo/demo.svelte';
+import type { PlantId } from '$lib/demo/content';
 
 export interface SowSeedRequest extends BaseRequest {
   type: '/farming/sow-seed';

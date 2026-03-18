@@ -23,8 +23,8 @@ import {
   StatisticPlugin,
   TrueEvaluator,
 } from '@123ishatest/ludiek';
-import { Farming } from '$lib/demo/features/Farming';
 import { achievements, currencies, plants, skills, statistics } from '$lib/demo/content';
+import { Farming } from '$lib/demo/features/Farming';
 import { SowSeedController } from '$lib/demo/features/SowPlantController';
 import { SeedProducer } from '$lib/demo/features/SeedOutput';
 import { GlobalSeedModifier } from '$lib/demo/features/GlobalSeedBonus';
@@ -66,8 +66,6 @@ export type Condition = LudiekCondition<typeof engine.evaluators>;
 export type Input = LudiekInput<typeof engine.consumers>;
 export type Output = LudiekOutput<typeof engine.producers>;
 export type Bonus = LudiekBonusContribution<typeof engine.modifiers>;
-
-export type PlantId = (typeof plants)[number]['id'];
 
 export const game = new LudiekGame(engine, {
   features: [farming],

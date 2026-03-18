@@ -1,22 +1,24 @@
-import { type BaseOutput, type CurrencyPlugin, LudiekProducer } from '@123ishatest/ludiek';
-import type { LudiekDependencies } from '@123ishatest/ludiek/dist/engine/LudiekEngineConcept';
+import z from 'zod';
+import { type CurrencyPlugin, LudiekProducer } from '@123ishatest/ludiek';
 import type { SeedModifier } from '$lib/demo/features/SeedBonus';
 import { GlobalSeedModifier } from '$lib/demo/features/GlobalSeedBonus';
-import type { PlantId } from '$lib/demo/demo.svelte';
+import { PlantIdSchema } from '$lib/demo/content';
 
-export interface SeedOutput extends BaseOutput {
-  type: '/output/seed';
-  plant: PlantId;
-  amount: number;
-}
+export const SeedOutputSchema = z.strictObject({
+  type: z.literal('/output/seed'),
+  plant: PlantIdSchema,
+  amount: z.number().positive(),
+});
 
-interface Dependencies extends LudiekDependencies {
+export type SeedOutput = z.infer<typeof SeedOutputSchema>;
+
+interface Dependencies {
   plugins: [CurrencyPlugin];
   modifiers: [SeedModifier, GlobalSeedModifier];
 }
 
 export class SeedProducer extends LudiekProducer<SeedOutput, Dependencies> {
-  readonly type = '/output/seed';
+  readonly schema = SeedOutputSchema;
 
   modify(output: SeedOutput): SeedOutput {
     output.amount *= this.getBonus({ type: '/bonus/seed', seed: output.plant });
