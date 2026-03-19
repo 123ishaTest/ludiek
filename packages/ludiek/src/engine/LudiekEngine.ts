@@ -10,7 +10,12 @@ import { ConditionNotFoundError } from '@ludiek/engine/condition/ConditionError'
 import { InputNotFoundError } from '@ludiek/engine/input/InputError';
 import { OutputNotFoundError } from '@ludiek/engine/output/OutputError';
 import { ControllerNotFoundError } from '@ludiek/engine/request/RequestError';
-import { BonusContribution, LudiekBonus, LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
+import {
+  BonusContribution,
+  LudiekBonus,
+  LudiekModifier,
+  ModifierSchemas,
+} from '@ludiek/engine/modifier/LudiekModifier';
 import { ModifierNotFoundError } from '@ludiek/engine/modifier/ModifierError';
 import { cloneDeep } from 'es-toolkit';
 import { z, ZodDiscriminatedUnion, ZodNever } from 'zod';
@@ -85,6 +90,11 @@ export class LudiekEngine<
 
   public get modifiers(): Modifiers {
     return Object.values(this._modifiers) as unknown as Modifiers;
+  }
+
+  public bonusSchema(): ZodNever | ZodDiscriminatedUnion<ModifierSchemas<Modifiers>, 'type'> {
+    const schemas = this.producers.map((c) => c.schema);
+    return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
   }
 
   public registerEvaluator(evaluator: LudiekEvaluator): void {

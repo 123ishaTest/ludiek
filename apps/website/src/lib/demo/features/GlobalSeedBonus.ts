@@ -1,14 +1,17 @@
-import { type BaseBonus, LudiekModifier } from '@123ishatest/ludiek';
+import z from 'zod';
+import { LudiekModifier } from '@123ishatest/ludiek';
 
 /**
  * Multiplies the gain of every seed
  */
-export interface GlobalSeedBonus extends BaseBonus {
-  type: '/bonus/seed-global';
-}
+export const GlobalSeedBonusSchema = z.strictObject({
+  type: z.literal('/bonus/seed-global'),
+});
+
+export type GlobalSeedBonus = z.infer<typeof GlobalSeedBonusSchema>;
 
 export class GlobalSeedModifier extends LudiekModifier<GlobalSeedBonus> {
-  readonly type = '/bonus/seed-global';
+  readonly schema = GlobalSeedBonusSchema;
   readonly default = 1;
   readonly variant = 'multiplicative';
 
