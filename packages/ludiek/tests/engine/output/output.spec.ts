@@ -28,7 +28,7 @@ describe('Engine Output', () => {
     });
     const output: EmptyOutput = {
       type: '/output/empty',
-      amount: 3,
+      amount: 1,
     };
     const canProduceSpy = vi.spyOn(emptyOutput, 'canProduce');
     const produceSpy = vi.spyOn(emptyOutput, 'produce');

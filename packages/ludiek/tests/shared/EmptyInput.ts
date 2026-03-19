@@ -1,11 +1,15 @@
-import { BaseInput, LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
+import { LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
+import { z } from 'zod';
 
-export interface EmptyInput extends BaseInput {
-  type: '/input/empty';
-}
+export const EmptyInputSchema = z.strictObject({
+  type: z.literal('/input/empty'),
+  amount: z.number(),
+});
+
+export type EmptyInput = z.infer<typeof EmptyInputSchema>;
 
 export class EmptyConsumer extends LudiekConsumer<EmptyInput> {
-  readonly type = '/input/empty';
+  readonly schema = EmptyInputSchema;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   canConsume(input: EmptyInput): boolean {

@@ -1,7 +1,11 @@
 import { LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
+import { z } from 'zod';
 
 export class AlwaysConsumer extends LudiekConsumer<{ type: '/input/always'; amount: number }> {
-  readonly type = '/input/always';
+  readonly schema = z.strictObject({
+    type: z.literal('/input/always'),
+    amount: z.number(),
+  });
 
   canConsume(): boolean {
     return true;

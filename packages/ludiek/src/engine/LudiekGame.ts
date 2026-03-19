@@ -31,7 +31,7 @@ export class LudiekGame<
   private readonly _engine: LudiekEngine<Plugins, Evaluators, Consumers, Producers, Controllers, Modifiers>;
   public readonly config: LudiekGameConfig<Plugins, Features>;
   protected saveEncoder = new LudiekJsonSaveEncoder();
-  protected _tickInterval: NodeJS.Timeout | null = null;
+  protected _tickInterval: number | null = null;
 
   private _onTick = new SignalDispatcher();
 

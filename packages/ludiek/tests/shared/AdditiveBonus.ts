@@ -1,11 +1,14 @@
-import { BaseBonus, LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
+import { z } from 'zod';
+import { LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
 
-export interface AdditiveBonus extends BaseBonus {
-  type: '/bonus/additive';
-}
+export const AdditiveBonusSchema = z.strictObject({
+  type: z.literal('/bonus/additive'),
+});
+
+export type AdditiveBonus = z.infer<typeof AdditiveBonusSchema>;
 
 export class AdditiveModifier extends LudiekModifier<AdditiveBonus> {
-  readonly type = '/bonus/additive';
+  readonly schema = AdditiveBonusSchema;
   readonly default = 0;
   readonly variant = 'additive';
 

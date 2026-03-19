@@ -10,7 +10,7 @@ it('is type-safe', () => {
   });
 
   // Valid
-  engine.produce({ type: '/output/empty', amount: 2 });
+  engine.produce({ type: '/output/empty', amount: 1 });
 
   expect(() => {
     // @ts-expect-error unknown type

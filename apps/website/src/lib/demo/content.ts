@@ -3,6 +3,7 @@ import type { AchievementDetail } from '$lib/demo/model/AchievementDetail';
 import type { StatisticDetail } from '$lib/demo/model/StatisticDetail';
 import type { PlantDetail } from '$lib/demo/model/PlantDetail';
 import type { SkillDetail } from '$lib/demo/model/SkillDetail';
+import z from 'zod';
 
 // TODO(@Isha): Replace with Zod parsing
 
@@ -11,6 +12,9 @@ export const plants = [
   { id: '/plant/sunflower', name: 'Sunflower', growthTime: 1, moneyReward: 10 },
   { id: '/plant/cauliflower', name: 'Cauliflower', growthTime: 1.5, moneyReward: 20 },
 ] as const satisfies PlantDetail[];
+
+export const PlantIdSchema = z.enum(plants.map((p) => p.id));
+export type PlantId = z.infer<typeof PlantIdSchema>;
 
 export const currencies: CurrencyDetail[] = [
   { id: '/currency/money', name: 'Money', icon: '/icons/nugget-yellow.png' },

@@ -1,9 +1,12 @@
-import { BaseCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
+import { BaseConditionSchema, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
+import { z } from 'zod';
 
-interface NotCondition extends BaseCondition {
-  type: '/condition/not';
-  condition: BaseCondition;
-}
+export const NotConditionSchema = z.strictObject({
+  type: z.literal('/condition/not'),
+  condition: BaseConditionSchema,
+});
+
+export type NotCondition = z.infer<typeof NotConditionSchema>;
 
 type Dependencies = {
   conditions: [LudiekEvaluator];
@@ -13,7 +16,7 @@ type Dependencies = {
  * A condition which inverts the result of the condition
  */
 export class NotEvaluator extends LudiekEvaluator<NotCondition, Dependencies> {
-  readonly type = '/condition/not';
+  readonly schema = NotConditionSchema;
 
   evaluate(object: NotCondition): boolean {
     return !this.engine.evaluate(object.condition);

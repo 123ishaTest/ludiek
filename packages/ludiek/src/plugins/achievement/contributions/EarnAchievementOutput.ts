@@ -1,17 +1,21 @@
+import { z } from 'zod';
 import { AchievementPlugin } from '@ludiek/plugins/achievement/AchievementPlugin';
-import { BaseOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
+import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 
-interface EarnAchievementOutput extends BaseOutput {
-  type: '/output/earn-achievement';
-  id: string;
-}
+export const EarnAchievementOutputSchema = z.strictObject({
+  type: z.literal('/output/earn-achievement'),
+  id: z.string(),
+  amount: z.literal(1).default(1),
+});
+
+export type EarnAchievementOutput = z.infer<typeof EarnAchievementOutputSchema>;
 
 type Dependencies = {
   plugins: [AchievementPlugin];
 };
 
 export class EarnAchievementProducer extends LudiekProducer<EarnAchievementOutput, Dependencies> {
-  readonly type = '/output/earn-achievement';
+  readonly schema = EarnAchievementOutputSchema;
 
   canProduce(): boolean {
     return true;

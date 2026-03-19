@@ -1,10 +1,13 @@
-import { BaseCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
+import { BaseConditionSchema, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
+import { z } from 'zod';
 
-interface OrCondition extends BaseCondition {
-  type: '/condition/or';
-  first: BaseCondition;
-  second: BaseCondition;
-}
+export const OrConditionSchema = z.strictObject({
+  type: z.literal('/condition/or'),
+  first: BaseConditionSchema,
+  second: BaseConditionSchema,
+});
+
+export type OrCondition = z.infer<typeof OrConditionSchema>;
 
 type Dependencies = {
   conditions: [LudiekEvaluator];
@@ -14,7 +17,7 @@ type Dependencies = {
  * A condition which requires at least one condition to be true
  */
 export class OrEvaluator extends LudiekEvaluator<OrCondition, Dependencies> {
-  readonly type = '/condition/or';
+  readonly schema = OrConditionSchema;
 
   evaluate(object: OrCondition): boolean {
     return this.engine.evaluate(object.first) || this.engine.evaluate(object.second);

@@ -1,17 +1,20 @@
-import { BaseCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
+import { LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { UpgradePlugin } from '@ludiek/plugins/upgrade/UpgradePlugin';
+import { z } from 'zod';
 
-interface CanBuyUpgradeCondition extends BaseCondition {
-  type: '/condition/can-buy-upgrade';
-  upgrade: string;
-}
+export const CanBuyUpgradeConditionSchema = z.strictObject({
+  type: z.literal('/condition/can-buy-upgrade'),
+  upgrade: z.string(),
+});
+
+export type CanBuyUpgradeCondition = z.infer<typeof CanBuyUpgradeConditionSchema>;
 
 type Dependencies = {
   plugins: [UpgradePlugin];
 };
 
 export class CanBuyUpgradeEvaluator extends LudiekEvaluator<CanBuyUpgradeCondition, Dependencies> {
-  readonly type = '/condition/can-buy-upgrade';
+  readonly schema = CanBuyUpgradeConditionSchema;
 
   evaluate(condition: CanBuyUpgradeCondition): boolean {
     return this.engine.plugins.upgrade.canBuyUpgrade(condition.upgrade);

@@ -1,16 +1,19 @@
-import { type BaseBonus, LudiekModifier } from '@123ishatest/ludiek';
-import type { PlantId } from '$lib/demo/demo.svelte';
+import z from 'zod';
+import { LudiekModifier } from '@123ishatest/ludiek';
+import { PlantIdSchema } from '$lib/demo/content';
 
 /**
  * Multiplies the gain of a specific seed
  */
-export interface SeedBonus extends BaseBonus {
-  type: '/bonus/seed';
-  seed: PlantId;
-}
+export const SeedBonusSchema = z.strictObject({
+  type: z.literal('/bonus/seed'),
+  seed: PlantIdSchema,
+});
+
+export type SeedBonus = z.infer<typeof SeedBonusSchema>;
 
 export class SeedModifier extends LudiekModifier<SeedBonus> {
-  readonly type = '/bonus/seed';
+  readonly schema = SeedBonusSchema;
   readonly default = 1;
   readonly variant = 'multiplicative';
 

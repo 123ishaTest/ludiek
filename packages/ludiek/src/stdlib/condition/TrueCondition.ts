@@ -1,14 +1,17 @@
-import { BaseCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
+import { LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
+import { z } from 'zod';
 
-interface TrueCondition extends BaseCondition {
-  type: '/condition/true';
-}
+export const TrueConditionSchema = z.strictObject({
+  type: z.literal('/condition/true'),
+});
+
+export type TrueCondition = z.infer<typeof TrueConditionSchema>;
 
 /**
  * A condition which is always true
  */
 export class TrueEvaluator extends LudiekEvaluator<TrueCondition> {
-  readonly type = '/condition/true';
+  readonly schema = TrueConditionSchema;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   evaluate(object: TrueCondition): boolean {
