@@ -1,5 +1,11 @@
 # @123ishatest/ludiek
 
+## 0.3.0
+
+### Minor Changes
+
+- 143c974: Use Zod schemas for all engine contributions
+
 ## 0.2.0
 
 ### Minor Changes
