@@ -1,14 +1,17 @@
-import { type BaseRequest, LudiekController } from '@123ishatest/ludiek';
+import z from 'zod';
+import { LudiekController } from '@123ishatest/ludiek';
 import type { Farming } from '$lib/demo/features/Farming';
-import type { PlantId } from '$lib/demo/content';
+import { PlantIdSchema } from '$lib/demo/content';
 
-export interface SowSeedRequest extends BaseRequest {
-  type: '/farming/sow-seed';
-  plant: PlantId;
-}
+export const SowSeedRequestSchema = z.strictObject({
+  type: z.literal('/farming/sow-seed'),
+  plant: PlantIdSchema,
+});
+
+export type SowSeedRequest = z.infer<typeof SowSeedRequestSchema>;
 
 export class SowSeedController extends LudiekController<SowSeedRequest> {
-  readonly type = '/farming/sow-seed';
+  readonly schema = SowSeedRequestSchema;
 
   private readonly _farming: Farming;
 

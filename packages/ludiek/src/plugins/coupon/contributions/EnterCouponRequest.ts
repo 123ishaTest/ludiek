@@ -1,17 +1,20 @@
+import { z } from 'zod';
 import { CouponPlugin } from '@ludiek/plugins/coupon/CouponPlugin';
-import { BaseRequest, LudiekController } from '@ludiek/engine/request/LudiekRequest';
+import { LudiekController } from '@ludiek/engine/request/LudiekRequest';
 
-export interface EnterCouponRequest extends BaseRequest {
-  type: '/request/enter-coupon';
-  coupon: string;
-}
+export const EnterCouponRequestSchema = z.strictObject({
+  type: z.literal('/request/enter-coupon'),
+  coupon: z.string(),
+});
+
+export type EnterCouponRequest = z.infer<typeof EnterCouponRequestSchema>;
 
 type Dependencies = {
   plugins: [CouponPlugin];
 };
 
 export class EnterCouponController extends LudiekController<EnterCouponRequest, Dependencies> {
-  readonly type = '/request/enter-coupon';
+  readonly schema = EnterCouponRequestSchema;
 
   resolve(request: EnterCouponRequest): void {
     this.engine.plugins.coupon.enterCoupon(request.coupon);
