@@ -23,7 +23,6 @@ import {
   StatisticPlugin,
   TrueEvaluator,
 } from '@123ishatest/ludiek';
-import { achievements, currencies, plants, skills, statistics } from '$lib/demo/content';
 import { Farming } from '$lib/demo/features/Farming';
 import { SowSeedController } from '$lib/demo/features/SowPlantController';
 import { SeedProducer } from '$lib/demo/features/SeedOutput';
@@ -43,7 +42,7 @@ const skillState = $state(createSkillState());
 const skillPlugin = new SkillPlugin(skillState);
 
 // Create your game
-const farming = new Farming(plants);
+const farming = new Farming();
 
 const engineState = $state({});
 
@@ -73,10 +72,5 @@ export const game = new LudiekGame(engine, {
   tickDuration: 0.1,
   saveInterval: 30,
 });
-
-engine.plugins.currency.loadContent(currencies);
-engine.plugins.statistic.loadContent(statistics);
-engine.plugins.achievement.loadContent(achievements);
-engine.plugins.skill.loadContent(skills);
 
 export const { currency, statistic, achievement, skill } = engine.plugins;

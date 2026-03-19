@@ -2,11 +2,10 @@ import z from 'zod';
 import { type CurrencyPlugin, LudiekProducer } from '@123ishatest/ludiek';
 import type { SeedModifier } from '$lib/demo/features/SeedBonus';
 import { GlobalSeedModifier } from '$lib/demo/features/GlobalSeedBonus';
-import { PlantIdSchema } from '$lib/demo/content';
 
 export const SeedOutputSchema = z.strictObject({
   type: z.literal('/output/seed'),
-  plant: PlantIdSchema,
+  plant: z.string(),
   amount: z.number().positive(),
 });
 
