@@ -1,6 +1,5 @@
 import { LudiekFeature } from '@123ishatest/ludiek';
 import type { EnginePlugins } from '$lib/demo/demo.svelte';
-import type { PlantId } from '$lib/demo/content';
 
 import type { PlantDetail } from '$lib/demo/model/PlantDetail';
 
@@ -8,20 +7,23 @@ export class Farming extends LudiekFeature<EnginePlugins> {
   readonly name = 'farming';
   protected _state = {};
 
-  public readonly plants: PlantDetail[];
+  public plants: PlantDetail[] = [];
 
-  constructor(plants: PlantDetail[]) {
+  constructor() {
     super();
+  }
+
+  public loadContent(plants: PlantDetail[]): void {
     this.plants = plants;
   }
 
-  public sow(id: PlantId): void {
+  public sow(id: string): void {
     const plant = this.getPlant(id);
     this._plugins.currency.gainCurrency({ id: '/currency/money', amount: plant.moneyReward });
     this._plugins.statistic.incrementMapStatistic('/statistic/plants-planted', plant.id);
   }
 
-  public getPlant(id: PlantId): PlantDetail {
+  public getPlant(id: string): PlantDetail {
     return this.plants.find((plant) => plant.id === id) as PlantDetail;
   }
 }

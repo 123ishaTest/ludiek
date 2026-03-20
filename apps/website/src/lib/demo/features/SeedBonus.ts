@@ -1,13 +1,12 @@
 import z from 'zod';
 import { LudiekModifier } from '@123ishatest/ludiek';
-import { PlantIdSchema } from '$lib/demo/content';
 
 /**
  * Multiplies the gain of a specific seed
  */
 export const SeedBonusSchema = z.strictObject({
   type: z.literal('/bonus/seed'),
-  seed: PlantIdSchema,
+  seed: z.string(),
 });
 
 export type SeedBonus = z.infer<typeof SeedBonusSchema>;

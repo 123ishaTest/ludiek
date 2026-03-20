@@ -1,0 +1,5 @@
+id: /achievement/total-money
+condition:
+  type: /condition/has-currency
+  id: /currency/money
+  amount: 30
