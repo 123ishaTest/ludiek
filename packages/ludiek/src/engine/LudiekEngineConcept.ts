@@ -9,18 +9,18 @@ import { LudiekBonus, LudiekModifier } from '@ludiek/engine/modifier/LudiekModif
 
 export interface LudiekDependencies {
   plugins?: readonly LudiekPlugin[];
-  conditions?: readonly LudiekEvaluator[];
-  inputs?: readonly LudiekConsumer[];
-  outputs?: readonly LudiekProducer[];
+  evaluators?: readonly LudiekEvaluator[];
+  consumers?: readonly LudiekConsumer[];
+  producers?: readonly LudiekProducer[];
   controllers?: readonly LudiekController[];
   modifiers?: readonly LudiekModifier[];
 }
 
 export type DependencyEngine<Dependencies extends LudiekDependencies> = LudiekEngine<
   NonNullable<Dependencies['plugins']>,
-  NonNullable<Dependencies['conditions']>,
-  NonNullable<Dependencies['inputs']>,
-  NonNullable<Dependencies['outputs']>,
+  NonNullable<Dependencies['evaluators']>,
+  NonNullable<Dependencies['consumers']>,
+  NonNullable<Dependencies['producers']>,
   NonNullable<Dependencies['controllers']>,
   NonNullable<Dependencies['modifiers']>
 >;

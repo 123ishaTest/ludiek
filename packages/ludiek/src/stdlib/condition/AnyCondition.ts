@@ -9,7 +9,7 @@ export const AnyConditionSchema = z.strictObject({
 export type AnyCondition = z.infer<typeof AnyConditionSchema>;
 
 type Dependencies = {
-  conditions: [LudiekEvaluator];
+  evaluators: [LudiekEvaluator];
 };
 
 /**

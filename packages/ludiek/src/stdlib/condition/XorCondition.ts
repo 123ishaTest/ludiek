@@ -10,7 +10,7 @@ export const XorConditionSchema = z.strictObject({
 export type XorCondition = z.infer<typeof XorConditionSchema>;
 
 type Dependencies = {
-  conditions: [LudiekEvaluator];
+  evaluators: [LudiekEvaluator];
 };
 
 /**
