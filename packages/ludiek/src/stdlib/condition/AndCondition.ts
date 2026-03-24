@@ -10,7 +10,7 @@ export const AndConditionSchema = z.strictObject({
 export type AndCondition = z.infer<typeof AndConditionSchema>;
 
 type Dependencies = {
-  conditions: [LudiekEvaluator];
+  evaluators: [LudiekEvaluator];
 };
 
 /**
