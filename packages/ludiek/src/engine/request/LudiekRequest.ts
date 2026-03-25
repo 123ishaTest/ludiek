@@ -8,8 +8,8 @@ export interface BaseRequest {
 
 export abstract class LudiekController<
   Request extends BaseRequest = BaseRequest,
-  Dependencies extends LudiekDependencies = object,
-> extends LudiekEngineConcept<Dependencies> {
+  Dependencies extends Partial<LudiekDependencies> = LudiekDependencies,
+> extends LudiekEngineConcept<Dependencies & LudiekDependencies> {
   public abstract readonly schema: z.ZodObject<{
     type: z.ZodLiteral<Request['type']>;
   }>;

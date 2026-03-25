@@ -19,6 +19,7 @@ import {
 import { ModifierNotFoundError } from '@ludiek/engine/modifier/ModifierError';
 import { cloneDeep } from 'es-toolkit';
 import { z, ZodDiscriminatedUnion, ZodNever } from 'zod';
+import { LudiekDependencies } from '@ludiek/engine/LudiekEngineConcept';
 
 export class LudiekEngine<
   Plugins extends readonly LudiekPlugin[] = [],
@@ -95,6 +96,10 @@ export class LudiekEngine<
   public bonusSchema(): ZodNever | ZodDiscriminatedUnion<ModifierSchemas<Modifiers>, 'type'> {
     const schemas = this.producers.map((c) => c.schema);
     return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
+  }
+
+  public get dependencies(): LudiekDependencies {
+    return null as unknown as LudiekDependencies;
   }
 
   public registerEvaluator(evaluator: LudiekEvaluator): void {
@@ -276,19 +281,19 @@ export class LudiekEngine<
     });
   }
 
-  public modifyCondition<Condition extends LudiekCondition<Evaluators>>(condition: Condition): Condition {
+  public modifyCondition(condition: LudiekCondition<Evaluators>): LudiekCondition<Evaluators> {
     const evaluator = this.getEvaluator(condition.type);
-    return evaluator.modify(cloneDeep(condition)) as Condition;
+    return evaluator.modify(cloneDeep(condition)) as LudiekCondition<Evaluators>;
   }
 
-  public modifyInput<Input extends LudiekInput<Consumers>>(input: Input): Input {
+  public modifyInput(input: LudiekInput<Consumers>): LudiekInput<Consumers> {
     const consumer = this.getConsumer(input.type);
-    return consumer.modify(cloneDeep(input)) as Input;
+    return consumer.modify(cloneDeep(input)) as LudiekInput<Consumers>;
   }
 
-  public modifyOutput<Output extends LudiekOutput<Producers>>(output: Output): Output {
+  public modifyOutput(output: LudiekOutput<Producers>): LudiekOutput<Producers> {
     const producer = this.getProducer(output.type);
-    return producer.modify(cloneDeep(output)) as Output;
+    return producer.modify(cloneDeep(output)) as LudiekOutput<Producers>;
   }
 
   public get activeBonuses(): Record<string, Record<string, BonusContribution[]>> {

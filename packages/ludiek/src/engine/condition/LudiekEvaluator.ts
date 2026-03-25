@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { LudiekDependencies, LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
+import { LudiekDependencies, LudiekDeps, LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
 import { IsNonEmpty } from '@ludiek/util/types';
 
 /**
@@ -16,7 +16,7 @@ export type BaseCondition = z.infer<typeof BaseConditionSchema>;
  */
 export abstract class LudiekEvaluator<
   Condition extends BaseCondition = BaseCondition,
-  Dependencies extends LudiekDependencies = object,
+  Dependencies extends Partial<LudiekDeps> = LudiekDependencies,
 > extends LudiekEngineConcept<Dependencies> {
   public abstract readonly schema: z.ZodObject<{
     type: z.ZodLiteral<Condition['type']>;

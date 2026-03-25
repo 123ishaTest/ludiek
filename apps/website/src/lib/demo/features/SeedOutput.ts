@@ -1,7 +1,5 @@
 import z from 'zod';
-import { type CurrencyPlugin, LudiekProducer } from '@123ishatest/ludiek';
-import type { SeedModifier } from '$lib/demo/features/SeedBonus';
-import { GlobalSeedModifier } from '$lib/demo/features/GlobalSeedBonus';
+import { LudiekProducer } from '@123ishatest/ludiek';
 
 export const SeedOutputSchema = z.strictObject({
   type: z.literal('/output/seed'),
@@ -11,12 +9,13 @@ export const SeedOutputSchema = z.strictObject({
 
 export type SeedOutput = z.infer<typeof SeedOutputSchema>;
 
-interface Dependencies {
-  plugins: [CurrencyPlugin];
-  modifiers: [SeedModifier, GlobalSeedModifier];
-}
+// interface Dependencies {
+//   plugins: [CurrencyPlugin];
+//   modifiers: [SeedModifier, GlobalSeedModifier];
+//   evaluators: [HasCurrencyEvaluator]
+// }
 
-export class SeedProducer extends LudiekProducer<SeedOutput, Dependencies> {
+export class SeedProducer extends LudiekProducer<SeedOutput> {
   readonly schema = SeedOutputSchema;
 
   modify(output: SeedOutput): SeedOutput {
@@ -30,6 +29,10 @@ export class SeedProducer extends LudiekProducer<SeedOutput, Dependencies> {
   }
 
   produce(output: SeedOutput): void {
+    // this.engine.dependencies.
+    this.engine.evaluate({
+      type: 'asdasd'
+    })
     this.engine.plugins.currency.gainCurrency({
       amount: output.amount,
       id: output.plant,

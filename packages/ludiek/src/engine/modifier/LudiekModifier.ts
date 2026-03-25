@@ -14,8 +14,8 @@ export interface BonusContribution {
 
 export abstract class LudiekModifier<
   Bonus extends BaseBonus = BaseBonus,
-  Dependencies extends LudiekDependencies = object,
-> extends LudiekEngineConcept<Dependencies> {
+  Dependencies extends Partial<LudiekDependencies> = LudiekDependencies,
+> extends LudiekEngineConcept<Dependencies & LudiekDependencies> {
   public abstract readonly schema: z.ZodObject<{
     type: z.ZodLiteral<Bonus['type']>;
   }>;

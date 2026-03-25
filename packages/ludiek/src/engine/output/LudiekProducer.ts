@@ -9,8 +9,8 @@ export interface BaseOutput {
 
 export abstract class LudiekProducer<
   Output extends BaseOutput = BaseOutput,
-  Dependencies extends LudiekDependencies = object,
-> extends LudiekEngineConcept<Dependencies> {
+  Dependencies extends Partial<LudiekDependencies> = LudiekDependencies,
+> extends LudiekEngineConcept<Dependencies & LudiekDependencies> {
   public abstract readonly schema: z.ZodObject<{
     type: z.ZodLiteral<Output['type']>;
   }>;

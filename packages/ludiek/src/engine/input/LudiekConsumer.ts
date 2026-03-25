@@ -9,8 +9,8 @@ export interface BaseInput {
 
 export abstract class LudiekConsumer<
   Input extends BaseInput = BaseInput,
-  Dependencies extends LudiekDependencies = object,
-> extends LudiekEngineConcept<Dependencies> {
+  Dependencies extends Partial<LudiekDependencies> = LudiekDependencies,
+> extends LudiekEngineConcept<Dependencies & LudiekDependencies> {
   public abstract readonly schema: z.ZodObject<{
     type: z.ZodLiteral<Input['type']>;
   }>;
