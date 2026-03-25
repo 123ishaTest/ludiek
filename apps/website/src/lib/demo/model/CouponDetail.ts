@@ -1,8 +1,8 @@
-import type { Condition, Output } from '$lib/demo/demo.svelte';
+import type { BaseCondition, BaseOutput } from '@123ishatest/ludiek';
 
 export interface CouponDetail {
   id: string;
   hash: string;
-  condition?: Condition;
-  output: Output;
+  condition?: BaseCondition;
+  output: BaseOutput;
 }

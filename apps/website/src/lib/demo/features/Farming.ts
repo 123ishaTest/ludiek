@@ -1,9 +1,7 @@
-import { LudiekFeature } from '@123ishatest/ludiek';
-import type { EnginePlugins } from '$lib/demo/demo.svelte';
-
 import type { PlantDetail } from '$lib/demo/model/PlantDetail';
+import { Ludiek } from '$lib/demo/game';
 
-export class Farming extends LudiekFeature<EnginePlugins> {
+export class Farming extends Ludiek.Feature {
   readonly name = 'farming';
   protected _state = {};
 

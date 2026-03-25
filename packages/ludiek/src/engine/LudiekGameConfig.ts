@@ -4,7 +4,7 @@ import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 
 // TODO(@Isha): Use Zod for configuration for nice defaults
 export interface LudiekGameConfig<
-  Plugins extends LudiekPlugin[],
+  Plugins extends readonly LudiekPlugin[],
   Features extends readonly LudiekFeature<PluginMap<Plugins>>[],
 > {
   features: Features;

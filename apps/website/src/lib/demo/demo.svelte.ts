@@ -1,3 +1,4 @@
+import { Ludiek } from '$lib/demo/game';
 import {
   AchievementPlugin,
   CouponPlugin,
@@ -6,19 +7,13 @@ import {
   createCurrencyState,
   createSkillState,
   createStatisticState,
-  LoseCurrencyConsumer,
   CurrencyPlugin,
-  GainCurrencyProducer,
   EnterCouponController,
+  GainCurrencyProducer,
+  GainSkillExperienceProducer,
   HasCurrencyEvaluator,
   HasScalarStatisticEvaluator,
-  type LudiekBonusContribution,
-  type LudiekCondition,
-  LudiekEngine,
-  LudiekGame,
-  type LudiekInput,
-  type LudiekOutput,
-  GainSkillExperienceProducer,
+  LoseCurrencyConsumer,
   SkillPlugin,
   StatisticPlugin,
   TrueEvaluator,
@@ -47,7 +42,7 @@ const farming = new Farming();
 const engineState = $state({});
 
 // Create engine with plugins
-export const engine = new LudiekEngine(
+export const engine = Ludiek.createEngine(
   {
     plugins: [currencyPlugin, statisticPlugin, achievementPlugin, couponPlugin, skillPlugin],
     evaluators: [new TrueEvaluator(), new HasCurrencyEvaluator(), new HasScalarStatisticEvaluator()],
@@ -59,14 +54,7 @@ export const engine = new LudiekEngine(
   engineState,
 );
 
-// Extract some neat utility types
-export type EnginePlugins = typeof engine.plugins;
-export type Condition = LudiekCondition<typeof engine.evaluators>;
-export type Input = LudiekInput<typeof engine.consumers>;
-export type Output = LudiekOutput<typeof engine.producers>;
-export type Bonus = LudiekBonusContribution<typeof engine.modifiers>;
-
-export const game = new LudiekGame(engine, {
+export const game = Ludiek.createGame(engine, {
   features: [farming],
   saveKey: '@123ishatest/ludiek-demo',
   tickDuration: 0.1,

@@ -1,3 +1,5 @@
+export { createLudiek } from '@ludiek/engine/ludiek';
+
 /**
  * Ludiek
  */

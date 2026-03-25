@@ -1,8 +1,8 @@
-import type { Bonus } from '$lib/demo/demo.svelte';
+import type { BaseBonus } from '@123ishatest/ludiek';
 
 export interface KeyItemDetail {
   id: string;
   name: string;
   description: string;
-  rewards?: Bonus[];
+  rewards?: BaseBonus[];
 }
