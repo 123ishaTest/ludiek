@@ -8,7 +8,7 @@ import { createStatisticState, StatisticPluginState } from '@ludiek/plugins/stat
 import { StatisticDefinition } from '@ludiek/plugins/statistic/StatisticDefinition';
 
 export class StatisticPlugin extends LudiekPlugin {
-  readonly name = 'statistic';
+  readonly type = 'statistic';
 
   protected _state: StatisticPluginState;
   private readonly _statistics: Record<string, StatisticDefinition> = {};

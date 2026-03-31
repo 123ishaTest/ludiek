@@ -40,7 +40,9 @@ export class LudiekEngine<
     config: LudiekEngineConfig<Plugins, Evaluators, Consumers, Producers, Controllers, Modifiers>,
     state = {},
   ) {
-    this.plugins = Object.fromEntries(config.plugins?.map((p) => [p.name, p]) ?? []) as PluginMap<Plugins>;
+    this.plugins = Object.fromEntries(config.plugins?.map((p) => [p.type, p]) ?? []) as PluginMap<Plugins>;
+    // @ts-expect-error I know :(
+    // TODO(@Isha): Fix
     config.plugins?.forEach((p) => p.inject(this));
 
     config.evaluators?.forEach((c) => this.registerEvaluator(c));
@@ -260,17 +262,17 @@ export class LudiekEngine<
 
     this.pluginList.forEach((plugin) => {
       // Reset all previous bonuses
-      this._activeBonuses[plugin.name] = {};
+      this._activeBonuses[plugin.type] = {};
 
       const bonuses = plugin.getBonuses?.();
 
       bonuses?.forEach((bonus) => {
         const modifier = this.getModifier(bonus.type);
         const identifier = modifier.stringify(bonus);
-        if (this._activeBonuses[plugin.name][identifier]) {
-          this._activeBonuses[plugin.name][identifier].push(bonus);
+        if (this._activeBonuses[plugin.type][identifier]) {
+          this._activeBonuses[plugin.type][identifier].push(bonus);
         } else {
-          this._activeBonuses[plugin.name][identifier] = [bonus];
+          this._activeBonuses[plugin.type][identifier] = [bonus];
         }
       });
     });
@@ -383,7 +385,7 @@ export class LudiekEngine<
     const data: LudiekEngineSaveData = {};
 
     this.pluginList.forEach((plugin) => {
-      data[plugin.name] = plugin.save();
+      data[plugin.type] = plugin.save();
     });
 
     return data;
@@ -391,7 +393,7 @@ export class LudiekEngine<
 
   public load(data: LudiekEngineSaveData): void {
     this.pluginList.forEach((plugin) => {
-      const state = data[plugin.name];
+      const state = data[plugin.type];
       if (state) {
         plugin.load(state);
       }

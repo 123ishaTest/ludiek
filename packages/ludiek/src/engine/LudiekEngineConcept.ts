@@ -50,9 +50,10 @@ export abstract class LudiekEngineConcept<Dependencies extends LudiekDependencie
    * Throws an error if the engine is not injected
    * @private
    */
-  private ensureEngine(): void {
+  protected ensureEngine(): true {
     if (!this._engine) {
       throw new EngineNotInjectedError(`There is no engine injected into concept '${this.type}'`);
     }
+    return true;
   }
 }

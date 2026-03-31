@@ -1,44 +1,22 @@
-import { BaseCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
-import { LudiekController } from '@ludiek/engine/request/LudiekRequest';
-import { BaseInput, LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
-import { BaseOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
-import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { LudiekSavable } from '@ludiek/engine/peristence/LudiekSavable';
-import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
-import { EngineNotInjectedError } from '@ludiek/engine/LudiekError';
-import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { merge } from 'es-toolkit';
+import { LudiekSavable } from '@ludiek/engine/peristence/LudiekSavable';
 import { BonusContribution } from '@ludiek/engine/modifier/LudiekModifier';
+import { LudiekDependencies, LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
 
 /**
  * A shared base class for plugins and features
  */
-export abstract class LudiekElement implements LudiekSavable {
+export abstract class LudiekElement<Dependencies extends LudiekDependencies>
+  extends LudiekEngineConcept<Dependencies>
+  implements LudiekSavable
+{
   /**
    * Override with the name of your feature
    * @remarks Type it as a literal, not as a string as this breaks type-safety.
    */
-  abstract readonly name: string;
+  abstract readonly type: string;
 
   protected abstract _state: object;
-
-  protected _engine!: LudiekEngine<
-    LudiekPlugin[],
-    LudiekEvaluator[],
-    LudiekConsumer[],
-    LudiekProducer[],
-    LudiekController[]
-  >;
-
-  inject<Engine>(engine: Engine) {
-    this._engine = engine as LudiekEngine<
-      LudiekPlugin[],
-      LudiekEvaluator[],
-      LudiekConsumer[],
-      LudiekProducer[],
-      LudiekController[]
-    >;
-  }
 
   /**
    *  Return a list of bonuses
@@ -51,64 +29,54 @@ export abstract class LudiekElement implements LudiekSavable {
    * @internal
    * @see LudiekEngine.evaluate
    */
-  protected evaluate(condition: BaseCondition | BaseCondition[]): boolean {
+  protected evaluate(...args: Parameters<(typeof this.engine)['evaluate']>) {
     this.ensureEngine();
-    return this._engine.evaluate(condition);
+    return this.engine.evaluate(...args);
   }
 
   /**
    * @internal
    * @see LudiekEngine.handleTransaction
    */
-  protected handleTransaction(transaction: LudiekTransaction<never, never, never>): boolean {
+  protected handleTransaction(...args: Parameters<(typeof this.engine)['handleTransaction']>) {
     this.ensureEngine();
-    return this._engine.handleTransaction(transaction);
+    return this.engine.handleTransaction(...args);
   }
 
   /**
    * @internal
    * @see LudiekEngine.canConsume
    */
-  protected canConsume(input: BaseInput | BaseInput[]): boolean {
+  protected canConsume(...args: Parameters<(typeof this.engine)['canConsume']>) {
     this.ensureEngine();
-    return this._engine.canConsume(input);
+    return this.engine.canConsume(...args);
   }
 
   /**
    * @internal
    * @see LudiekEngine.consume
    */
-  protected consume(input: BaseInput | BaseInput[]): void {
+  protected consume(...args: Parameters<(typeof this.engine)['consume']>) {
     this.ensureEngine();
-    this._engine.consume(input);
+    this.engine.consume(...args);
   }
 
   /**
    * @internal
    * @see LudiekEngine.canProduce
    */
-  protected canProduce(output: BaseOutput | BaseOutput[]): boolean {
+  protected canProduce(...args: Parameters<(typeof this.engine)['canProduce']>) {
     this.ensureEngine();
-    return this._engine.canProduce(output);
+    return this.engine.canProduce(...args);
   }
 
   /**
    * @internal
    * @see LudiekEngine.produce
    */
-  protected produce(output: BaseOutput | BaseOutput[]) {
+  protected produce(...args: Parameters<(typeof this.engine)['produce']>) {
     this.ensureEngine();
-    this._engine.produce(output);
-  }
-
-  /**
-   * Throws an error if the engine is not injected
-   * @private
-   */
-  private ensureEngine(): void {
-    if (!this._engine) {
-      throw new EngineNotInjectedError(`There is no engine injected into plugin '${this.name}'`);
-    }
+    return this.engine.produce(...args);
   }
 
   public get state(): object {

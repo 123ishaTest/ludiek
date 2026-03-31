@@ -11,7 +11,7 @@ export type Currency = {
 };
 
 export class CurrencyPlugin extends LudiekPlugin {
-  readonly name = 'currency';
+  readonly type = 'currency';
 
   protected _state: CurrencyPluginState;
   private readonly _currencies: Record<string, CurrencyDefinition> = {};

@@ -8,7 +8,7 @@ import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
 import { UpgradeBought } from '@ludiek/plugins/upgrade/UpgradeEvents';
 
 export class UpgradePlugin extends LudiekPlugin {
-  readonly name = 'upgrade';
+  readonly type = 'upgrade';
   protected _state: UpgradePluginState;
 
   private readonly _upgrades: Record<string, UpgradeDefinition> = {};

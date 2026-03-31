@@ -7,7 +7,7 @@ import { CouponDefinition } from '@ludiek/plugins/coupon/CouponDefinition';
 import { CouponRedeemed } from '@ludiek/plugins/coupon/CouponEvents';
 
 export class CouponPlugin extends LudiekPlugin {
-  readonly name = 'coupon';
+  readonly type = 'coupon';
 
   protected _state: CouponPluginState;
 

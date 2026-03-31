@@ -15,7 +15,7 @@ import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction'
 import { LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
 
 export type FeatureMap<Features extends LudiekFeature<Record<string, LudiekPlugin>>[]> = {
-  [Feature in Features[number] as Feature['name']]: Extract<Features[number], { name: Feature['name'] }>;
+  [Feature in Features[number] as Feature['type']]: Extract<Features[number], { type: Feature['type'] }>;
 };
 
 export class LudiekGame<
@@ -43,13 +43,15 @@ export class LudiekGame<
   ) {
     this._engine = engine;
     // TODO(@Isha): What to do with features?
-    this.features = Object.fromEntries(config.features?.map((f) => [f.name, f]) ?? []) as FeatureMap<Features>;
+    this.features = Object.fromEntries(config.features?.map((f) => [f.type, f]) ?? []) as FeatureMap<Features>;
     this.config = config;
 
     this._nextSave = this.config.saveInterval;
 
     this.featureList.forEach((feature) => {
-      feature.init(this._engine.plugins);
+      // @ts-expect-error I know :(
+      // TODO(@Isha): Fix
+      feature.inject(this._engine);
     });
   }
 
@@ -104,7 +106,7 @@ export class LudiekGame<
   public save(): LudiekSaveData {
     const featureData: LudiekFeaturesSaveData = {};
     this.featureList.forEach((feature) => {
-      featureData[feature.name] = feature.save();
+      featureData[feature.type] = feature.save();
     });
 
     return {
@@ -123,7 +125,7 @@ export class LudiekGame<
       return;
     }
     this.featureList.forEach((feature) => {
-      const featureSaveData = saveData.features[feature.name];
+      const featureSaveData = saveData.features[feature.type];
       if (featureSaveData == null) {
         return;
       }

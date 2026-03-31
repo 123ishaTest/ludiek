@@ -1,10 +1,13 @@
-import { LudiekFeature } from '@123ishatest/ludiek';
-import type { EnginePlugins } from '$lib/demo/demo.svelte';
+import { CurrencyPlugin, LudiekFeature, StatisticPlugin } from '@123ishatest/ludiek';
 
 import type { PlantDetail } from '$lib/demo/model/PlantDetail';
 
-export class Farming extends LudiekFeature<EnginePlugins> {
-  readonly name = 'farming';
+type Dependencies = {
+  plugins: [CurrencyPlugin, StatisticPlugin];
+};
+
+export class Farming extends LudiekFeature<Dependencies> {
+  readonly type = 'farming';
   protected _state = {};
 
   public plants: PlantDetail[] = [];
@@ -19,8 +22,8 @@ export class Farming extends LudiekFeature<EnginePlugins> {
 
   public sow(id: string): void {
     const plant = this.getPlant(id);
-    this._plugins.currency.gainCurrency({ id: '/currency/money', amount: plant.moneyReward });
-    this._plugins.statistic.incrementMapStatistic('/statistic/plants-planted', plant.id);
+    this.engine.plugins.currency.gainCurrency({ id: '/currency/money', amount: plant.moneyReward });
+    this.engine.plugins.statistic.incrementMapStatistic('/statistic/plants-planted', plant.id);
   }
 
   public getPlant(id: string): PlantDetail {

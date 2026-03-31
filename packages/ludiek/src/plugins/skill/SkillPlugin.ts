@@ -8,7 +8,7 @@ import { progress, Progress } from '@ludiek/util/progress';
 import { ExperienceGained, LevelUp } from '@ludiek/plugins/skill/SkillEvents';
 
 export class SkillPlugin extends LudiekPlugin {
-  readonly name = 'skill';
+  readonly type = 'skill';
 
   protected _state: SkillPluginState;
 
