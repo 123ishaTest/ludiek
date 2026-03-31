@@ -1,5 +1,11 @@
 # @123ishatest/ludiek-website
 
+## 0.3.1
+
+### Patch Changes
+
+- Update dependencies
+
 ## 0.3.0
 
 ### Minor Changes
