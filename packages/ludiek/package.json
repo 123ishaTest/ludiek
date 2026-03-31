@@ -25,12 +25,12 @@
   "devDependencies": {
     "@123ishatest/ludiek-eslint-config": "*",
     "@123ishatest/ludiek-typescript-config": "*",
-    "@vitest/coverage-v8": "^4.0.6",
-    "jsdom": "^27.1.0",
-    "vite": "^7.0.5",
+    "@vitest/coverage-v8": "^4.1.2",
+    "jsdom": "^29.0.1",
+    "vite": "^7.3.1",
     "vite-plugin-dts": "^4.5.4",
-    "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^4.0.6"
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.1.2"
   },
   "dependencies": {
     "es-toolkit": "^1.39.10",
