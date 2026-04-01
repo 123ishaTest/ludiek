@@ -6,12 +6,12 @@ import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
 
 export interface LudiekEngineConfig<
-  Plugins extends readonly LudiekPlugin[] = [],
-  Evaluators extends readonly LudiekEvaluator[] = [],
-  Consumers extends readonly LudiekConsumer[] = [],
-  Producers extends readonly LudiekProducer[] = [],
-  Controllers extends readonly LudiekController[] = [],
-  Modifiers extends readonly LudiekModifier[] = [],
+  Plugins extends readonly LudiekPlugin[] = readonly LudiekPlugin[],
+  Evaluators extends readonly LudiekEvaluator[] = readonly LudiekEvaluator[],
+  Consumers extends readonly LudiekConsumer[] = readonly LudiekConsumer[],
+  Producers extends readonly LudiekProducer[] = readonly LudiekProducer[],
+  Controllers extends readonly LudiekController[] = readonly LudiekController[],
+  Modifiers extends readonly LudiekModifier[] = readonly LudiekModifier[],
 > {
   plugins?: Plugins;
   evaluators?: Evaluators;

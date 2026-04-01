@@ -6,6 +6,7 @@ import { LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
 import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 import { LudiekController } from '@ludiek/engine/request/LudiekRequest';
 import { LudiekBonus, LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
+import { LudiekEngineConfig } from '@ludiek/engine/LudiekEngineConfig';
 
 export interface LudiekDependencies {
   plugins?: readonly LudiekPlugin[];
@@ -17,12 +18,14 @@ export interface LudiekDependencies {
 }
 
 export type DependencyEngine<Dependencies extends LudiekDependencies> = LudiekEngine<
-  NonNullable<Dependencies['plugins']>,
-  NonNullable<Dependencies['evaluators']>,
-  NonNullable<Dependencies['consumers']>,
-  NonNullable<Dependencies['producers']>,
-  NonNullable<Dependencies['controllers']>,
-  NonNullable<Dependencies['modifiers']>
+  LudiekEngineConfig<
+    NonNullable<Dependencies['plugins']>,
+    NonNullable<Dependencies['evaluators']>,
+    NonNullable<Dependencies['consumers']>,
+    NonNullable<Dependencies['producers']>,
+    NonNullable<Dependencies['controllers']>,
+    NonNullable<Dependencies['modifiers']>
+  >
 >;
 
 export abstract class LudiekEngineConcept<Dependencies extends LudiekDependencies = object> {
@@ -38,8 +41,10 @@ export abstract class LudiekEngineConcept<Dependencies extends LudiekDependencie
     return this._engine;
   }
 
-  public inject(engine: DependencyEngine<Dependencies>): void {
-    this._engine = engine;
+  // TODO(@Isha): Fix
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public inject(engine: LudiekEngine<any>): void {
+    this._engine = engine as DependencyEngine<Dependencies>;
   }
 
   protected getBonus(modifier: LudiekBonus<NonNullable<Dependencies['modifiers']>>): number {
