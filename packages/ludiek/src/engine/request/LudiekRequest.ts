@@ -10,6 +10,8 @@ export abstract class LudiekController<
   Request extends BaseRequest = BaseRequest,
   Dependencies extends LudiekDependencies = object,
 > extends LudiekEngineConcept<Dependencies> {
+  declare readonly __request: Request;
+
   public abstract readonly schema: z.ZodObject<{
     type: z.ZodLiteral<Request['type']>;
   }>;
@@ -26,11 +28,7 @@ export abstract class LudiekController<
  * Given a tuple of LudiekControllers, produce a union of their Requests.
  */
 export type LudiekRequest<Controllers extends readonly LudiekController[] = []> =
-  IsNonEmpty<Controllers> extends false
-    ? never
-    : Controllers[number] extends LudiekController<infer Request>
-      ? Request
-      : never;
+  IsNonEmpty<Controllers> extends false ? never : NonNullable<Controllers[number]['__request']>;
 
 /**
  * Given a tuple of LudiekControllers, produce a union of their schemas.

@@ -49,8 +49,6 @@ export class LudiekGame<
     this._nextSave = this.config.saveInterval;
 
     this.featureList.forEach((feature) => {
-      // @ts-expect-error I know :(
-      // TODO(@Isha): Fix
       feature.inject(this._engine);
     });
   }

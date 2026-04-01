@@ -5,7 +5,7 @@ import { LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
 import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 import { LudiekController } from '@ludiek/engine/request/LudiekRequest';
-import { LudiekBonus, LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
+import { LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
 
 export interface LudiekDependencies {
   plugins?: readonly LudiekPlugin[];
@@ -38,12 +38,10 @@ export abstract class LudiekEngineConcept<Dependencies extends LudiekDependencie
     return this._engine;
   }
 
-  public inject(engine: DependencyEngine<Dependencies>): void {
+  // TODO(@Isha): Fix
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public inject<Engine extends DependencyEngine<any>>(engine: Engine): void {
     this._engine = engine;
-  }
-
-  protected getBonus(modifier: LudiekBonus<NonNullable<Dependencies['modifiers']>>): number {
-    return this.engine.getBonus(modifier);
   }
 
   /**

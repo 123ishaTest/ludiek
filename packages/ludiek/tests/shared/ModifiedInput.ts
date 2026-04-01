@@ -20,7 +20,7 @@ export class ModifiedConsumer extends LudiekConsumer<ModifiedInput, Dependencies
   readonly schema = ModifiedInputSchema;
 
   modify(input: ModifiedInput): ModifiedInput {
-    input.amount *= this.getBonus({ type: '/bonus/dummy' });
+    input.amount *= this.engine.getBonus({ type: '/bonus/dummy' });
     return input;
   }
 

@@ -11,6 +11,8 @@ export abstract class LudiekConsumer<
   Input extends BaseInput = BaseInput,
   Dependencies extends LudiekDependencies = object,
 > extends LudiekEngineConcept<Dependencies> {
+  declare readonly __input: Input;
+
   public abstract readonly schema: z.ZodObject<{
     type: z.ZodLiteral<Input['type']>;
   }>;
@@ -44,7 +46,7 @@ export abstract class LudiekConsumer<
  * Given a tuple of LudiekConsumers, produce a union of their Inputs.
  */
 export type LudiekInput<Consumers extends readonly LudiekConsumer[]> =
-  IsNonEmpty<Consumers> extends false ? never : Consumers[number] extends LudiekConsumer<infer Input> ? Input : never;
+  IsNonEmpty<Consumers> extends false ? never : NonNullable<Consumers[number]['__input']>;
 
 /**
  * Given a tuple of LudiekConsumers, produce a union of their schemas.

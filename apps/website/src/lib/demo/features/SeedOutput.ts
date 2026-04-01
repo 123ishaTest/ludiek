@@ -20,8 +20,8 @@ export class SeedProducer extends LudiekProducer<SeedOutput, Dependencies> {
   readonly schema = SeedOutputSchema;
 
   modify(output: SeedOutput): SeedOutput {
-    output.amount *= this.getBonus({ type: '/bonus/seed', seed: output.plant });
-    output.amount *= this.getBonus({ type: '/bonus/seed-global' });
+    output.amount *= this.engine.getBonus({ type: '/bonus/seed', seed: output.plant });
+    output.amount *= this.engine.getBonus({ type: '/bonus/seed-global' });
     return output;
   }
 
