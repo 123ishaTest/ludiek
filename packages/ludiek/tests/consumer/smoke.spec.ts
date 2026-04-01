@@ -3,7 +3,7 @@ import { CurrencyPlugin, LudiekEngine, LudiekFeature, LudiekGame } from '@ludiek
 import { LudiekSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 
 class DummyFeature extends LudiekFeature<never> {
-  name = 'dummy';
+  type = 'dummy';
 
   protected _state = {
     xp: 0,

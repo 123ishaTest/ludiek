@@ -6,7 +6,7 @@ import { AchievementDefinition } from '@ludiek/plugins/achievement/AchievementDe
 import { AchievementEarned } from '@ludiek/plugins/achievement/AchievementEvents';
 
 export class AchievementPlugin extends LudiekPlugin {
-  readonly name = 'achievement';
+  readonly type = 'achievement';
   protected _state: AchievementPluginState;
 
   private readonly _achievements: Record<string, AchievementDefinition> = {};

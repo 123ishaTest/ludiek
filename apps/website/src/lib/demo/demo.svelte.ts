@@ -60,7 +60,6 @@ export const engine = new LudiekEngine(
 );
 
 // Extract some neat utility types
-export type EnginePlugins = typeof engine.plugins;
 export type Condition = LudiekCondition<typeof engine.evaluators>;
 export type Input = LudiekInput<typeof engine.consumers>;
 export type Output = LudiekOutput<typeof engine.producers>;

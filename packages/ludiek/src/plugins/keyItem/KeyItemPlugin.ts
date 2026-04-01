@@ -7,7 +7,7 @@ import { KeyItemDefinition } from '@ludiek/plugins/keyItem/KeyItemDefinition';
 import { KeyItemGained } from '@ludiek/plugins/keyItem/KeyItemEvents';
 
 export class KeyItemPlugin extends LudiekPlugin {
-  readonly name = 'keyItem';
+  readonly type = 'keyItem';
 
   protected _state: KeyItemPluginState;
 

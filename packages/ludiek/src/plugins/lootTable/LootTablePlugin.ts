@@ -11,7 +11,7 @@ import { LootTableRolled } from '@ludiek/plugins/lootTable/LootTableEvents';
 import { UnknownLootTableError } from '@ludiek/plugins/lootTable/LootTableErrors';
 
 export class LootTablePlugin extends LudiekPlugin {
-  readonly name = 'lootTable';
+  readonly type = 'lootTable';
 
   protected _state = {};
 

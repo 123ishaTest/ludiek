@@ -4,7 +4,7 @@ import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { BaseCondition } from '@ludiek/engine/condition/LudiekEvaluator';
 
 class ExamplePlugin extends LudiekPlugin {
-  name = 'example';
+  readonly type = 'example';
   public config = {};
 
   protected _state = {};

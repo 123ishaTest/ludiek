@@ -7,7 +7,7 @@ import { BuffExpired, BuffExtended, BuffActivated } from '@ludiek/plugins/buff/B
 import { BonusContribution } from '@ludiek/engine/modifier/LudiekModifier';
 
 export class BuffPlugin extends LudiekPlugin {
-  readonly name = 'buff';
+  readonly type = 'buff';
   protected _state: BuffPluginState;
 
   private readonly _buffs: Record<string, BuffDefinition> = {};

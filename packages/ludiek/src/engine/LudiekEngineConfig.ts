@@ -24,8 +24,8 @@ export interface LudiekEngineConfig<
 export type PluginMap<Plugins extends readonly LudiekPlugin[] | undefined> = Plugins extends undefined
   ? object
   : {
-      [Plugin in NonNullable<Plugins>[number] as Plugin['name']]: Extract<
+      [Plugin in NonNullable<Plugins>[number] as Plugin['type']]: Extract<
         NonNullable<Plugins>[number],
-        { name: Plugin['name'] }
+        { type: Plugin['type'] }
       >;
     };
