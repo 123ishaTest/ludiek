@@ -6,11 +6,12 @@ it('is symmetrical', () => {
   // Arrange
   const data: LudiekSaveData = {
     engine: {
-      some: { field: 0 },
+      plugins: { some: { field: 0 } },
+      features: {
+        and: { data: [3] },
+      },
     },
-    features: {
-      and: { data: [3] },
-    },
+    game: {},
   };
   const encoder = new LudiekJsonSaveEncoder();
 

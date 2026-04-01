@@ -9,15 +9,18 @@ const engine = new LudiekEngine({
 engine.plugins.currency.loadContent([{ id: '/currency/money' }]);
 
 const emptySave = {
-  currency: {
-    balances: {
-      '/currency/money': 0,
+  plugins: {
+    currency: {
+      balances: {
+        '/currency/money': 0,
+      },
+    },
+    statistic: {
+      scalar: {},
+      map: {},
     },
   },
-  statistic: {
-    scalar: {},
-    map: {},
-  },
+  features: {},
 };
 
 describe('Persistence', () => {
@@ -44,11 +47,14 @@ describe('Persistence', () => {
     // Act
     const money = 10;
     engine.load({
-      currency: {
-        balances: {
-          '/currency/money': money,
+      plugins: {
+        currency: {
+          balances: {
+            '/currency/money': money,
+          },
         },
       },
+      features: {},
     });
 
     // Assert

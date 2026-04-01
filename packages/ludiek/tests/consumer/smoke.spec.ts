@@ -31,11 +31,11 @@ const createGame = () => {
 
   const engine = new LudiekEngine({
     plugins: [currency],
+    features: [new DummyFeature(currency)],
   });
   currency.loadContent([{ id: '/currency/money' }]);
 
   return new LudiekGame(engine, {
-    features: [new DummyFeature(currency)],
     saveKey: 'dummy-game',
     saveInterval: 30,
     tickDuration: 1,
@@ -73,22 +73,24 @@ it('saves features and plugins', () => {
 
   // Assert
   expect(save).toStrictEqual({
-    engine: { currency: { balances: { '/currency/money': 1000 } } },
-    features: { dummy: { xp: 1000 } },
+    engine: {
+      plugins: { currency: { balances: { '/currency/money': 1000 } } },
+      features: { dummy: { xp: 1000 } },
+    },
+    game: {},
   });
 });
 
 it('loads features and plugins', () => {
   // Arrange
   const save: LudiekSaveData = {
-    engine: { currency: { balances: { '/currency/money': 300 } } },
-    features: { dummy: { xp: 400 } },
+    engine: { plugins: { currency: { balances: { '/currency/money': 300 } } }, features: { dummy: { xp: 400 } } },
   };
 
   // Act
   game.load(save);
   const money = game.engine.plugins.currency.getBalance('/currency/money');
-  const xp = game.features.dummy.getXp();
+  const xp = game.engine.features.dummy.getXp();
 
   // Assert
   expect(money).toBe(300);

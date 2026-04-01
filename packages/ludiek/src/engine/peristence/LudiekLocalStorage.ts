@@ -17,8 +17,11 @@ export class LudiekLocalStorage {
     const storageData = localStorage.getItem(key);
     if (storageData == null) {
       return {
-        features: {},
-        engine: {},
+        game: {},
+        engine: {
+          features: {},
+          plugins: {},
+        },
       };
     }
     return saveEncoder.decode(storageData);

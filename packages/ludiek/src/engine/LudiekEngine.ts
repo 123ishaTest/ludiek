@@ -19,9 +19,12 @@ import {
 import { ModifierNotFoundError } from '@ludiek/engine/modifier/ModifierError';
 import { cloneDeep } from 'es-toolkit';
 import { z, ZodDiscriminatedUnion, ZodNever } from 'zod';
+import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
+import { FeatureMap } from '@ludiek/engine/LudiekGame';
 
 export class LudiekEngine<
   Plugins extends readonly LudiekPlugin[] = [],
+  Features extends readonly LudiekFeature[] = [],
   Evaluators extends readonly LudiekEvaluator[] = [],
   Consumers extends readonly LudiekConsumer[] = [],
   Producers extends readonly LudiekProducer[] = [],
@@ -29,6 +32,7 @@ export class LudiekEngine<
   Modifiers extends readonly LudiekModifier[] = [],
 > {
   public plugins: PluginMap<Plugins>;
+  public features: FeatureMap<Features>;
   private readonly _evaluators: Record<string, LudiekEvaluator> = {};
   private readonly _consumers: Record<string, LudiekConsumer> = {};
   private readonly _producers: Record<string, LudiekProducer> = {};
@@ -37,11 +41,14 @@ export class LudiekEngine<
   private readonly _activeBonuses: Record<string, Record<string, BonusContribution[]>>;
 
   constructor(
-    config: LudiekEngineConfig<Plugins, Evaluators, Consumers, Producers, Controllers, Modifiers>,
+    config: LudiekEngineConfig<Plugins, Features, Evaluators, Consumers, Producers, Controllers, Modifiers>,
     state = {},
   ) {
     this.plugins = Object.fromEntries(config.plugins?.map((p) => [p.type, p]) ?? []) as PluginMap<Plugins>;
     config.plugins?.forEach((p) => p.inject(this));
+
+    this.features = Object.fromEntries(config.features?.map((f) => [f.type, f]) ?? []) as FeatureMap<Features>;
+    config.features?.forEach((f) => f.inject(this));
 
     config.evaluators?.forEach((c) => this.registerEvaluator(c));
     config.consumers?.forEach((i) => this.registerConsumer(i));
@@ -380,10 +387,17 @@ export class LudiekEngine<
 
   // Saving and loading
   public save(): LudiekEngineSaveData {
-    const data: LudiekEngineSaveData = {};
+    const data: LudiekEngineSaveData = {
+      features: {},
+      plugins: {},
+    };
 
     this.pluginList.forEach((plugin) => {
-      data[plugin.type] = plugin.save();
+      data.plugins[plugin.type] = plugin.save();
+    });
+
+    this.featureList.forEach((feature) => {
+      data.features[feature.type] = feature.save();
     });
 
     return data;
@@ -391,9 +405,15 @@ export class LudiekEngine<
 
   public load(data: LudiekEngineSaveData): void {
     this.pluginList.forEach((plugin) => {
-      const state = data[plugin.type];
+      const state = data.plugins[plugin.type];
       if (state) {
         plugin.load(state);
+      }
+    });
+    this.featureList.forEach((feature) => {
+      const state = data.features[feature.type];
+      if (state) {
+        feature.load(state);
       }
     });
   }
@@ -402,11 +422,19 @@ export class LudiekEngine<
     return Object.values(this.plugins);
   }
 
+  public get featureList(): LudiekFeature[] {
+    return Object.values(this.features);
+  }
+
   /**
    * Do calculations before the features tick
    */
   public preTick(): void {
     // TODO(@Isha): For now this is called by the Game, might switch up when Features are moved to the engine
     this.collectBonuses();
+  }
+
+  public tick(delta: number): void {
+    this.featureList.forEach((feature) => feature.update?.(delta));
   }
 }

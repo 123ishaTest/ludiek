@@ -1,7 +1,10 @@
 export interface LudiekSaveData {
   engine: LudiekEngineSaveData;
-  features: LudiekFeaturesSaveData;
+  game?: LudiekGameSaveData;
 }
 
-export type LudiekEngineSaveData = Record<string, object>;
-export type LudiekFeaturesSaveData = Record<string, object>;
+export type LudiekEngineSaveData = {
+  features: Record<string, object>;
+  plugins: Record<string, object>;
+};
+export type LudiekGameSaveData = Record<string, object>;
