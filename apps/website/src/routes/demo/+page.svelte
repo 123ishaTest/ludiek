@@ -31,7 +31,7 @@
   });
 
   const sow = () => {
-    game.request({
+    game.engine.request({
       // TODO(@Isha): Move this into a game.request combined type
       type: '/farming/sow-seed',
       plant: '/plant/sunflower',
@@ -47,7 +47,7 @@
   };
 
   const trade = () => {
-    game.handleTransaction({
+    game.engine.handleTransaction({
       input: {
         type: '/input/lose-currency',
         id: '/currency/money',

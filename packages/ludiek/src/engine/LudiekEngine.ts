@@ -20,15 +20,17 @@ import { ModifierNotFoundError } from '@ludiek/engine/modifier/ModifierError';
 import { cloneDeep } from 'es-toolkit';
 import { z, ZodDiscriminatedUnion, ZodNever } from 'zod';
 
-export class LudiekEngine<
-  Plugins extends readonly LudiekPlugin[] = [],
-  Evaluators extends readonly LudiekEvaluator[] = [],
-  Consumers extends readonly LudiekConsumer[] = [],
-  Producers extends readonly LudiekProducer[] = [],
-  Controllers extends readonly LudiekController[] = [],
-  Modifiers extends readonly LudiekModifier[] = [],
-> {
-  public plugins: PluginMap<Plugins>;
+export type EngineTypes<C extends LudiekEngineConfig> = {
+  Plugins: NonNullable<C['plugins']>;
+  Evaluators: NonNullable<C['evaluators']>;
+  Consumers: NonNullable<C['consumers']>;
+  Producers: NonNullable<C['producers']>;
+  Controllers: NonNullable<C['controllers']>;
+  Modifiers: NonNullable<C['modifiers']>;
+};
+
+export class LudiekEngine<C extends LudiekEngineConfig> {
+  public plugins: PluginMap<EngineTypes<C>['Plugins']>;
   private readonly _evaluators: Record<string, LudiekEvaluator> = {};
   private readonly _consumers: Record<string, LudiekConsumer> = {};
   private readonly _producers: Record<string, LudiekProducer> = {};
@@ -36,13 +38,8 @@ export class LudiekEngine<
   private readonly _modifiers: Record<string, LudiekModifier> = {};
   private readonly _activeBonuses: Record<string, Record<string, BonusContribution[]>>;
 
-  constructor(
-    config: LudiekEngineConfig<Plugins, Evaluators, Consumers, Producers, Controllers, Modifiers>,
-    state = {},
-  ) {
-    this.plugins = Object.fromEntries(config.plugins?.map((p) => [p.type, p]) ?? []) as PluginMap<Plugins>;
-    // @ts-expect-error I know :(
-    // TODO(@Isha): Fix
+  constructor(config: C, state = {}) {
+    this.plugins = Object.fromEntries(config.plugins?.map((p) => [p.type, p]) ?? []) as PluginMap<C['plugins']>;
     config.plugins?.forEach((p) => p.inject(this));
 
     config.evaluators?.forEach((c) => this.registerEvaluator(c));
@@ -54,48 +51,48 @@ export class LudiekEngine<
     this._activeBonuses = state;
   }
 
-  public get evaluators(): Evaluators {
-    return Object.values(this._evaluators) as unknown as Evaluators;
+  public get evaluators(): EngineTypes<C>['Evaluators'] {
+    return Object.values(this._evaluators) as EngineTypes<C>['Evaluators'];
   }
 
-  public conditionSchema(): ZodNever | ZodDiscriminatedUnion<EvaluatorSchemas<Evaluators>, 'type'> {
+  public conditionSchema(): ZodNever | ZodDiscriminatedUnion<EvaluatorSchemas<EngineTypes<C>['Evaluators']>, 'type'> {
     const schemas = this.evaluators.map((e) => e.schema);
     return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
   }
 
-  public get consumers(): Consumers {
-    return Object.values(this._consumers) as unknown as Consumers;
+  public get consumers(): EngineTypes<C>['Consumers'] {
+    return Object.values(this._consumers) as EngineTypes<C>['Consumers'];
   }
 
-  public inputSchema(): ZodNever | ZodDiscriminatedUnion<ConsumerSchemas<Consumers>, 'type'> {
+  public inputSchema(): ZodNever | ZodDiscriminatedUnion<ConsumerSchemas<EngineTypes<C>['Consumers']>, 'type'> {
     const schemas = this.consumers.map((c) => c.schema);
     return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
   }
 
-  public get producers(): Producers {
-    return Object.values(this._producers) as unknown as Producers;
+  public get producers(): EngineTypes<C>['Producers'] {
+    return Object.values(this._producers) as EngineTypes<C>['Producers'];
   }
 
-  public outputSchema(): ZodNever | ZodDiscriminatedUnion<ProducerSchemas<Producers>, 'type'> {
+  public outputSchema(): ZodNever | ZodDiscriminatedUnion<ProducerSchemas<EngineTypes<C>['Producers']>, 'type'> {
     const schemas = this.producers.map((c) => c.schema);
     return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
   }
 
-  public get controllers(): Controllers {
-    return Object.values(this._controllers) as unknown as Controllers;
+  public get controllers(): EngineTypes<C>['Controllers'] {
+    return Object.values(this._controllers) as unknown as EngineTypes<C>['Controllers'];
   }
 
-  public requestSchema(): ZodNever | ZodDiscriminatedUnion<ControllerSchemas<Controllers>, 'type'> {
-    const schemas = this.producers.map((c) => c.schema);
+  public requestSchema(): ZodNever | ZodDiscriminatedUnion<ControllerSchemas<EngineTypes<C>['Controllers']>, 'type'> {
+    const schemas = this.controllers.map((c) => c.schema);
     return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
   }
 
-  public get modifiers(): Modifiers {
-    return Object.values(this._modifiers) as unknown as Modifiers;
+  public get modifiers(): EngineTypes<C>['Modifiers'] {
+    return Object.values(this._modifiers) as unknown as EngineTypes<C>['Modifiers'];
   }
 
-  public bonusSchema(): ZodNever | ZodDiscriminatedUnion<ModifierSchemas<Modifiers>, 'type'> {
-    const schemas = this.producers.map((c) => c.schema);
+  public bonusSchema(): ZodNever | ZodDiscriminatedUnion<ModifierSchemas<EngineTypes<C>['Modifiers']>, 'type'> {
+    const schemas = this.modifiers.map((c) => c.schema);
     return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
   }
 
@@ -127,7 +124,9 @@ export class LudiekEngine<
   /**
    * Evaluate one or multiple condition and evaluates whether they are all true.
    */
-  public evaluate(condition: LudiekCondition<Evaluators> | LudiekCondition<Evaluators>[]): boolean {
+  public evaluate(
+    condition: LudiekCondition<EngineTypes<C>['Evaluators']> | LudiekCondition<EngineTypes<C>['Evaluators']>[],
+  ): boolean {
     if (!Array.isArray(condition)) {
       condition = [condition];
     }
@@ -139,13 +138,17 @@ export class LudiekEngine<
     });
   }
 
-  public request(request: LudiekRequest<Controllers>): void {
+  public request(request: LudiekRequest<EngineTypes<C>['Controllers']>): void {
     const controller = this.getController(request.type);
     controller.resolve(request);
   }
 
   public handleTransaction(
-    transaction: LudiekTransaction<LudiekInput<Consumers>, LudiekOutput<Producers>, LudiekCondition<Evaluators>>,
+    transaction: LudiekTransaction<
+      LudiekInput<EngineTypes<C>['Consumers']>,
+      LudiekOutput<EngineTypes<C>['Producers']>,
+      LudiekCondition<EngineTypes<C>['Evaluators']>
+    >,
   ): boolean {
     if (transaction.requirement && !this.evaluate(transaction.requirement)) {
       return false;
@@ -173,7 +176,9 @@ export class LudiekEngine<
    * Checks whether we can consume the input
    * @param input
    */
-  public canConsume(input: LudiekInput<Consumers> | LudiekInput<Consumers>[]): boolean {
+  public canConsume(
+    input: LudiekInput<EngineTypes<C>['Consumers']> | LudiekInput<EngineTypes<C>['Consumers']>[],
+  ): boolean {
     if (!Array.isArray(input)) {
       input = [input];
     }
@@ -189,7 +194,7 @@ export class LudiekEngine<
    * Consume the input with no regards for whether we can consume it.
    * @param input
    */
-  public consume(input: LudiekInput<Consumers> | LudiekInput<Consumers>[]): void {
+  public consume(input: LudiekInput<EngineTypes<C>['Consumers']> | LudiekInput<EngineTypes<C>['Consumers']>[]): void {
     if (!Array.isArray(input)) {
       input = [input];
     }
@@ -205,7 +210,9 @@ export class LudiekEngine<
    * Checks whether we can produce the output
    * @param output
    */
-  public canProduce(output: LudiekOutput<Producers> | LudiekOutput<Producers>[]): boolean {
+  public canProduce(
+    output: LudiekOutput<EngineTypes<C>['Producers']> | LudiekOutput<EngineTypes<C>['Producers']>[],
+  ): boolean {
     if (!Array.isArray(output)) {
       output = [output];
     }
@@ -221,7 +228,9 @@ export class LudiekEngine<
    * Produce the output with no regards for whether we can take it.
    * @param output
    */
-  public produce(output: LudiekOutput<Producers> | LudiekOutput<Producers>[]): void {
+  public produce(
+    output: LudiekOutput<EngineTypes<C>['Producers']> | LudiekOutput<EngineTypes<C>['Producers']>[],
+  ): void {
     if (!Array.isArray(output)) {
       output = [output];
     }
@@ -233,7 +242,7 @@ export class LudiekEngine<
     });
   }
 
-  public getBonus(bonus: LudiekBonus<Modifiers>): number {
+  public getBonus(bonus: LudiekBonus<EngineTypes<C>['Modifiers']>): number {
     // TODO(@Isha): Should this be cached between ticks too?
     const modifier = this.getModifier(bonus.type);
 
@@ -278,17 +287,19 @@ export class LudiekEngine<
     });
   }
 
-  public modifyCondition<Condition extends LudiekCondition<Evaluators>>(condition: Condition): Condition {
+  public modifyCondition<Condition extends LudiekCondition<EngineTypes<C>['Evaluators']>>(
+    condition: Condition,
+  ): Condition {
     const evaluator = this.getEvaluator(condition.type);
     return evaluator.modify(cloneDeep(condition)) as Condition;
   }
 
-  public modifyInput<Input extends LudiekInput<Consumers>>(input: Input): Input {
+  public modifyInput<Input extends LudiekInput<EngineTypes<C>['Consumers']>>(input: Input): Input {
     const consumer = this.getConsumer(input.type);
     return consumer.modify(cloneDeep(input)) as Input;
   }
 
-  public modifyOutput<Output extends LudiekOutput<Producers>>(output: Output): Output {
+  public modifyOutput<Output extends LudiekOutput<EngineTypes<C>['Producers']>>(output: Output): Output {
     const producer = this.getProducer(output.type);
     return producer.modify(cloneDeep(output)) as Output;
   }

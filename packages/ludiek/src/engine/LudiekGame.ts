@@ -1,35 +1,23 @@
-import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
+import { EngineTypes, LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
-import { PluginMap } from '@ludiek/engine/LudiekEngineConfig';
-import { LudiekCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
+import { LudiekEngineConfig, PluginMap } from '@ludiek/engine/LudiekEngineConfig';
 import { ISignal, SignalDispatcher } from 'strongly-typed-events';
 import { LudiekFeaturesSaveData, LudiekSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 import { LudiekLocalStorage } from '@ludiek/engine/peristence/LudiekLocalStorage';
 import { LudiekJsonSaveEncoder } from '@ludiek/engine/peristence/LudiekJsonSaveEncoder';
 import { LudiekGameConfig } from '@ludiek/engine/LudiekGameConfig';
-import { LudiekConsumer, LudiekInput } from '@ludiek/engine/input/LudiekConsumer';
-import { LudiekOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
-import { LudiekController, LudiekRequest } from '@ludiek/engine/request/LudiekRequest';
-import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
-import { LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
 
 export type FeatureMap<Features extends LudiekFeature<Record<string, LudiekPlugin>>[]> = {
   [Feature in Features[number] as Feature['type']]: Extract<Features[number], { type: Feature['type'] }>;
 };
 
-export class LudiekGame<
-  Plugins extends LudiekPlugin[],
-  Features extends LudiekFeature<PluginMap<Plugins>>[],
-  Evaluators extends readonly LudiekEvaluator[],
-  Consumers extends readonly LudiekConsumer[],
-  Producers extends readonly LudiekProducer[],
-  Controllers extends readonly LudiekController[],
-  Modifiers extends readonly LudiekModifier[],
-> {
+// TODO(@Isha): Fix
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export class LudiekGame<EngineConfig extends LudiekEngineConfig, Features extends LudiekFeature<any>[]> {
   public readonly features: FeatureMap<Features>;
-  private readonly _engine: LudiekEngine<Plugins, Evaluators, Consumers, Producers, Controllers, Modifiers>;
-  public readonly config: LudiekGameConfig<Plugins, Features>;
+  private readonly _engine: LudiekEngine<EngineConfig>;
+  public readonly config: LudiekGameConfig<LudiekPlugin[], Features>;
   protected saveEncoder = new LudiekJsonSaveEncoder();
   protected _tickInterval: ReturnType<typeof setTimeout> | null = null;
 
@@ -37,10 +25,7 @@ export class LudiekGame<
 
   protected _nextSave: number;
 
-  constructor(
-    engine: LudiekEngine<Plugins, Evaluators, Consumers, Producers, Controllers, Modifiers>,
-    config: LudiekGameConfig<Plugins, Features>,
-  ) {
+  constructor(engine: LudiekEngine<EngineConfig>, config: LudiekGameConfig<LudiekPlugin<EngineConfig>[], Features>) {
     this._engine = engine;
     // TODO(@Isha): What to do with features?
     this.features = Object.fromEntries(config.features?.map((f) => [f.type, f]) ?? []) as FeatureMap<Features>;
@@ -49,8 +34,6 @@ export class LudiekGame<
     this._nextSave = this.config.saveInterval;
 
     this.featureList.forEach((feature) => {
-      // @ts-expect-error I know :(
-      // TODO(@Isha): Fix
       feature.inject(this._engine);
     });
   }
@@ -71,7 +54,7 @@ export class LudiekGame<
   }
 
   public tick(delta: number): void {
-    this.engine.preTick();
+    this._engine.preTick();
     this.featureList.forEach((feature) => feature.update?.(delta));
 
     this._nextSave -= delta;
@@ -83,24 +66,6 @@ export class LudiekGame<
     }
 
     this._onTick.dispatch();
-  }
-
-  public evaluate(condition: LudiekCondition<Evaluators> | LudiekCondition<Evaluators>[]): boolean {
-    return this._engine.evaluate(condition);
-  }
-
-  public handleTransaction(
-    transaction: LudiekTransaction<LudiekInput<Consumers>, LudiekOutput<Producers>, LudiekCondition<Evaluators>>,
-  ): boolean {
-    return this._engine.handleTransaction(transaction);
-  }
-
-  public request(request: LudiekRequest<Controllers>): void {
-    this._engine.request(request);
-  }
-
-  public get engine(): LudiekEngine<Plugins, Evaluators, Consumers, Producers, Controllers, Modifiers> {
-    return this._engine;
   }
 
   public save(): LudiekSaveData {
@@ -134,8 +99,12 @@ export class LudiekGame<
     this._engine.load(saveData.engine);
   }
 
-  public get featureList(): LudiekFeature<PluginMap<Plugins>>[] {
+  public get featureList(): LudiekFeature<PluginMap<EngineTypes<EngineConfig>['Plugins']>>[] {
     return Object.values(this.features);
+  }
+
+  public get engine(): LudiekEngine<EngineConfig> {
+    return this._engine;
   }
 
   /**
