@@ -10,15 +10,18 @@ it('Writes to local storage', () => {
   const saveKey = 'saveKey';
   const data: LudiekSaveData = {
     engine: {
-      x: {
-        y: 4,
+      plugins: {
+        x: {
+          y: 4,
+        },
+      },
+      features: {
+        z: {
+          w: 2,
+        },
       },
     },
-    features: {
-      z: {
-        w: 2,
-      },
-    },
+    game: {},
   };
 
   // Act
@@ -34,11 +37,14 @@ it('Can delete items', () => {
   const saveKey = 'saveKey';
   const data: LudiekSaveData = {
     engine: {
-      x: {
-        y: 4,
+      plugins: {
+        x: {
+          y: 4,
+        },
       },
+      features: {},
     },
-    features: {},
+    game: {},
   };
 
   // Act
@@ -51,7 +57,10 @@ it('Can delete items', () => {
 
   // Assert
   expect(loaded).toStrictEqual({
-    engine: {},
-    features: {},
+    engine: {
+      plugins: {},
+      features: {},
+    },
+    game: {},
   });
 });

@@ -13,11 +13,11 @@
   engine.plugins.statistic.loadContent(contentManager.getList('statistic'));
   engine.plugins.achievement.loadContent(contentManager.getList('achievement'));
   engine.plugins.skill.loadContent(contentManager.getList('skill'));
-  game.features.farming.loadContent(contentManager.getList('plant'));
-
+  engine.features.farming.loadContent(contentManager.getList('plant'));
   let planted = $derived(statistic.getMapValue('/statistic/plants-planted', '/plant/sunflower'));
 
   let money = $derived(currency.getBalance('/currency/money'));
+
   let gems = $derived(currency.getBalance('/currency/gems'));
 
   currency.onCurrencyGain.sub((c) => {
@@ -31,7 +31,7 @@
   });
 
   const sow = () => {
-    game.request({
+    game.engine.request({
       // TODO(@Isha): Move this into a game.request combined type
       type: '/farming/sow-seed',
       plant: '/plant/sunflower',
@@ -47,7 +47,7 @@
   };
 
   const trade = () => {
-    game.handleTransaction({
+    game.engine.handleTransaction({
       input: {
         type: '/input/lose-currency',
         id: '/currency/money',

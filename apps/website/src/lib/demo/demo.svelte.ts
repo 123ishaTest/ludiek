@@ -6,18 +6,18 @@ import {
   createCurrencyState,
   createSkillState,
   createStatisticState,
-  LoseCurrencyConsumer,
   CurrencyPlugin,
-  GainCurrencyProducer,
   EnterCouponController,
+  GainCurrencyProducer,
+  GainSkillExperienceProducer,
   HasCurrencyEvaluator,
   HasScalarStatisticEvaluator,
+  LoseCurrencyConsumer,
   type LudiekBonusContribution,
   type LudiekCondition,
   LudiekGame,
   type LudiekInput,
   type LudiekOutput,
-  GainSkillExperienceProducer,
   SkillPlugin,
   StatisticPlugin,
   TrueEvaluator,
@@ -50,6 +50,7 @@ const engineState = $state({});
 export const engine = Ludiek.createEngine(
   {
     plugins: [currencyPlugin, statisticPlugin, achievementPlugin, couponPlugin, skillPlugin],
+    features: [farming],
     evaluators: [new TrueEvaluator(), new HasCurrencyEvaluator(), new HasScalarStatisticEvaluator()],
     consumers: [new LoseCurrencyConsumer()],
     producers: [new SeedProducer(), new GainCurrencyProducer(), new GainSkillExperienceProducer()],
@@ -66,7 +67,6 @@ export type Output = LudiekOutput<typeof engine.producers>;
 export type Bonus = LudiekBonusContribution<typeof engine.modifiers>;
 
 export const game = new LudiekGame(engine, {
-  features: [farming],
   saveKey: '@123ishatest/ludiek-demo',
   tickDuration: 0.1,
   saveInterval: 30,

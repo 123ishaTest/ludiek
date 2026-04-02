@@ -6,9 +6,11 @@ import { LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
 import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 import { LudiekController } from '@ludiek/engine/request/LudiekRequest';
 import { LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
+import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 
 export interface LudiekDependencies {
   plugins?: readonly LudiekPlugin[];
+  features?: readonly LudiekFeature[];
   evaluators?: readonly LudiekEvaluator[];
   consumers?: readonly LudiekConsumer[];
   producers?: readonly LudiekProducer[];
@@ -18,6 +20,7 @@ export interface LudiekDependencies {
 
 export type DependencyEngine<Dependencies extends LudiekDependencies> = LudiekEngine<
   NonNullable<Dependencies['plugins']>,
+  NonNullable<Dependencies['features']>,
   NonNullable<Dependencies['evaluators']>,
   NonNullable<Dependencies['consumers']>,
   NonNullable<Dependencies['producers']>,
