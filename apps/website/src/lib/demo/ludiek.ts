@@ -28,4 +28,3 @@ type DemoConfig = {
 };
 
 export const Ludiek = createLudiek<DemoConfig>();
-
