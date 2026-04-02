@@ -7,6 +7,16 @@ export { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 export { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 export { LudiekGame } from '@ludiek/engine/LudiekGame';
 
+export {
+  type LudiekRegistry,
+  createEngine,
+  CustomEvaluator,
+  CustomConsumer,
+  CustomProducer,
+  CustomController,
+  CustomModifier,
+} from '@ludiek/engine/LudiekRegistry';
+
 // Engine.Conditions
 export { LudiekEvaluator, type BaseCondition, type LudiekCondition } from '@ludiek/engine/condition/LudiekEvaluator';
 

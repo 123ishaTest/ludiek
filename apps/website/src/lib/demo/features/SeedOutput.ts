@@ -1,7 +1,5 @@
 import z from 'zod';
-import { type CurrencyPlugin, LudiekProducer } from '@123ishatest/ludiek';
-import type { SeedModifier } from '$lib/demo/features/SeedBonus';
-import { GlobalSeedModifier } from '$lib/demo/features/GlobalSeedBonus';
+import { CustomProducer } from '@123ishatest/ludiek';
 
 export const SeedOutputSchema = z.strictObject({
   type: z.literal('/output/seed'),
@@ -11,12 +9,8 @@ export const SeedOutputSchema = z.strictObject({
 
 export type SeedOutput = z.infer<typeof SeedOutputSchema>;
 
-interface Dependencies {
-  plugins: [CurrencyPlugin];
-  modifiers: [SeedModifier, GlobalSeedModifier];
-}
-
-export class SeedProducer extends LudiekProducer<SeedOutput, Dependencies> {
+// 5. But this is your party, you already know what your engine is made of
+export class SeedProducer extends CustomProducer<SeedOutput> {
   readonly schema = SeedOutputSchema;
 
   modify(output: SeedOutput): SeedOutput {
@@ -30,6 +24,9 @@ export class SeedProducer extends LudiekProducer<SeedOutput, Dependencies> {
   }
 
   produce(output: SeedOutput): void {
+    // 7. We can even produce ourselves!
+    //  But you know, don't.
+    this.engine.produce({ type: '/output/seed', plant: 'plant', amount: 4 });
     this.engine.plugins.currency.gainCurrency({
       amount: output.amount,
       id: output.plant,

@@ -4,21 +4,21 @@ import {
   createAchievementState,
   createCouponState,
   createCurrencyState,
+  createEngine,
   createSkillState,
   createStatisticState,
-  LoseCurrencyConsumer,
   CurrencyPlugin,
-  GainCurrencyProducer,
   EnterCouponController,
+  GainCurrencyProducer,
+  GainSkillExperienceProducer,
   HasCurrencyEvaluator,
   HasScalarStatisticEvaluator,
+  LoseCurrencyConsumer,
   type LudiekBonusContribution,
   type LudiekCondition,
-  LudiekEngine,
   LudiekGame,
   type LudiekInput,
   type LudiekOutput,
-  GainSkillExperienceProducer,
   SkillPlugin,
   StatisticPlugin,
   TrueEvaluator,
@@ -46,15 +46,15 @@ const farming = new Farming();
 
 const engineState = $state({});
 
-// Create engine with plugins
-export const engine = new LudiekEngine(
+// 8. Even though our CustomSeedOutput is part of the engine, no problem!
+export const engine = createEngine(
   {
     plugins: [currencyPlugin, statisticPlugin, achievementPlugin, couponPlugin, skillPlugin],
     evaluators: [new TrueEvaluator(), new HasCurrencyEvaluator(), new HasScalarStatisticEvaluator()],
     consumers: [new LoseCurrencyConsumer()],
     producers: [new SeedProducer(), new GainCurrencyProducer(), new GainSkillExperienceProducer()],
     controllers: [new EnterCouponController(), new SowSeedController(farming)],
-    modifiers: [new GlobalSeedModifier(), new SeedModifier()],
+    modifiers: [new SeedModifier(), new GlobalSeedModifier()],
   },
   engineState,
 );

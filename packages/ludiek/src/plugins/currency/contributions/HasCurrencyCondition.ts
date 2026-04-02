@@ -10,6 +10,7 @@ export const HasCurrencyConditionSchema = z.strictObject({
 
 export type HasCurrencyCondition = z.infer<typeof HasCurrencyConditionSchema>;
 
+// 2. Internally the concepts all use explicit dependencies
 type Dependencies = {
   plugins: [CurrencyPlugin];
 };
