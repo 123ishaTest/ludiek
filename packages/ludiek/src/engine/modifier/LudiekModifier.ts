@@ -16,6 +16,8 @@ export abstract class LudiekModifier<
   Bonus extends BaseBonus = BaseBonus,
   Dependencies extends LudiekDependencies = object,
 > extends LudiekEngineConcept<Dependencies> {
+  declare readonly __bonus?: Bonus;
+
   public abstract readonly schema: z.ZodObject<{
     type: z.ZodLiteral<Bonus['type']>;
   }>;
@@ -37,7 +39,7 @@ export abstract class LudiekModifier<
  * Given a tuple of LudiekModifiers, produce a union of their Bonuses.
  */
 export type LudiekBonus<Modifiers extends readonly LudiekModifier[]> =
-  IsNonEmpty<Modifiers> extends false ? never : Modifiers[number] extends LudiekModifier<infer Bonus> ? Bonus : never;
+  IsNonEmpty<Modifiers> extends false ? never : NonNullable<Modifiers[number]['__bonus']>;
 
 /**
  * Given a tuple of LudiekModifiers, produce a union of their schemas.

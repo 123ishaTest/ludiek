@@ -20,7 +20,7 @@ export class ModifiedProducer extends LudiekProducer<ModifiedOutput, Dependencie
   readonly schema = ModifiedOutputSchema;
 
   modify(output: ModifiedOutput): ModifiedOutput {
-    output.amount *= this.getBonus({ type: '/bonus/dummy' });
+    output.amount *= this.engine.getBonus({ type: '/bonus/dummy' });
     return output;
   }
 

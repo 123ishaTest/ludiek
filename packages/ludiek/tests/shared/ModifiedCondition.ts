@@ -20,7 +20,7 @@ export class ModifiedEvaluator extends LudiekEvaluator<ModifiedCondition, Depend
   readonly schema = ModifiedConditionSchema;
 
   modify(condition: ModifiedCondition): ModifiedCondition {
-    condition.value /= this.getBonus({ type: '/bonus/dummy' });
+    condition.value /= this.engine.getBonus({ type: '/bonus/dummy' });
     return super.modify(condition);
   }
 

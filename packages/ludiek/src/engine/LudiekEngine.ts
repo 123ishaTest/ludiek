@@ -41,8 +41,6 @@ export class LudiekEngine<
     state = {},
   ) {
     this.plugins = Object.fromEntries(config.plugins?.map((p) => [p.type, p]) ?? []) as PluginMap<Plugins>;
-    // @ts-expect-error I know :(
-    // TODO(@Isha): Fix
     config.plugins?.forEach((p) => p.inject(this));
 
     config.evaluators?.forEach((c) => this.registerEvaluator(c));
@@ -86,7 +84,7 @@ export class LudiekEngine<
   }
 
   public requestSchema(): ZodNever | ZodDiscriminatedUnion<ControllerSchemas<Controllers>, 'type'> {
-    const schemas = this.producers.map((c) => c.schema);
+    const schemas = this.controllers.map((c) => c.schema);
     return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
   }
 
@@ -95,7 +93,7 @@ export class LudiekEngine<
   }
 
   public bonusSchema(): ZodNever | ZodDiscriminatedUnion<ModifierSchemas<Modifiers>, 'type'> {
-    const schemas = this.producers.map((c) => c.schema);
+    const schemas = this.modifiers.map((c) => c.schema);
     return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
   }
 

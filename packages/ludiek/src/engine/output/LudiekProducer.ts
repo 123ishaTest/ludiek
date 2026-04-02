@@ -11,6 +11,8 @@ export abstract class LudiekProducer<
   Output extends BaseOutput = BaseOutput,
   Dependencies extends LudiekDependencies = object,
 > extends LudiekEngineConcept<Dependencies> {
+  declare readonly __output: Output;
+
   public abstract readonly schema: z.ZodObject<{
     type: z.ZodLiteral<Output['type']>;
   }>;
@@ -44,7 +46,7 @@ export abstract class LudiekProducer<
  * Given a tuple of LudiekProducers, produce a union of their Outputs.
  */
 export type LudiekOutput<Producers extends readonly LudiekProducer[]> =
-  IsNonEmpty<Producers> extends false ? never : Producers[number] extends LudiekProducer<infer Output> ? Output : never;
+  IsNonEmpty<Producers> extends false ? never : NonNullable<Producers[number]['__output']>;
 
 /**
  * Given a tuple of LudiekProducers, produce a union of their schemas.

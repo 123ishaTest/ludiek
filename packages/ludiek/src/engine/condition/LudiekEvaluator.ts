@@ -18,6 +18,8 @@ export abstract class LudiekEvaluator<
   Condition extends BaseCondition = BaseCondition,
   Dependencies extends LudiekDependencies = object,
 > extends LudiekEngineConcept<Dependencies> {
+  declare readonly __condition: Condition;
+
   public abstract readonly schema: z.ZodObject<{
     type: z.ZodLiteral<Condition['type']>;
   }>;
@@ -45,11 +47,7 @@ export abstract class LudiekEvaluator<
  * Given a tuple of LudiekEvaluators, produce a union of their Conditions.
  */
 export type LudiekCondition<Evaluators extends readonly LudiekEvaluator[]> =
-  IsNonEmpty<Evaluators> extends false
-    ? never
-    : Evaluators[number] extends LudiekEvaluator<infer Condition>
-      ? Condition
-      : never;
+  IsNonEmpty<Evaluators> extends false ? never : NonNullable<Evaluators[number]['__condition']>;
 
 /**
  * Given a tuple of LudiekEvaluators, produce a union of their schemas.
