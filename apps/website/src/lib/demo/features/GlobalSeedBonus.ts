@@ -1,5 +1,5 @@
 import z from 'zod';
-import { LudiekModifier } from '@123ishatest/ludiek';
+import { Ludiek } from '$lib/demo/ludiek';
 
 /**
  * Multiplies the gain of every seed
@@ -10,7 +10,7 @@ export const GlobalSeedBonusSchema = z.strictObject({
 
 export type GlobalSeedBonus = z.infer<typeof GlobalSeedBonusSchema>;
 
-export class GlobalSeedModifier extends LudiekModifier<GlobalSeedBonus> {
+export class GlobalSeedModifier extends Ludiek.modifier<GlobalSeedBonus>() {
   readonly schema = GlobalSeedBonusSchema;
   readonly default = 1;
   readonly variant = 'multiplicative';

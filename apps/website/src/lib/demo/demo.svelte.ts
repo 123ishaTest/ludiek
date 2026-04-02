@@ -14,7 +14,6 @@ import {
   HasScalarStatisticEvaluator,
   type LudiekBonusContribution,
   type LudiekCondition,
-  LudiekEngine,
   LudiekGame,
   type LudiekInput,
   type LudiekOutput,
@@ -28,6 +27,7 @@ import { SowSeedController } from '$lib/demo/features/SowPlantController';
 import { SeedProducer } from '$lib/demo/features/SeedOutput';
 import { GlobalSeedModifier } from '$lib/demo/features/GlobalSeedBonus';
 import { SeedModifier } from '$lib/demo/features/SeedBonus';
+import { Ludiek } from '$lib/demo/ludiek';
 
 // Define plugins with reactive state
 const currencyState = $state(createCurrencyState());
@@ -47,14 +47,14 @@ const farming = new Farming();
 const engineState = $state({});
 
 // Create engine with plugins
-export const engine = new LudiekEngine(
+export const engine = Ludiek.createEngine(
   {
     plugins: [currencyPlugin, statisticPlugin, achievementPlugin, couponPlugin, skillPlugin],
     evaluators: [new TrueEvaluator(), new HasCurrencyEvaluator(), new HasScalarStatisticEvaluator()],
     consumers: [new LoseCurrencyConsumer()],
     producers: [new SeedProducer(), new GainCurrencyProducer(), new GainSkillExperienceProducer()],
     controllers: [new EnterCouponController(), new SowSeedController(farming)],
-    modifiers: [new GlobalSeedModifier(), new SeedModifier()],
+    modifiers: [new SeedModifier(), new GlobalSeedModifier()],
   },
   engineState,
 );
