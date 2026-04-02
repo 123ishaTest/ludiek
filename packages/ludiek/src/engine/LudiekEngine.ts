@@ -1,4 +1,4 @@
-import { LudiekEngineConfig, PluginMap } from '@ludiek/engine/LudiekEngineConfig';
+import { LudiekEngineConfig } from '@ludiek/engine/LudiekEngineConfig';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { EvaluatorSchemas, LudiekCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { LudiekEngineSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
@@ -20,7 +20,8 @@ import { ModifierNotFoundError } from '@ludiek/engine/modifier/ModifierError';
 import { cloneDeep } from 'es-toolkit';
 import { z, ZodDiscriminatedUnion, ZodNever } from 'zod';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
-import { FeatureMap } from '@ludiek/engine/LudiekGame';
+
+import { FeatureMap, PluginMap } from '@ludiek/util/types';
 
 export class LudiekEngine<
   Plugins extends readonly LudiekPlugin[] = [],
@@ -435,6 +436,7 @@ export class LudiekEngine<
   }
 
   public tick(delta: number): void {
+    // TODO(@Isha): Should plugins tick too?
     this.featureList.forEach((feature) => feature.update?.(delta));
   }
 }

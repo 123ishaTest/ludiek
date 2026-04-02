@@ -23,12 +23,3 @@ export interface LudiekEngineConfig<
   controllers?: Controllers;
   modifiers?: Modifiers;
 }
-
-export type PluginMap<Plugins extends readonly LudiekPlugin[] | undefined> = Plugins extends undefined
-  ? object
-  : {
-      [Plugin in NonNullable<Plugins>[number] as Plugin['type']]: Extract<
-        NonNullable<Plugins>[number],
-        { type: Plugin['type'] }
-      >;
-    };

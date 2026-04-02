@@ -1,32 +1,11 @@
-import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 import { ISignal, SignalDispatcher } from 'strongly-typed-events';
 import { LudiekSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 import { LudiekLocalStorage } from '@ludiek/engine/peristence/LudiekLocalStorage';
 import { LudiekJsonSaveEncoder } from '@ludiek/engine/peristence/LudiekJsonSaveEncoder';
 import { LudiekGameConfig } from '@ludiek/engine/LudiekGameConfig';
-import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
-import { LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
-import { LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
-import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
-import { LudiekController } from '@ludiek/engine/request/LudiekRequest';
-import { LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
+import { DependencyEngine, LudiekDependencies } from '@ludiek/engine/LudiekEngineConcept';
 
-export type FeatureMap<Features extends readonly LudiekFeature[]> = {
-  [Feature in Features[number] as Feature['type']]: Extract<Features[number], { type: Feature['type'] }>;
-};
-
-type AnyLudiekEngine = LudiekEngine<
-  readonly LudiekPlugin[],
-  readonly LudiekFeature[],
-  readonly LudiekEvaluator[],
-  readonly LudiekConsumer[],
-  readonly LudiekProducer[],
-  readonly LudiekController[],
-  readonly LudiekModifier[]
->;
-
-export class LudiekGame<Engine extends AnyLudiekEngine> {
+export class LudiekGame<Engine extends DependencyEngine<LudiekDependencies>> {
   private readonly _engine: Engine;
   public readonly config: LudiekGameConfig;
   protected saveEncoder = new LudiekJsonSaveEncoder();
@@ -61,6 +40,8 @@ export class LudiekGame<Engine extends AnyLudiekEngine> {
   public tick(delta: number): void {
     this.engine.preTick();
     this.engine.tick(delta);
+
+    console.log("game tick")
 
     this._nextSave -= delta;
     if (this._nextSave <= 0) {
