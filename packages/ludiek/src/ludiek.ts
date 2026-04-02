@@ -9,7 +9,7 @@ import { DependencyEngine } from '@ludiek/engine/LudiekEngineConcept';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const createLudiek = <Config extends LudiekEngineConfig<any, any, any, any, any, any>>() => {
+export const createLudiek = <Config extends LudiekEngineConfig<any, any, any, any, any, any, any>>() => {
   function feature() {
     return LudiekFeature<Config>;
   }
