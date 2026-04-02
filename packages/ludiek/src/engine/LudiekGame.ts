@@ -41,7 +41,7 @@ export class LudiekGame<Engine extends DependencyEngine<LudiekDependencies>> {
     this.engine.preTick();
     this.engine.tick(delta);
 
-    console.log("game tick")
+    console.log('game tick');
 
     this._nextSave -= delta;
     if (this._nextSave <= 0) {
