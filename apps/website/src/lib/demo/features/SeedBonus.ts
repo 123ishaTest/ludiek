@@ -1,5 +1,5 @@
 import z from 'zod';
-import { LudiekModifier } from '@123ishatest/ludiek';
+import { Ludiek } from '$lib/demo/ludiek';
 
 /**
  * Multiplies the gain of a specific seed
@@ -11,7 +11,7 @@ export const SeedBonusSchema = z.strictObject({
 
 export type SeedBonus = z.infer<typeof SeedBonusSchema>;
 
-export class SeedModifier extends LudiekModifier<SeedBonus> {
+export class SeedModifier extends Ludiek.modifier<SeedBonus>() {
   readonly schema = SeedBonusSchema;
   readonly default = 1;
   readonly variant = 'multiplicative';

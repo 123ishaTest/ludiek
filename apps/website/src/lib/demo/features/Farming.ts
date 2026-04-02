@@ -1,12 +1,7 @@
-import { CurrencyPlugin, LudiekFeature, StatisticPlugin } from '@123ishatest/ludiek';
-
 import type { PlantDetail } from '$lib/demo/model/PlantDetail';
+import { Ludiek } from '$lib/demo/ludiek';
 
-type Dependencies = {
-  plugins: [CurrencyPlugin, StatisticPlugin];
-};
-
-export class Farming extends LudiekFeature<Dependencies> {
+export class Farming extends Ludiek.feature() {
   readonly type = 'farming';
   protected _state = {};
 
