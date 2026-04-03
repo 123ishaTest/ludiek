@@ -1,5 +1,4 @@
 import z from 'zod';
-import type { Farming } from '$lib/demo/features/Farming';
 import { Ludiek } from '$lib/demo/ludiek';
 
 export const SowSeedRequestSchema = z.strictObject({
@@ -12,14 +11,7 @@ export type SowSeedRequest = z.infer<typeof SowSeedRequestSchema>;
 export class SowSeedController extends Ludiek.controller<SowSeedRequest>() {
   readonly schema = SowSeedRequestSchema;
 
-  private readonly _farming: Farming;
-
-  constructor(farming: Farming) {
-    super();
-    this._farming = farming;
-  }
-
   resolve(request: SowSeedRequest): void {
-    this._farming.sow(request.plant);
+    this.engine.features.farming.sow(request.plant);
   }
 }
