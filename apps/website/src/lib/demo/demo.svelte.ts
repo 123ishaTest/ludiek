@@ -54,7 +54,7 @@ export const engine = Ludiek.createEngine(
     evaluators: [new TrueEvaluator(), new HasCurrencyEvaluator(), new HasScalarStatisticEvaluator()],
     consumers: [new LoseCurrencyConsumer()],
     producers: [new SeedProducer(), new GainCurrencyProducer(), new GainSkillExperienceProducer()],
-    controllers: [new EnterCouponController(), new SowSeedController(farming)],
+    controllers: [new EnterCouponController(), new SowSeedController()],
     modifiers: [new SeedModifier(), new GlobalSeedModifier()],
   },
   engineState,
