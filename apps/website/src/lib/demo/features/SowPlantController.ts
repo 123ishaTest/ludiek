@@ -1,5 +1,6 @@
 import z from 'zod';
-import { Ludiek } from '$lib/demo/ludiek';
+import { LudiekController } from '@123ishatest/ludiek';
+import type { GlobalDependencies } from '$lib/demo/GlobalDependencies';
 
 export const SowSeedRequestSchema = z.strictObject({
   type: z.literal('/farming/sow-seed'),
@@ -8,7 +9,7 @@ export const SowSeedRequestSchema = z.strictObject({
 
 export type SowSeedRequest = z.infer<typeof SowSeedRequestSchema>;
 
-export class SowSeedController extends Ludiek.controller<SowSeedRequest>() {
+export class SowSeedController extends LudiekController<SowSeedRequest, GlobalDependencies> {
   readonly schema = SowSeedRequestSchema;
 
   resolve(request: SowSeedRequest): void {

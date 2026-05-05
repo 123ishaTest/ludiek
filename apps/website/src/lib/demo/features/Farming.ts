@@ -1,15 +1,10 @@
-import type { PlantDetail } from '$lib/demo/model/PlantDetail';
-import { Ludiek } from '$lib/demo/ludiek';
+import { type PlantDetail } from '$lib/demo/model/PlantDetail';
+import { LudiekFeature } from '@123ishatest/ludiek';
+import type { GlobalDependencies } from '$lib/demo/GlobalDependencies';
 
-export class Farming extends Ludiek.feature() {
+export class Farming extends LudiekFeature<GlobalDependencies> {
   readonly type = 'farming';
   protected _state = {};
-
-  public plants: PlantDetail[] = [];
-
-  constructor() {
-    super();
-  }
 
   public sow(id: string): void {
     const plant = this.getPlant(id);

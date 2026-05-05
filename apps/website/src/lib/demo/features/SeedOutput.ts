@@ -1,5 +1,6 @@
 import z from 'zod';
-import { Ludiek } from '$lib/demo/ludiek';
+import { LudiekProducer } from '@123ishatest/ludiek';
+import type { GlobalDependencies } from '$lib/demo/GlobalDependencies';
 
 export const SeedOutputSchema = z.strictObject({
   type: z.literal('/output/seed'),
@@ -9,7 +10,7 @@ export const SeedOutputSchema = z.strictObject({
 
 export type SeedOutput = z.infer<typeof SeedOutputSchema>;
 
-export class SeedProducer extends Ludiek.producer<SeedOutput>() {
+export class SeedProducer extends LudiekProducer<SeedOutput, GlobalDependencies> {
   readonly schema = SeedOutputSchema;
 
   modify(output: SeedOutput): SeedOutput {

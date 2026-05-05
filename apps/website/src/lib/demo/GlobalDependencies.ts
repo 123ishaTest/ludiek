@@ -1,30 +1,29 @@
+import { AchievementSchema } from '$lib/demo/model/AchievementDetail';
+import { CurrencyDetailSchema } from '$lib/demo/model/CurrencyDetail';
+import { StatisticDetailSchema } from '$lib/demo/model/StatisticDetail';
+import { SkillDetailSchema } from '$lib/demo/model/SkillDetail';
+import { PlantSchema } from '$lib/demo/model/PlantDetail';
+import { SeedProducer } from '$lib/demo/features/SeedOutput';
+import { SowSeedController } from '$lib/demo/features/SowPlantController';
+import { SeedModifier } from '$lib/demo/features/SeedBonus';
+import { GlobalSeedModifier } from '$lib/demo/features/GlobalSeedBonus';
+import type { Farming } from '$lib/demo/features/Farming';
 import {
   type AchievementPlugin,
-  type HasScalarStatisticEvaluator,
   type CouponPlugin,
   type CurrencyPlugin,
+  type EnterCouponController,
   type GainCurrencyProducer,
   type GainSkillExperienceProducer,
+  type HasCurrencyEvaluator,
+  type HasScalarStatisticEvaluator,
+  type LoseCurrencyConsumer,
   type SkillPlugin,
   type StatisticPlugin,
-  type HasCurrencyEvaluator,
   type TrueEvaluator,
-  type LoseCurrencyConsumer,
-  type EnterCouponController,
-  createLudiek,
 } from '@123ishatest/ludiek';
-import type { SeedModifier } from '$lib/demo/features/SeedBonus';
-import type { GlobalSeedModifier } from '$lib/demo/features/GlobalSeedBonus';
-import type { SeedProducer } from '$lib/demo/features/SeedOutput';
-import type { SowSeedController } from '$lib/demo/features/SowPlantController';
-import type { Farming } from '$lib/demo/features/Farming';
-import { AchievementSchema } from '$lib/demo/model/AchievementDetail';
-import type { SkillDetailSchema } from '$lib/demo/model/SkillDetail';
-import type { PlantSchema } from '$lib/demo/model/PlantDetail';
-import type { CurrencyDetailSchema } from '$lib/demo/model/CurrencyDetail';
-import type { StatisticDetailSchema } from '$lib/demo/model/StatisticDetail';
 
-type DemoConfig = {
+export type GlobalDependencies = {
   plugins: [CurrencyPlugin, StatisticPlugin, AchievementPlugin, CouponPlugin, SkillPlugin];
   features: [Farming];
   content: [
@@ -40,5 +39,3 @@ type DemoConfig = {
   controllers: [EnterCouponController, SowSeedController];
   modifiers: [SeedModifier, GlobalSeedModifier];
 };
-
-export const Ludiek = createLudiek<DemoConfig>();

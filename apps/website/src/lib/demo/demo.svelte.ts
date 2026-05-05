@@ -15,6 +15,7 @@ import {
   LoseCurrencyConsumer,
   type LudiekBonusContribution,
   type LudiekCondition,
+  LudiekEngine,
   LudiekGame,
   type LudiekInput,
   type LudiekOutput,
@@ -27,7 +28,6 @@ import { SowSeedController } from '$lib/demo/features/SowPlantController';
 import { SeedProducer } from '$lib/demo/features/SeedOutput';
 import { GlobalSeedModifier } from '$lib/demo/features/GlobalSeedBonus';
 import { SeedModifier } from '$lib/demo/features/SeedBonus';
-import { Ludiek } from '$lib/demo/ludiek';
 import { AchievementSchema } from '$lib/demo/model/AchievementDetail';
 import { CurrencyDetailSchema } from '$lib/demo/model/CurrencyDetail';
 import { StatisticDetailSchema } from '$lib/demo/model/StatisticDetail';
@@ -52,7 +52,7 @@ const farming = new Farming();
 const engineState = $state({});
 
 // Create engine with plugins
-export const engine = Ludiek.createEngine(
+export const engine = new LudiekEngine(
   {
     plugins: [currencyPlugin, statisticPlugin, achievementPlugin, couponPlugin, skillPlugin],
     features: [farming],
