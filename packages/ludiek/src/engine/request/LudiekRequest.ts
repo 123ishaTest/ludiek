@@ -2,9 +2,14 @@ import { z } from 'zod';
 import { LudiekDependencies, LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
 import { IsNonEmpty } from '@ludiek/util/types';
 
-export interface BaseRequest {
-  type: string;
-}
+/**
+ * Base shape for all requests.
+ */
+export const BaseRequestSchema = z.strictObject({
+  type: z.string(),
+});
+
+export type BaseRequest = z.infer<typeof BaseRequestSchema>;
 
 export abstract class LudiekController<
   Request extends BaseRequest = BaseRequest,

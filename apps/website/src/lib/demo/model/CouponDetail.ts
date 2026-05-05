@@ -1,11 +1,11 @@
 import { z } from 'zod';
-import { engine } from '$lib/demo/demo.svelte';
+import { l } from '@123ishatest/ludiek';
 
 export const CouponDetailSchema = z.strictObject({
   id: z.string(),
   hash: z.string(),
-  condition: engine.conditionSchema().optional(),
-  output: engine.outputSchema(),
+  condition: z.optional(l.condition()),
+  output: l.output(),
 });
 
 export type CouponDetail = z.infer<typeof CouponDetailSchema>;

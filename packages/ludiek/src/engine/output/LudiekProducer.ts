@@ -2,10 +2,15 @@ import { z } from 'zod';
 import { LudiekDependencies, LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
 import { IsNonEmpty } from '@ludiek/util/types';
 
-export interface BaseOutput {
-  type: string;
-  amount: number;
-}
+/**
+ * Base shape for all outputs.
+ */
+export const BaseOutputSchema = z.strictObject({
+  type: z.string(),
+  amount: z.number(),
+});
+
+export type BaseOutput = z.infer<typeof BaseOutputSchema>;
 
 export abstract class LudiekProducer<
   Output extends BaseOutput = BaseOutput,

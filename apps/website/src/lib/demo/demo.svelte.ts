@@ -28,6 +28,11 @@ import { SeedProducer } from '$lib/demo/features/SeedOutput';
 import { GlobalSeedModifier } from '$lib/demo/features/GlobalSeedBonus';
 import { SeedModifier } from '$lib/demo/features/SeedBonus';
 import { Ludiek } from '$lib/demo/ludiek';
+import { AchievementSchema } from '$lib/demo/model/AchievementDetail';
+import { CurrencyDetailSchema } from '$lib/demo/model/CurrencyDetail';
+import { StatisticDetailSchema } from '$lib/demo/model/StatisticDetail';
+import { SkillDetailSchema } from '$lib/demo/model/SkillDetail';
+import { PlantSchema } from '$lib/demo/model/PlantDetail';
 
 // Define plugins with reactive state
 const currencyState = $state(createCurrencyState());
@@ -51,6 +56,13 @@ export const engine = Ludiek.createEngine(
   {
     plugins: [currencyPlugin, statisticPlugin, achievementPlugin, couponPlugin, skillPlugin],
     features: [farming],
+    content: [
+      { kind: 'achievement', schema: AchievementSchema },
+      { kind: 'currency', schema: CurrencyDetailSchema },
+      { kind: 'statistic', schema: StatisticDetailSchema },
+      { kind: 'skill', schema: SkillDetailSchema },
+      { kind: 'plant', schema: PlantSchema },
+    ],
     evaluators: [new TrueEvaluator(), new HasCurrencyEvaluator(), new HasScalarStatisticEvaluator()],
     consumers: [new LoseCurrencyConsumer()],
     producers: [new SeedProducer(), new GainCurrencyProducer(), new GainSkillExperienceProducer()],

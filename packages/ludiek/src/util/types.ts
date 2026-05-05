@@ -1,5 +1,6 @@
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
+import { LudiekContent } from '@ludiek/engine/LudiekContent';
 
 export type IsNonEmpty<T extends ReadonlyArray<unknown>> = T extends [] ? false : T extends never[] ? false : true;
 
@@ -15,3 +16,7 @@ export type PluginMap<Plugins extends readonly LudiekPlugin[] | undefined> = Plu
         { type: Plugin['type'] }
       >;
     };
+
+export type ContentMap<Contents extends readonly LudiekContent[]> = {
+  [Content in Contents[number] as Content['kind']]: Extract<Contents[number], { kind: Content['kind'] }>['schema'];
+};
