@@ -27,14 +27,14 @@ import { replaceSchema } from '@ludiek/util/schema';
 import { ContentManager } from '@123ishatest/louter';
 
 export class LudiekEngine<
-  Plugins extends readonly LudiekPlugin[] = [],
-  Features extends readonly LudiekFeature[] = [],
-  Content extends readonly LudiekContent[] = [],
-  Evaluators extends readonly LudiekEvaluator[] = [],
-  Consumers extends readonly LudiekConsumer[] = [],
-  Producers extends readonly LudiekProducer[] = [],
-  Controllers extends readonly LudiekController[] = [],
-  Modifiers extends readonly LudiekModifier[] = [],
+  const Plugins extends readonly LudiekPlugin[] = [],
+  const Features extends readonly LudiekFeature[] = [],
+  const Content extends readonly LudiekContent[] = [],
+  const Evaluators extends readonly LudiekEvaluator[] = [],
+  const Consumers extends readonly LudiekConsumer[] = [],
+  const Producers extends readonly LudiekProducer[] = [],
+  const Controllers extends readonly LudiekController[] = [],
+  const Modifiers extends readonly LudiekModifier[] = [],
 > {
   public plugins: PluginMap<Plugins>;
   public features: FeatureMap<Features>;
