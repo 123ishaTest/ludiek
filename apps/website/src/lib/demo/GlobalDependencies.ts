@@ -40,5 +40,3 @@ export type GlobalDependencies = {
   controllers: [EnterCouponController, SowSeedController];
   modifiers: [SeedModifier, GlobalSeedModifier];
 };
-
-export abstract class Feature extends LudiekFeature<GlobalDependencies> {}
