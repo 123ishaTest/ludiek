@@ -1,21 +1,10 @@
-import { type PlantDetail, PlantSchema } from '$lib/demo/model/PlantDetail';
-import { CurrencyPlugin, LudiekFeature, StatisticPlugin } from '@123ishatest/ludiek';
+import { type PlantDetail } from '$lib/demo/model/PlantDetail';
+import { LudiekFeature } from '@123ishatest/ludiek';
+import type { GlobalDependencies } from '$lib/demo/GlobalDependencies';
 
-type Dependencies = {
-  plugins: [CurrencyPlugin, StatisticPlugin];
-  // TODO(@Isha): This is not ideal, should be resolved by a proper entrypoint
-  content: [{ kind: 'plant'; schema: typeof PlantSchema }];
-};
-
-export class Farming extends LudiekFeature<Dependencies> {
+export class Farming extends LudiekFeature<GlobalDependencies> {
   readonly type = 'farming';
   protected _state = {};
-
-  public plants: PlantDetail[] = [];
-
-  constructor() {
-    super();
-  }
 
   public sow(id: string): void {
     const plant = this.getPlant(id);
