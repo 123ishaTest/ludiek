@@ -1,6 +1,6 @@
 import type { PageServerLoad } from './$types';
 import { Louter, LouterValidator, LouterYamlParser } from '@123ishatest/louter';
-import { LouterFileLoader } from '@123ishatest/louter/node';
+import { LouterFileLoader, LouterJsonSchemaWriter } from '@123ishatest/louter/node';
 import { engine } from '$lib/demo/demo.svelte';
 
 export const load: PageServerLoad = () => {
@@ -12,6 +12,9 @@ export const load: PageServerLoad = () => {
 
     // Validates it against the schemas
     new LouterValidator(),
+
+    // Writes utility JSON Schemas
+    new LouterJsonSchemaWriter(),
   ]);
 
   const result = louter.run(engine.content);

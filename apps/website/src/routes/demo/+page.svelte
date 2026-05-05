@@ -6,7 +6,6 @@
 
   // TODO(@Isha): Subclass game to handle this nicer?
   //  game.load(page.data.content)
-  console.log(page.data.content);
   engine.contentManager.load(page.data.content);
 
   engine.plugins.currency.loadContent(engine.contentManager.getList('currency'));
