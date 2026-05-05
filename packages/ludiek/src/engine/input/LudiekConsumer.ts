@@ -2,10 +2,15 @@ import { LudiekDependencies, LudiekEngineConcept } from '@ludiek/engine/LudiekEn
 import { IsNonEmpty } from '@ludiek/util/types';
 import { z } from 'zod';
 
-export interface BaseInput {
-  type: string;
-  amount: number;
-}
+/**
+ * Base shape for all inputs.
+ */
+export const BaseInputSchema = z.strictObject({
+  type: z.string(),
+  amount: z.number(),
+});
+
+export type BaseInput = z.infer<typeof BaseInputSchema>;
 
 export abstract class LudiekConsumer<
   Input extends BaseInput = BaseInput,

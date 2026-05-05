@@ -18,14 +18,18 @@ import {
 } from '@ludiek/engine/modifier/LudiekModifier';
 import { ModifierNotFoundError } from '@ludiek/engine/modifier/ModifierError';
 import { cloneDeep } from 'es-toolkit';
-import { z, ZodDiscriminatedUnion, ZodNever } from 'zod';
+import { z, ZodDiscriminatedUnion, ZodNever, ZodType } from 'zod';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 
-import { FeatureMap, PluginMap } from '@ludiek/util/types';
+import { ContentMap, FeatureMap, PluginMap } from '@ludiek/util/types';
+import { l, LudiekContent } from './LudiekContent';
+import { replaceSchema } from '@ludiek/util/schema';
+import { ContentManager } from '@123ishatest/louter';
 
 export class LudiekEngine<
   Plugins extends readonly LudiekPlugin[] = [],
   Features extends readonly LudiekFeature[] = [],
+  Content extends readonly LudiekContent[] = [],
   Evaluators extends readonly LudiekEvaluator[] = [],
   Consumers extends readonly LudiekConsumer[] = [],
   Producers extends readonly LudiekProducer[] = [],
@@ -34,6 +38,8 @@ export class LudiekEngine<
 > {
   public plugins: PluginMap<Plugins>;
   public features: FeatureMap<Features>;
+  public content: ContentMap<Content>;
+  private readonly _contentManager: ContentManager<ContentMap<Content>>;
   private readonly _evaluators: Record<string, LudiekEvaluator> = {};
   private readonly _consumers: Record<string, LudiekConsumer> = {};
   private readonly _producers: Record<string, LudiekProducer> = {};
@@ -42,7 +48,7 @@ export class LudiekEngine<
   private readonly _activeBonuses: Record<string, Record<string, BonusContribution[]>>;
 
   constructor(
-    config: LudiekEngineConfig<Plugins, Features, Evaluators, Consumers, Producers, Controllers, Modifiers>,
+    config: LudiekEngineConfig<Plugins, Features, Content, Evaluators, Consumers, Producers, Controllers, Modifiers>,
     state = {},
   ) {
     this.plugins = Object.fromEntries(config.plugins?.map((p) => [p.type, p]) ?? []) as PluginMap<Plugins>;
@@ -56,6 +62,13 @@ export class LudiekEngine<
     config.producers?.forEach((o) => this.registerProducer(o));
     config.controllers?.forEach((c) => this.registerController(c));
     config.modifiers?.forEach((m) => this.registerModifier(m));
+
+    // Replace schemas
+    this.content = Object.fromEntries(
+      config.content?.map((c) => [c.kind, this.sanitizeSchema(c.schema)]) ?? [],
+    ) as ContentMap<Content>;
+
+    this._contentManager = new ContentManager(this.content);
 
     this._activeBonuses = state;
   }
@@ -128,6 +141,23 @@ export class LudiekEngine<
   public registerModifier(modifier: LudiekModifier): void {
     modifier.inject(this);
     this._modifiers[modifier.type] = modifier;
+  }
+
+  /**
+   * Replace all placeholder schemas with the engines
+   */
+  private sanitizeSchema = (schema: ZodType): ZodType => {
+    schema = replaceSchema(schema, l.condition(), this.conditionSchema());
+    schema = replaceSchema(schema, l.input(), this.inputSchema());
+    schema = replaceSchema(schema, l.output(), this.outputSchema());
+    schema = replaceSchema(schema, l.request(), this.requestSchema());
+    schema = replaceSchema(schema, l.bonus(), this.bonusSchema());
+
+    return schema;
+  };
+
+  public get contentManager() {
+    return this._contentManager;
   }
 
   /**

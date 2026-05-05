@@ -11,10 +11,6 @@ export class Farming extends Ludiek.feature() {
     super();
   }
 
-  public loadContent(plants: PlantDetail[]): void {
-    this.plants = plants;
-  }
-
   public sow(id: string): void {
     const plant = this.getPlant(id);
     this.engine.plugins.currency.gainCurrency({ id: '/currency/money', amount: plant.moneyReward });
@@ -22,6 +18,6 @@ export class Farming extends Ludiek.feature() {
   }
 
   public getPlant(id: string): PlantDetail {
-    return this.plants.find((plant) => plant.id === id) as PlantDetail;
+    return this.engine.contentManager.get(id, 'plant');
   }
 }

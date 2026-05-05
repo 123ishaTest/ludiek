@@ -33,6 +33,7 @@
     "vitest": "^4.1.2"
   },
   "dependencies": {
+    "@123ishatest/louter": "^0.3.1",
     "es-toolkit": "^1.39.10",
     "strongly-typed-events": "^3.0.11",
     "zod": "^4.3.6"

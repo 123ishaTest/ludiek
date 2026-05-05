@@ -5,10 +5,12 @@ import { LudiekController } from '@ludiek/engine/request/LudiekRequest';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
+import { LudiekContent } from './LudiekContent';
 
 export interface LudiekEngineConfig<
   Plugins extends readonly LudiekPlugin[] = [],
   Features extends readonly LudiekFeature[] = [],
+  Content extends readonly LudiekContent[] = [],
   Evaluators extends readonly LudiekEvaluator[] = [],
   Consumers extends readonly LudiekConsumer[] = [],
   Producers extends readonly LudiekProducer[] = [],
@@ -17,6 +19,7 @@ export interface LudiekEngineConfig<
 > {
   plugins?: Plugins;
   features?: Features;
+  content?: Content;
   evaluators?: Evaluators;
   consumers?: Consumers;
   producers?: Producers;

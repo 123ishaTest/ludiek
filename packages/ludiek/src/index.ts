@@ -4,13 +4,19 @@
 // Engine
 export { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 export { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
+export { type LudiekContent, l } from '@ludiek/engine/LudiekContent';
 export { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 export { LudiekGame } from '@ludiek/engine/LudiekGame';
 
 export { createLudiek } from '@ludiek/ludiek';
 
 // Engine.Conditions
-export { LudiekEvaluator, type BaseCondition, type LudiekCondition } from '@ludiek/engine/condition/LudiekEvaluator';
+export {
+  LudiekEvaluator,
+  BaseConditionSchema,
+  type BaseCondition,
+  type LudiekCondition,
+} from '@ludiek/engine/condition/LudiekEvaluator';
 
 // Engine.Input
 export { LudiekConsumer, type BaseInput, type LudiekInput } from '@ludiek/engine/input/LudiekConsumer';

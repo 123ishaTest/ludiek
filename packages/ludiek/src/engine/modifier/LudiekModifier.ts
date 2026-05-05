@@ -2,9 +2,14 @@ import { z } from 'zod';
 import { LudiekDependencies, LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
 import { IsNonEmpty } from '@ludiek/util/types';
 
-export interface BaseBonus {
-  type: string;
-}
+/**
+ * Base shape for all bonuses.
+ */
+export const BaseBonusSchema = z.strictObject({
+  type: z.string(),
+});
+
+export type BaseBonus = z.infer<typeof BaseBonusSchema>;
 
 export interface BonusContribution {
   type: string;

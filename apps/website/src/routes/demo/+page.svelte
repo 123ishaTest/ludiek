@@ -3,17 +3,15 @@
   import { onMount } from 'svelte';
 
   import { page } from '$app/state';
-  import { contentManager } from '$lib/demo/content';
 
   // TODO(@Isha): Subclass game to handle this nicer?
   //  game.load(page.data.content)
-  contentManager.load(page.data.content);
+  engine.contentManager.load(page.data.content);
 
-  engine.plugins.currency.loadContent(contentManager.getList('currency'));
-  engine.plugins.statistic.loadContent(contentManager.getList('statistic'));
-  engine.plugins.achievement.loadContent(contentManager.getList('achievement'));
-  engine.plugins.skill.loadContent(contentManager.getList('skill'));
-  engine.features.farming.loadContent(contentManager.getList('plant'));
+  engine.plugins.currency.loadContent(engine.contentManager.getList('currency'));
+  engine.plugins.statistic.loadContent(engine.contentManager.getList('statistic'));
+  engine.plugins.achievement.loadContent(engine.contentManager.getList('achievement'));
+  engine.plugins.skill.loadContent(engine.contentManager.getList('skill'));
   let planted = $derived(statistic.getMapValue('/statistic/plants-planted', '/plant/sunflower'));
 
   let money = $derived(currency.getBalance('/currency/money'));
