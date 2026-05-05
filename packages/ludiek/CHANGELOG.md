@@ -1,5 +1,11 @@
 # @123ishatest/ludiek
 
+## 0.3.2
+
+### Patch Changes
+
+- Improve dependency management
+
 ## 0.3.1
 
 ### Patch Changes
