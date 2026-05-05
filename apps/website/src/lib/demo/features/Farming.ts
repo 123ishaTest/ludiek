@@ -1,7 +1,13 @@
-import type { PlantDetail } from '$lib/demo/model/PlantDetail';
-import { Ludiek } from '$lib/demo/ludiek';
+import { type PlantDetail, PlantSchema } from '$lib/demo/model/PlantDetail';
+import { CurrencyPlugin, LudiekFeature, StatisticPlugin } from '@123ishatest/ludiek';
 
-export class Farming extends Ludiek.feature() {
+type Dependencies = {
+  plugins: [CurrencyPlugin, StatisticPlugin];
+  // TODO(@Isha): This is not ideal, should be resolved by a proper entrypoint
+  content: [{ kind: 'plant'; schema: typeof PlantSchema }];
+};
+
+export class Farming extends LudiekFeature<Dependencies> {
   readonly type = 'farming';
   protected _state = {};
 

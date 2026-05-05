@@ -8,8 +8,6 @@ export { type LudiekContent, l } from '@ludiek/engine/LudiekContent';
 export { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 export { LudiekGame } from '@ludiek/engine/LudiekGame';
 
-export { createLudiek } from '@ludiek/ludiek';
-
 // Engine.Conditions
 export {
   LudiekEvaluator,
