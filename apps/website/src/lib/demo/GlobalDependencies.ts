@@ -9,7 +9,6 @@ import { SeedModifier } from '$lib/demo/features/SeedBonus';
 import { GlobalSeedModifier } from '$lib/demo/features/GlobalSeedBonus';
 import type { Farming } from '$lib/demo/features/Farming';
 import {
-  LudiekFeature,
   type AchievementPlugin,
   type CouponPlugin,
   type CurrencyPlugin,
