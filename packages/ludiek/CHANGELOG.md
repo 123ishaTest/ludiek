@@ -1,5 +1,11 @@
 # @123ishatest/ludiek
 
+## 0.4.1
+
+### Patch Changes
+
+- Make config const to improve generics
+
 ## 0.4.0
 
 ### Minor Changes
