@@ -8,19 +8,20 @@ import { SowSeedController } from '$lib/demo/features/SowPlantController';
 import { SeedModifier } from '$lib/demo/features/SeedBonus';
 import { GlobalSeedModifier } from '$lib/demo/features/GlobalSeedBonus';
 import type { Farming } from '$lib/demo/features/Farming';
-import type {
-  AchievementPlugin,
-  CouponPlugin,
-  CurrencyPlugin,
-  EnterCouponController,
-  GainCurrencyProducer,
-  GainSkillExperienceProducer,
-  HasCurrencyEvaluator,
-  HasScalarStatisticEvaluator,
-  LoseCurrencyConsumer,
-  SkillPlugin,
-  StatisticPlugin,
-  TrueEvaluator,
+import {
+  LudiekFeature,
+  type AchievementPlugin,
+  type CouponPlugin,
+  type CurrencyPlugin,
+  type EnterCouponController,
+  type GainCurrencyProducer,
+  type GainSkillExperienceProducer,
+  type HasCurrencyEvaluator,
+  type HasScalarStatisticEvaluator,
+  type LoseCurrencyConsumer,
+  type SkillPlugin,
+  type StatisticPlugin,
+  type TrueEvaluator,
 } from '@123ishatest/ludiek';
 
 export type GlobalDependencies = {
@@ -39,3 +40,5 @@ export type GlobalDependencies = {
   controllers: [EnterCouponController, SowSeedController];
   modifiers: [SeedModifier, GlobalSeedModifier];
 };
+
+export abstract class Feature extends LudiekFeature<GlobalDependencies> {}
