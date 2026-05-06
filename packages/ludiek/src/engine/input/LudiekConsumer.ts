@@ -1,4 +1,4 @@
-import { LudiekDependencies, LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
+import { LudiekDependencies, LudiekEngineContribution } from '@ludiek/engine/LudiekEngineContribution';
 import { IsNonEmpty } from '@ludiek/util/types';
 import { z } from 'zod';
 
@@ -15,7 +15,7 @@ export type BaseInput = z.infer<typeof BaseInputSchema>;
 export abstract class LudiekConsumer<
   Input extends BaseInput = BaseInput,
   Dependencies extends LudiekDependencies = object,
-> extends LudiekEngineConcept<Dependencies> {
+> extends LudiekEngineContribution<Dependencies> {
   declare readonly __input: Input;
 
   public abstract readonly schema: z.ZodObject<{

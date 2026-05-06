@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { LudiekDependencies, LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
+import { LudiekDependencies, LudiekEngineContribution } from '@ludiek/engine/LudiekEngineContribution';
 import { IsNonEmpty } from '@ludiek/util/types';
 
 /**
@@ -20,7 +20,7 @@ export interface BonusContribution {
 export abstract class LudiekModifier<
   Bonus extends BaseBonus = BaseBonus,
   Dependencies extends LudiekDependencies = object,
-> extends LudiekEngineConcept<Dependencies> {
+> extends LudiekEngineContribution<Dependencies> {
   declare readonly __bonus?: Bonus;
 
   public abstract readonly schema: z.ZodObject<{

@@ -1,5 +1,5 @@
 import { LudiekElement } from '@ludiek/engine/LudiekElement';
-import { LudiekDependencies } from '@ludiek/engine/LudiekEngineConcept';
+import { LudiekDependencies } from './LudiekEngineContribution';
 
 /**
  * Extend to create your own custom plugin

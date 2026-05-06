@@ -31,7 +31,7 @@ export type DependencyEngine<Dependencies extends LudiekDependencies> = LudiekEn
   NonNullable<Dependencies['modifiers']>
 >;
 
-export abstract class LudiekEngineConcept<Dependencies extends LudiekDependencies = object> {
+export abstract class LudiekEngineContribution<Dependencies extends LudiekDependencies = object> {
   abstract readonly type: string;
 
   private _engine!: DependencyEngine<Dependencies>;

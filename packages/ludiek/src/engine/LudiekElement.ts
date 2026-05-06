@@ -1,13 +1,13 @@
 import { merge } from 'es-toolkit';
 import { LudiekSavable } from '@ludiek/engine/peristence/LudiekSavable';
 import { BonusContribution } from '@ludiek/engine/modifier/LudiekModifier';
-import { LudiekDependencies, LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
+import { LudiekDependencies, LudiekEngineContribution } from './LudiekEngineContribution';
 
 /**
  * A shared base class for plugins and features
  */
 export abstract class LudiekElement<Dependencies extends LudiekDependencies>
-  extends LudiekEngineConcept<Dependencies>
+  extends LudiekEngineContribution<Dependencies>
   implements LudiekSavable
 {
   /**

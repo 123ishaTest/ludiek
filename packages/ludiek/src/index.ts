@@ -37,7 +37,7 @@ export {
 } from '@ludiek/engine/modifier/LudiekModifier';
 
 // Engine.Types
-export type { LudiekDependencies, DependencyEngine } from '@ludiek/engine/LudiekEngineConcept';
+export type { LudiekDependencies, DependencyEngine } from './engine/LudiekEngineContribution';
 
 // Engine.Errors
 export { LudiekError } from '@ludiek/engine/LudiekError';
