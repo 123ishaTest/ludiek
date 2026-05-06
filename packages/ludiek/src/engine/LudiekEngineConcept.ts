@@ -1,9 +1,8 @@
 import { LudiekEngineContribution } from '@ludiek/engine/LudiekEngineContribution';
 import { AnyEngine, ContributionSchemas, HasSchema } from '@ludiek/util/types';
-import { ConditionNotFoundError } from '@ludiek/engine/condition/ConditionError';
 import z, { ZodDiscriminatedUnion, ZodNever } from 'zod';
 
-export class LudiekEngineConcept<
+export abstract class LudiekEngineConcept<
   const ContributionKind extends LudiekEngineContribution & HasSchema,
   const Contributions extends readonly ContributionKind[],
 > {
@@ -13,6 +12,8 @@ export class LudiekEngineConcept<
   constructor(_engine: AnyEngine) {
     this._engine = _engine;
   }
+
+  public abstract raiseNotfoundError(type: string, registeredContributions: string[]): void;
 
   public register(contribution: ContributionKind): void {
     contribution.inject(this._engine);
@@ -28,10 +29,8 @@ export class LudiekEngineConcept<
     const contribution = this._contributions[type];
 
     if (contribution == null) {
-      const registeredContribution = Object.keys(this._contributions).join(', ');
-      throw new ConditionNotFoundError(
-        `Cannot evaluate condition of type '${type}' because its evaluator is not registered. Registered evaluators are: ${registeredContribution}`,
-      );
+      const registeredContributions = this.list.map((c) => c.type);
+      this.raiseNotfoundError(type, registeredContributions);
     }
     return contribution;
   }

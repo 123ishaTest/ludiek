@@ -14,7 +14,7 @@ describe('Engine Input', () => {
     const engine = new LudiekEngine({
       consumers: consumers,
     });
-    const registeredConsumers = engine.consumers;
+    const registeredConsumers = engine.input.list;
 
     // Assert
     expect(registeredConsumers).toEqual(consumers);
