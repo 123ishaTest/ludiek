@@ -1,8 +1,12 @@
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekContent } from '@ludiek/engine/LudiekContent';
+import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 
 export type IsNonEmpty<T extends ReadonlyArray<unknown>> = T extends [] ? false : T extends never[] ? false : true;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnyEngine = LudiekEngine<any, any, any, any, any, any, any, any>;
 
 export type FeatureMap<Features extends readonly LudiekFeature[]> = {
   [Feature in Features[number] as Feature['type']]: Extract<Features[number], { type: Feature['type'] }>;

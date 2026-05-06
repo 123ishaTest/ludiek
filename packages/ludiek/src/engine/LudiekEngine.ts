@@ -1,12 +1,11 @@
 import { LudiekEngineConfig } from '@ludiek/engine/LudiekEngineConfig';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
-import { EvaluatorSchemas, LudiekCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
+import { LudiekCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { LudiekEngineSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 import { ConsumerSchemas, LudiekConsumer, LudiekInput } from '@ludiek/engine/input/LudiekConsumer';
 import { LudiekOutput, LudiekProducer, ProducerSchemas } from '@ludiek/engine/output/LudiekProducer';
 import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
 import { ControllerSchemas, LudiekController, LudiekRequest } from '@ludiek/engine/request/LudiekRequest';
-import { ConditionNotFoundError } from '@ludiek/engine/condition/ConditionError';
 import { InputNotFoundError } from '@ludiek/engine/input/InputError';
 import { OutputNotFoundError } from '@ludiek/engine/output/OutputError';
 import { ControllerNotFoundError } from '@ludiek/engine/request/RequestError';
@@ -25,6 +24,7 @@ import { ContentMap, FeatureMap, PluginMap } from '@ludiek/util/types';
 import { l, LudiekContent } from './LudiekContent';
 import { replaceSchema } from '@ludiek/util/schema';
 import { ContentManager } from '@123ishatest/louter';
+import { LudiekConditionConcept } from '@ludiek/engine/condition/LudiekConditionConcept';
 
 export class LudiekEngine<
   const Plugins extends readonly LudiekPlugin[] = [],
@@ -40,7 +40,7 @@ export class LudiekEngine<
   public features: FeatureMap<Features>;
   public content: ContentMap<Content>;
   private readonly _contentManager: ContentManager<ContentMap<Content>>;
-  private readonly _evaluators: Record<string, LudiekEvaluator> = {};
+  private readonly _condition: LudiekConditionConcept<Evaluators> = new LudiekConditionConcept(this);
   private readonly _consumers: Record<string, LudiekConsumer> = {};
   private readonly _producers: Record<string, LudiekProducer> = {};
   private readonly _controllers: Record<string, LudiekController> = {};
@@ -57,7 +57,7 @@ export class LudiekEngine<
     this.features = Object.fromEntries(config.features?.map((f) => [f.type, f]) ?? []) as FeatureMap<Features>;
     config.features?.forEach((f) => f.inject(this));
 
-    config.evaluators?.forEach((c) => this.registerEvaluator(c));
+    config.evaluators?.forEach((c) => this._condition.register(c));
     config.consumers?.forEach((i) => this.registerConsumer(i));
     config.producers?.forEach((o) => this.registerProducer(o));
     config.controllers?.forEach((c) => this.registerController(c));
@@ -71,15 +71,6 @@ export class LudiekEngine<
     this._contentManager = new ContentManager(this.content);
 
     this._activeBonuses = state;
-  }
-
-  public get evaluators(): Evaluators {
-    return Object.values(this._evaluators) as unknown as Evaluators;
-  }
-
-  public conditionSchema(): ZodNever | ZodDiscriminatedUnion<EvaluatorSchemas<Evaluators>, 'type'> {
-    const schemas = this.evaluators.map((e) => e.schema);
-    return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
   }
 
   public get consumers(): Consumers {
@@ -118,11 +109,6 @@ export class LudiekEngine<
     return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
   }
 
-  public registerEvaluator(evaluator: LudiekEvaluator): void {
-    evaluator.inject(this);
-    this._evaluators[evaluator.type] = evaluator;
-  }
-
   public registerConsumer(consumer: LudiekConsumer): void {
     consumer.inject(this);
     this._consumers[consumer.type] = consumer;
@@ -147,7 +133,7 @@ export class LudiekEngine<
    * Replace all placeholder schemas with the engines
    */
   private sanitizeSchema = (schema: ZodType): ZodType => {
-    schema = replaceSchema(schema, l.condition(), this.conditionSchema());
+    schema = replaceSchema(schema, l.condition(), this._condition.schema);
     schema = replaceSchema(schema, l.input(), this.inputSchema());
     schema = replaceSchema(schema, l.output(), this.outputSchema());
     schema = replaceSchema(schema, l.request(), this.requestSchema());
@@ -160,30 +146,27 @@ export class LudiekEngine<
     return this._contentManager;
   }
 
-  /**
-   * Evaluate one or multiple condition and evaluates whether they are all true.
-   */
-  public evaluate(condition: LudiekCondition<Evaluators> | LudiekCondition<Evaluators>[]): boolean {
-    if (!Array.isArray(condition)) {
-      condition = [condition];
-    }
-
-    return condition.every((condition) => {
-      const evaluator = this.getEvaluator(condition.type);
-      const modified = evaluator.modify(cloneDeep(condition));
-      return evaluator.evaluate(modified);
-    });
-  }
-
   public request(request: LudiekRequest<Controllers>): void {
     const controller = this.getController(request.type);
     controller.resolve(request);
   }
 
+  public evaluate(condition: LudiekCondition<Evaluators> | LudiekCondition<Evaluators>[]): boolean {
+    return this._condition.evaluate(condition);
+  }
+
+  public modifyCondition<Condition extends LudiekCondition<Evaluators>>(condition: Condition): Condition {
+    return this._condition.modify(condition);
+  }
+
+  public get condition(): LudiekConditionConcept<Evaluators> {
+    return this._condition;
+  }
+
   public handleTransaction(
     transaction: LudiekTransaction<LudiekInput<Consumers>, LudiekOutput<Producers>, LudiekCondition<Evaluators>>,
   ): boolean {
-    if (transaction.requirement && !this.evaluate(transaction.requirement)) {
+    if (transaction.requirement && !this._condition.evaluate(transaction.requirement)) {
       return false;
     }
 
@@ -314,11 +297,6 @@ export class LudiekEngine<
     });
   }
 
-  public modifyCondition<Condition extends LudiekCondition<Evaluators>>(condition: Condition): Condition {
-    const evaluator = this.getEvaluator(condition.type);
-    return evaluator.modify(cloneDeep(condition)) as Condition;
-  }
-
   public modifyInput<Input extends LudiekInput<Consumers>>(input: Input): Input {
     const consumer = this.getConsumer(input.type);
     return consumer.modify(cloneDeep(input)) as Input;
@@ -331,23 +309,6 @@ export class LudiekEngine<
 
   public get activeBonuses(): Record<string, Record<string, BonusContribution[]>> {
     return this._activeBonuses;
-  }
-
-  /**
-   * Get an evaluator or throw an error if it doesn't exist
-   * @param type
-   * @private
-   */
-  private getEvaluator(type: string): LudiekEvaluator {
-    const evaluator = this._evaluators[type];
-
-    if (evaluator == null) {
-      const registeredEvaluators = Object.keys(this._evaluators).join(', ');
-      throw new ConditionNotFoundError(
-        `Cannot evaluate condition of type '${type}' because its evaluator is not registered. Registered evaluators are: ${registeredEvaluators}`,
-      );
-    }
-    return evaluator;
   }
 
   /**
