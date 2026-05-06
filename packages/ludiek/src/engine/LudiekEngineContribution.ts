@@ -4,7 +4,7 @@ import { EngineNotInjectedError } from '@ludiek/engine/LudiekError';
 import { LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
 import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
-import { LudiekController } from '@ludiek/engine/request/LudiekRequest';
+import { LudiekController } from './request/LudiekController';
 import { LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 import { LudiekContent } from './LudiekContent';

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { LudiekController } from '@ludiek/engine/request/LudiekRequest';
+import { LudiekController } from '@ludiek/engine/request/LudiekController';
 
 export const EmptyRequestSchema = z.strictObject({
   type: z.literal('/request/empty'),

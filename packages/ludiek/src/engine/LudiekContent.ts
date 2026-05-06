@@ -2,7 +2,7 @@ import { ZodType } from 'zod';
 import { BaseConditionSchema } from '@ludiek/engine/condition/LudiekEvaluator';
 import { BaseOutputSchema } from '@ludiek/engine/output/LudiekProducer';
 import { BaseInputSchema } from '@ludiek/engine/input/LudiekConsumer';
-import { BaseRequestSchema } from '@ludiek/engine/request/LudiekRequest';
+import { BaseRequestSchema } from './request/LudiekController';
 import { BaseBonusSchema } from '@ludiek/engine/modifier/LudiekModifier';
 
 export interface LudiekContent {

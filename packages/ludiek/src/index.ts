@@ -26,7 +26,7 @@ export { LudiekProducer, type BaseOutput, type LudiekOutput } from '@ludiek/engi
 export type { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
 
 // Engine.Requests
-export { LudiekController, type BaseRequest, type LudiekRequest } from '@ludiek/engine/request/LudiekRequest';
+export { LudiekController, type BaseRequest, type LudiekRequest } from './engine/request/LudiekController';
 
 // Engine.Modifiers
 export {
