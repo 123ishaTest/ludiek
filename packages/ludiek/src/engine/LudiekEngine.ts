@@ -3,10 +3,9 @@ import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { LudiekEngineSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 import { LudiekConsumer, LudiekInput } from '@ludiek/engine/input/LudiekConsumer';
-import { LudiekOutput, LudiekProducer, ProducerSchemas } from '@ludiek/engine/output/LudiekProducer';
+import { LudiekOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
 import { ControllerSchemas, LudiekController, LudiekRequest } from '@ludiek/engine/request/LudiekRequest';
-import { OutputNotFoundError } from '@ludiek/engine/output/OutputError';
 import { ControllerNotFoundError } from '@ludiek/engine/request/RequestError';
 import {
   BonusContribution,
@@ -15,7 +14,6 @@ import {
   ModifierSchemas,
 } from '@ludiek/engine/modifier/LudiekModifier';
 import { ModifierNotFoundError } from '@ludiek/engine/modifier/ModifierError';
-import { cloneDeep } from 'es-toolkit';
 import { z, ZodDiscriminatedUnion, ZodNever, ZodType } from 'zod';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 
@@ -25,6 +23,7 @@ import { replaceSchema } from '@ludiek/util/schema';
 import { ContentManager } from '@123ishatest/louter';
 import { LudiekConditionConcept } from '@ludiek/engine/condition/LudiekConditionConcept';
 import { LudiekInputConcept } from '@ludiek/engine/input/LudiekInputConcept';
+import { LudiekOutputConcept } from '@ludiek/engine/output/LudiekOutputConcept';
 
 export class LudiekEngine<
   const Plugins extends readonly LudiekPlugin[] = [],
@@ -42,7 +41,7 @@ export class LudiekEngine<
   private readonly _contentManager: ContentManager<ContentMap<Content>>;
   private readonly _condition: LudiekConditionConcept<Evaluators> = new LudiekConditionConcept(this);
   private readonly _input: LudiekInputConcept<Consumers> = new LudiekInputConcept(this);
-  private readonly _producers: Record<string, LudiekProducer> = {};
+  private readonly _output: LudiekOutputConcept<Producers> = new LudiekOutputConcept(this);
   private readonly _controllers: Record<string, LudiekController> = {};
   private readonly _modifiers: Record<string, LudiekModifier> = {};
   private readonly _activeBonuses: Record<string, Record<string, BonusContribution[]>>;
@@ -59,7 +58,7 @@ export class LudiekEngine<
 
     config.evaluators?.forEach((c) => this._condition.register(c));
     config.consumers?.forEach((i) => this._input.register(i));
-    config.producers?.forEach((o) => this.registerProducer(o));
+    config.producers?.forEach((o) => this._output.register(o));
     config.controllers?.forEach((c) => this.registerController(c));
     config.modifiers?.forEach((m) => this.registerModifier(m));
 
@@ -71,15 +70,6 @@ export class LudiekEngine<
     this._contentManager = new ContentManager(this.content);
 
     this._activeBonuses = state;
-  }
-
-  public get producers(): Producers {
-    return Object.values(this._producers) as unknown as Producers;
-  }
-
-  public outputSchema(): ZodNever | ZodDiscriminatedUnion<ProducerSchemas<Producers>, 'type'> {
-    const schemas = this.producers.map((c) => c.schema);
-    return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
   }
 
   public get controllers(): Controllers {
@@ -100,11 +90,6 @@ export class LudiekEngine<
     return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
   }
 
-  public registerProducer(producer: LudiekProducer): void {
-    producer.inject(this);
-    this._producers[producer.type] = producer;
-  }
-
   public registerController(controller: LudiekController): void {
     controller.inject(this);
     this._controllers[controller.type] = controller;
@@ -121,7 +106,7 @@ export class LudiekEngine<
   private sanitizeSchema = (schema: ZodType): ZodType => {
     schema = replaceSchema(schema, l.condition(), this._condition.schema);
     schema = replaceSchema(schema, l.input(), this._input.schema);
-    schema = replaceSchema(schema, l.output(), this.outputSchema());
+    schema = replaceSchema(schema, l.output(), this._output.schema);
     schema = replaceSchema(schema, l.request(), this.requestSchema());
     schema = replaceSchema(schema, l.bonus(), this.bonusSchema());
 
@@ -173,6 +158,22 @@ export class LudiekEngine<
     return this._input;
   }
 
+  public canProduce(output: LudiekOutput<Producers> | LudiekOutput<Producers>[]): boolean {
+    return this._output.canProduce(output);
+  }
+
+  public produce(output: LudiekOutput<Producers> | LudiekOutput<Producers>[]): void {
+    this._output.produce(output);
+  }
+
+  public modifyOutput<Output extends LudiekOutput<Producers>>(output: Output): Output {
+    return this._output.modify(output);
+  }
+
+  public get output(): LudiekOutputConcept<Producers> {
+    return this._output;
+  }
+
   public handleTransaction(
     transaction: LudiekTransaction<LudiekInput<Consumers>, LudiekOutput<Producers>, LudiekCondition<Evaluators>>,
   ): boolean {
@@ -184,7 +185,7 @@ export class LudiekEngine<
       return false;
     }
 
-    if (transaction.output && !this.canProduce(transaction.output)) {
+    if (transaction.output && !this._output.canProduce(transaction.output)) {
       return false;
     }
 
@@ -193,41 +194,9 @@ export class LudiekEngine<
     }
 
     if (transaction.output) {
-      this.produce(transaction.output);
+      this._output.produce(transaction.output);
     }
     return true;
-  }
-
-  /**
-   * Checks whether we can produce the output
-   * @param output
-   */
-  public canProduce(output: LudiekOutput<Producers> | LudiekOutput<Producers>[]): boolean {
-    if (!Array.isArray(output)) {
-      output = [output];
-    }
-
-    return output.every((o) => {
-      const producer = this.getProducer(o.type);
-      const modified = producer.modify(cloneDeep(o));
-      return producer.canProduce(modified);
-    });
-  }
-
-  /**
-   * Produce the output with no regards for whether we can take it.
-   * @param output
-   */
-  public produce(output: LudiekOutput<Producers> | LudiekOutput<Producers>[]): void {
-    if (!Array.isArray(output)) {
-      output = [output];
-    }
-
-    output.forEach((o) => {
-      const producer = this.getProducer(o.type);
-      const modified = producer.modify(cloneDeep(o));
-      producer.produce(modified);
-    });
   }
 
   public getBonus(bonus: LudiekBonus<Modifiers>): number {
@@ -275,30 +244,8 @@ export class LudiekEngine<
     });
   }
 
-  public modifyOutput<Output extends LudiekOutput<Producers>>(output: Output): Output {
-    const producer = this.getProducer(output.type);
-    return producer.modify(cloneDeep(output)) as Output;
-  }
-
   public get activeBonuses(): Record<string, Record<string, BonusContribution[]>> {
     return this._activeBonuses;
-  }
-
-  /**
-   * Get a producer or throw an error if it doesn't exist
-   * @param type
-   * @private
-   */
-  private getProducer(type: string): LudiekProducer {
-    const producer = this._producers[type];
-
-    if (producer == null) {
-      const registeredProcessors = Object.keys(this._producers).join(', ');
-      throw new OutputNotFoundError(
-        `Cannot process output of type '${type}' because its processor is not registered. Registered processors are: ${registeredProcessors}`,
-      );
-    }
-    return producer;
   }
 
   /**

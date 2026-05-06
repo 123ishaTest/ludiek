@@ -16,7 +16,6 @@ import {
   type LudiekBonusContribution,
   LudiekEngine,
   LudiekGame,
-  type LudiekOutput,
   SkillPlugin,
   StatisticPlugin,
   TrueEvaluator,
@@ -71,7 +70,6 @@ export const engine = new LudiekEngine(
 );
 
 // Extract some neat utility types
-export type Output = LudiekOutput<typeof engine.producers>;
 export type Bonus = LudiekBonusContribution<typeof engine.modifiers>;
 
 export const game = new LudiekGame(engine, {
