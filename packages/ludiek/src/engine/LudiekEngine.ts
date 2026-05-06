@@ -12,7 +12,7 @@ import {
   LudiekModifier,
   ModifierSchemas,
 } from '@ludiek/engine/modifier/LudiekModifier';
-import { ModifierNotFoundError } from '@ludiek/engine/modifier/ModifierError';
+import { BonusNotFoundError } from './modifier/BonusError';
 import { z, ZodDiscriminatedUnion, ZodNever, ZodType } from 'zod';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 
@@ -246,7 +246,7 @@ export class LudiekEngine<
     const modifier = this._modifiers[type];
     if (!modifier) {
       const registeredModifiers = Object.keys(this._modifiers).join(', ');
-      throw new ModifierNotFoundError(
+      throw new BonusNotFoundError(
         `Cannot modify bonus of type '${type}' because its modifier is not registered. Registered modifiers are: ${registeredModifiers}`,
       );
     }
