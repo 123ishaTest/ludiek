@@ -5,8 +5,7 @@ import { LudiekEngineSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 import { LudiekConsumer, LudiekInput } from '@ludiek/engine/input/LudiekConsumer';
 import { LudiekOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
-import { ControllerSchemas, LudiekController, LudiekRequest } from './request/LudiekController';
-import { ControllerNotFoundError } from '@ludiek/engine/request/RequestError';
+import { LudiekController, LudiekRequest } from './request/LudiekController';
 import {
   BonusContribution,
   LudiekBonus,
@@ -24,6 +23,7 @@ import { ContentManager } from '@123ishatest/louter';
 import { LudiekConditionConcept } from '@ludiek/engine/condition/LudiekConditionConcept';
 import { LudiekInputConcept } from '@ludiek/engine/input/LudiekInputConcept';
 import { LudiekOutputConcept } from '@ludiek/engine/output/LudiekOutputConcept';
+import { LudiekRequestConcept } from '@ludiek/engine/request/LudiekRequestConcept';
 
 export class LudiekEngine<
   const Plugins extends readonly LudiekPlugin[] = [],
@@ -42,7 +42,7 @@ export class LudiekEngine<
   private readonly _condition: LudiekConditionConcept<Evaluators> = new LudiekConditionConcept(this);
   private readonly _input: LudiekInputConcept<Consumers> = new LudiekInputConcept(this);
   private readonly _output: LudiekOutputConcept<Producers> = new LudiekOutputConcept(this);
-  private readonly _controllers: Record<string, LudiekController> = {};
+  private readonly _request: LudiekRequestConcept<Controllers> = new LudiekRequestConcept(this);
   private readonly _modifiers: Record<string, LudiekModifier> = {};
   private readonly _activeBonuses: Record<string, Record<string, BonusContribution[]>>;
 
@@ -59,7 +59,7 @@ export class LudiekEngine<
     config.evaluators?.forEach((c) => this._condition.register(c));
     config.consumers?.forEach((i) => this._input.register(i));
     config.producers?.forEach((o) => this._output.register(o));
-    config.controllers?.forEach((c) => this.registerController(c));
+    config.controllers?.forEach((c) => this._request.register(c));
     config.modifiers?.forEach((m) => this.registerModifier(m));
 
     // Replace schemas
@@ -72,15 +72,6 @@ export class LudiekEngine<
     this._activeBonuses = state;
   }
 
-  public get controllers(): Controllers {
-    return Object.values(this._controllers) as unknown as Controllers;
-  }
-
-  public requestSchema(): ZodNever | ZodDiscriminatedUnion<ControllerSchemas<Controllers>, 'type'> {
-    const schemas = this.controllers.map((c) => c.schema);
-    return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
-  }
-
   public get modifiers(): Modifiers {
     return Object.values(this._modifiers) as unknown as Modifiers;
   }
@@ -88,11 +79,6 @@ export class LudiekEngine<
   public bonusSchema(): ZodNever | ZodDiscriminatedUnion<ModifierSchemas<Modifiers>, 'type'> {
     const schemas = this.modifiers.map((c) => c.schema);
     return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
-  }
-
-  public registerController(controller: LudiekController): void {
-    controller.inject(this);
-    this._controllers[controller.type] = controller;
   }
 
   public registerModifier(modifier: LudiekModifier): void {
@@ -107,7 +93,7 @@ export class LudiekEngine<
     schema = replaceSchema(schema, l.condition(), this._condition.schema);
     schema = replaceSchema(schema, l.input(), this._input.schema);
     schema = replaceSchema(schema, l.output(), this._output.schema);
-    schema = replaceSchema(schema, l.request(), this.requestSchema());
+    schema = replaceSchema(schema, l.request(), this._request.schema);
     schema = replaceSchema(schema, l.bonus(), this.bonusSchema());
 
     return schema;
@@ -115,11 +101,6 @@ export class LudiekEngine<
 
   public get contentManager() {
     return this._contentManager;
-  }
-
-  public request(request: LudiekRequest<Controllers>): void {
-    const controller = this.getController(request.type);
-    controller.resolve(request);
   }
 
   /**
@@ -172,6 +153,14 @@ export class LudiekEngine<
 
   public get output(): LudiekOutputConcept<Producers> {
     return this._output;
+  }
+
+  public resolveRequest(request: LudiekRequest<Controllers>): void {
+    return this._request.resolve(request);
+  }
+
+  public get request(): LudiekRequestConcept<Controllers> {
+    return this._request;
   }
 
   public handleTransaction(
@@ -246,22 +235,6 @@ export class LudiekEngine<
 
   public get activeBonuses(): Record<string, Record<string, BonusContribution[]>> {
     return this._activeBonuses;
-  }
-
-  /**
-   * Get a controller or throw an error if it doesn't exist
-   * @param type
-   * @private
-   */
-  private getController(type: string): LudiekController {
-    const controller = this._controllers[type];
-    if (!controller) {
-      const registeredControllers = Object.keys(this._controllers).join(', ');
-      throw new ControllerNotFoundError(
-        `Cannot resolve request of type '${type}' because its controller is not registered. Registered controllers are: ${registeredControllers}`,
-      );
-    }
-    return controller;
   }
 
   /**
