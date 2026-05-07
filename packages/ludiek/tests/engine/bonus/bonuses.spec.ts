@@ -19,7 +19,7 @@ describe('Engine Bonuses', () => {
     const engine = new LudiekEngine({
       modifiers: modifiers,
     });
-    const registeredModifiers = engine.modifiers;
+    const registeredModifiers = engine.bonus.list;
 
     // Assert
     expect(registeredModifiers).toEqual(modifiers);

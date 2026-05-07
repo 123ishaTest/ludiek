@@ -7,7 +7,7 @@ export abstract class LudiekEngineConcept<
   const Contributions extends readonly ContributionKind[],
 > {
   private readonly _contributions: Record<string, ContributionKind> = {};
-  private readonly _engine: AnyEngine;
+  protected readonly _engine: AnyEngine;
 
   constructor(_engine: AnyEngine) {
     this._engine = _engine;

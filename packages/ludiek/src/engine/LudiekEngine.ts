@@ -6,9 +6,8 @@ import { LudiekConsumer, LudiekInput } from '@ludiek/engine/input/LudiekConsumer
 import { LudiekOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
 import { LudiekController, LudiekRequest } from '@ludiek/engine/request/LudiekController';
-import { BonusContribution, LudiekBonus, LudiekModifier, ModifierSchemas } from '@ludiek/engine/bonus/LudiekModifier';
-import { BonusNotFoundError } from '@ludiek/engine/bonus/BonusError';
-import { z, ZodDiscriminatedUnion, ZodNever, ZodType } from 'zod';
+import { BonusContribution, LudiekBonus, LudiekModifier } from '@ludiek/engine/bonus/LudiekModifier';
+import { ZodType } from 'zod';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 
 import { ContentMap, FeatureMap, PluginMap } from '@ludiek/util/types';
@@ -19,6 +18,7 @@ import { LudiekConditionConcept } from '@ludiek/engine/condition/LudiekCondition
 import { LudiekInputConcept } from '@ludiek/engine/input/LudiekInputConcept';
 import { LudiekOutputConcept } from '@ludiek/engine/output/LudiekOutputConcept';
 import { LudiekRequestConcept } from '@ludiek/engine/request/LudiekRequestConcept';
+import { LudiekBonusConcept } from '@ludiek/engine/bonus/LudiekBonusConcept';
 
 export class LudiekEngine<
   const Plugins extends readonly LudiekPlugin[] = [],
@@ -34,28 +34,34 @@ export class LudiekEngine<
   public features: FeatureMap<Features>;
   public content: ContentMap<Content>;
   private readonly _contentManager: ContentManager<ContentMap<Content>>;
-  private readonly _condition: LudiekConditionConcept<Evaluators> = new LudiekConditionConcept(this);
-  private readonly _input: LudiekInputConcept<Consumers> = new LudiekInputConcept(this);
-  private readonly _output: LudiekOutputConcept<Producers> = new LudiekOutputConcept(this);
-  private readonly _request: LudiekRequestConcept<Controllers> = new LudiekRequestConcept(this);
-  private readonly _modifiers: Record<string, LudiekModifier> = {};
-  private readonly _activeBonuses: Record<string, Record<string, BonusContribution[]>>;
+  private readonly _condition: LudiekConditionConcept<Evaluators>;
+  private readonly _input: LudiekInputConcept<Consumers>;
+  private readonly _output: LudiekOutputConcept<Producers>;
+  private readonly _request: LudiekRequestConcept<Controllers>;
+  private readonly _bonus: LudiekBonusConcept<Modifiers>;
 
   constructor(
     config: LudiekEngineConfig<Plugins, Features, Content, Evaluators, Consumers, Producers, Controllers, Modifiers>,
     state = {},
   ) {
+    this._condition = new LudiekConditionConcept(this);
+    this._input = new LudiekInputConcept(this);
+    this._output = new LudiekOutputConcept(this);
+    this._request = new LudiekRequestConcept(this);
+    this._bonus = new LudiekBonusConcept(this, state);
+
     this.plugins = Object.fromEntries(config.plugins?.map((p) => [p.type, p]) ?? []) as PluginMap<Plugins>;
     config.plugins?.forEach((p) => p.inject(this));
 
     this.features = Object.fromEntries(config.features?.map((f) => [f.type, f]) ?? []) as FeatureMap<Features>;
     config.features?.forEach((f) => f.inject(this));
 
+    // TODO(@Isha): Inject in constructor?
     config.evaluators?.forEach((c) => this._condition.register(c));
     config.consumers?.forEach((i) => this._input.register(i));
     config.producers?.forEach((o) => this._output.register(o));
     config.controllers?.forEach((c) => this._request.register(c));
-    config.modifiers?.forEach((m) => this.registerModifier(m));
+    config.modifiers?.forEach((m) => this._bonus.register(m));
 
     // Replace schemas
     this.content = Object.fromEntries(
@@ -63,22 +69,6 @@ export class LudiekEngine<
     ) as ContentMap<Content>;
 
     this._contentManager = new ContentManager(this.content);
-
-    this._activeBonuses = state;
-  }
-
-  public get modifiers(): Modifiers {
-    return Object.values(this._modifiers) as unknown as Modifiers;
-  }
-
-  public bonusSchema(): ZodNever | ZodDiscriminatedUnion<ModifierSchemas<Modifiers>, 'type'> {
-    const schemas = this.modifiers.map((c) => c.schema);
-    return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
-  }
-
-  public registerModifier(modifier: LudiekModifier): void {
-    modifier.inject(this);
-    this._modifiers[modifier.type] = modifier;
   }
 
   /**
@@ -89,7 +79,7 @@ export class LudiekEngine<
     schema = replaceSchema(schema, l.input(), this._input.schema);
     schema = replaceSchema(schema, l.output(), this._output.schema);
     schema = replaceSchema(schema, l.request(), this._request.schema);
-    schema = replaceSchema(schema, l.bonus(), this.bonusSchema());
+    schema = replaceSchema(schema, l.bonus(), this._bonus.schema);
 
     return schema;
   };
@@ -158,6 +148,18 @@ export class LudiekEngine<
     return this._request;
   }
 
+  public getBonus(bonus: LudiekBonus<Modifiers>): number {
+    return this._bonus.getBonus(bonus);
+  }
+
+  public get activeBonuses(): Record<string, Record<string, BonusContribution[]>> {
+    return this._bonus.activeBonuses;
+  }
+
+  public get bonus(): LudiekBonusConcept<Modifiers> {
+    return this._bonus;
+  }
+
   public handleTransaction(
     transaction: LudiekTransaction<LudiekInput<Consumers>, LudiekOutput<Producers>, LudiekCondition<Evaluators>>,
   ): boolean {
@@ -181,71 +183,6 @@ export class LudiekEngine<
       this._output.produce(transaction.output);
     }
     return true;
-  }
-
-  public getBonus(bonus: LudiekBonus<Modifiers>): number {
-    // TODO(@Isha): Should this be cached between ticks too?
-    const modifier = this.getModifier(bonus.type);
-
-    const identifier = modifier.stringify(bonus);
-    const values = Object.values(this._activeBonuses).flatMap((record) => {
-      return record[identifier] ?? [];
-    });
-
-    switch (modifier.variant) {
-      case 'additive':
-        return values.reduce((sum, modifier) => sum + modifier.amount, modifier.default);
-      case 'multiplicative':
-        return values.reduce((sum, modifier) => sum * (1 + modifier.amount), modifier.default);
-      default:
-        console.error(`Unknown variant '${modifier.variant}' for resolver ${modifier}`);
-        return 0;
-    }
-  }
-
-  /**
-   * Collects all bonuses from plugins and stores them in a local dictionary
-   * @private
-   */
-  private collectBonuses(): void {
-    // TODO(@Isha): Check all features too
-
-    this.pluginList.forEach((plugin) => {
-      // Reset all previous bonuses
-      this._activeBonuses[plugin.type] = {};
-
-      const bonuses = plugin.getBonuses?.();
-
-      bonuses?.forEach((bonus) => {
-        const modifier = this.getModifier(bonus.type);
-        const identifier = modifier.stringify(bonus);
-        if (this._activeBonuses[plugin.type][identifier]) {
-          this._activeBonuses[plugin.type][identifier].push(bonus);
-        } else {
-          this._activeBonuses[plugin.type][identifier] = [bonus];
-        }
-      });
-    });
-  }
-
-  public get activeBonuses(): Record<string, Record<string, BonusContribution[]>> {
-    return this._activeBonuses;
-  }
-
-  /**
-   * Get a bonus or throw an error if it doesn't exist
-   * @param type
-   * @private
-   */
-  private getModifier(type: string): LudiekModifier {
-    const modifier = this._modifiers[type];
-    if (!modifier) {
-      const registeredModifiers = Object.keys(this._modifiers).join(', ');
-      throw new BonusNotFoundError(
-        `Cannot modify bonus of type '${type}' because its modifier is not registered. Registered modifiers are: ${registeredModifiers}`,
-      );
-    }
-    return modifier;
   }
 
   // Saving and loading
@@ -294,7 +231,7 @@ export class LudiekEngine<
    */
   public preTick(): void {
     // TODO(@Isha): For now this is called by the Game, might switch up when Features are moved to the engine
-    this.collectBonuses();
+    this._bonus.collectBonuses();
   }
 
   public tick(delta: number): void {

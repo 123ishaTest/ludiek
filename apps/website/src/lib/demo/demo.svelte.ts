@@ -13,7 +13,6 @@ import {
   HasCurrencyEvaluator,
   HasScalarStatisticEvaluator,
   LoseCurrencyConsumer,
-  type LudiekBonusContribution,
   LudiekEngine,
   LudiekGame,
   SkillPlugin,
@@ -68,9 +67,6 @@ export const engine = new LudiekEngine(
   },
   engineState,
 );
-
-// Extract some neat utility types
-export type Bonus = LudiekBonusContribution<typeof engine.modifiers>;
 
 export const game = new LudiekGame(engine, {
   saveKey: '@123ishatest/ludiek-demo',

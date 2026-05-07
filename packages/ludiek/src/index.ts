@@ -33,6 +33,7 @@ export {
   LudiekModifier,
   type BaseBonus,
   type LudiekBonus,
+  type BonusContribution,
   type LudiekBonusContribution,
 } from '@ludiek/engine/bonus/LudiekModifier';
 
