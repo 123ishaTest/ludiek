@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
+import { LudiekModifier } from '@ludiek/engine/bonus/LudiekModifier';
 
 export const DummyBonusSchema = z.strictObject({
   type: z.literal('/bonus/dummy'),

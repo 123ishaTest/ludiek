@@ -14,7 +14,7 @@ type Dependencies = {
 };
 
 /**
- * An evaluator that has a modifier and only evaluates to true if that bonus is >1
+ * An evaluator that has a bonus and only evaluates to true if that bonus is >1
  */
 export class ModifiedEvaluator extends LudiekEvaluator<ModifiedCondition, Dependencies> {
   readonly schema = ModifiedConditionSchema;

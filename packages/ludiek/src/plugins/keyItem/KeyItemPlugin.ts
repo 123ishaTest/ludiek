@@ -2,7 +2,7 @@ import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
 import { UnknownKeyItemError } from '@ludiek/plugins/keyItem/KeyItemErrors';
 import { createKeyItemState, KeyItemPluginState } from '@ludiek/plugins/keyItem/KeyItemPluginState';
-import { BonusContribution } from '@ludiek/engine/modifier/LudiekModifier';
+import { BonusContribution } from '@ludiek/engine/bonus/LudiekModifier';
 import { KeyItemDefinition } from '@ludiek/plugins/keyItem/KeyItemDefinition';
 import { KeyItemGained } from '@ludiek/plugins/keyItem/KeyItemEvents';
 

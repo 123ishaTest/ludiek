@@ -1,7 +1,7 @@
 import { merge } from 'es-toolkit';
 import { LudiekSavable } from '@ludiek/engine/peristence/LudiekSavable';
-import { BonusContribution } from '@ludiek/engine/modifier/LudiekModifier';
-import { LudiekDependencies, LudiekEngineContribution } from './LudiekEngineContribution';
+import { BonusContribution } from '@ludiek/engine/bonus/LudiekModifier';
+import { LudiekDependencies, LudiekEngineContribution } from '@ludiek/engine/LudiekEngineContribution';
 
 /**
  * A shared base class for plugins and features

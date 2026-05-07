@@ -5,19 +5,14 @@ import { LudiekEngineSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 import { LudiekConsumer, LudiekInput } from '@ludiek/engine/input/LudiekConsumer';
 import { LudiekOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
-import { LudiekController, LudiekRequest } from './request/LudiekController';
-import {
-  BonusContribution,
-  LudiekBonus,
-  LudiekModifier,
-  ModifierSchemas,
-} from '@ludiek/engine/modifier/LudiekModifier';
-import { BonusNotFoundError } from './modifier/BonusError';
+import { LudiekController, LudiekRequest } from '@ludiek/engine/request/LudiekController';
+import { BonusContribution, LudiekBonus, LudiekModifier, ModifierSchemas } from '@ludiek/engine/bonus/LudiekModifier';
+import { BonusNotFoundError } from '@ludiek/engine/bonus/BonusError';
 import { z, ZodDiscriminatedUnion, ZodNever, ZodType } from 'zod';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 
 import { ContentMap, FeatureMap, PluginMap } from '@ludiek/util/types';
-import { l, LudiekContent } from './LudiekContent';
+import { l, LudiekContent } from '@ludiek/engine/LudiekContent';
 import { replaceSchema } from '@ludiek/util/schema';
 import { ContentManager } from '@123ishatest/louter';
 import { LudiekConditionConcept } from '@ludiek/engine/condition/LudiekConditionConcept';
@@ -238,7 +233,7 @@ export class LudiekEngine<
   }
 
   /**
-   * Get a modifier or throw an error if it doesn't exist
+   * Get a bonus or throw an error if it doesn't exist
    * @param type
    * @private
    */

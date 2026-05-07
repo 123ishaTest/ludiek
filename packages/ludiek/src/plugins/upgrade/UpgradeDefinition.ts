@@ -1,5 +1,5 @@
 import { BaseInput } from '@ludiek/engine/input/LudiekConsumer';
-import { BonusContribution } from '@ludiek/engine/modifier/LudiekModifier';
+import { BonusContribution } from '@ludiek/engine/bonus/LudiekModifier';
 
 export interface UpgradeDefinition {
   id: string;

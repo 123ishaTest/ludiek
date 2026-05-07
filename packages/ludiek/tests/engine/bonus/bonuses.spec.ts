@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { DummyModifier } from '@tests/shared/DummyBonus';
-import { BonusNotFoundError } from '@ludiek/engine/modifier/BonusError';
+import { BonusNotFoundError } from '@ludiek/engine/bonus/BonusError';
 import { AdditiveModifier } from '@tests/shared/AdditiveBonus';
 import { EmptyPlugin } from '@tests/shared/EmptyPlugin';
 import { MultiplicativeModifier } from '@tests/shared/MultiplicativeBonus';
@@ -88,7 +88,7 @@ describe('Engine Bonuses', () => {
     expect(bonus).toBe(1.32);
   });
 
-  it('errors when a modifier does not exist', () => {
+  it('errors when a bonus does not exist', () => {
     // Arrange
     const engine = new LudiekEngine({});
 

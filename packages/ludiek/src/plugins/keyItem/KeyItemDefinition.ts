@@ -1,4 +1,4 @@
-import { BonusContribution } from '@ludiek/engine/modifier/LudiekModifier';
+import { BonusContribution } from '@ludiek/engine/bonus/LudiekModifier';
 
 export interface KeyItemDefinition {
   id: string;
