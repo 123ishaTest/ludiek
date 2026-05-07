@@ -46,13 +46,6 @@ export abstract class LudiekModifier<
 export type LudiekBonus<Modifiers extends readonly LudiekModifier[]> =
   IsNonEmpty<Modifiers> extends false ? never : NonNullable<Modifiers[number]['__bonus']>;
 
-/**
- * Given a tuple of LudiekModifiers, produce a union of their schemas.
- */
-export type ModifierSchemas<Modifiers extends readonly LudiekModifier[]> = {
-  [Key in keyof Modifiers]: Modifiers[Key] extends LudiekModifier ? Modifiers[Key]['schema'] : never;
-};
-
 export type LudiekBonusContribution<Modifiers extends readonly LudiekModifier[]> = LudiekBonus<Modifiers> & {
   amount: number;
 };

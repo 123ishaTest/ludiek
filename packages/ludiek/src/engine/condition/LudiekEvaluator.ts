@@ -48,10 +48,3 @@ export abstract class LudiekEvaluator<
  */
 export type LudiekCondition<Evaluators extends readonly LudiekEvaluator[]> =
   IsNonEmpty<Evaluators> extends false ? never : NonNullable<Evaluators[number]['__condition']>;
-
-/**
- * Given a tuple of LudiekEvaluators, produce a union of their schemas.
- */
-export type EvaluatorSchemas<Evaluators extends readonly LudiekEvaluator[]> = {
-  [Key in keyof Evaluators]: Evaluators[Key] extends LudiekEvaluator ? Evaluators[Key]['schema'] : never;
-};

@@ -52,10 +52,3 @@ export abstract class LudiekProducer<
  */
 export type LudiekOutput<Producers extends readonly LudiekProducer[]> =
   IsNonEmpty<Producers> extends false ? never : NonNullable<Producers[number]['__output']>;
-
-/**
- * Given a tuple of LudiekProducers, produce a union of their schemas.
- */
-export type ProducerSchemas<Producers extends readonly LudiekProducer[]> = {
-  [Key in keyof Producers]: Producers[Key] extends LudiekProducer ? Producers[Key]['schema'] : never;
-};

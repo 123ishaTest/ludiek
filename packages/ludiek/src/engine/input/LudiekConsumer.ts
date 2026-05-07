@@ -52,10 +52,3 @@ export abstract class LudiekConsumer<
  */
 export type LudiekInput<Consumers extends readonly LudiekConsumer[]> =
   IsNonEmpty<Consumers> extends false ? never : NonNullable<Consumers[number]['__input']>;
-
-/**
- * Given a tuple of LudiekConsumers, produce a union of their schemas.
- */
-export type ConsumerSchemas<Consumers extends readonly LudiekConsumer[]> = {
-  [Key in keyof Consumers]: Consumers[Key] extends LudiekConsumer ? Consumers[Key]['schema'] : never;
-};

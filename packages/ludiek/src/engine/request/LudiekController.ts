@@ -34,10 +34,3 @@ export abstract class LudiekController<
  */
 export type LudiekRequest<Controllers extends readonly LudiekController[] = []> =
   IsNonEmpty<Controllers> extends false ? never : NonNullable<Controllers[number]['__request']>;
-
-/**
- * Given a tuple of LudiekControllers, produce a union of their schemas.
- */
-export type ControllerSchemas<Controllers extends readonly LudiekController[]> = {
-  [Key in keyof Controllers]: Controllers[Key] extends LudiekController ? Controllers[Key]['schema'] : never;
-};
