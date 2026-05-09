@@ -1,7 +1,7 @@
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { UpgradeDefinition } from '@ludiek/plugins/upgrade/UpgradeDefinition';
 import { createUpgradeState, UpgradePluginState } from '@ludiek/plugins/upgrade/UpgradePluginState';
-import { BonusContribution } from '@ludiek/engine/modifier/LudiekModifier';
+import { BonusContribution } from '@ludiek/engine/bonus/LudiekModifier';
 import { UnknownLevelMismatchError, UnknownUpgradeError } from '@ludiek/plugins/upgrade/UpgradeErrors';
 import { BaseInput } from '@ludiek/engine/input/LudiekConsumer';
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';

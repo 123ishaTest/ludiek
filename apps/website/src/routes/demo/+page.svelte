@@ -29,7 +29,7 @@
   });
 
   const sow = () => {
-    game.engine.request({
+    game.engine.resolveRequest({
       // TODO(@Isha): Move this into a game.request combined type
       type: '/farming/sow-seed',
       plant: '/plant/sunflower',

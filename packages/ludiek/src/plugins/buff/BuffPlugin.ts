@@ -4,7 +4,7 @@ import { UnknownBuffError } from '@ludiek/plugins/buff/BuffErrors';
 import { BuffPluginState, createBuffState } from '@ludiek/plugins/buff/BuffPluginState';
 import { BuffDefinition } from '@ludiek/plugins/buff/BuffDefinition';
 import { BuffExpired, BuffExtended, BuffActivated } from '@ludiek/plugins/buff/BuffEvents';
-import { BonusContribution } from '@ludiek/engine/modifier/LudiekModifier';
+import { BonusContribution } from '@ludiek/engine/bonus/LudiekModifier';
 
 export class BuffPlugin extends LudiekPlugin {
   readonly type = 'buff';

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { EmptyController, EmptyRequest } from '@tests/shared/EmptyRequest';
-import { ControllerNotFoundError } from '@ludiek/engine/request/RequestError';
+import { RequestNotFoundError } from '@ludiek/engine/request/RequestError';
 
 const engine = new LudiekEngine({
   plugins: [],
@@ -16,7 +16,7 @@ describe('Engine Requests', () => {
     const engine = new LudiekEngine({
       controllers: controllers,
     });
-    const registeredControllers = engine.controllers;
+    const registeredControllers = engine.request.list;
 
     // Assert
     expect(registeredControllers).toEqual(controllers);
@@ -32,7 +32,7 @@ describe('Engine Requests', () => {
 
     // Act
     const request = { type: '/request/empty' } satisfies EmptyRequest;
-    engine.request(request);
+    engine.resolveRequest(request);
 
     // Assert
     expect(controllerSpy).toBeCalledWith(request);
@@ -42,7 +42,7 @@ describe('Engine Requests', () => {
     // Assert
     expect(() => {
       // @ts-expect-error wrong is not a known request type
-      engine.request({ type: 'wrong' });
-    }).toThrow(ControllerNotFoundError);
+      engine.resolveRequest({ type: 'wrong' });
+    }).toThrow(RequestNotFoundError);
   });
 });

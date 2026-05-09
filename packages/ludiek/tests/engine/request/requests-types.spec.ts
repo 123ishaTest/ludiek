@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { EmptyController } from '@tests/shared/EmptyRequest';
-import { ControllerNotFoundError } from '@ludiek/engine/request/RequestError';
+import { RequestNotFoundError } from '@ludiek/engine/request/RequestError';
 import { EnterCouponController } from '@ludiek/plugins/coupon/contributions/EnterCouponRequest';
 
 it('is type-safe', () => {
@@ -11,12 +11,12 @@ it('is type-safe', () => {
   });
 
   // Valid
-  engine.request({ type: '/request/empty' });
+  engine.resolveRequest({ type: '/request/empty' });
 
   expect(() => {
     // @ts-expect-error unknown type
-    engine.request({ type: 'wrong' });
-  }).toThrow(ControllerNotFoundError);
+    engine.resolveRequest({ type: 'wrong' });
+  }).toThrow(RequestNotFoundError);
 });
 
 it('it collapses to never when no controllers', () => {
@@ -27,6 +27,6 @@ it('it collapses to never when no controllers', () => {
 
   expect(() => {
     // @ts-expect-error unknown type
-    engine.request({ type: 'wrong' });
-  }).toThrow(ControllerNotFoundError);
+    engine.resolveRequest({ type: 'wrong' });
+  }).toThrow(RequestNotFoundError);
 });

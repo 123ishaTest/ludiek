@@ -14,7 +14,7 @@ type Dependencies = {
 };
 
 /**
- * A basic consumer that has a modifier
+ * A basic consumer that has a bonus
  */
 export class ModifiedConsumer extends LudiekConsumer<ModifiedInput, Dependencies> {
   readonly schema = ModifiedInputSchema;

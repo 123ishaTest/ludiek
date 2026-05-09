@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { LudiekDependencies, LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
+import { LudiekDependencies, LudiekEngineContribution } from '@ludiek/engine/LudiekEngineContribution';
 import { IsNonEmpty } from '@ludiek/util/types';
 
 /**
@@ -17,7 +17,7 @@ export type BaseCondition = z.infer<typeof BaseConditionSchema>;
 export abstract class LudiekEvaluator<
   Condition extends BaseCondition = BaseCondition,
   Dependencies extends LudiekDependencies = object,
-> extends LudiekEngineConcept<Dependencies> {
+> extends LudiekEngineContribution<Dependencies> {
   declare readonly __condition: Condition;
 
   public abstract readonly schema: z.ZodObject<{
@@ -48,10 +48,3 @@ export abstract class LudiekEvaluator<
  */
 export type LudiekCondition<Evaluators extends readonly LudiekEvaluator[]> =
   IsNonEmpty<Evaluators> extends false ? never : NonNullable<Evaluators[number]['__condition']>;
-
-/**
- * Given a tuple of LudiekEvaluators, produce a union of their schemas.
- */
-export type EvaluatorSchemas<Evaluators extends readonly LudiekEvaluator[]> = {
-  [Key in keyof Evaluators]: Evaluators[Key] extends LudiekEvaluator ? Evaluators[Key]['schema'] : never;
-};

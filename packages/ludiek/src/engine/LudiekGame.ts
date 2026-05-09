@@ -3,7 +3,7 @@ import { LudiekSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 import { LudiekLocalStorage } from '@ludiek/engine/peristence/LudiekLocalStorage';
 import { LudiekJsonSaveEncoder } from '@ludiek/engine/peristence/LudiekJsonSaveEncoder';
 import { LudiekGameConfig } from '@ludiek/engine/LudiekGameConfig';
-import { DependencyEngine, LudiekDependencies } from '@ludiek/engine/LudiekEngineConcept';
+import { DependencyEngine, LudiekDependencies } from '@ludiek/engine/LudiekEngineContribution';
 
 export class LudiekGame<Engine extends DependencyEngine<LudiekDependencies>> {
   private readonly _engine: Engine;

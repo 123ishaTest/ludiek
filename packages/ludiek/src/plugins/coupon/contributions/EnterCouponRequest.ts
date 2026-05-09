@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { CouponPlugin } from '@ludiek/plugins/coupon/CouponPlugin';
-import { LudiekController } from '@ludiek/engine/request/LudiekRequest';
+import { LudiekController } from '@ludiek/engine/request/LudiekController';
 
 export const EnterCouponRequestSchema = z.strictObject({
   type: z.literal('/request/enter-coupon'),

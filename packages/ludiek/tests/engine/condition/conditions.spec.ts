@@ -15,7 +15,7 @@ describe('Engine Conditions', () => {
     const engine = new LudiekEngine({
       evaluators: evaluators,
     });
-    const registeredEvaluators = engine.evaluators;
+    const registeredEvaluators = engine.condition.list;
 
     // Assert
     expect(registeredEvaluators).toEqual(evaluators);

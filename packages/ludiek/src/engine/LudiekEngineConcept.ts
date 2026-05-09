@@ -1,62 +1,52 @@
-import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
-import { EngineNotInjectedError } from '@ludiek/engine/LudiekError';
-import { LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
-import { LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
-import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
-import { LudiekController } from '@ludiek/engine/request/LudiekRequest';
-import { LudiekModifier } from '@ludiek/engine/modifier/LudiekModifier';
-import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
-import { LudiekContent } from './LudiekContent';
+import { LudiekEngineContribution } from '@ludiek/engine/LudiekEngineContribution';
+import { AnyEngine, ContributionSchemas, HasSchema } from '@ludiek/util/types';
+import z, { ZodDiscriminatedUnion, ZodNever } from 'zod';
 
-export interface LudiekDependencies {
-  plugins?: readonly LudiekPlugin[];
-  features?: readonly LudiekFeature[];
-  content?: readonly LudiekContent[];
-  evaluators?: readonly LudiekEvaluator[];
-  consumers?: readonly LudiekConsumer[];
-  producers?: readonly LudiekProducer[];
-  controllers?: readonly LudiekController[];
-  modifiers?: readonly LudiekModifier[];
-}
+type ContributionByType<
+  Contributions extends readonly LudiekEngineContribution[],
+  Type extends Contributions[number]['type'],
+> = Extract<Contributions[number], { type: Type }>;
 
-export type DependencyEngine<Dependencies extends LudiekDependencies> = LudiekEngine<
-  NonNullable<Dependencies['plugins']>,
-  NonNullable<Dependencies['features']>,
-  NonNullable<Dependencies['content']>,
-  NonNullable<Dependencies['evaluators']>,
-  NonNullable<Dependencies['consumers']>,
-  NonNullable<Dependencies['producers']>,
-  NonNullable<Dependencies['controllers']>,
-  NonNullable<Dependencies['modifiers']>
->;
+export abstract class LudiekEngineConcept<
+  const ContributionKind extends LudiekEngineContribution & HasSchema,
+  const Contributions extends readonly ContributionKind[],
+> {
+  private readonly _contributions = new Map<string, ContributionKind>();
+  protected readonly _engine: AnyEngine;
 
-export abstract class LudiekEngineConcept<Dependencies extends LudiekDependencies = object> {
-  abstract readonly type: string;
-
-  private _engine!: DependencyEngine<Dependencies>;
-
-  /**
-   * Access to the engine once injected
-   */
-  protected get engine(): DependencyEngine<Dependencies> {
-    this.ensureEngine();
-    return this._engine;
+  constructor(_engine: AnyEngine) {
+    this._engine = _engine;
   }
 
-  // TODO(@Isha): Fix
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public inject<Engine extends DependencyEngine<any>>(engine: Engine): void {
-    this._engine = engine;
+  public abstract raiseNotfoundError(type: string, registeredContributions: string[]): never;
+
+  public register<Contribution extends Contributions[number]>(contribution: Contribution): void {
+    contribution.inject(this._engine);
+
+    this._contributions.set(contribution.type, contribution);
   }
 
   /**
-   * Throws an error if the engine is not injected
+   * Get a contribution or throw an error if it doesn't exist
+   * @param type
    * @private
    */
-  protected ensureEngine(): void {
-    if (!this._engine) {
-      throw new EngineNotInjectedError(`There is no engine injected into concept '${this.type}'`);
+  protected get<Type extends Contributions[number]['type']>(type: Type): ContributionByType<Contributions, Type> {
+    const contribution = this._contributions.get(type);
+
+    if (contribution == null) {
+      const registeredContributions = this.list.map((c) => c.type);
+      this.raiseNotfoundError(type, registeredContributions);
     }
+    return contribution as ContributionByType<Contributions, Type>;
+  }
+
+  public get list(): Contributions {
+    return Array.from(this._contributions.values()) as unknown as Contributions;
+  }
+
+  public get schema(): ZodNever | ZodDiscriminatedUnion<ContributionSchemas<Contributions>, 'type'> {
+    const schemas = this.list.map((e) => e.schema);
+    return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
   }
 }

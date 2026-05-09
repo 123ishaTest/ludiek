@@ -14,7 +14,7 @@ type Dependencies = {
 };
 
 /**
- * A basic producer that has a modifier
+ * A basic producer that has a bonus
  */
 export class ModifiedProducer extends LudiekProducer<ModifiedOutput, Dependencies> {
   readonly schema = ModifiedOutputSchema;

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { LudiekDependencies, LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
+import { LudiekDependencies, LudiekEngineContribution } from '@ludiek/engine/LudiekEngineContribution';
 import { IsNonEmpty } from '@ludiek/util/types';
 
 /**
@@ -15,7 +15,7 @@ export type BaseOutput = z.infer<typeof BaseOutputSchema>;
 export abstract class LudiekProducer<
   Output extends BaseOutput = BaseOutput,
   Dependencies extends LudiekDependencies = object,
-> extends LudiekEngineConcept<Dependencies> {
+> extends LudiekEngineContribution<Dependencies> {
   declare readonly __output: Output;
 
   public abstract readonly schema: z.ZodObject<{
@@ -52,10 +52,3 @@ export abstract class LudiekProducer<
  */
 export type LudiekOutput<Producers extends readonly LudiekProducer[]> =
   IsNonEmpty<Producers> extends false ? never : NonNullable<Producers[number]['__output']>;
-
-/**
- * Given a tuple of LudiekProducers, produce a union of their schemas.
- */
-export type ProducerSchemas<Producers extends readonly LudiekProducer[]> = {
-  [Key in keyof Producers]: Producers[Key] extends LudiekProducer ? Producers[Key]['schema'] : never;
-};

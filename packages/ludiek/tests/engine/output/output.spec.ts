@@ -14,7 +14,7 @@ describe('Engine Output', () => {
     const engine = new LudiekEngine({
       producers: producers,
     });
-    const registeredProducers = engine.producers;
+    const registeredProducers = engine.output.list;
 
     // Assert
     expect(registeredProducers).toEqual(producers);

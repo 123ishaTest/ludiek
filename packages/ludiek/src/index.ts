@@ -26,18 +26,19 @@ export { LudiekProducer, type BaseOutput, type LudiekOutput } from '@ludiek/engi
 export type { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
 
 // Engine.Requests
-export { LudiekController, type BaseRequest, type LudiekRequest } from '@ludiek/engine/request/LudiekRequest';
+export { LudiekController, type BaseRequest, type LudiekRequest } from '@ludiek/engine/request/LudiekController';
 
 // Engine.Modifiers
 export {
   LudiekModifier,
   type BaseBonus,
   type LudiekBonus,
+  type BonusContribution,
   type LudiekBonusContribution,
-} from '@ludiek/engine/modifier/LudiekModifier';
+} from '@ludiek/engine/bonus/LudiekModifier';
 
 // Engine.Types
-export type { LudiekDependencies, DependencyEngine } from '@ludiek/engine/LudiekEngineConcept';
+export type { LudiekDependencies, DependencyEngine } from '@ludiek/engine/LudiekEngineContribution';
 
 // Engine.Errors
 export { LudiekError } from '@ludiek/engine/LudiekError';

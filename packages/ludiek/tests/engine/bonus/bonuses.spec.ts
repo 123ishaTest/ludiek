@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { DummyModifier } from '@tests/shared/DummyBonus';
-import { ModifierNotFoundError } from '@ludiek/engine/modifier/ModifierError';
+import { BonusNotFoundError } from '@ludiek/engine/bonus/BonusError';
 import { AdditiveModifier } from '@tests/shared/AdditiveBonus';
 import { EmptyPlugin } from '@tests/shared/EmptyPlugin';
 import { MultiplicativeModifier } from '@tests/shared/MultiplicativeBonus';
@@ -19,7 +19,7 @@ describe('Engine Bonuses', () => {
     const engine = new LudiekEngine({
       modifiers: modifiers,
     });
-    const registeredModifiers = engine.modifiers;
+    const registeredModifiers = engine.bonus.list;
 
     // Assert
     expect(registeredModifiers).toEqual(modifiers);
@@ -88,7 +88,7 @@ describe('Engine Bonuses', () => {
     expect(bonus).toBe(1.32);
   });
 
-  it('errors when a modifier does not exist', () => {
+  it('errors when a bonus does not exist', () => {
     // Arrange
     const engine = new LudiekEngine({});
 
@@ -96,6 +96,6 @@ describe('Engine Bonuses', () => {
     expect(() => {
       // @ts-expect-error unknown type
       engine.getBonus({ type: 'wrong' });
-    }).toThrow(ModifierNotFoundError);
+    }).toThrow(BonusNotFoundError);
   });
 });
