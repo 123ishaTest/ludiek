@@ -26,7 +26,7 @@ export abstract class LudiekController<
   }
 
   // TODO(@Isha): LudiekResponse object?
-  abstract resolve(request: Request): void;
+  abstract resolve(request: Request): unknown;
 }
 
 /**

@@ -7,7 +7,7 @@ export class LudiekInputConcept<const Consumers extends readonly LudiekConsumer[
   LudiekConsumer,
   Consumers
 > {
-  public raiseNotfoundError(type: string, registeredContributions: string[]) {
+  public raiseNotfoundError(type: string, registeredContributions: string[]): never {
     throw new InputNotFoundError(
       `Cannot consume input of type '${type}' because its consumer is not registered. Registered consumers are: ${registeredContributions.join(', ')}`,
     );

@@ -6,7 +6,7 @@ export class LudiekRequestConcept<const Controllers extends readonly LudiekContr
   LudiekController,
   Controllers
 > {
-  public raiseNotfoundError(type: string, registeredContributions: string[]) {
+  public raiseNotfoundError(type: string, registeredContributions: string[]): never {
     throw new RequestNotFoundError(
       `Cannot produce request of type '${type}' because its controller is not registered. Registered controllers are: ${registeredContributions.join(', ')}`,
     );

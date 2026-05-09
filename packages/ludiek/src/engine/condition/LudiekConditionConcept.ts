@@ -7,7 +7,7 @@ export class LudiekConditionConcept<const Evaluators extends readonly LudiekEval
   LudiekEvaluator,
   Evaluators
 > {
-  public raiseNotfoundError(type: string, registeredContributions: string[]) {
+  public raiseNotfoundError(type: string, registeredContributions: string[]): never {
     throw new ConditionNotFoundError(
       `Cannot evaluate condition of type '${type}' because its evaluator is not registered. Registered evaluators are: ${registeredContributions.join(', ')}`,
     );

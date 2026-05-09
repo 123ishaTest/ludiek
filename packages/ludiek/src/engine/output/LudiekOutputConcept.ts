@@ -7,7 +7,7 @@ export class LudiekOutputConcept<const Producers extends readonly LudiekProducer
   LudiekProducer,
   Producers
 > {
-  public raiseNotfoundError(type: string, registeredContributions: string[]) {
+  public raiseNotfoundError(type: string, registeredContributions: string[]): never {
     throw new OutputNotFoundError(
       `Cannot produce output of type '${type}' because its producer is not registered. Registered producers are: ${registeredContributions.join(', ')}`,
     );

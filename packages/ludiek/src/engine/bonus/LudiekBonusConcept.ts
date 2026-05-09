@@ -15,7 +15,7 @@ export class LudiekBonusConcept<const Modifiers extends readonly LudiekModifier[
     this._activeBonuses = state;
   }
 
-  public raiseNotfoundError(type: string, registeredContributions: string[]) {
+  public raiseNotfoundError(type: string, registeredContributions: string[]): never {
     throw new BonusNotFoundError(
       `Cannot calculate bonus of type '${type}' because its modifier is not registered. Registered modifiers are: ${registeredContributions.join(', ')}`,
     );
