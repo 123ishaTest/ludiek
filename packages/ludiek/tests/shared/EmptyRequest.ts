@@ -11,7 +11,7 @@ export class EmptyController extends LudiekController<EmptyRequest> {
   readonly schema = EmptyRequestSchema;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  resolve(request: EmptyRequest): void {
-    return;
+  resolve(request: EmptyRequest) {
+    return this.success();
   }
 }

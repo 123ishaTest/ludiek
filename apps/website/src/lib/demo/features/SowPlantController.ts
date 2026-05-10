@@ -8,6 +8,9 @@ export const SowSeedRequestSchema = z.strictObject({
 });
 
 export type SowSeedRequest = z.infer<typeof SowSeedRequestSchema>;
+export type SowSeedResponse = {
+  plant: string;
+};
 
 type Dependencies = {
   features: [Farming];
@@ -15,7 +18,10 @@ type Dependencies = {
 export class SowSeedController extends LudiekController<SowSeedRequest, SowSeedResponse, Dependencies> {
   readonly schema = SowSeedRequestSchema;
 
-  resolve(request: SowSeedRequest): void {
+  resolve(request: SowSeedRequest) {
     this.engine.features.farming.sow(request.plant);
+    return this.success({
+      plant: request.plant,
+    });
   }
 }

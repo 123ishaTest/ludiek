@@ -5,7 +5,7 @@ import { LudiekEngineSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 import { LudiekConsumer, LudiekInput } from '@ludiek/engine/input/LudiekConsumer';
 import { LudiekOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
-import { LudiekController, LudiekRequest } from '@ludiek/engine/request/LudiekController';
+import { LudiekController, LudiekRequest, LudiekResponse } from '@ludiek/engine/request/LudiekController';
 import { BonusContribution, LudiekBonus, LudiekModifier } from '@ludiek/engine/bonus/LudiekModifier';
 import { ZodType } from 'zod';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
@@ -140,7 +140,9 @@ export class LudiekEngine<
     return this._output;
   }
 
-  public resolveRequest(request: LudiekRequest<Controllers>): void {
+  public resolveRequest<Request extends LudiekRequest<Controllers>>(
+    request: Request,
+  ): LudiekResponse<Controllers, Request> {
     return this._request.resolve(request);
   }
 

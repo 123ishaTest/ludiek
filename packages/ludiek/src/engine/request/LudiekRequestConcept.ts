@@ -1,5 +1,5 @@
 import { LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
-import { LudiekController, LudiekRequest } from '@ludiek/engine/request/LudiekController';
+import { LudiekController, LudiekRequest, LudiekResponse } from '@ludiek/engine/request/LudiekController';
 import { RequestNotFoundError } from '@ludiek/engine/request/RequestError';
 
 export class LudiekRequestConcept<const Controllers extends readonly LudiekController[]> extends LudiekEngineConcept<
@@ -12,8 +12,8 @@ export class LudiekRequestConcept<const Controllers extends readonly LudiekContr
     );
   }
 
-  public resolve(request: LudiekRequest<Controllers>): void {
+  public resolve<Request extends LudiekRequest<Controllers>>(request: Request): LudiekResponse<Controllers, Request> {
     const controller = this.get(request.type);
-    controller.resolve(request);
+    return controller.resolve(request) as LudiekResponse<Controllers, Request>;
   }
 }
