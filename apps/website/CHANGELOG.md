@@ -1,5 +1,16 @@
 # @123ishatest/ludiek-website
 
+## 0.5.0
+
+### Minor Changes
+
+- 4474529: Implement response for requests
+
+### Patch Changes
+
+- ec5d2af: Remove the scoped context entrypoint
+- b2c6a27: Refactor Engine Concepts to their own class and make the engine a wrapper
+
 ## 0.4.0
 
 ### Minor Changes
