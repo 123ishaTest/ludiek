@@ -9,14 +9,20 @@ export const EnterCouponRequestSchema = z.strictObject({
 
 export type EnterCouponRequest = z.infer<typeof EnterCouponRequestSchema>;
 
+export type EnterCouponResponse = {
+  response: string;
+};
+
 type Dependencies = {
   plugins: [CouponPlugin];
 };
-
-export class EnterCouponController extends LudiekController<EnterCouponRequest, Dependencies> {
+export class EnterCouponController extends LudiekController<EnterCouponRequest, EnterCouponResponse, Dependencies> {
   readonly schema = EnterCouponRequestSchema;
 
-  resolve(request: EnterCouponRequest): void {
-    this.engine.plugins.coupon.enterCoupon(request.coupon);
+  resolve(request: EnterCouponRequest) {
+    const success = this.engine.plugins.coupon.enterCoupon(request.coupon);
+    return this.response(success, {
+      response: request.coupon,
+    });
   }
 }

@@ -31,7 +31,7 @@ export abstract class LudiekEngineConcept<
    * @param type
    * @private
    */
-  protected get<Type extends Contributions[number]['type']>(type: Type): ContributionByType<Contributions, Type> {
+  public get<Type extends Contributions[number]['type']>(type: Type): ContributionByType<Contributions, Type> {
     const contribution = this._contributions.get(type);
 
     if (contribution == null) {
