@@ -22,6 +22,7 @@ export abstract class LudiekEngineConcept<
 
   public register<Contribution extends Contributions[number]>(contribution: Contribution): void {
     contribution.inject(this._engine);
+    this._engine.logger.debug(`Registered ${contribution.type}`);
 
     this._contributions.set(contribution.type, contribution);
   }

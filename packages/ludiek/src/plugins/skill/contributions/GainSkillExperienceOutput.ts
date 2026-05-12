@@ -3,7 +3,7 @@ import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
 import { SkillPlugin } from '@ludiek/plugins/skill/SkillPlugin';
 
 export const GainSkillExperienceOutputSchema = z.strictObject({
-  type: z.literal('/skill/gain-experience'),
+  type: z.literal('/output/skill/gain-experience'),
   skill: z.string(),
   amount: z.number().positive(),
 });

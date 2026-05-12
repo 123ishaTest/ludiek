@@ -1,6 +1,7 @@
 import { LudiekLog } from '@ludiek/engine/logger/LudiekLog';
 import { LudiekLogLevel } from '@ludiek/engine/logger/LudiekLogLevel';
 import { toMerged } from 'es-toolkit';
+import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
 
 export interface LudiekLoggerConfig {
   /**
@@ -24,28 +25,28 @@ export class LudiekLogger {
 
   public debug(message: string, data?: unknown): void {
     if (this.toConsole) {
-      console.debug(message, data);
+      console.debug(message, data ?? '');
     }
     this.log(LudiekLogLevel.Debug, message, data);
   }
 
   public info(message: string, data?: unknown): void {
     if (this.toConsole) {
-      console.info(message, data);
+      console.info(message, data ?? '');
     }
     this.log(LudiekLogLevel.Info, message, data);
   }
 
   public warn(message: string, data?: unknown): void {
     if (this.toConsole) {
-      console.warn(message, data);
+      console.warn(message, data ?? '');
     }
     this.log(LudiekLogLevel.Warn, message, data);
   }
 
   public error(message: string, data?: unknown): void {
     if (this.toConsole) {
-      console.error(message, data);
+      console.error(message, data ?? '');
     }
     this.log(LudiekLogLevel.Error, message, data);
   }
@@ -81,9 +82,19 @@ export class LudiekLogger {
 
   private addLog(log: LudiekLog): void {
     this._logs.push(log);
+    this._onLogEvent.dispatch(log);
   }
 
   private get toConsole(): boolean {
     return this._config.toConsole;
+  }
+
+  protected _onLogEvent = new SimpleEventDispatcher<LudiekLog>();
+
+  /**
+   * Emitted when a log is recorded
+   */
+  public get onLogEvent(): ISimpleEvent<LudiekLog> {
+    return this._onLogEvent.asEvent();
   }
 }

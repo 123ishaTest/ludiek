@@ -19,6 +19,8 @@ import { LudiekInputConcept } from '@ludiek/engine/input/LudiekInputConcept';
 import { LudiekOutputConcept } from '@ludiek/engine/output/LudiekOutputConcept';
 import { LudiekRequestConcept } from '@ludiek/engine/request/LudiekRequestConcept';
 import { LudiekBonusConcept } from '@ludiek/engine/bonus/LudiekBonusConcept';
+import { LudiekLogger } from '@ludiek/engine/logger/LudiekLogger';
+import { getType } from '@ludiek/util/contributions';
 
 export class LudiekEngine<
   const Plugins extends readonly LudiekPlugin[] = [],
@@ -39,6 +41,8 @@ export class LudiekEngine<
   private readonly _output: LudiekOutputConcept<Producers>;
   private readonly _request: LudiekRequestConcept<Controllers>;
   private readonly _bonus: LudiekBonusConcept<Modifiers>;
+
+  private readonly _logger: LudiekLogger = new LudiekLogger({ toConsole: true });
 
   constructor(
     config: LudiekEngineConfig<Plugins, Features, Content, Evaluators, Consumers, Producers, Controllers, Modifiers>,
@@ -69,6 +73,8 @@ export class LudiekEngine<
     ) as ContentMap<Content>;
 
     this._contentManager = new ContentManager(this.content);
+
+    this._logger.info('Engine created, have fun :)');
   }
 
   /**
@@ -92,7 +98,12 @@ export class LudiekEngine<
    * Evaluate one or multiple condition and evaluates whether they are all true.
    */
   public evaluate(condition: LudiekCondition<Evaluators> | LudiekCondition<Evaluators>[]): boolean {
-    return this._condition.evaluate(condition);
+    const type = getType(condition);
+    this._logger.debug(`Evaluate ${type}`, condition);
+
+    const result = this._condition.evaluate(condition);
+    this._logger.debug(`${type} -> ${result}`, condition);
+    return result;
   }
 
   /**
@@ -101,7 +112,10 @@ export class LudiekEngine<
    * Each condition has its own `modify` function, which queries the engine for relevant bonuses
    */
   public modifyCondition<Condition extends LudiekCondition<Evaluators>>(condition: Condition): Condition {
-    return this._condition.modify(condition);
+    this._logger.debug(`Modify ${condition.type}`, condition);
+    const result = this._condition.modify(condition);
+    this._logger.debug(`${condition.type} -> ${result}`, condition);
+    return result;
   }
 
   public get condition(): LudiekConditionConcept<Evaluators> {
@@ -109,15 +123,24 @@ export class LudiekEngine<
   }
 
   public canConsume(input: LudiekInput<Consumers> | LudiekInput<Consumers>[]): boolean {
-    return this._input.canConsume(input);
+    const type = getType(input);
+    this._logger.debug(`Can consume ${type}`, input);
+
+    const result = this._input.canConsume(input);
+    this._logger.debug(`${type} ->`, result);
+    return result;
   }
 
   public consume(input: LudiekInput<Consumers> | LudiekInput<Consumers>[]): void {
+    this._logger.debug(`Consume ${getType(input)}`, input);
     this._input.consume(input);
   }
 
   public modifyInput<Input extends LudiekInput<Consumers>>(input: Input): Input {
-    return this._input.modify(input);
+    this._logger.debug(`Modify ${input.type}`, input);
+    const result = this._input.modify(input);
+    this._logger.debug(`${input.type} ->`, result);
+    return result;
   }
 
   public get input(): LudiekInputConcept<Consumers> {
@@ -125,15 +148,24 @@ export class LudiekEngine<
   }
 
   public canProduce(output: LudiekOutput<Producers> | LudiekOutput<Producers>[]): boolean {
-    return this._output.canProduce(output);
+    const type = getType(output);
+    this._logger.debug(`Can produce ${type}`, output);
+
+    const result = this._output.canProduce(output);
+    this._logger.debug(`${type} ->`, result);
+    return result;
   }
 
   public produce(output: LudiekOutput<Producers> | LudiekOutput<Producers>[]): void {
+    this._logger.debug(`Produce ${getType(output)}`, output);
     this._output.produce(output);
   }
 
   public modifyOutput<Output extends LudiekOutput<Producers>>(output: Output): Output {
-    return this._output.modify(output);
+    this._logger.debug(`Modify ${output.type}`, output);
+    const result = this._output.modify(output);
+    this._logger.debug(`${output.type} ->`, result);
+    return result;
   }
 
   public get output(): LudiekOutputConcept<Producers> {
@@ -143,7 +175,10 @@ export class LudiekEngine<
   public resolveRequest<Request extends LudiekRequest<Controllers>>(
     request: Request,
   ): LudiekResponse<Controllers, Request> {
-    return this._request.resolve(request);
+    this._logger.info(`Resolve ${request.type}`, request);
+    const response = this._request.resolve(request);
+    this._logger.info(`${request.type} -> ${response.success}`, response);
+    return response;
   }
 
   public get request(): LudiekRequestConcept<Controllers> {
@@ -202,10 +237,14 @@ export class LudiekEngine<
       data.features[feature.type] = feature.save();
     });
 
+    this.logger.debug('Saving');
+
     return data;
   }
 
   public load(data: LudiekEngineSaveData): void {
+    this.logger.debug('Loading', data);
+
     this.pluginList.forEach((plugin) => {
       const state = data.plugins[plugin.type];
       if (state) {
@@ -228,15 +267,22 @@ export class LudiekEngine<
     return Object.values(this.features);
   }
 
+  public get logger(): LudiekLogger {
+    return this._logger;
+  }
+
   /**
    * Do calculations before the features tick
    */
   public preTick(): void {
+    this.logger.debug('Pretick');
+
     // TODO(@Isha): For now this is called by the Game, might switch up when Features are moved to the engine
     this._bonus.collectBonuses();
   }
 
   public tick(delta: number): void {
+    this.logger.debug('Tick', delta);
     // TODO(@Isha): Should plugins tick too?
     this.featureList.forEach((feature) => feature.update?.(delta));
   }

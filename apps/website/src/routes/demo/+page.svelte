@@ -3,6 +3,7 @@
   import { onMount } from 'svelte';
 
   import { page } from '$app/state';
+  import LudiekLogDisplay from '$lib/components/logger/LudiekLogDisplay.svelte';
 
   // TODO(@Isha): Subclass game to handle this nicer?
   //  game.load(page.data.content)
@@ -30,18 +31,11 @@
 
   const sow = () => {
     game.engine.resolveRequest({
-      // TODO(@Isha): Move this into a game.request combined type
-      type: '/farming/sow-seed',
+      type: '/request/farming/sow-seed',
       plant: '/plant/sunflower',
     });
 
     achievement.checkAchievements();
-
-    game.engine.produce({
-      type: '/skill/gain-experience',
-      skill: '/skill/farming',
-      amount: 1,
-    });
   };
 
   const trade = () => {
@@ -72,4 +66,8 @@
 
   <button class="btn btn-primary" onclick={() => sow()}>Sow</button>
   <button class="btn btn-secondary" onclick={() => trade()}>Trade 100 money for 1 gem</button>
+</div>
+
+<div class="p-4">
+  <LudiekLogDisplay logger={game.engine.logger} />
 </div>
