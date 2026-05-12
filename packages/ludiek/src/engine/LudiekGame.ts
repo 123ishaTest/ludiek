@@ -24,6 +24,7 @@ export class LudiekGame<Engine extends DependencyEngine<LudiekDependencies>> {
 
   public start(): void {
     // TODO(@Isha): Improve game loop
+    this._engine.logger.info('Starting game');
     this.stop();
     this._tickInterval = setInterval(() => {
       this.tick(this.config.tickDuration);
@@ -33,11 +34,13 @@ export class LudiekGame<Engine extends DependencyEngine<LudiekDependencies>> {
   // TODO(@Isha): Improve state management
   public stop(): void {
     if (this._tickInterval) {
+      this._engine.logger.info('Stopping game');
       clearInterval(this._tickInterval);
     }
   }
 
   public tick(delta: number): void {
+    this._engine.logger.debug('Game tick');
     this.engine.preTick();
     this.engine.tick(delta);
 

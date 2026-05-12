@@ -3,7 +3,7 @@ import { LudiekController } from '@123ishatest/ludiek';
 import type { Farming } from '$lib/demo/features/Farming';
 
 export const SowSeedRequestSchema = z.strictObject({
-  type: z.literal('/farming/sow-seed'),
+  type: z.literal('/request/farming/sow-seed'),
   plant: z.string(),
 });
 

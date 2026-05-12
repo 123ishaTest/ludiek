@@ -36,7 +36,7 @@ export class LudiekBonusConcept<const Modifiers extends readonly LudiekModifier[
       case 'multiplicative':
         return values.reduce((sum, modifier) => sum * (1 + modifier.amount), modifier.default);
       default:
-        console.error(`Unknown variant '${modifier.variant}' for resolver ${modifier}`);
+        this._engine.logger.error(`Unknown variant '${modifier.variant}' for resolver ${modifier}`);
         return 0;
     }
   }

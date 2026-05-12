@@ -17,7 +17,7 @@ it('gains experience', () => {
 
   // Act
   output.produce({
-    type: '/skill/gain-experience',
+    type: '/output/skill/gain-experience',
     skill: '/skill/fishing',
     amount: 100,
   });

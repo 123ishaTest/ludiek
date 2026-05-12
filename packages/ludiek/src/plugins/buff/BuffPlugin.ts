@@ -32,7 +32,7 @@ export class BuffPlugin extends LudiekPlugin {
   public increaseBuff(id: string, delta: number): void {
     this.validate(id);
     if (delta <= 0) {
-      console.warn(`'increaseBuff' expects a positive delta. Ignoring value of ${delta}`);
+      this.engine.logger.warn(`'increaseBuff' expects a positive delta. Ignoring value of ${delta}`);
       return;
     }
 
@@ -54,11 +54,11 @@ export class BuffPlugin extends LudiekPlugin {
   public decreaseBuff(id: string, delta: number = 1): void {
     this.validate(id);
     if (delta <= 0) {
-      console.warn(`'increaseBuff' expects a positive delta. Ignoring delta of ${delta}`);
+      this.engine.logger.warn(`'decreaseBuff' expects a positive delta. Ignoring delta of ${delta}`);
       return;
     }
     if (!this.isBuffActive(id)) {
-      console.warn(`'Cannot decrease a buff when it is inactive. Ignoring value of ${delta}`);
+      this.engine.logger.warn(`'Cannot decrease a buff when it is inactive. Ignoring value of ${delta}`);
     }
 
     this._state.duration[id] = Math.max(0, this._state.duration[id] - delta);

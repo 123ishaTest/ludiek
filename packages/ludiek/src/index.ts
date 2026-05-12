@@ -43,6 +43,10 @@ export type { LudiekDependencies, DependencyEngine } from '@ludiek/engine/Ludiek
 // Engine.Errors
 export { LudiekError } from '@ludiek/engine/LudiekError';
 
+export { LudiekLogger } from '@ludiek/engine/logger/LudiekLogger';
+export { LudiekLogLevel } from '@ludiek/engine/logger/LudiekLogLevel';
+export { type LudiekLog } from '@ludiek/engine/logger/LudiekLog';
+
 /**
  * Plugins
  */

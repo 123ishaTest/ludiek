@@ -1,5 +1,11 @@
 # @123ishatest/ludiek-website
 
+## 0.6.0
+
+### Minor Changes
+
+- Add logger
+
 ## 0.5.0
 
 ### Minor Changes

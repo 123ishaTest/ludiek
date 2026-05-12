@@ -70,7 +70,7 @@ export const engine = new LudiekEngine(
 
 export const game = new LudiekGame(engine, {
   saveKey: '@123ishatest/ludiek-demo',
-  tickDuration: 0.1,
+  tickDuration: 1,
   saveInterval: 30,
 });
 
