@@ -20,6 +20,8 @@ export class LudiekGame<Engine extends DependencyEngine<LudiekDependencies>> {
     this.config = config;
 
     this._nextSave = this.config.saveInterval;
+
+    this.engine.initialize();
   }
 
   public start(): void {

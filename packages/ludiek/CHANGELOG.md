@@ -1,5 +1,11 @@
 # @123ishatest/ludiek
 
+## 0.6.1
+
+### Patch Changes
+
+- Add initialize to Ludiek lifecycle
+
 ## 0.6.0
 
 ### Minor Changes
