@@ -1,5 +1,11 @@
 # @123ishatest/ludiek
 
+## 0.6.2
+
+### Patch Changes
+
+- 3ed9636: Fix initialization lifecycle hook
+
 ## 0.6.1
 
 ### Patch Changes
