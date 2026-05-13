@@ -20,12 +20,12 @@ export class LudiekGame<Engine extends DependencyEngine<LudiekDependencies>> {
     this.config = config;
 
     this._nextSave = this.config.saveInterval;
-
-    this.engine.initialize();
   }
 
   public start(): void {
-    // TODO(@Isha): Improve game loop
+    // TODO(@Isha): Improve game loop, make sure you can only start once (i.e. add resume after pause)
+    this.engine.initialize();
+
     this._engine.logger.info('Starting game');
     this.stop();
     this._tickInterval = setInterval(() => {
