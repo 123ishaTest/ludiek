@@ -19,6 +19,12 @@ export abstract class LudiekElement<Dependencies extends LudiekDependencies>
   protected abstract _state: object;
 
   /**
+   * Called when the engine is fully wired.
+   * Useful for initial calculations in your game
+   */
+  public initialize?(): void;
+
+  /**
    *  Return a list of bonuses
    */
   public getBonuses(): BonusContribution[] {

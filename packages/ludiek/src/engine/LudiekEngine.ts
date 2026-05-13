@@ -78,6 +78,15 @@ export class LudiekEngine<
   }
 
   /**
+   * @internal
+   * Initializes all plugins and features
+   */
+  public initialize(): void {
+    this.pluginList.forEach((plugin) => plugin.initialize?.());
+    this.featureList.forEach((feature) => feature.initialize?.());
+  }
+
+  /**
    * Replace all placeholder schemas with the engines
    */
   private sanitizeSchema = (schema: ZodType): ZodType => {
