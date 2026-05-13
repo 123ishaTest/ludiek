@@ -1,5 +1,11 @@
 # @123ishatest/ludiek-website
 
+## 0.7.0
+
+### Minor Changes
+
+- Refactor content and engine contributions
+
 ## 0.6.0
 
 ### Minor Changes
