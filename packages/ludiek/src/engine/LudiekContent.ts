@@ -5,6 +5,7 @@ import { BaseOutputSchema } from '@ludiek/engine/output/LudiekProducer';
 import { BaseRequestSchema } from '@ludiek/engine/request/LudiekController';
 import { BonusContributionSchema } from '@ludiek/engine/bonus/LudiekModifier';
 import { DEFAULT_ID } from '@ludiek/engine/LudiekEngine';
+import { LudiekRegistryError } from '@ludiek/engine/LudiekError';
 
 export interface LudiekContent {
   kind: string;
@@ -18,7 +19,7 @@ export const deferSchema = <Schema extends z.ZodTypeAny>(id: string, engineId: s
     const schema = registry.get(engineId)?.get(id);
 
     if (!schema) {
-      throw new Error(`Unknown engine schema: ${id}`);
+      throw new LudiekRegistryError(`Unknown engine schema: ${id}`);
     }
 
     return schema as Schema;
