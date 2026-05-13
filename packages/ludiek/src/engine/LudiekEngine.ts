@@ -7,12 +7,10 @@ import { LudiekOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProduc
 import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
 import { LudiekController, LudiekRequest, LudiekResponse } from '@ludiek/engine/request/LudiekController';
 import { BonusContribution, LudiekBonus, LudiekModifier } from '@ludiek/engine/bonus/LudiekModifier';
-import { ZodType } from 'zod';
 import { LudiekFeature } from '@ludiek/engine/LudiekFeature';
 
 import { ContentMap, FeatureMap, PluginMap } from '@ludiek/util/types';
-import { l, LudiekContent } from '@ludiek/engine/LudiekContent';
-import { replaceSchema } from '@ludiek/util/schema';
+import { LudiekContent, registry } from '@ludiek/engine/LudiekContent';
 import { ContentManager } from '@123ishatest/louter';
 import { LudiekConditionConcept } from '@ludiek/engine/condition/LudiekConditionConcept';
 import { LudiekInputConcept } from '@ludiek/engine/input/LudiekInputConcept';
@@ -21,6 +19,9 @@ import { LudiekRequestConcept } from '@ludiek/engine/request/LudiekRequestConcep
 import { LudiekBonusConcept } from '@ludiek/engine/bonus/LudiekBonusConcept';
 import { LudiekLogger } from '@ludiek/engine/logger/LudiekLogger';
 import { getType } from '@ludiek/util/contributions';
+import { z } from 'zod';
+
+export const DEFAULT_ID = 'LUDIEK_DEFAULT';
 
 export class LudiekEngine<
   const Plugins extends readonly LudiekPlugin[] = [],
@@ -32,6 +33,8 @@ export class LudiekEngine<
   const Controllers extends readonly LudiekController[] = [],
   const Modifiers extends readonly LudiekModifier[] = [],
 > {
+  private readonly _engineId: string;
+
   public plugins: PluginMap<Plugins>;
   public features: FeatureMap<Features>;
   public content: ContentMap<Content>;
@@ -48,6 +51,7 @@ export class LudiekEngine<
     config: LudiekEngineConfig<Plugins, Features, Content, Evaluators, Consumers, Producers, Controllers, Modifiers>,
     state = {},
   ) {
+    this._engineId = config.engineId ?? DEFAULT_ID;
     this._condition = new LudiekConditionConcept(this);
     this._input = new LudiekInputConcept(this);
     this._output = new LudiekOutputConcept(this);
@@ -67,10 +71,14 @@ export class LudiekEngine<
     config.controllers?.forEach((c) => this._request.register(c));
     config.modifiers?.forEach((m) => this._bonus.register(m));
 
-    // Replace schemas
-    this.content = Object.fromEntries(
-      config.content?.map((c) => [c.kind, this.sanitizeSchema(c.schema)]) ?? [],
-    ) as ContentMap<Content>;
+    // Register schemas
+    registry.set(this._engineId, new Map<string, z.ZodAny>());
+    registry.get(this._engineId)?.set('LUDIEK_CONDITION', this._condition.schema);
+    registry.get(this._engineId)?.set('LUDIEK_INPUT', this._input.schema);
+    registry.get(this._engineId)?.set('LUDIEK_OUTPUT', this._output.schema);
+    registry.get(this._engineId)?.set('LUDIEK_REQUEST', this._request.schema);
+    registry.get(this._engineId)?.set('LUDIEK_BONUS', this._bonus.schema);
+    this.content = Object.fromEntries(config.content?.map((c) => [c.kind, c.schema]) ?? []) as ContentMap<Content>;
 
     this._contentManager = new ContentManager(this.content);
 
@@ -85,19 +93,6 @@ export class LudiekEngine<
     this.pluginList.forEach((plugin) => plugin.initialize?.());
     this.featureList.forEach((feature) => feature.initialize?.());
   }
-
-  /**
-   * Replace all placeholder schemas with the engines
-   */
-  private sanitizeSchema = (schema: ZodType): ZodType => {
-    schema = replaceSchema(schema, l.condition(), this._condition.schema);
-    schema = replaceSchema(schema, l.input(), this._input.schema);
-    schema = replaceSchema(schema, l.output(), this._output.schema);
-    schema = replaceSchema(schema, l.request(), this._request.schema);
-    schema = replaceSchema(schema, l.bonus(), this._bonus.schema);
-
-    return schema;
-  };
 
   public get contentManager() {
     return this._contentManager;

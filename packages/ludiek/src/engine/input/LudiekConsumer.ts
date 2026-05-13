@@ -5,7 +5,7 @@ import { z } from 'zod';
 /**
  * Base shape for all inputs.
  */
-export const BaseInputSchema = z.strictObject({
+export const BaseInputSchema = z.looseObject({
   type: z.string(),
   amount: z.number(),
 });

@@ -47,7 +47,7 @@ export abstract class LudiekEngineConcept<
   }
 
   public get schema(): ZodNever | ZodDiscriminatedUnion<ContributionSchemas<Contributions>, 'type'> {
-    const schemas = this.list.map((e) => e.schema);
+    const schemas = this.list.map((e) => e.schema.extend({ amount: z.number() }));
     return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
   }
 }

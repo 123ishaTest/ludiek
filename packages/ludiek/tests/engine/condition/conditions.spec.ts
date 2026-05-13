@@ -55,10 +55,7 @@ describe('Engine Conditions', () => {
       value: z.number(),
     });
 
-    interface MyShape {
-      type: 'maybe';
-      value: number;
-    }
+    type MyShape = z.infer<typeof MySchema>;
 
     interface MyFeature {
       points: number;
