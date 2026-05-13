@@ -5,7 +5,7 @@ import { IsNonEmpty } from '@ludiek/util/types';
 /**
  * Base shape for all requests.
  */
-export const BaseRequestSchema = z.strictObject({
+export const BaseRequestSchema = z.looseObject({
   type: z.string(),
 });
 

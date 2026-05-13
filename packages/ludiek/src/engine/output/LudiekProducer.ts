@@ -5,7 +5,7 @@ import { IsNonEmpty } from '@ludiek/util/types';
 /**
  * Base shape for all outputs.
  */
-export const BaseOutputSchema = z.strictObject({
+export const BaseOutputSchema = z.looseObject({
   type: z.string(),
   amount: z.number(),
 });

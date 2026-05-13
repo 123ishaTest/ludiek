@@ -11,11 +11,13 @@ export const BaseBonusSchema = z.strictObject({
 
 export type BaseBonus = z.infer<typeof BaseBonusSchema>;
 
-export interface BonusContribution {
-  type: string;
-  amount: number;
-  source?: string;
-}
+export const BonusContributionSchema = z.looseObject({
+  type: z.string(),
+  amount: z.number(),
+  source: z.string().optional(),
+});
+
+export type BonusContribution = z.infer<typeof BonusContributionSchema>;
 
 export abstract class LudiekModifier<
   Bonus extends BaseBonus = BaseBonus,

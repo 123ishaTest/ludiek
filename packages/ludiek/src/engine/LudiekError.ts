@@ -12,3 +12,8 @@ export abstract class PluginError extends LudiekError {}
  * The engine is not injected into the plugin
  */
 export class EngineNotInjectedError extends LudiekError {}
+
+/**
+ * The registry could not be found
+ */
+export class LudiekRegistryError extends LudiekError {}

@@ -6,5 +6,5 @@ export interface KeyItemDefinition {
   /**
    * Optional modifiers when this KeyItem is unlocked
    */
-  rewards?: Omit<BonusContribution, 'source'>[];
+  rewards?: BonusContribution[];
 }

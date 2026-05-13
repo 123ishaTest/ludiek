@@ -5,7 +5,7 @@ import { IsNonEmpty } from '@ludiek/util/types';
 /**
  * Base shape for all conditions.
  */
-export const BaseConditionSchema = z.strictObject({
+export const BaseConditionSchema = z.looseObject({
   type: z.string(),
 });
 

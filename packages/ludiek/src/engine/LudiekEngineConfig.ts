@@ -25,4 +25,6 @@ export interface LudiekEngineConfig<
   producers?: Producers;
   controllers?: Controllers;
   modifiers?: Modifiers;
+
+  engineId?: string;
 }
