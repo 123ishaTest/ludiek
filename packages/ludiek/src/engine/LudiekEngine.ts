@@ -94,6 +94,15 @@ export class LudiekEngine<
     this.featureList.forEach((feature) => feature.initialize?.());
   }
 
+  /**
+   * @internal
+   * Start all plugins and features
+   */
+  public start(): void {
+    this.pluginList.forEach((plugin) => plugin.start?.());
+    this.featureList.forEach((feature) => feature.start?.());
+  }
+
   public get contentManager() {
     return this._contentManager;
   }

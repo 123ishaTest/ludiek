@@ -25,6 +25,7 @@ export class LudiekGame<Engine extends DependencyEngine<LudiekDependencies>> {
   public start(): void {
     // TODO(@Isha): Improve game loop, make sure you can only start once (i.e. add resume after pause)
     this.engine.initialize();
+    this.engine.start();
 
     this._engine.logger.info('Starting game');
     this.stop();
