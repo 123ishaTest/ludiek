@@ -19,10 +19,16 @@ export abstract class LudiekElement<Dependencies extends LudiekDependencies>
   protected abstract _state: object;
 
   /**
-   * Called when the engine is fully wired.
-   * Useful for initial calculations in your game
+   * Called when the engine is constructed.
+   * Useful for wiring content into plugins
    */
   public initialize?(): void;
+
+  /**
+   * Called after the engine is initialized.
+   * Useful for populating initial state
+   */
+  public start?(): void;
 
   /**
    *  Return a list of bonuses

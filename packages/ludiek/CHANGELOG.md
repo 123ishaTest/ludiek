@@ -1,5 +1,11 @@
 # @123ishatest/ludiek
 
+## 0.7.2
+
+### Patch Changes
+
+- Add start lifecycle method
+
 ## 0.7.1
 
 ### Patch Changes
