@@ -1,3 +1,9 @@
+export const roundom = (value: number): number => {
+  const base = Math.floor(value);
+  const chance = value % 1;
+  return base + (booleanWithProbability(chance) ? 1 : 0);
+};
+
 /**
  * Return a random integer between min (inclusive) and max (exclusive)
  * @param min inclusive
