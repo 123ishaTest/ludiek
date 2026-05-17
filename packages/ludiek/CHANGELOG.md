@@ -1,5 +1,11 @@
 # @123ishatest/ludiek
 
+## 0.7.1
+
+### Patch Changes
+
+- Export probability functions
+
 ## 0.7.0
 
 ### Minor Changes

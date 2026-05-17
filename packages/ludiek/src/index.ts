@@ -70,3 +70,13 @@ export * from '@ludiek/stdlib';
  */
 export { hash } from '@ludiek/util/hash';
 export { type Progress, progress } from '@ludiek/util/progress';
+export {
+  roundom,
+  intBetween,
+  floatBetween,
+  fromArray,
+  shuffle,
+  arrayIndex,
+  booleanWithProbability,
+  booleanWithOneInChance,
+} from '@ludiek/util/probability/random';
