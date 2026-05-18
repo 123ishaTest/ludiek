@@ -1,5 +1,11 @@
 # @123ishatest/ludiek
 
+## 0.7.4
+
+### Patch Changes
+
+- Only extends Bonus schema with amount
+
 ## 0.7.3
 
 ### Patch Changes
