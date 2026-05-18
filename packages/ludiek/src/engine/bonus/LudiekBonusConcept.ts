@@ -1,7 +1,8 @@
 import { LudiekEngineConcept } from '@ludiek/engine/LudiekEngineConcept';
 import { BonusContribution, LudiekBonus, LudiekModifier } from '@ludiek/engine/bonus/LudiekModifier';
 import { BonusNotFoundError } from '@ludiek/engine/bonus/BonusError';
-import { AnyEngine } from '@ludiek/util/types';
+import { AnyEngine, ContributionSchemas } from '@ludiek/util/types';
+import z, { ZodDiscriminatedUnion, ZodNever } from 'zod';
 
 export class LudiekBonusConcept<const Modifiers extends readonly LudiekModifier[]> extends LudiekEngineConcept<
   LudiekModifier,
@@ -68,5 +69,10 @@ export class LudiekBonusConcept<const Modifiers extends readonly LudiekModifier[
 
   public get activeBonuses(): Record<string, Record<string, BonusContribution[]>> {
     return this._activeBonuses;
+  }
+
+  public get schema(): ZodNever | ZodDiscriminatedUnion<ContributionSchemas<Modifiers>, 'type'> {
+    const schemas = this.list.map((e) => e.schema.extend({ amount: z.number() }));
+    return schemas.length === 0 ? z.never() : z.discriminatedUnion('type', schemas as never);
   }
 }
