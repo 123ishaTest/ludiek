@@ -1,5 +1,11 @@
 # @123ishatest/ludiek
 
+## 0.7.3
+
+### Patch Changes
+
+- Update Louter version
+
 ## 0.7.2
 
 ### Patch Changes
