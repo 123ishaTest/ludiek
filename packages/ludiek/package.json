@@ -1,7 +1,7 @@
 {
   "name": "@123ishatest/ludiek",
   "private": false,
-  "version": "0.7.2",
+  "version": "0.7.3",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
@@ -33,7 +33,7 @@
     "vitest": "^4.1.2"
   },
   "dependencies": {
-    "@123ishatest/louter": "^0.3.1",
+    "@123ishatest/louter": "^0.4.0",
     "es-toolkit": "^1.39.10",
     "strongly-typed-events": "^3.0.11",
     "zod": "^4.4.3"
