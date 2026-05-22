@@ -64,12 +64,17 @@ export * from '@ludiek/plugins/upgrade';
 /**
  * Introspection
  */
-export { LudiekIntrospector } from '@ludiek/introspection/LudiekIntrospector';
+
 export type {
-  LudiekContentKindIntrospection,
+  LudiekIntrospection,
+  LudiekPluginIntrospection,
+  LudiekFeaturesIntrospection,
+  LudiekEngineConceptIntrospection,
   LudiekContentIntrospection,
-} from '@ludiek/introspection/LudiekContentIntrospection';
-export type { LudiekIntrospection } from '@ludiek/introspection/LudiekIntrospection';
+  LudiekContentKindIntrospection,
+  LudiekFeatureIntrospection,
+  LudiekPluginsIntrospection,
+} from '@ludiek/introspection/LudiekIntrospection';
 export type { LudiekCommand } from '@ludiek/introspection/LudiekCommand';
 
 /**

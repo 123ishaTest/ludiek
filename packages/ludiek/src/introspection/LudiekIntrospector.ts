@@ -5,8 +5,6 @@ import { parseZodSchema } from '@ludiek/introspection/ir/parsers';
 import {
   LudiekContentIntrospection,
   LudiekContentKindIntrospection,
-} from '@ludiek/introspection/LudiekContentIntrospection';
-import {
   LudiekEngineConceptIntrospection,
   LudiekFeaturesIntrospection,
   LudiekIntrospection,

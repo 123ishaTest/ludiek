@@ -1,8 +1,16 @@
 export interface BaseNode {
   kind: string;
 
+  /**
+   * The fully traversed path to this node
+   *
+   * The final key can be considered the `field` of an object
+   */
   path: string[];
 
+  /**
+   * A list of possible options
+   */
   options?: string[];
 
   isRequired?: boolean;
@@ -10,6 +18,7 @@ export interface BaseNode {
 
   default?: unknown;
 
+  // TODO(@Isha): Restructure under a single Meta
   description?: string;
   title?: string;
 
@@ -74,15 +83,14 @@ export interface ArrayNode extends BaseNode {
   // TODO(@Isha): minLength and such?
 }
 
-// TODO(@Isha): Add new nodes to union
-
 export interface LiteralNode extends BaseNode {
   kind: 'literal';
   options: string[];
 }
 
+/**
+ * Backup Node for when we fail to parse the schema
+ */
 export interface UnknownNode extends BaseNode {
   kind: 'unknown';
 }
-
-// TODO(@Isha): Add enums

@@ -1,5 +1,6 @@
-import { LudiekContentIntrospection } from '@ludiek/introspection/LudiekContentIntrospection';
 import { LudiekCommand } from '@ludiek/introspection/LudiekCommand';
+import { ZodSchema } from 'zod';
+import { LudiekNode } from '@ludiek/introspection/ir/nodes';
 
 export interface LudiekIntrospection {
   content: LudiekContentIntrospection;
@@ -11,6 +12,21 @@ export interface LudiekIntrospection {
   output: LudiekEngineConceptIntrospection;
   request: LudiekEngineConceptIntrospection;
   bonus: LudiekEngineConceptIntrospection;
+}
+
+export interface LudiekContentIntrospection {
+  kinds: LudiekContentKindIntrospection[];
+}
+
+export interface LudiekContentKindIntrospection {
+  kind: string;
+  schema: ZodSchema;
+
+  nodes: LudiekNode[];
+  items: {
+    id: string;
+    [key: string]: unknown;
+  }[];
 }
 
 export interface LudiekEngineConceptIntrospection {

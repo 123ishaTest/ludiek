@@ -16,12 +16,22 @@ export interface ParseContext {
   isRequired?: boolean;
 }
 
+/**
+ * Recursively parse a ZodSchema into a LudiekNode
+ * @param schema
+ */
 export const parseZodSchema = (schema: ZodSchema): LudiekNode => {
   const jsonSchema = schema.toJSONSchema({ io: 'input' });
 
   return parseSchema(jsonSchema, [], {});
 };
 
+/**
+ * Recursively parse a JSONSchema into a LudiekNode
+ * @param schema
+ * @param path
+ * @param ctx
+ */
 export const parseSchema = (schema: JSONSchema.JSONSchema, path: string[], ctx: ParseContext): LudiekNode => {
   const type = schema.type;
 
@@ -164,6 +174,9 @@ export const parseNumber = (schema: JSONSchema.JSONSchema, path: string[], ctx: 
     ...(schema.default != undefined && { default: schema.default }),
     ...(schema.minimum && { minimum: schema.minimum }),
     ...(schema.maximum && { maximum: schema.maximum }),
+
+    // TODO(@Isha): Exclusive values.
+    //  Should these just be parsed into their inclusive values?
     // ...(schema.exclusiveMinimum && { exclusiveMinimum: schema.exclusiveMinimum }),
     // ...(schema.exclusiveMaximum && { exclusiveMaximum: schema.exclusiveMaximum }),
 
