@@ -34,6 +34,7 @@ export class LudiekEngine<
   const Modifiers extends readonly LudiekModifier[] = [],
 > {
   private readonly _engineId: string;
+  private readonly _debug: boolean;
 
   public plugins: PluginMap<Plugins>;
   public features: FeatureMap<Features>;
@@ -52,6 +53,8 @@ export class LudiekEngine<
     state = {},
   ) {
     this._engineId = config.engineId ?? DEFAULT_ID;
+    this._debug = config.debug ?? false;
+
     this._condition = new LudiekConditionConcept(this);
     this._input = new LudiekInputConcept(this);
     this._output = new LudiekOutputConcept(this);
@@ -250,8 +253,6 @@ export class LudiekEngine<
       data.features[feature.type] = feature.save();
     });
 
-    this.logger.debug('Saving');
-
     return data;
   }
 
@@ -298,5 +299,9 @@ export class LudiekEngine<
     this.logger.debug('Tick', delta);
     // TODO(@Isha): Should plugins tick too?
     this.featureList.forEach((feature) => feature.update?.(delta));
+  }
+
+  public get debug(): boolean {
+    return this._debug;
   }
 }

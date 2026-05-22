@@ -39,6 +39,7 @@ export {
 
 // Engine.Types
 export type { LudiekDependencies, DependencyEngine } from '@ludiek/engine/LudiekEngineContribution';
+export type { AnyEngine } from '@ludiek/util/types';
 
 // Engine.Errors
 export { LudiekError } from '@ludiek/engine/LudiekError';
@@ -59,6 +60,17 @@ export * from '@ludiek/plugins/lootTable';
 export * from '@ludiek/plugins/skill';
 export * from '@ludiek/plugins/statistic/statistic';
 export * from '@ludiek/plugins/upgrade';
+
+/**
+ * Introspection
+ */
+export { LudiekIntrospector } from '@ludiek/introspection/LudiekIntrospector';
+export type {
+  LudiekContentKindIntrospection,
+  LudiekContentIntrospection,
+} from '@ludiek/introspection/LudiekContentIntrospection';
+export type { LudiekIntrospection } from '@ludiek/introspection/LudiekIntrospection';
+export type { LudiekCommand } from '@ludiek/introspection/LudiekCommand';
 
 /**
  * Stdlib

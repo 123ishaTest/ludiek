@@ -6,6 +6,7 @@ import { BaseRequestSchema } from '@ludiek/engine/request/LudiekController';
 import { BonusContributionSchema } from '@ludiek/engine/bonus/LudiekModifier';
 import { DEFAULT_ID } from '@ludiek/engine/LudiekEngine';
 import { LudiekRegistryError } from '@ludiek/engine/LudiekError';
+import { ref } from '@123ishatest/louter';
 
 export interface LudiekContent {
   kind: string;
@@ -29,6 +30,7 @@ export const deferSchema = <Schema extends z.ZodTypeAny>(id: string, engineId: s
  * Expose a zod-like interface.
  */
 export const l = {
+  reference: (kind: string) => ref(kind).meta({ ludiek: { reference: kind } }),
   condition: (engineId = DEFAULT_ID) => deferSchema<typeof BaseConditionSchema>('LUDIEK_CONDITION', engineId),
   input: (engineId = DEFAULT_ID) => deferSchema<typeof BaseInputSchema>('LUDIEK_INPUT', engineId),
   output: (engineId = DEFAULT_ID) => deferSchema<typeof BaseOutputSchema>('LUDIEK_OUTPUT', engineId),
