@@ -15,7 +15,6 @@
 
   let { engine, children, openVisible = false, withToolbar = true, toggleKeys = ['§', '`'] }: Props = $props();
 
-  // TODO(@Isha): Make reactive?
   setEngine(() => engine);
 
   let showOverlay = $derived(openVisible);
@@ -35,29 +34,29 @@
 </script>
 
 
-<!--<svelte:boundary>-->
-{#if isDebug()}
-  {#if children}
-    {@render children()}
-  {/if}
-
-  <div class="inset-0 pb-16 absolute z-50 bg-base-200" class:hidden={!showOverlay}>
-    <LuiDebugger />
-  </div>
-
-  {#if withToolbar}
-    <LuiToolbar />
-  {/if}
-
-  <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
-  {#snippet failed(error: string)}
-    <p>Lui error:{error}</p>
+<svelte:boundary>
+  {#snippet failed(error)}
+    <p>Lui error: {error}</p>
   {/snippet}
 
+  {#if isDebug()}
+    {#if children}
+      {@render children()}
+    {/if}
 
-{:else}
-  {#if children}
-    {@render children()}
+    <div class="inset-0 pb-16 absolute z-50 bg-base-200" class:hidden={!showOverlay}>
+      <LuiDebugger />
+    </div>
+
+    {#if withToolbar}
+      <LuiToolbar />
+    {/if}
+
+
+
+  {:else}
+    {#if children}
+      {@render children()}
+    {/if}
   {/if}
-{/if}
-<!--</svelte:boundary>-->
+</svelte:boundary>

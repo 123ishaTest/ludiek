@@ -1,15 +1,13 @@
 <script lang="ts">
-  import LuiContentSelector from "./LuiContentSelector.svelte";
-  import LuiContentTable from "./LuiContentTable.svelte";
+  import LuiContentSelector from './LuiContentSelector.svelte';
+  import LuiContentTable from './LuiContentTable.svelte';
   import { getIntrospection } from '../../util/context.js';
 
 
   const introspection = $derived(getIntrospection().content);
-
   let hasContent = $derived(introspection?.kinds?.length > 0);
 
   let selectedKind = $derived(introspection?.kinds[0]?.kind);
-
   let selectedIntrospection = $derived(introspection.kinds.find(k => k.kind === selectedKind));
 
 </script>

@@ -33,8 +33,6 @@
       </svelte:boundary>
     </div>
   </div>
-
-
 {:else}
   {@render children?.()}
 {/if}
