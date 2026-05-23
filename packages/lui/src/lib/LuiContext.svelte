@@ -33,7 +33,6 @@
 
 </script>
 
-
 <svelte:boundary>
   {#snippet failed(error)}
     <p>Lui error: {error}</p>
@@ -51,8 +50,6 @@
     {#if withToolbar}
       <LuiToolbar />
     {/if}
-
-
 
   {:else}
     {#if children}

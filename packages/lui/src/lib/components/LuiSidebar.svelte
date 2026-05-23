@@ -19,7 +19,7 @@
   </li>
 {/snippet}
 
-<ul class="menu h-full bg-base-200 rounded-box w-56">
+<ul class="menu h-full bg-base-200 w-56">
   {@render button('dashboard', 'Dashboard')}
 
   <li>
