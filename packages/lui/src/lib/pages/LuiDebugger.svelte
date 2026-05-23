@@ -18,7 +18,7 @@
 </script>
 
 
-<div class="w-full h-full overflow-x-auto overflow-y-auto flex flex-row">
+<div class="lui w-full h-full overflow-x-auto overflow-y-auto flex flex-row">
   <LuiSidebar bind:selectedPage={selectedPage} />
 
   <div class="grow p-4">
