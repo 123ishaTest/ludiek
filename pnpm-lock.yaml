@@ -141,9 +141,6 @@ importers:
       es-toolkit:
         specifier: ^1.39.10
         version: 1.46.1
-      eslint:
-        specifier: ^10.4.0
-        version: 10.4.0(jiti@2.7.0)
       strongly-typed-events:
         specifier: ^3.0.11
         version: 3.0.11
@@ -160,9 +157,15 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^4.1.2
         version: 4.1.7(vitest@4.1.7)
+      eslint:
+        specifier: ^10.4.0
+        version: 10.4.0(jiti@2.7.0)
       jsdom:
         specifier: ^29.0.1
         version: 29.1.1
+      prettier:
+        specifier: ^3.8.3
+        version: 3.8.3
       vite:
         specifier: ^8.0.8
         version: 8.0.14(jiti@2.7.0)(yaml@2.9.0)
