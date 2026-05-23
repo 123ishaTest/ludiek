@@ -30,7 +30,7 @@ export const deferSchema = <Schema extends z.ZodTypeAny>(id: string, engineId: s
  * Expose a zod-like interface.
  */
 export const l = {
-  reference: (kind: string) => ref(kind).meta({ ludiek: { reference: kind } }),
+  content: (kind: string) => ref(kind).meta({ ludiek: { reference: kind } }),
   condition: (engineId = DEFAULT_ID) => deferSchema<typeof BaseConditionSchema>('LUDIEK_CONDITION', engineId),
   input: (engineId = DEFAULT_ID) => deferSchema<typeof BaseInputSchema>('LUDIEK_INPUT', engineId),
   output: (engineId = DEFAULT_ID) => deferSchema<typeof BaseOutputSchema>('LUDIEK_OUTPUT', engineId),

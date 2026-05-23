@@ -91,7 +91,7 @@ describe('Ludiek Introspector', () => {
   it('it can handle content references', () => {
     // Arrange
     const engine = new LudiekEngine({
-      content: [{ kind: 'item', schema: z.strictObject({ id: z.string(), value: l.reference('item') }) }],
+      content: [{ kind: 'item', schema: z.strictObject({ id: z.string(), value: l.content('item') }) }],
     });
     const item = {
       id: 'item-1',
