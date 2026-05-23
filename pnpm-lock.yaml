@@ -141,6 +141,9 @@ importers:
       es-toolkit:
         specifier: ^1.39.10
         version: 1.46.1
+      eslint:
+        specifier: ^10.4.0
+        version: 10.4.0(jiti@2.7.0)
       strongly-typed-events:
         specifier: ^3.0.11
         version: 3.0.11
