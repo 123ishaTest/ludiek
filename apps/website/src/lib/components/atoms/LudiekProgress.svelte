@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Progress } from '@123ishatest/ludiek/dist/util/progress';
+  import type { Progress } from '@123ishatest/ludiek';
 
   interface Props {
     progress: Progress;

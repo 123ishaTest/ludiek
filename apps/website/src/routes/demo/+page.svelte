@@ -3,7 +3,7 @@
   import { onMount } from 'svelte';
 
   import { page } from '$app/state';
-  import LudiekLogDisplay from '$lib/components/logger/LudiekLogDisplay.svelte';
+  import { LuiContentHint, LuiContext } from '@123ishatest/lui';
 
   // TODO(@Isha): Subclass game to handle this nicer?
   //  game.load(page.data.content)
@@ -59,15 +59,25 @@
   });
 </script>
 
-<div class="p-4">
-  <p>You have {money} money</p>
-  <p>You have {gems} gems</p>
-  <p>You have planted {planted} sunflowers</p>
+<LuiContext engine={game.engine}>
+  <div class="h-full w-full">
+    <div class="flex flex-col space-y-4 p-4">
+      <LuiContentHint id="/currency/money">
+        <span>You have {money} money</span>
+      </LuiContentHint>
 
-  <button class="btn btn-primary" onclick={() => sow()}>Sow</button>
-  <button class="btn btn-secondary" onclick={() => trade()}>Trade 100 money for 1 gem</button>
-</div>
+      <LuiContentHint id="/currency/gems">
+        <p>You have {gems} gems</p>
+      </LuiContentHint>
 
-<div class="p-4">
-  <LudiekLogDisplay logger={game.engine.logger} />
-</div>
+      <LuiContentHint id="/statistic/plants-planted" kind="statistic">
+        <p>You have planted {planted} sunflowers</p>
+      </LuiContentHint>
+
+      <div class="flex flex-row space-x-2">
+        <button class="btn btn-primary" onclick={() => sow()}>Sow</button>
+        <button class="btn btn-secondary" onclick={() => trade()}>Trade 100 money for 1 gem</button>
+      </div>
+    </div>
+  </div>
+</LuiContext>

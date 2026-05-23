@@ -42,7 +42,8 @@
     "vite": "^8.0.0"
   },
   "dependencies": {
-    "@123ishatest/louter": "^0.5.0",
+    "@123ishatest/louter": "^0.6.0",
+    "@123ishatest/lui": "*",
     "zod": "^4.4.3"
   }
 }
