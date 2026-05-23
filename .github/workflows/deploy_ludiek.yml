@@ -17,6 +17,8 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     steps:
+      - uses: pnpm/action-setup@v3
+
       - name: Checkout Repo
         uses: actions/checkout@v3
 

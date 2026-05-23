@@ -9,6 +9,7 @@ jobs:
   build_site:
     runs-on: ubuntu-latest
     steps:
+      - uses: pnpm/action-setup@v3
       - name: Checkout
         uses: actions/checkout@v4
 
