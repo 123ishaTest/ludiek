@@ -62,11 +62,11 @@
 <LuiContext engine={game.engine}>
   <div class="h-full w-full">
     <div class="flex flex-col space-y-4 p-4">
-      <LuiContentHint id="/currency/money" kind="currency">
+      <LuiContentHint id="/currency/money">
         <span>You have {money} money</span>
       </LuiContentHint>
 
-      <LuiContentHint id="/currency/gems" kind="currency">
+      <LuiContentHint id="/currency/gems">
         <p>You have {gems} gems</p>
       </LuiContentHint>
 

@@ -1,5 +1,5 @@
 {
-  "name": "with-svelte",
+  "name": "@123ishatest/ludiek-monorepo",
   "private": true,
   "scripts": {
     "build": "turbo run build",

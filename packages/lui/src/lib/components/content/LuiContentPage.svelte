@@ -7,7 +7,7 @@
 
   let hasContent = $derived(introspection?.kinds?.length > 0);
 
-  let selectedKind = $state(introspection?.kinds[0]?.kind);
+  let selectedKind = $derived(introspection?.kinds[0]?.kind);
 
   let selectedIntrospection = $derived(introspection.kinds.find(k => k.kind === selectedKind));
 

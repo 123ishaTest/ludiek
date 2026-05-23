@@ -16,9 +16,9 @@
   let { engine, children, openVisible = false, withToolbar = true, toggleKeys = ['§', '`'] }: Props = $props();
 
   // TODO(@Isha): Make reactive?
-  setEngine(engine);
+  setEngine(() => engine);
 
-  let showOverlay = $state(openVisible);
+  let showOverlay = $derived(openVisible);
 
   const toggleOverlay = () => {
     showOverlay = !showOverlay;

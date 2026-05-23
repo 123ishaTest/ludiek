@@ -11,33 +11,31 @@
   }
 
   let { id, kind, children }: Props = $props();
-
 </script>
 
-<svelte:boundary>
-
-  {#if isDebug()}
-    <div class="indicator">
-      {#if children}
-        {@render children()}
-      {/if}
-      <div class="tooltip tooltip-right">
-
+{#if isDebug()}
+  <div class="indicator">
+    {#if children}
+      {@render children()}
+    {/if}
+    <div class="tooltip tooltip-right">
+      <svelte:boundary>
+        {#snippet failed(error)}
+          <span class="indicator-item status status-error"></span>
+          <div class="tooltip-content text-left">
+            {error}
+          </div>
+        {/snippet}
         <span class="indicator-item status status-primary cursor-help"></span>
         <div class="tooltip-content text-left">
           <LuiContentCard {id} {kind} />
         </div>
-      </div>
+      </svelte:boundary>
     </div>
+  </div>
 
 
-    <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
-    {#snippet failed()}
-      <p>Could not find content with id '{id}' for kind '{kind}'</p>
-    {/snippet}
+{:else}
+  {@render children?.()}
+{/if}
 
-  {:else}
-    {@render children?.()}
-  {/if}
-
-</svelte:boundary>

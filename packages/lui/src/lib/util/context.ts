@@ -5,19 +5,21 @@ import { EngineNotFoundError, IntrospectionNotFoundError } from '$lib/util/LuiEr
 export const LUI_ENGINE_KEY = 'LUI_ENGINE';
 export const LUI_INTROSPECTION_KEY = 'LUI_INTROSPECTION';
 
+type EngineGetter = () => AnyEngine;
+
 export const getEngine = (): AnyEngine => {
-  const engine = getContext<AnyEngine>(LUI_ENGINE_KEY);
+  const engine = getContext<EngineGetter>(LUI_ENGINE_KEY);
   if (!engine) {
     throw new EngineNotFoundError(
       'Could not get engine from the context. Make sure you only use Lui components within a LuiContext',
     );
   }
-  return engine;
+  return engine();
 };
 
-export const setEngine = (engine: AnyEngine) => {
+export const setEngine = (engine: EngineGetter) => {
   setContext(LUI_ENGINE_KEY, engine);
-  const introspection = new LudiekIntrospector(engine).introspect();
+  const introspection = new LudiekIntrospector(engine()).introspect();
   setContext(LUI_INTROSPECTION_KEY, introspection);
 };
 
