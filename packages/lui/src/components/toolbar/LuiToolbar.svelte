@@ -8,10 +8,10 @@
   import BonusIcon from '@lucide/svelte/icons/sparkles';
   import RequestIcon from '@lucide/svelte/icons/mail-question-mark';
   import CloseIcon from '@lucide/svelte/icons/x';
-  import LuiToolbarEntry from '$lib/components/toolbar/LuiToolbarEntry.svelte';
-  import { getIntrospection } from '$lib/util/context.js';
-  import LuiToolbarCommandList from '$lib/components/toolbar/LuiToolbarCommandList.svelte';
-  import LuiVersion from '$lib/components/LuiVersion.svelte';
+  import { getIntrospection } from '../../util/context.js';
+  import LuiVersion from '../LuiVersion.svelte';
+  import LuiToolbarEntry from './LuiToolbarEntry.svelte';
+  import LuiToolbarCommandList from './LuiToolbarCommandList.svelte';
 
   const introspection = getIntrospection();
 

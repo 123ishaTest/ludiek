@@ -1,6 +1,6 @@
 import { LudiekIntrospector, type AnyEngine, type LudiekIntrospection } from '@123ishatest/ludiek';
 import { getContext, setContext } from 'svelte';
-import { EngineNotFoundError, IntrospectionNotFoundError } from '$lib/util/LuiError.js';
+import { EngineNotFoundError, IntrospectionNotFoundError } from './LuiError.js';
 
 export const LUI_ENGINE_KEY = 'LUI_ENGINE';
 export const LUI_INTROSPECTION_KEY = 'LUI_INTROSPECTION';

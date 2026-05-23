@@ -1,7 +1,7 @@
 <script lang="ts">
-  import LuiContentCard from '$lib/components/content/LuiContentCard.svelte';
   import type { Snippet } from 'svelte';
-  import { isDebug } from '$lib/util/context.js';
+  import { isDebug } from '../../util/context.js';
+  import LuiContentCard from './LuiContentCard.svelte';
 
   interface Props {
     id: string;

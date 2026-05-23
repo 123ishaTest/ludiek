@@ -4,6 +4,9 @@ import globals from 'globals';
 import ts from 'typescript-eslint';
 
 export const config = ts.config(
+  {
+    ignores: ['.svelte-kit/**', 'node_modules/**', 'build/**', 'dist/**'],
+  },
   js.configs.recommended,
   ...ts.configs.recommended,
   ...svelte.configs['flat/recommended'],

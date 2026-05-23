@@ -1,9 +1,9 @@
 <script lang="ts">
-  import LuiDebugger from '$lib/pages/LuiDebugger.svelte';
   import type { AnyEngine } from '@123ishatest/ludiek';
   import { onMount, type Snippet } from 'svelte';
-  import { isDebug, setEngine } from '$lib/util/context.js';
-  import LuiToolbar from '$lib/components/toolbar/LuiToolbar.svelte';
+  import { isDebug, setEngine } from './util/context.js';
+  import LuiDebugger from './pages/LuiDebugger.svelte';
+  import LuiToolbar from './components/toolbar/LuiToolbar.svelte';
 
   interface Props {
     engine: AnyEngine;

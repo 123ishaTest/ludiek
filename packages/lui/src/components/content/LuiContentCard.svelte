@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getEngine } from '$lib/util/context.js';
+  import { getEngine } from '../../util/context.js';
 
   interface Props {
     id: string;

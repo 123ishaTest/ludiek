@@ -1,7 +1,5 @@
 <script lang="ts">
-
-
-  import type { PageType } from '$lib/types/PageType.js';
+  import type { PageType } from '../types/PageType.js';
 
   interface Props {
     selectedPage: PageType;

@@ -1,7 +1,8 @@
 <script lang="ts">
-  import LuiContentSelector from '$lib/components/content/LuiContentSelector.svelte';
-  import LuiContentTable from '$lib/components/content/LuiContentTable.svelte';
-  import { getIntrospection } from '$lib/util/context.js';
+  import LuiContentSelector from "./LuiContentSelector.svelte";
+  import LuiContentTable from "./LuiContentTable.svelte";
+  import { getIntrospection } from '../../util/context.js';
+
 
   const introspection = $derived(getIntrospection().content);
 

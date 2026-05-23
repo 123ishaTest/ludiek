@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { getEngine } from '$lib/util/context.js';
+
+  import { getEngine } from '../../util/context.js';
 
   const engine = $derived(getEngine());
 
