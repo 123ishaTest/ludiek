@@ -27,4 +27,5 @@ export interface LudiekEngineConfig<
   modifiers?: Modifiers;
 
   engineId?: string;
+  debug?: boolean;
 }
