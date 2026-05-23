@@ -1,5 +1,11 @@
 # @123ishatest/ludiek
 
+## 0.8.0
+
+### Minor Changes
+
+- deeaf6e: Add engine introspections
+
 ## 0.7.4
 
 ### Patch Changes

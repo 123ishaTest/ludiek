@@ -15,6 +15,10 @@
   --color-primary: oklch(62% 0.194 149.214);
 }
 
+:root {
+  --color-primary: oklch(62% 0.194 149.214);
+}
+
 @plugin 'daisyui/theme' {
   name: 'light';
   --color-primary: oklch(62% 0.194 149.214);

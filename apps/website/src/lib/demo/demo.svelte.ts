@@ -64,6 +64,7 @@ export const engine = new LudiekEngine(
     producers: [new SeedProducer(), new GainCurrencyProducer(), new GainSkillExperienceProducer()],
     controllers: [new EnterCouponController(), new SowSeedController()],
     modifiers: [new SeedModifier(), new GlobalSeedModifier()],
+    debug: true,
   },
   engineState,
 );

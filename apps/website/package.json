@@ -1,7 +1,7 @@
 {
   "name": "@123ishatest/ludiek-website",
   "private": true,
-  "version": "0.7.0",
+  "version": "0.8.0",
   "type": "module",
   "scripts": {
     "dev": "vite dev",
@@ -42,7 +42,7 @@
     "vite": "^8.0.0"
   },
   "dependencies": {
-    "@123ishatest/louter": "^0.3.1",
+    "@123ishatest/louter": "^0.5.0",
     "zod": "^4.4.3"
   }
 }
