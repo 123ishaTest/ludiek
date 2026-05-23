@@ -1,13 +1,12 @@
 {
   "name": "@123ishatest/lui",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "repository": {
     "url": "https://github.com/123ishaTest/ludiek"
   },
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build && npm run prepack && npm run postbuild",
-    "postbuild": "tailwindcss -o dist/index.css --minify",
+    "build": "vite build && npm run prepack",
     "preview": "vite preview",
     "prepare": "svelte-kit sync || echo ''",
     "prepack": "svelte-kit sync && svelte-package && publint",
@@ -35,6 +34,7 @@
       "types": "./dist/index.d.ts",
       "svelte": "./dist/index.js",
       "import": "./dist/index.js",
+      "style": "./dist/index.css",
       "default": "./dist/index.js"
     }
   },

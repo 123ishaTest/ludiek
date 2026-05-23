@@ -1,5 +1,11 @@
 # @123ishatest/lui
 
+## 0.0.4
+
+### Patch Changes
+
+- Fix style export
+
 ## 0.0.3
 
 ### Patch Changes

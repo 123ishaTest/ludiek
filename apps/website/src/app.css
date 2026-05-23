@@ -1,5 +1,6 @@
 @import url('/themes/darcula.css');
 @import 'tailwindcss';
+@import '@123ishatest/lui';
 
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
