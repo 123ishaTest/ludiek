@@ -105,21 +105,10 @@ export class LudiekIntrospector {
       return [
         {
           command: contribution.type,
-          schema: contribution.schema,
           arguments: args,
         },
       ];
     });
-  }
-
-  public get allContributions(): (LudiekEngineContribution & HasSchema)[] {
-    return [
-      ...this._engine.condition.list,
-      ...this._engine.input.list,
-      ...this._engine.output.list,
-      ...this._engine.request.list,
-      ...this._engine.bonus.list,
-    ];
   }
 
   public getContent(): LudiekContentIntrospection {
@@ -141,7 +130,6 @@ export class LudiekIntrospector {
           kind,
           nodes: node.fields,
           items: items,
-          schema,
         },
       ];
     });

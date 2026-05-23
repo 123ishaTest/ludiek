@@ -1,5 +1,4 @@
 import { LudiekCommand } from '@ludiek/introspection/LudiekCommand';
-import { ZodSchema } from 'zod';
 import { LudiekNode } from '@ludiek/introspection/ir/nodes';
 
 export interface LudiekIntrospection {
@@ -20,7 +19,6 @@ export interface LudiekContentIntrospection {
 
 export interface LudiekContentKindIntrospection {
   kind: string;
-  schema: ZodSchema;
 
   nodes: LudiekNode[];
   items: {

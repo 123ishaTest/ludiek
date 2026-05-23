@@ -19,7 +19,6 @@ export interface BaseNode {
   default?: unknown;
 
   // TODO(@Isha): Restructure under a single Meta
-  description?: string;
   title?: string;
 
   ludiek?: LudiekMetaData;

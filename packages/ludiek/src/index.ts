@@ -75,6 +75,7 @@ export type {
   LudiekFeatureIntrospection,
   LudiekPluginsIntrospection,
 } from '@ludiek/introspection/LudiekIntrospection';
+export { LudiekIntrospector } from '@ludiek/introspection/LudiekIntrospector';
 export type { LudiekCommand } from '@ludiek/introspection/LudiekCommand';
 
 /**

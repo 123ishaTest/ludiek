@@ -46,7 +46,7 @@ export class LudiekEngine<
   private readonly _request: LudiekRequestConcept<Controllers>;
   private readonly _bonus: LudiekBonusConcept<Modifiers>;
 
-  private readonly _logger: LudiekLogger = new LudiekLogger({ toConsole: true });
+  private readonly _logger: LudiekLogger;
 
   constructor(
     config: LudiekEngineConfig<Plugins, Features, Content, Evaluators, Consumers, Producers, Controllers, Modifiers>,
@@ -54,6 +54,8 @@ export class LudiekEngine<
   ) {
     this._engineId = config.engineId ?? DEFAULT_ID;
     this._debug = config.debug ?? false;
+
+    this._logger = new LudiekLogger({ toConsole: this._debug });
 
     this._condition = new LudiekConditionConcept(this);
     this._input = new LudiekInputConcept(this);

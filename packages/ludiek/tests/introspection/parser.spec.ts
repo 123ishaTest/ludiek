@@ -15,6 +15,17 @@ describe('Basic parser', () => {
     expect(args).toStrictEqual({ kind: 'string', path: [], minLength: 3, maxLength: 3 });
   });
 
+  it('parses string patterns', () => {
+    // Arrange
+    const schema = z.string().regex(/[a-z]/);
+
+    // Act
+    const args = parseZodSchema(schema);
+
+    // Assert
+    expect(args).toStrictEqual({ kind: 'string', path: [], pattern: '[a-z]' });
+  });
+
   it('parses numbers', () => {
     // Arrange
     const schema = z.number().min(4).max(8);
@@ -123,6 +134,22 @@ describe('Basic parser', () => {
       strict: true,
       path: [],
       fields: [{ kind: 'number', path: ['value'], default: 4 }],
+    });
+  });
+
+  it('Parses an empty object', () => {
+    // Arrange
+    const schema = z.strictObject({});
+
+    // Act
+    const representation = parseZodSchema(schema);
+
+    // Assert
+    expect(representation).toStrictEqual({
+      kind: 'object',
+      path: [],
+      strict: true,
+      fields: [],
     });
   });
 

@@ -142,8 +142,6 @@ export const parseString = (schema: JSONSchema.JSONSchema, path: string[], ctx: 
     ...(schema.maxLength && { maxLength: schema.maxLength }),
     ...(schema.pattern && { pattern: schema.pattern }),
 
-    ...(schema.description && { description: schema.description }),
-
     ...(ludiek && { ludiek: ludiek }),
   };
 };
@@ -179,8 +177,6 @@ export const parseNumber = (schema: JSONSchema.JSONSchema, path: string[], ctx: 
     //  Should these just be parsed into their inclusive values?
     // ...(schema.exclusiveMinimum && { exclusiveMinimum: schema.exclusiveMinimum }),
     // ...(schema.exclusiveMaximum && { exclusiveMaximum: schema.exclusiveMaximum }),
-
-    ...(schema.description && { description: schema.description }),
   };
 };
 

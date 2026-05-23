@@ -1,5 +1,3 @@
-import { ZodSchema } from 'zod';
-
 export type LudiekArgumentType = 'string' | 'number' | 'boolean' | 'enum' | 'literal';
 
 export interface LudiekArgument {
@@ -10,7 +8,6 @@ export interface LudiekArgument {
 
 export interface LudiekCommand {
   command: string;
-  schema: ZodSchema;
   arguments: LudiekArgument[];
 }
 
