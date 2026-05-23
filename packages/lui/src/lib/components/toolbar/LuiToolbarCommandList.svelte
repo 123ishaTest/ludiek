@@ -9,14 +9,14 @@
   let { commands, kind }: Props = $props();
 </script>
 
-<ul class="list rounded-box shadow-md">
+<ul class="d-list rounded-box shadow-md">
   {#each commands as command (command.command)}
     {@const args = command.arguments.map(a => `<${a.field}>`).join(' ')}
-    <li class="list-row">
-      <div class="list-col-grow text-left">{command.command}</div>
-      <div class="text-base-content/50">{args}</div>
+    <li class="d-list-row">
+      <div class="d-list-col-grow text-left">{command.command}</div>
+      <div class="d-text-base-content/50">{args}</div>
     </li>
   {:else}
-    <li class="list-row">No {kind} registered</li>
+    <li class="d-list-row">No {kind} registered</li>
   {/each}
 </ul>

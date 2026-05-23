@@ -14,20 +14,20 @@
 </script>
 
 {#if isDebug()}
-  <div class="indicator">
+  <div class="d-indicator">
     {#if children}
       {@render children()}
     {/if}
-    <div class="tooltip tooltip-right">
+    <div class="d-tooltip d-tooltip-right">
       <svelte:boundary>
         {#snippet failed(error)}
-          <span class="indicator-item status status-error"></span>
-          <div class="tooltip-content text-left">
+          <span class="d-indicator-item d-status d-status-error"></span>
+          <div class="d-tooltip-content text-left">
             {error}
           </div>
         {/snippet}
-        <span class="indicator-item status status-primary cursor-help"></span>
-        <div class="tooltip-content text-left">
+        <span class="d-indicator-item d-status d-status-primary cursor-help"></span>
+        <div class="d-tooltip-content text-left">
           <LuiContentCard {id} {kind} />
         </div>
       </svelte:boundary>

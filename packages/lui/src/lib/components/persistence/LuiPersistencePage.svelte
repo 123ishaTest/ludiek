@@ -13,7 +13,7 @@
 
 
 <div class="flex flex-col h-full">
-  <div class="mockup-code w-full overflow-y-auto">
+  <div class="d-mockup-code w-full overflow-y-auto">
     <pre>{formattedSave}</pre>
   </div>
 </div>

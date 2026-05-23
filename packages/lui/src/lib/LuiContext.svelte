@@ -33,6 +33,7 @@
 
 </script>
 
+
 <svelte:boundary>
   {#snippet failed(error)}
     <p>Lui error: {error}</p>
@@ -43,7 +44,7 @@
       {@render children()}
     {/if}
 
-    <div class="inset-0 pb-16 absolute z-50 bg-base-200" class:hidden={!showOverlay}>
+    <div data-theme="dark" class="lui inset-0 pb-18 absolute z-50 bg-base-200" class:hidden={!showOverlay}>
       <LuiDebugger />
     </div>
 

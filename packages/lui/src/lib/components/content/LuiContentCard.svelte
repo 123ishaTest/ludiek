@@ -23,6 +23,6 @@
 <div class="flex flex-col space-y-4 items-center p-4 rounded-sm shadow-xl">
   <h2 class="">{id}</h2>
 
-  <pre class="text-primary-content">{JSON.stringify(content, null, 2)}</pre>
+  <pre class="d-text-primary-content">{JSON.stringify(content, null, 2)}</pre>
 </div>
 

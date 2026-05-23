@@ -3,6 +3,15 @@
 @plugin '@tailwindcss/typography';
 
 @plugin "daisyui" {
+  themes:
+    light --default,
+    dark --prefersdark;
+  prefix: 'd-';
   root: '.lui';
 }
+
+.lui {
+  --color-primary: oklch(62% 0.194 149.214);
+}
+
 @source './';

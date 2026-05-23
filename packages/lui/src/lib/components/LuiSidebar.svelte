@@ -14,16 +14,16 @@
 </script>
 
 {#snippet button(page: PageType, name: string)}
-  <li class:menu-active={selectedPage === page}>
+  <li class:d-menu-active={selectedPage === page}>
     <button onclick={() => selectPage(page)}>{name}</button>
   </li>
 {/snippet}
 
-<ul class="menu h-full bg-base-200 w-56">
+<ul class="d-menu h-full d-bg-base-200 w-56">
   {@render button('dashboard', 'Dashboard')}
 
   <li>
-    <h2 class="menu-title">State</h2>
+    <h2 class="d-menu-title">State</h2>
     <ul>
       {@render button('plugin', 'Plugin')}
       {@render button('feature', 'Feature')}
@@ -32,7 +32,7 @@
   </li>
 
   <li>
-    <h2 class="menu-title">Contributions</h2>
+    <h2 class="d-menu-title">Contributions</h2>
     <ul>
       {@render button('condition', 'Condition')}
       {@render button('input', 'Input')}
@@ -43,7 +43,7 @@
   </li>
 
   <li>
-    <h2 class="menu-title">Other</h2>
+    <h2 class="d-menu-title">Other</h2>
     <ul>
       {@render button('content', 'Content')}
     </ul>
