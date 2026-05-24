@@ -14,7 +14,7 @@
 </script>
 
 {#if isDebug()}
-  <div class="d-indicator">
+  <div class="lui d-indicator">
     {#if children}
       {@render children()}
     {/if}
