@@ -1,5 +1,11 @@
 # @123ishatest/lui
 
+## 1.0.1
+
+### Patch Changes
+
+- Fix LuiContentHint not being in scope properly
+
 ## 1.0.0
 
 ### Minor Changes
