@@ -24,37 +24,45 @@
   };
 
   onMount(() => {
-    document.addEventListener('keypress', (e) => {
+    const listener = (e: KeyboardEvent) => {
       if (toggleKeys.includes(e.key)) {
         toggleOverlay();
       }
-    });
+    };
+    document.addEventListener('keydown', listener);
+
+    return () => {
+      document.removeEventListener('keydown', listener)
+    }
   });
 
 </script>
-
 
 <svelte:boundary>
   {#snippet failed(error)}
     <p>Lui error: {error}</p>
   {/snippet}
 
-  {#if isDebug()}
-    {#if children}
-      {@render children()}
-    {/if}
+  {#if children}
+    {@render children()}
+  {/if}
 
-    <div data-theme="dark" class="lui inset-0 pb-18 absolute z-50 bg-base-200" class:hidden={!showOverlay}>
+  <!-- Debug-only overlays -->
+  {#if isDebug()}
+
+    <div
+      data-theme="dark"
+      class="lui fixed inset-0 z-50 bg-base-200 pb-18"
+      class:hidden={!showOverlay}
+    >
       <LuiDebugger />
     </div>
 
     {#if withToolbar}
-      <LuiToolbar />
+      <div class="w-full fixed bottom-0 left-0 z-60">
+        <LuiToolbar />
+      </div>
     {/if}
 
-  {:else}
-    {#if children}
-      {@render children()}
-    {/if}
   {/if}
 </svelte:boundary>

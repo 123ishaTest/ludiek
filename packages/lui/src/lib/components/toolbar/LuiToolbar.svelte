@@ -32,7 +32,7 @@
 </script>
 
 {#if isVisible}
-  <div class="lui absolute bottom-0 w-full h-12 flex flex-row items-center z-60 px-2">
+  <div class="lui w-full h-12 flex flex-row items-center z-60 px-2">
 
     <div class="flex flex-row items-center space-x-4">
 
