@@ -32,49 +32,49 @@
 </script>
 
 {#if isVisible}
-  <div class="lui absolute bottom-0 w-full h-16 bg-base-200 flex flex-row items-center z-60 px-2">
+  <div class="lui w-full h-12 flex flex-row items-center z-60 px-2">
 
     <div class="flex flex-row items-center space-x-4">
 
       <div class="flex flex-row">
-        <a class="btn btn-primary" href="https://ludiek.123ishatest.com/docs" target="_blank">
+        <a class="d-btn d-btn-primary" href="https://ludiek.123ishatest.com/docs" target="_blank">
           <span>Ludiek</span>
           <LuiVersion />
         </a>
       </div>
 
       <LuiToolbarEntry BadgeIcon={ContentIcon} value={introspection.content.kinds.length}>
-        <ul class="list rounded-box shadow-md">
+        <ul class="d-list d-rounded-box shadow-md">
           {#each introspection.content.kinds as kind (kind.kind)}
-            <li class="list-row">
+            <li class="d-list-row">
               <div class="text-left capitalize">{kind.kind}</div>
             </li>
           {:else}
-            <li class="list-row">No content registered</li>
+            <li class="d-list-row">No content registered</li>
           {/each}
         </ul>
       </LuiToolbarEntry>
 
       <LuiToolbarEntry BadgeIcon={FeatureIcon} value={introspection.features.features.length}>
-        <ul class="list rounded-box shadow-md">
+        <ul class="d-list d-rounded-box shadow-md">
           {#each introspection.features.features as feature (feature.type)}
-            <li class="list-row">
+            <li class="d-list-row">
               <div class="text-left capitalize">{feature.type}</div>
             </li>
           {:else}
-            <li class="list-row">No features registered</li>
+            <li class="d-list-row">No features registered</li>
           {/each}
         </ul>
       </LuiToolbarEntry>
 
       <LuiToolbarEntry BadgeIcon={PluginIcon} value={introspection.plugins.plugins.length}>
-        <ul class="list rounded-box shadow-md">
+        <ul class="d-list d-rounded-box shadow-md">
           {#each introspection.plugins.plugins as plugin (plugin.type)}
-            <li class="list-row">
+            <li class="d-list-row">
               <div class="text-left capitalize">{plugin.type}</div>
             </li>
           {:else}
-            <li class="list-row">No plugins registered</li>
+            <li class="d-list-row">No plugins registered</li>
           {/each}
         </ul>
       </LuiToolbarEntry>
@@ -103,12 +103,12 @@
 
     <div class="grow"></div>
 
-    <button class="btn" onclick={()=> closeToolbar()}>
+    <button class="d-btn" onclick={()=> closeToolbar()}>
       <CloseIcon />
     </button>
   </div>
 {:else}
-  <div class="absolute bottom-0 right-0 p-2 z-60">
-    <button class="btn btn-primary" onclick={() => openToolbar()}>Ludiek</button>
+  <div class="lui absolute bottom-0 right-0 p-2 z-60">
+    <button class="d-btn d-btn-primary" onclick={() => openToolbar()}>Ludiek</button>
   </div>
 {/if}

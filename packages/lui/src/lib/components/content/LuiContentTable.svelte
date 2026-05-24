@@ -13,7 +13,7 @@
 
 
 <div class="overflow-x-auto">
-  <table class="table">
+  <table class="d-table">
     <thead class="">
     <tr>
       {#each nodes as node (node.path)}

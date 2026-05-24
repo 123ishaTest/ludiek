@@ -15,7 +15,7 @@
   let content = $derived(introspection.kinds)
 </script>
 
-<ul class="menu menu-vertical lg:menu-horizontal rounded-box">
+<ul class="d-menu d-menu-horizontal d-rounded-box">
   {#each content as c (c.kind)}
     <li>
       <button class="capitalize" class:menu-active={selectedKind === c.kind} onclick={() => selectKind(c.kind)}>{c.kind} ({c.items.length})</button>

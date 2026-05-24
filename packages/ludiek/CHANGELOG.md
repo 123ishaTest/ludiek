@@ -1,5 +1,11 @@
 # @123ishatest/ludiek
 
+## 0.9.0
+
+### Minor Changes
+
+- 8578211: Release through peer dependencies
+
 ## 0.8.0
 
 ### Minor Changes
