@@ -1,6 +1,6 @@
 {
   "name": "@123ishatest/lui",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "repository": {
     "url": "https://github.com/123ishaTest/ludiek"
   },
@@ -39,7 +39,7 @@
     }
   },
   "peerDependencies": {
-    "@123ishatest/ludiek": "^0.8.0",
+    "@123ishatest/ludiek": "^0.9.0",
     "svelte": "^5.0.0"
   },
   "devDependencies": {
