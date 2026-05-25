@@ -4,10 +4,7 @@
 
 ### Patch Changes
 
-- Add ContentRegistry and export Node types
 - Fix LuiContentHint not being in scope properly
-- Updated dependencies
-  - @123ishatest/ludiek@0.9.2
 
 ## 1.0.2
 
