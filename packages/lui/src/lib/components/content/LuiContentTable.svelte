@@ -1,5 +1,9 @@
 <script lang="ts">
-  import type { LudiekContentKindIntrospection } from '@123ishatest/ludiek';
+  import type { LudiekContentKindIntrospection, LudiekNode } from '@123ishatest/ludiek';
+  import { getContentRenderRegistry } from '../../util/context';
+  import { defaultContentRenderRegistry, type LuiContentRenderRegistry } from './render/LuiContentRenderRegistry';
+  import LuiContentRenderObject from './render/LuiContentRenderObject.svelte';
+  import type { Component } from 'svelte';
 
   interface Props {
     introspection: LudiekContentKindIntrospection;
@@ -9,6 +13,34 @@
 
   let nodes = $derived(introspection.nodes);
   let items = $derived(introspection.items);
+
+  let registry: LuiContentRenderRegistry = $derived.by(() => {
+    return {
+      ...defaultContentRenderRegistry,
+      ...getContentRenderRegistry(),
+    };
+  });
+
+  const getRenderComponent = (node: LudiekNode): Component<{ value: never }> => {
+
+    // If it has a meta field indicating what it should render is, return that if it exists
+    const field = node?.ludiek?.render;
+
+    if (field && registry[field]) {
+      return registry[field];
+    }
+
+    // If not, try to look up the kind as a fallback
+    const kind = node.kind;
+    const kindComponent = registry[kind];
+    if (kindComponent) {
+      return kindComponent;
+    }
+
+    // If all else fails, return it as an object display
+    return LuiContentRenderObject;
+
+  };
 </script>
 
 
@@ -26,13 +58,20 @@
     {#each items as piece (piece.id)}
       <tr class="">
         {#each nodes as node (node.path)}
-          {@const key = node.path.join("")}
-          {@const value = piece[key]}
+          <svelte:boundary>
 
-          <!-- TODO(@Isha): Add render registry here -->
-          <td class="px-4 py-3 align-top">
-            {JSON.stringify(value, null, 2)}
-          </td>
+            {@const key = node.path.join("")}
+            {@const Component = getRenderComponent(node)}
+            {@const value = piece[key] as never}
+
+            <td class="px-4 py-3 align-top">
+              <Component {value} />
+            </td>
+
+            {#snippet failed(error)}
+              <td class="align-top d-alert d-alert-error"> Render error: {error}</td>
+            {/snippet}
+          </svelte:boundary>
         {/each}
       </tr>
     {/each}

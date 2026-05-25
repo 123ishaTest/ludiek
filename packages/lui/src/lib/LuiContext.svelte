@@ -1,9 +1,13 @@
 <script lang="ts">
   import type { AnyEngine } from '@123ishatest/ludiek';
   import { onMount, type Snippet } from 'svelte';
-  import { isDebug, setEngine } from './util/context.js';
+  import { isDebug, setContentREnderRegistry, setEngine } from './util/context.js';
   import LuiDebugger from './pages/LuiDebugger.svelte';
   import LuiToolbar from './components/toolbar/LuiToolbar.svelte';
+  import {
+    defaultContentRenderRegistry,
+    type LuiContentRenderRegistry,
+  } from './components/content/render/LuiContentRenderRegistry';
 
   interface Props {
     engine: AnyEngine;
@@ -11,11 +15,13 @@
     openVisible?: boolean,
     withToolbar?: boolean
     children?: Snippet;
+    contentRenderRegistry?: LuiContentRenderRegistry
   }
 
-  let { engine, children, openVisible = false, withToolbar = true, toggleKeys = ['§', '`'] }: Props = $props();
+  let { engine, children, openVisible = false, withToolbar = true, toggleKeys = ['§', '`'], contentRenderRegistry = defaultContentRenderRegistry }: Props = $props();
 
   setEngine(() => engine);
+  setContentREnderRegistry(() => contentRenderRegistry)
 
   let showOverlay = $derived(openVisible);
 

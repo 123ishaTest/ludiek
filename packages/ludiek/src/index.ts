@@ -78,6 +78,20 @@ export type {
 export { LudiekIntrospector } from '@ludiek/introspection/LudiekIntrospector';
 export type { LudiekCommand } from '@ludiek/introspection/LudiekCommand';
 
+export type {
+  LudiekNode,
+  LiteralNode,
+  LudiekMetaData,
+  BooleanNode,
+  NumberNode,
+  ObjectNode,
+  StringNode,
+  BaseNode,
+  ArrayNode,
+  RecordNode,
+  UnknownNode,
+} from '@ludiek/introspection/ir/nodes';
+
 /**
  * Stdlib
  */
