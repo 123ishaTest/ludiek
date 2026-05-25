@@ -26,6 +26,7 @@ export interface BaseNode {
 
 export interface LudiekMetaData {
   reference?: string;
+  render: string;
 }
 
 export type LudiekNode =

@@ -1,5 +1,17 @@
 # @123ishatest/ludiek
 
+## 0.9.2
+
+### Patch Changes
+
+- Add ContentRegistry and export Node types
+
+## 0.9.1
+
+### Patch Changes
+
+- Add ContentRegistry and export Node types
+
 ## 0.9.0
 
 ### Minor Changes
