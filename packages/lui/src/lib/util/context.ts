@@ -1,7 +1,7 @@
 import { type AnyEngine, type LudiekIntrospection, LudiekIntrospector } from '@123ishatest/ludiek';
 import { createContext } from 'svelte';
 import { ConfigNotFoundError, EngineNotFoundError, IntrospectionNotFoundError } from '$lui/util/LuiError';
-import type { LuiConfig } from '$lui';
+import type { LuiConfig } from '$lui/LuiConfig';
 
 export const [getEngineContext, setEngineContext] = createContext<AnyEngine>();
 export const [getConfigContext, setConfigContext] = createContext<LuiConfig>();

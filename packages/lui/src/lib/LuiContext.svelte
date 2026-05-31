@@ -17,7 +17,7 @@
   setEngine(engine);
   setConfigContext(config);
 
-  let showOverlay = $derived(config.openVisible);
+  let showOverlay = $derived(config.startVisible);
 
   const toggleOverlay = () => {
     showOverlay = !showOverlay;

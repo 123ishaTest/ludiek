@@ -15,7 +15,7 @@ export interface LuiContentRegistryConfig {
 
 export interface LuiConfig {
   toggleKeys: string[];
-  openVisible: boolean;
+  startVisible: boolean;
 
   // TODO(@Isha): Add builder for pages
   pages: null;

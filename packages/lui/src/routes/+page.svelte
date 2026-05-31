@@ -3,7 +3,7 @@
   import { engine } from './lui-engine.js';
   import { LuiConfigBuilder } from '$lib/LuiConfigBuilder';
 
-  const config = new LuiConfigBuilder().openVisible().build();
+  const config = new LuiConfigBuilder().startVisible().build();
 </script>
 
 <LuiContext {engine} {config}>

@@ -17,7 +17,7 @@ export class LuiConfigBuilder {
   private static DEFAULT_TOOLBAR_ORDER = 200;
 
   private readonly _config: Required<LuiConfig> = {
-    openVisible: false,
+    startVisible: false,
     toggleKeys: ['`'],
     pages: null,
     content: {
@@ -43,16 +43,25 @@ export class LuiConfigBuilder {
     },
   };
 
-  public openVisible(value: boolean = true): this {
-    this._config.openVisible = value;
+  /**
+   * Set whether the debug overlay is visible on launch
+   */
+  public startVisible(value: boolean = true): this {
+    this._config.startVisible = value;
     return this;
   }
 
+  /**
+   * Set whether the toolbar is enabled
+   */
   public withToolbar(value: boolean): this {
     this._config.toolbar.isEnabled = value;
     return this;
   }
 
+  /**
+   * Set the keys that toggle the overlay
+   */
   public setToggleKeys(keys: string[]): this {
     this._config.toggleKeys = keys;
     return this;
@@ -74,13 +83,15 @@ export class LuiConfigBuilder {
 
   /**
    * Remove an item from the toolbar
-   * @param key
    */
   public removeToolbarItem(key: string): this {
     this._config.toolbar.items = this._config.toolbar.items.filter((toolbarItem) => toolbarItem.key !== key);
     return this;
   }
 
+  /**
+   * Set the order of a toolbar item
+   */
   public setToolbarOrder(key: string, order: number): this {
     const item = this._config.toolbar.items.find((item) => item.key === key);
     if (!item) {
@@ -92,16 +103,19 @@ export class LuiConfigBuilder {
     return this;
   }
 
+  /**
+   * Set the component to use for this kind of content
+   */
+  public setContentRenderer(kind: string, component: Component<{ value: never }>): this {
+    this._config.content.renderers[kind] = component;
+    return this;
+  }
+
   private sortToolbar(): void {
     this._config.toolbar.items.sort(
       (a, b) =>
         (a.order ?? LuiConfigBuilder.DEFAULT_TOOLBAR_ORDER) - (b.order ?? LuiConfigBuilder.DEFAULT_TOOLBAR_ORDER),
     );
-  }
-
-  public setContentRenderer(kind: string, component: Component<{ value: never }>): this {
-    this._config.content.renderers[kind] = component;
-    return this;
   }
 
   public build(): LuiConfig {
