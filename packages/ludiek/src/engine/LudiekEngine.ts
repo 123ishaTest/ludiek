@@ -35,6 +35,11 @@ export class LudiekEngine<
 > {
   private readonly _engineId: string;
   private readonly _debug: boolean;
+  /**
+   * Whenever the engine ticks, delta is multiplied by the timeScale
+   * @private
+   */
+  private _timeScale: number = 1;
 
   public plugins: PluginMap<Plugins>;
   public features: FeatureMap<Features>;
@@ -299,9 +304,21 @@ export class LudiekEngine<
 
   public tick(delta: number): void {
     this.logger.debug('Tick', delta);
+    const scaledDelta = delta * this._timeScale;
+
     // TODO(@Isha): Should plugins tick too?
-    this.featureList.forEach((feature) => feature.update?.(delta));
+    this.featureList.forEach((feature) => feature.update?.(scaledDelta));
   }
+
+  // TODO(@Isha): Add testing!
+  public get timeScale(): number {
+    return this._timeScale;
+  }
+
+  public set timeScale(timeScale:number) {
+    this._timeScale = timeScale;
+  }
+
 
   public get debug(): boolean {
     return this._debug;

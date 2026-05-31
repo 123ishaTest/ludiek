@@ -1,29 +1,23 @@
 <script lang="ts">
   import type { AnyEngine } from '@123ishatest/ludiek';
   import { onMount, type Snippet } from 'svelte';
-  import { isDebug, setContentREnderRegistry, setEngine } from './util/context.js';
-  import LuiDebugger from './pages/LuiDebugger.svelte';
-  import LuiToolbar from './components/toolbar/LuiToolbar.svelte';
-  import {
-    defaultContentRenderRegistry,
-    type LuiContentRenderRegistry,
-  } from './components/content/render/LuiContentRenderRegistry';
+  import LuiDebugger from '$lui/pages/LuiDebugger.svelte';
+  import LuiToolbar from '$lui/components/toolbar/LuiToolbar.svelte';
+  import type { LuiConfig } from '$lui/LuiConfig';
+  import { isDebug, setConfigContext, setEngine } from '$lui/util/context';
 
   interface Props {
     engine: AnyEngine;
-    toggleKeys?: string[];
-    openVisible?: boolean,
-    withToolbar?: boolean
+    config: LuiConfig;
     children?: Snippet;
-    contentRenderRegistry?: LuiContentRenderRegistry
   }
 
-  let { engine, children, openVisible = false, withToolbar = true, toggleKeys = ['§', '`'], contentRenderRegistry = defaultContentRenderRegistry }: Props = $props();
+  let { engine, config, children }: Props = $props();
 
-  setEngine(() => engine);
-  setContentREnderRegistry(() => contentRenderRegistry)
+  setEngine(engine);
+  setConfigContext(config);
 
-  let showOverlay = $derived(openVisible);
+  let showOverlay = $derived(config.openVisible);
 
   const toggleOverlay = () => {
     showOverlay = !showOverlay;
@@ -31,15 +25,15 @@
 
   onMount(() => {
     const listener = (e: KeyboardEvent) => {
-      if (toggleKeys.includes(e.key)) {
+      if (config.toggleKeys.includes(e.key)) {
         toggleOverlay();
       }
     };
     document.addEventListener('keydown', listener);
 
     return () => {
-      document.removeEventListener('keydown', listener)
-    }
+      document.removeEventListener('keydown', listener);
+    };
   });
 
 </script>
@@ -64,9 +58,9 @@
       <LuiDebugger />
     </div>
 
-    {#if withToolbar}
+    {#if config.toolbar.isEnabled}
       <div class="w-full fixed bottom-0 left-0 z-60">
-        <LuiToolbar />
+        <LuiToolbar config={config.toolbar} />
       </div>
     {/if}
 

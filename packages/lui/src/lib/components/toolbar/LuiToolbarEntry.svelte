@@ -1,24 +1,33 @@
 <script lang="ts">
   import type { LucideProps } from '@lucide/svelte';
   import type { Component, Snippet } from 'svelte';
+  import type { LudiekIntrospection } from '@123ishatest/ludiek';
+  import { getIntrospection } from '$lui/util/context';
 
   interface Props {
-    BadgeIcon: Component<LucideProps>;
-    value?: number;
-    children?: Snippet;
+    Icon: Component<LucideProps>;
+    body?: Snippet<[LudiekIntrospection]>;
+    label?: Snippet<[LudiekIntrospection]>;
   }
 
-  let { BadgeIcon, value, children }: Props = $props();
+  let { Icon, body, label }: Props = $props();
+
+  let isOpen = $state(false);
+
+  const introspection = getIntrospection();
+
 </script>
 
-<div class="d-tooltip">
-  <div class="d-tooltip-content absolute max-w-100">
-    {#if children}
-      {@render children()}
-    {/if}
+<details class="d-dropdown d-dropdown-top d-dropdown-center"
+         open={isOpen}
+         onmouseenter={() => isOpen = true}
+         onmouseleave={() => isOpen = false}
+>
+  <summary class="d-btn flex flex-row items-center d-text-primary">
+    <Icon size={16} />
+    {@render label?.(introspection)}
+  </summary>
+  <div class="d-dropdown-content bg-base-300 shadow-sm w-max">
+    {@render body?.(introspection)}
   </div>
-  <div class="d-btn flex flex-row items-center d-text-primary">
-    <BadgeIcon size={16} />
-    <span class="d-text-base-content/50">{value}</span>
-  </div>
-</div>
+</details>

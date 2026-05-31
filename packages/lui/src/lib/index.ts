@@ -1,8 +1,9 @@
 import './index.css';
 
-export { default as LuiDebugger } from './pages/LuiDebugger.svelte';
-export { default as LuiContentCard } from './components/content/LuiContentCard.svelte';
-export { default as LuiContentHint } from './components/content/LuiContentHint.svelte';
-export { default as LuiContext } from './LuiContext.svelte';
+export { default as LuiDebugger } from '$lui/pages/LuiDebugger.svelte';
+export { default as LuiContentCard } from '$lui/components/content/LuiContentCard.svelte';
+export { default as LuiContentHint } from '$lui/components/content/LuiContentHint.svelte';
+export { default as LuiContext } from '$lui/LuiContext.svelte';
 
-export type { LuiContentRenderRegistry } from './components/content/render/LuiContentRenderRegistry';
+export type { LuiConfig } from '$lui/LuiConfig';
+export { LuiConfigBuilder } from '$lui/LuiConfigBuilder';

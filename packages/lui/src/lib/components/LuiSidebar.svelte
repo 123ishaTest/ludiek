@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { PageType } from '../types/PageType.js';
+  import type { PageType } from '$lui/types/PageType';
 
   interface Props {
     selectedPage: PageType;
