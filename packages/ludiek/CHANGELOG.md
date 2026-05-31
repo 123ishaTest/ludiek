@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-- Rework Lui internal config
+- Add timeScale to speed up delta
 
 ## 0.9.2
 
