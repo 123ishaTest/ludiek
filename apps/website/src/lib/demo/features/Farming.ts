@@ -9,10 +9,6 @@ export class Farming extends LudiekFeature<Dependencies> {
   readonly type = 'farming';
   protected _state = {};
 
-  public update(delta: number): void {
-    this.engine.plugins.currency.gainCurrency({ id: '/currency/money', amount: delta });
-  }
-
   public sow(id: string): void {
     const plant = this.getPlant(id);
     this.engine.plugins.currency.gainCurrency({ id: '/currency/money', amount: plant.moneyReward });

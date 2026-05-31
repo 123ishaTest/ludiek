@@ -7,9 +7,9 @@ const config = {
   preprocess: vitePreprocess(),
   kit: {
     alias: {
-      '$lui': 'src/lib'
-    }
-  }
+      $lui: 'src/lib',
+    },
+  },
 };
 
 export default config;

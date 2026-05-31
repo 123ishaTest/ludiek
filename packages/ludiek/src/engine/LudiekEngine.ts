@@ -315,10 +315,9 @@ export class LudiekEngine<
     return this._timeScale;
   }
 
-  public set timeScale(timeScale:number) {
+  public set timeScale(timeScale: number) {
     this._timeScale = timeScale;
   }
-
 
   public get debug(): boolean {
     return this._debug;
