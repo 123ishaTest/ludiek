@@ -30,6 +30,16 @@ describe('Happy flow', () => {
     expect(currency.supportsCurrency('unknown')).toBe(false);
   });
 
+  it('tracks totals', () => {
+    currency.gainCurrency({ id: '/currency/money', amount: 3 });
+    const total1 = currency.getTotal('/currency/money');
+    currency.gainCurrency({ id: '/currency/money', amount: 5 });
+    const total2 = currency.getTotal('/currency/money');
+
+    expect(total1).toStrictEqual(3);
+    expect(total2).toStrictEqual(8);
+  });
+
   it('checks whether you have currencies', () => {
     // Arrange
     currency.gainCurrency({ id: '/currency/money', amount: 10 });

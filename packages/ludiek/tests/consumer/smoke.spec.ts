@@ -74,7 +74,7 @@ it('saves features and plugins', () => {
   // Assert
   expect(save).toStrictEqual({
     engine: {
-      plugins: { currency: { balances: { '/currency/money': 1000 } } },
+      plugins: { currency: { balances: { '/currency/money': 1000 }, totals: { '/currency/money': 1000 } } },
       features: { dummy: { xp: 1000 } },
     },
     game: {},

@@ -1,5 +1,11 @@
 # @123ishatest/ludiek
 
+## 0.9.4
+
+### Patch Changes
+
+- Add total currencies earned to CurrencyPlugin
+
 ## 0.9.3
 
 ### Patch Changes
