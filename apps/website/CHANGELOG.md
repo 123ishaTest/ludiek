@@ -1,5 +1,13 @@
 # @123ishatest/ludiek-website
 
+## 0.8.1
+
+### Patch Changes
+
+- Rework Lui internal config
+- Updated dependencies
+  - @123ishatest/lui@1.0.4
+
 ## 0.8.0
 
 ### Minor Changes

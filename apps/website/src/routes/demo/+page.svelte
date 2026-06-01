@@ -4,6 +4,7 @@
 
   import { page } from '$app/state';
   import { LuiContentHint, LuiContext } from '@123ishatest/lui';
+  import { LuiConfigBuilder } from '@123ishatest/lui';
 
   // TODO(@Isha): Subclass game to handle this nicer?
   //  game.load(page.data.content)
@@ -57,9 +58,11 @@
     game.loadFromStorage();
     game.start();
   });
+
+  const config = new LuiConfigBuilder().build();
 </script>
 
-<LuiContext engine={game.engine}>
+<LuiContext engine={game.engine} {config}>
   <div class="h-full w-full">
     <div class="flex flex-col space-y-4 p-4">
       <LuiContentHint id="/currency/money">

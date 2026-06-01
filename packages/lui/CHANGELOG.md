@@ -1,5 +1,13 @@
 # @123ishatest/lui
 
+## 1.0.4
+
+### Patch Changes
+
+- Rework Lui internal config
+- Updated dependencies
+  - @123ishatest/ludiek@0.9.3
+
 ## 1.0.3
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @123ishatest/ludiek
 
+## 0.9.3
+
+### Patch Changes
+
+- Add timeScale to speed up delta
+
 ## 0.9.2
 
 ### Patch Changes

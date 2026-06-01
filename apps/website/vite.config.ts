@@ -9,6 +9,7 @@ export default defineConfig({
     alias: {
       // Import Lui directly from source
       '@123ishatest/lui': path.resolve(__dirname, '../../packages/lui/src/lib'),
+      $lui: path.resolve(__dirname, '../../packages/lui/src/lib'),
     },
   },
 });

@@ -1,10 +1,11 @@
 <script lang="ts">
   import { type Component } from 'svelte';
-  import type { PageType } from '../types/PageType.js';
-  import LuiContentPage from '../components/content/LuiContentPage.svelte';
-  import LuiPersistencePage from '../components/persistence/LuiPersistencePage.svelte';
-  import LuiSidebar from '../components/LuiSidebar.svelte';
-  import LuiPageNotFound from '../components/LuiPageNotFound.svelte';
+  import type { PageType } from '$lui/types/PageType';
+  import LuiContentPage from '$lui/components/content/LuiContentPage.svelte';
+  import LuiPersistencePage from '$lui/components/persistence/LuiPersistencePage.svelte';
+  import LuiSidebar from '$lui/components/LuiSidebar.svelte';
+  import LuiPageNotFound from '$lui/components/LuiPageNotFound.svelte';
+
 
 
   let selectedPage: PageType = $state('content');

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getEngine } from '../../util/context.js';
+  import { getEngine } from '$lui/util/context';
 
   interface Props {
     id: string;

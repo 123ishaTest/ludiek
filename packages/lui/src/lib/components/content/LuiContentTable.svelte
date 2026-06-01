@@ -1,9 +1,8 @@
 <script lang="ts">
   import type { LudiekContentKindIntrospection, LudiekNode } from '@123ishatest/ludiek';
-  import { getContentRenderRegistry } from '../../util/context';
-  import { defaultContentRenderRegistry, type LuiContentRenderRegistry } from './render/LuiContentRenderRegistry';
-  import LuiContentRenderObject from './render/LuiContentRenderObject.svelte';
   import type { Component } from 'svelte';
+  import LuiContentRenderObject from '$lui/components/content/render/LuiContentRenderObject.svelte';
+  import { getConfig } from '$lui/util/context';
 
   interface Props {
     introspection: LudiekContentKindIntrospection;
@@ -14,12 +13,8 @@
   let nodes = $derived(introspection.nodes);
   let items = $derived(introspection.items);
 
-  let registry: LuiContentRenderRegistry = $derived.by(() => {
-    return {
-      ...defaultContentRenderRegistry,
-      ...getContentRenderRegistry(),
-    };
-  });
+  const config = getConfig();
+  let registry = $derived(config.content.renderers)
 
   const getRenderComponent = (node: LudiekNode): Component<{ value: never }> => {
 

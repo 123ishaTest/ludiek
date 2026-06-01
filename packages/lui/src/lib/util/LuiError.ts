@@ -4,4 +4,6 @@ export class EngineNotFoundError extends LuiError {}
 
 export class IntrospectionNotFoundError extends LuiError {}
 
-export class ContentRenderRegistryNotFoundError extends LuiError {}
+export class ConfigNotFoundError extends LuiError {}
+
+export class ToolbarItemNotFound extends LuiError {}

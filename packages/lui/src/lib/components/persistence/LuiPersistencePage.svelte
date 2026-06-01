@@ -1,6 +1,5 @@
 <script lang="ts">
-
-  import { getEngine } from '../../util/context.js';
+  import { getEngine } from '$lui/util/context';
 
   const engine = $derived(getEngine());
 
