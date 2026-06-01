@@ -14,6 +14,9 @@ const emptySave = {
       balances: {
         '/currency/money': 0,
       },
+      totals: {
+        '/currency/money': 0,
+      },
     },
     statistic: {
       scalar: {},

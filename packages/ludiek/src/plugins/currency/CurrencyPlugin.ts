@@ -25,6 +25,7 @@ export class CurrencyPlugin extends LudiekPlugin {
     currencies.forEach((currency) => {
       this._currencies[currency.id] = currency;
       this._state.balances[currency.id] = 0;
+      this._state.totals[currency.id] = 0;
     });
   }
 
@@ -34,6 +35,7 @@ export class CurrencyPlugin extends LudiekPlugin {
   public gainCurrency(currency: Currency): void {
     this.validate(currency, 'gain');
     this._state.balances[currency.id] += currency.amount;
+    this._state.totals[currency.id] += currency.amount;
 
     this._onCurrencyGain.dispatch({
       ...this._currencies[currency.id],
@@ -135,6 +137,18 @@ export class CurrencyPlugin extends LudiekPlugin {
       throw new InvalidCurrencyError(`Cannot get '${id}' as it does not exist`);
     }
     return this._state.balances[id];
+  }
+
+  /**
+   * Get the total amount of this currency gained
+   *
+   * Useful for determining whether it has ever been gained
+   */
+  public getTotal(id: string): number {
+    if (!this.supportsCurrency(id)) {
+      throw new InvalidCurrencyError(`Cannot get '${id}' as it does not exist`);
+    }
+    return this._state.totals[id];
   }
 
   /**
