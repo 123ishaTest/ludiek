@@ -1,5 +1,11 @@
 # @123ishatest/ludiek
 
+## 0.9.6
+
+### Patch Changes
+
+- Add metadata to record parser
+
 ## 0.9.5
 
 ### Patch Changes
