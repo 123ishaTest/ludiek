@@ -80,6 +80,7 @@ export const parseObject = (schema: JSONSchema.JSONSchema, path: string[], ctx: 
     });
   });
   const nullable = isNullable(schema);
+  const ludiek: LudiekMetaData = schema.ludiek as LudiekMetaData;
 
   return {
     kind: 'object',
@@ -91,6 +92,7 @@ export const parseObject = (schema: JSONSchema.JSONSchema, path: string[], ctx: 
     fields,
 
     strict: schema.additionalProperties === false,
+    ...(ludiek && { ludiek: ludiek }),
   };
 };
 
@@ -103,19 +105,26 @@ export const parseRecord = (schema: JSONSchema.JSONSchema, path: string[], ctx: 
     ...ctx,
     isRequired: false,
   });
+
+  const ludiek: LudiekMetaData = schema.ludiek as LudiekMetaData;
   return {
     kind: 'record',
     path,
 
     keys,
     values,
+
+    ...(ludiek && { ludiek: ludiek }),
   };
 };
 
 export const parseArray = (schema: JSONSchema.JSONSchema, path: string[], ctx: ParseContext): ArrayNode => {
+  const ludiek: LudiekMetaData = schema.ludiek as LudiekMetaData;
+
   return {
     kind: 'array',
     path,
+    ...(ludiek && { ludiek: ludiek }),
 
     // TODO(@Isha): PrefixItems for tuples
     items: parseSchema(schema.items as JSONSchema.JSONSchema, [...path, '*'], ctx),
