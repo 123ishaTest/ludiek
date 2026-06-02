@@ -69,7 +69,7 @@ it('saves features and plugins', () => {
   for (let i = 0; i < TICKS; i++) {
     game.tick(1);
   }
-  const save = game.save();
+  const save = game.serialize();
 
   // Assert
   expect(save).toStrictEqual({

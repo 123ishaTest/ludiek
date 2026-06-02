@@ -27,7 +27,6 @@ export class AchievementPlugin extends LudiekPlugin {
    * Loops through all achievements and see if you can earn them
    */
   public checkAchievements(): void {
-    this.engine.logger.info('Checking achievements');
     Object.keys(this._achievements).forEach((id) => {
       this.tryEarnAchievement(id as string);
     });

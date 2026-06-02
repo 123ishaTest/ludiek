@@ -22,9 +22,14 @@ export class LudiekGame<Engine extends DependencyEngine<LudiekDependencies>> {
     this._nextSave = this.config.saveInterval;
   }
 
-  public start(): void {
+  public start(loadFromStorage: boolean = true): void {
     // TODO(@Isha): Improve game loop, make sure you can only start once (i.e. add resume after pause)
     this.engine.initialize();
+
+    if (loadFromStorage) {
+      this.loadFromStorage();
+    }
+
     this.engine.start();
 
     this._engine.logger.info('Starting game');
@@ -49,9 +54,7 @@ export class LudiekGame<Engine extends DependencyEngine<LudiekDependencies>> {
 
     this._nextSave -= delta;
     if (this._nextSave <= 0) {
-      const data = this.save();
-      LudiekLocalStorage.store(this.config.saveKey, data, this.saveEncoder);
-
+      this.save();
       this._nextSave = this.config.saveInterval;
     }
 
@@ -62,7 +65,19 @@ export class LudiekGame<Engine extends DependencyEngine<LudiekDependencies>> {
     return this._engine;
   }
 
-  public save(): LudiekSaveData {
+  /**
+   * Serialize the game and write it to local storage
+   */
+  public save(): void {
+    const data = this.serialize();
+    LudiekLocalStorage.store(this.config.saveKey, data, this.saveEncoder);
+  }
+
+  public deleteSave(): void {
+    LudiekLocalStorage.delete(this.config.saveKey);
+  }
+
+  public serialize(): LudiekSaveData {
     return {
       engine: this._engine.save(),
       game: {},
