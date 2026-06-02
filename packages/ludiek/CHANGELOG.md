@@ -1,5 +1,11 @@
 # @123ishatest/ludiek
 
+## 0.9.5
+
+### Patch Changes
+
+- Improve game startup flow
+
 ## 0.9.4
 
 ### Patch Changes
