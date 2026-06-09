@@ -3,8 +3,13 @@
   import { onMount } from 'svelte';
 
   import { page } from '$app/state';
-  import { LuiContentHint, LuiContext } from '@123ishatest/lui';
-  import { LuiConfigBuilder } from '@123ishatest/lui';
+  import { LuiConfigBuilder, LuiContentHint, LuiContext } from '@123ishatest/lui';
+  import { invalidateAll } from '$app/navigation';
+
+  // TODO(@Isha): Make contentmanager reactive somehow.
+  // Make LudiekEngine have a shared, reactive storage?
+  let reactive = $state(engine.contentManager._content);
+  engine.contentManager._content = reactive;
 
   // TODO(@Isha): Subclass game to handle this nicer?
   //  game.load(page.data.content)
@@ -60,6 +65,18 @@
   });
 
   const config = new LuiConfigBuilder().build();
+
+  $effect(() => {
+    console.log(page.data);
+    engine.contentManager.load(page.data.content);
+  });
+
+  if (import.meta.hot) {
+    import.meta.hot.on('vite:afterUpdate', () => {
+      invalidateAll();
+    });
+  }
+
 </script>
 
 <LuiContext engine={game.engine} {config}>
