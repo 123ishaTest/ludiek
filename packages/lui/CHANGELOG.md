@@ -1,5 +1,11 @@
 # @123ishatest/lui
 
+## 1.0.6
+
+### Patch Changes
+
+- Make Icons optional
+
 ## 1.0.5
 
 ### Patch Changes
