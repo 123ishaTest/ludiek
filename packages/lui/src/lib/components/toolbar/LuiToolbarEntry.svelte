@@ -5,7 +5,7 @@
   import { getIntrospection } from '$lui/util/context';
 
   interface Props {
-    Icon: Component<LucideProps>;
+    Icon?: Component<LucideProps>;
     body?: Snippet<[LudiekIntrospection]>;
     label?: Snippet<[LudiekIntrospection]>;
   }
@@ -24,7 +24,9 @@
          onmouseleave={() => isOpen = false}
 >
   <summary class="d-btn flex flex-row items-center d-text-primary">
-    <Icon size={16} />
+    {#if Icon}
+      <Icon size={16} />
+    {/if}
     {@render label?.(introspection)}
   </summary>
   <div class="d-dropdown-content bg-base-300 shadow-sm w-max">
