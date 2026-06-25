@@ -99,14 +99,13 @@ export class CurrencyPlugin extends LudiekPlugin {
   /**
    * Try to spend the specified amount of currencies if you have it.
    * @return true if it was spent
-   *
-   * @todo(#61) Each currency is checked individually, meaning that if there are duplicate Ids it could lead to negative balance.
    */
   public payCurrencies(currencies: Currency[]): boolean {
-    if (!this.hasCurrencies(currencies)) {
+    const simplified = this.simplifyCurrencyList(currencies);
+    if (!this.hasCurrencies(simplified)) {
       return false;
     }
-    this.loseCurrencies(currencies);
+    this.loseCurrencies(simplified);
     return true;
   }
 
@@ -120,13 +119,9 @@ export class CurrencyPlugin extends LudiekPlugin {
 
   /**
    * Whether we have a list of currencies
-   *
-   * @todo(#61) Each currency is checked individually, meaning that if there are duplicate Ids the answer could be misleading.
    */
   public hasCurrencies(currencies: Currency[]): boolean {
-    return currencies.every((c) => {
-      return this.hasCurrency(c);
-    });
+    return this.simplifyCurrencyList(currencies).every((c) => this.hasCurrency(c));
   }
 
   /**
@@ -165,6 +160,14 @@ export class CurrencyPlugin extends LudiekPlugin {
    */
   public supportsCurrency(id: string): boolean {
     return id in this._state.balances;
+  }
+
+  private simplifyCurrencyList(currencies: Currency[]): Currency[] {
+    const merged: Record<string, number> = {};
+    for (const c of currencies) {
+      merged[c.id] = (merged[c.id] ?? 0) + c.amount;
+    }
+    return Object.entries(merged).map(([id, amount]) => ({ id, amount }));
   }
 
   private validate(currency: Currency, action: string): void {
