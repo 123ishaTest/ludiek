@@ -92,4 +92,48 @@ describe('Multiple currencies', () => {
     // Assert
     expect(isPaid).toBe(false);
   });
+
+  it('does not pay duplicate currencies when combined amount exceeds balance', () => {
+    // Arrange
+    currency.gainCurrency({ id: '/currency/money', amount: 1 });
+
+    // Act — paying 1+1=2 money with only 1 in balance should fail
+    const isPaid = currency.payCurrencies([
+      { id: '/currency/money', amount: 1 },
+      { id: '/currency/money', amount: 1 },
+    ]);
+
+    // Assert
+    expect(isPaid).toBe(false);
+    expect(currency.getBalance('/currency/money')).toBe(1);
+  });
+
+  it('pays duplicate currencies when combined amount is within balance', () => {
+    // Arrange
+    currency.gainCurrency({ id: '/currency/money', amount: 3 });
+
+    // Act — paying 1+1=2 money with 3 in balance should succeed
+    const isPaid = currency.payCurrencies([
+      { id: '/currency/money', amount: 1 },
+      { id: '/currency/money', amount: 1 },
+    ]);
+
+    // Assert
+    expect(isPaid).toBe(true);
+    expect(currency.getBalance('/currency/money')).toBe(1);
+  });
+
+  it('hasCurrencies returns false for duplicate currencies exceeding balance', () => {
+    // Arrange
+    currency.gainCurrency({ id: '/currency/money', amount: 1 });
+
+    // Act
+    const has = currency.hasCurrencies([
+      { id: '/currency/money', amount: 1 },
+      { id: '/currency/money', amount: 1 },
+    ]);
+
+    // Assert
+    expect(has).toBe(false);
+  });
 });
