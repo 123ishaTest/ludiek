@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { EmptyProducer } from '@tests/shared/EmptyOutput';
-import { OutputNotFoundError } from '@ludiek/engine/output/OutputError';
+import { OutputNotFoundError } from '@ludiek/engine/mutation/MutationError';
 
 it('is type-safe', () => {
   // Arrange
@@ -10,7 +10,7 @@ it('is type-safe', () => {
   });
 
   // Valid
-  engine.produce({ type: '/output/empty', amount: 1 });
+  engine.produce({ type: '/mutation/empty', amount: 1 });
 
   expect(() => {
     // @ts-expect-error unknown type
@@ -18,7 +18,7 @@ it('is type-safe', () => {
   }).toThrow(OutputNotFoundError);
 });
 
-it('it collapses to never when no output', () => {
+it('it collapses to never when no mutation', () => {
   // Arrange
   const engine = new LudiekEngine({});
 

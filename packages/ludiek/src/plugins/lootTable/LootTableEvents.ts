@@ -1,6 +1,6 @@
 import { LootTableDefinition } from '@ludiek/plugins/lootTable/LootTableDefinition';
-import { BaseOutput } from '@ludiek/engine/output/LudiekProducer';
+import { BaseMutation } from '@ludiek/engine/mutation/LudiekMutator';
 
 export interface LootTableRolled extends LootTableDefinition {
-  result: BaseOutput[];
+  result: BaseMutation[];
 }

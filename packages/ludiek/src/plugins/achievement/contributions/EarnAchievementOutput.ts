@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import { AchievementPlugin } from '@ludiek/plugins/achievement/AchievementPlugin';
-import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
+import { LudiekMutator } from '@ludiek/engine/mutation/LudiekMutator';
 
 export const EarnAchievementOutputSchema = z.strictObject({
-  type: z.literal('/output/earn-achievement'),
+  type: z.literal('/mutation/earn-achievement'),
   id: z.string(),
   amount: z.literal(1).default(1),
 });
@@ -14,14 +14,14 @@ type Dependencies = {
   plugins: [AchievementPlugin];
 };
 
-export class EarnAchievementProducer extends LudiekProducer<EarnAchievementOutput, Dependencies> {
+export class EarnAchievementMutator extends LudiekMutator<EarnAchievementOutput, Dependencies> {
   readonly schema = EarnAchievementOutputSchema;
 
-  canProduce(): boolean {
+  canApply(): boolean {
     return true;
   }
 
-  produce(output: EarnAchievementOutput): void {
+  apply(output: EarnAchievementOutput): void {
     this.engine.plugins.achievement.earnAchievement(output.id);
   }
 }

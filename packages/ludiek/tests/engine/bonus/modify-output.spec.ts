@@ -13,13 +13,13 @@ beforeEach(() => {
   vi.resetAllMocks();
 });
 
-it('can modify output', () => {
+it('can modify mutation', () => {
   // Arrange
   const bonusMock = vi.spyOn(engine, 'getBonus').mockReturnValue(3);
 
   // Act
   const modifiedOutput = engine.modifyOutput({
-    type: '/output/modified',
+    type: '/mutation/modified',
     amount: 5,
   });
 
@@ -28,19 +28,19 @@ it('can modify output', () => {
     type: '/bonus/dummy',
   });
   expect(modifiedOutput).toEqual({
-    type: '/output/modified',
+    type: '/mutation/modified',
     amount: 15,
   });
 });
 
-it('modifies produced output', () => {
+it('modifies produced mutation', () => {
   // Arrange
   const bonusMock = vi.spyOn(engine, 'getBonus').mockReturnValue(2);
   const produceMock = vi.spyOn(producer, 'produce');
 
   // Act
   engine.produce({
-    type: '/output/modified',
+    type: '/mutation/modified',
     amount: 1,
   });
 
@@ -49,19 +49,19 @@ it('modifies produced output', () => {
     type: '/bonus/dummy',
   });
   expect(produceMock).toHaveBeenCalledExactlyOnceWith({
-    type: '/output/modified',
+    type: '/mutation/modified',
     amount: 2,
   });
 });
 
-it('modifies canProduced output', () => {
+it('modifies canProduced mutation', () => {
   // Arrange
   const bonusMock = vi.spyOn(engine, 'getBonus').mockReturnValue(2);
   const canProduceMock = vi.spyOn(producer, 'canProduce');
 
   // Act
   engine.canProduce({
-    type: '/output/modified',
+    type: '/mutation/modified',
     amount: 1,
   });
 
@@ -70,7 +70,7 @@ it('modifies canProduced output', () => {
     type: '/bonus/dummy',
   });
   expect(canProduceMock).toHaveBeenCalledExactlyOnceWith({
-    type: '/output/modified',
+    type: '/mutation/modified',
     amount: 2,
   });
 });

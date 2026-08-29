@@ -1,33 +1,33 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { CurrencyPlugin } from '@ludiek/plugins/currency/CurrencyPlugin';
-import { GainCurrencyProducer } from '@ludiek/plugins/currency/contributions/GainCurrencyOutput';
+import { GainCurrencyMutator } from '@ludiek/plugins/currency/contributions/GainCurrencyMutation';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 
 const currency = new CurrencyPlugin();
-const producer = new GainCurrencyProducer();
+const mutator = new GainCurrencyMutator();
 
 new LudiekEngine({
   plugins: [currency],
-  producers: [producer],
+  mutators: [mutator],
 });
 
 beforeEach(() => {
   currency.loadContent([{ id: '/currency/money' }, { id: '/currency/gems' }]);
 });
 
-describe('Currency Output', () => {
+describe('Currency Mutation', () => {
   it('checks if we can gain currency', () => {
     // Act
-    const canProduce = producer.canProduce();
+    const canApply = mutator.canApply();
 
     // Assert
-    expect(canProduce).toBe(true);
+    expect(canApply).toBe(true);
   });
 
   it('gains currency', () => {
     // Act
-    producer.produce({
-      type: '/output/gain-currency',
+    mutator.apply({
+      type: '/mutation/gain-currency',
       id: '/currency/money',
       amount: 6,
     });

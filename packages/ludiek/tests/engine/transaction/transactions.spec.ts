@@ -68,7 +68,7 @@ describe('Engine Transactions', () => {
     // Act
     const completed = engine.handleTransaction({
       output: {
-        type: '/output/never',
+        type: '/mutation/never',
         amount: 0,
       },
     });
@@ -85,7 +85,7 @@ describe('Engine Transactions', () => {
     // Act
     const completed = engine.handleTransaction({
       output: {
-        type: '/output/always',
+        type: '/mutation/always',
         amount: 0,
       },
     });

@@ -38,7 +38,7 @@ export const docsLayout: DocsLayout = {
       pages: [
         { title: 'Conditions', slug: 'engine/conditions' },
         { title: 'Input', slug: 'engine/input' },
-        { title: 'Output', slug: 'engine/output' },
+        { title: 'Output', slug: 'engine/mutation' },
         { title: 'Requests', slug: 'engine/requests' },
         { title: 'Bonuses', slug: 'engine/bonuses' },
         { title: 'Persistence', slug: 'engine/persistence' },

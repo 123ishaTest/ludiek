@@ -3,7 +3,7 @@ import { LootTableDefinition } from '@ludiek/plugins/lootTable/LootTableDefiniti
 import { getOneFrom } from '@ludiek/util/probability/weightedDistribution';
 import { booleanWithProbability } from '@ludiek/util/probability/random';
 import { LootOutcome } from '@ludiek/plugins/lootTable/LootOutcome';
-import { BaseOutput } from '@ludiek/engine/output/LudiekProducer';
+import { BaseMutation } from '@ludiek/engine/mutation/LudiekMutator';
 import { RollLootTableOutput } from '@ludiek/plugins/lootTable/contributions/RollLootTableOutput';
 import { simplifyItems } from '@ludiek/util/equality';
 import { ISimpleEvent, SimpleEventDispatcher } from 'strongly-typed-events';
@@ -17,7 +17,7 @@ export class LootTablePlugin extends LudiekPlugin {
 
   private _tables: Record<string, LootTableDefinition> = {};
 
-  public roll(id: string, amount: number = 1, subTable: boolean = false): BaseOutput[] {
+  public roll(id: string, amount: number = 1, subTable: boolean = false): BaseMutation[] {
     const outcomes: LootOutcome[] = [];
 
     for (let i = 0; i < amount; i++) {
@@ -26,8 +26,8 @@ export class LootTablePlugin extends LudiekPlugin {
 
     const outputs = outcomes.map((l) => l.output);
 
-    const tableOutputs = outputs.filter((output) => output.type === '/output/lootTable-table') as RollLootTableOutput[];
-    const filteredOutputs = outputs.filter((output) => output.type !== '/output/lootTable-table');
+    const tableOutputs = outputs.filter((output) => output.type === '/mutation/lootTable-table') as RollLootTableOutput[];
+    const filteredOutputs = outputs.filter((output) => output.type !== '/mutation/lootTable-table');
 
     tableOutputs.forEach((output) => {
       filteredOutputs.push(...this.roll(output.table, output.amount, true));

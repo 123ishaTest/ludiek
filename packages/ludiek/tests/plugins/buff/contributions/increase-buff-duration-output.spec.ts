@@ -1,14 +1,14 @@
 import { beforeEach, expect, it } from 'vitest';
 import { BuffPlugin } from '@ludiek/plugins/buff/BuffPlugin';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
-import { IncreaseBuffDurationProducer } from '@ludiek/plugins/buff/contributions/IncreaseBuffDurationOutput';
+import { IncreaseBuffDurationMutator } from '@ludiek/plugins/buff/contributions/IncreaseBuffDurationMutation';
 
 const buff = new BuffPlugin();
-const producer = new IncreaseBuffDurationProducer();
+const mutator = new IncreaseBuffDurationMutator();
 
 new LudiekEngine({
   plugins: [buff],
-  producers: [producer],
+  mutators: [mutator],
 });
 
 const buffs = [
@@ -22,18 +22,18 @@ beforeEach(() => {
 
 it('checks if we can extend the buff', () => {
   // Act
-  const canProduce = producer.canProduce();
+  const canApply = mutator.canApply();
 
   // Assert
-  expect(canProduce).toBe(true);
+  expect(canApply).toBe(true);
 });
 
-it('produces buff duration', () => {
+it('applies buff duration', () => {
   // Arrange
   buff.increaseBuff('/buff/example', 4);
   // Act
-  producer.produce({
-    type: '/output/increase-buff-duration',
+  mutator.apply({
+    type: '/mutation/increase-buff-duration',
     buff: '/buff/example',
     amount: 2,
   });

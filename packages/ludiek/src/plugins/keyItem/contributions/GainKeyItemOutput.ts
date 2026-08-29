@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import { KeyItemPlugin } from '@ludiek/plugins/keyItem/KeyItemPlugin';
-import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
+import { LudiekProducer } from '@ludiek/engine/mutation/LudiekProducer';
 
 export const GainKeyItemOutputSchema = z.strictObject({
-  type: z.literal('/output/gain-key-item'),
+  type: z.literal('/mutation/gain-key-item'),
   item: z.string(),
   amount: z.literal(1).default(1),
 });

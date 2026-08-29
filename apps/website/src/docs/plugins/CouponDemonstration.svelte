@@ -27,7 +27,7 @@
       id: '/coupon/gain-10-money',
       hash: '-1232159358',
       output: {
-        type: '/output/gain-currency',
+        type: '/mutation/gain-currency',
         id: '/currency/money',
         amount: 10,
       },
@@ -36,7 +36,7 @@
       id: '/coupon/gain-100-money',
       hash: '-374288946',
       output: {
-        type: '/output/gain-currency',
+        type: '/mutation/gain-currency',
         id: '/currency/money',
         amount: 100,
       },

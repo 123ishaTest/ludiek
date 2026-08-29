@@ -18,7 +18,7 @@ beforeEach(() => {
 describe('KeyItem Output', () => {
   it('can always gain KeyItems', () => {
     // Act
-    const canProduce = producer.canProduce();
+    const canProduce = producer.canApply();
 
     // Assert
     expect(canProduce).toBe(true);
@@ -26,8 +26,8 @@ describe('KeyItem Output', () => {
 
   it('gains KeyItems', () => {
     // Act
-    producer.produce({
-      type: '/output/gain-key-item',
+    producer.apply({
+      type: '/mutation/gain-key-item',
       item: '/key-item/example',
       amount: 1,
     });

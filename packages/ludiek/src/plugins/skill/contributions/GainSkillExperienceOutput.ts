@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
+import { LudiekMutator } from '@ludiek/engine/mutation/LudiekMutator';
 import { SkillPlugin } from '@ludiek/plugins/skill/SkillPlugin';
 
 export const GainSkillExperienceOutputSchema = z.strictObject({
-  type: z.literal('/output/skill/gain-experience'),
+  type: z.literal('/mutation/skill/gain-experience'),
   skill: z.string(),
   amount: z.number().positive(),
 });
@@ -14,14 +14,14 @@ type Dependencies = {
   plugins: [SkillPlugin];
 };
 
-export class GainSkillExperienceProducer extends LudiekProducer<GainSkillExperienceOutput, Dependencies> {
+export class GainSkillExperienceProducer extends LudiekMutator<GainSkillExperienceOutput, Dependencies> {
   readonly schema = GainSkillExperienceOutputSchema;
 
   /**
    * Experience can always be gained
    * TODO: Should there be an experience cap?
    */
-  canProduce(): boolean {
+  canApply(): boolean {
     return true;
   }
 
@@ -29,7 +29,7 @@ export class GainSkillExperienceProducer extends LudiekProducer<GainSkillExperie
    * Gain the experience
    * @param output
    */
-  produce(output: GainSkillExperienceOutput): void {
+  apply(output: GainSkillExperienceOutput): void {
     this.engine.plugins.skill.gainExperience(output);
   }
 }

@@ -34,7 +34,7 @@ it('sets buff duration', () => {
 
   // Act
   producer.produce({
-    type: '/output/set-buff-duration',
+    type: '/mutation/set-buff-duration',
     buff: '/buff/example',
     amount: 2,
   });

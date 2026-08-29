@@ -1,8 +1,8 @@
-import { BaseOutput } from '@ludiek/engine/output/LudiekProducer';
+import { BaseMutation } from '@ludiek/engine/mutation/LudiekMutator';
 import { BaseCondition } from '@ludiek/engine/condition/LudiekEvaluator';
 
 export interface LootOutcome {
-  output: BaseOutput;
+  output: BaseMutation;
   requirements?: BaseCondition | BaseCondition[];
 }
 

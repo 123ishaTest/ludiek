@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { LudiekEngine } from '@ludiek/engine/LudiekEngine';
 import { EmptyOutput, EmptyProducer } from '@tests/shared/EmptyOutput';
-import { OutputNotFoundError } from '@ludiek/engine/output/OutputError';
+import { OutputNotFoundError } from '@ludiek/engine/mutation/MutationError';
 import { AlwaysProducer } from '@tests/shared/AlwaysOutput';
 import { NeverProducer } from '@tests/shared/NeverOutput';
 
@@ -20,14 +20,14 @@ describe('Engine Output', () => {
     expect(registeredProducers).toEqual(producers);
   });
 
-  it('gains output', () => {
+  it('gains mutation', () => {
     // Arrange
     const emptyOutput = new EmptyProducer();
     const engine = new LudiekEngine({
       producers: [emptyOutput],
     });
     const output: EmptyOutput = {
-      type: '/output/empty',
+      type: '/mutation/empty',
       amount: 1,
     };
     const canProduceSpy = vi.spyOn(emptyOutput, 'canProduce');
@@ -43,7 +43,7 @@ describe('Engine Output', () => {
     expect(produceSpy).toBeCalledWith(output);
   });
 
-  it("throws an error when output doesn't exist on canProduce", () => {
+  it("throws an error when mutation doesn't exist on canProduce", () => {
     // Arrange
     const engine = new LudiekEngine({});
 
@@ -54,7 +54,7 @@ describe('Engine Output', () => {
     }).toThrow(OutputNotFoundError);
   });
 
-  it("throws an error when output doesn't exist on produce", () => {
+  it("throws an error when mutation doesn't exist on produce", () => {
     // Arrange
     const engine = new LudiekEngine({});
 

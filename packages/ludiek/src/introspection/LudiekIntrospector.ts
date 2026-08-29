@@ -63,7 +63,7 @@ export class LudiekIntrospector {
     return { commands: this.getCommands(this._engine.input.list) };
   }
   public getOutput(): LudiekEngineConceptIntrospection {
-    return { commands: this.getCommands(this._engine.output.list) };
+    return { commands: this.getCommands(this._engine.mutation.list) };
   }
   public getRequest(): LudiekEngineConceptIntrospection {
     return { commands: this.getCommands(this._engine.request.list) };

@@ -36,7 +36,7 @@ export abstract class LudiekModifier<
   public abstract readonly default: number;
 
   /**
-   * Whether this output can be produced
+   * Whether this mutation can be produced
    * @param modifier
    */
   public abstract stringify(modifier: Bonus): string;

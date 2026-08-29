@@ -14,7 +14,7 @@ export class Farming extends LudiekFeature<Dependencies> {
     this.engine.plugins.currency.gainCurrency({ id: '/currency/money', amount: plant.moneyReward });
     this.engine.plugins.statistic.incrementMapStatistic('/statistic/plants-planted', plant.id);
     this.engine.produce({
-      type: '/output/skill/gain-experience',
+      type: '/mutation/skill/gain-experience',
       skill: '/skill/farming',
       amount: 1,
     });

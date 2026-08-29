@@ -8,5 +8,5 @@ export { type BuffPluginState, createBuffState } from '@ludiek/plugins/buff/Buff
 export { IsBuffActiveEvaluator } from '@ludiek/plugins/buff/contributions/IsBuffActiveCondition';
 
 // Output
-export { IncreaseBuffDurationProducer } from '@ludiek/plugins/buff/contributions/IncreaseBuffDurationOutput';
+export { IncreaseBuffDurationMutator } from '@ludiek/plugins/buff/contributions/IncreaseBuffDurationMutation';
 export { SetBuffDurationProducer } from '@ludiek/plugins/buff/contributions/SetBuffDurationOutput';

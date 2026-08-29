@@ -13,7 +13,7 @@ new LudiekEngine({
 
 it('Can always gain', () => {
   // Act
-  const canProduce = output.canProduce();
+  const canProduce = output.canApply();
 
   // Assert
   expect(canProduce).toBe(true);
@@ -24,8 +24,8 @@ it('Rolls on a lootTable table', () => {
   const spy = vi.spyOn(loot, 'roll').mockReturnValue([]);
 
   // Act
-  output.produce({
-    type: '/output/roll-loot-table',
+  output.apply({
+    type: '/mutation/roll-loot-table',
     amount: 3,
     table: '/table/dummy',
   });

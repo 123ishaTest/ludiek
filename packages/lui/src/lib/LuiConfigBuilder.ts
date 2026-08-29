@@ -35,7 +35,7 @@ export class LuiConfigBuilder {
         { key: 'lui/plugin', component: LuiPluginToolbarEntry, order: 30 },
         { key: 'lui/condition', component: LuiConditionToolbarEntry, order: 30 },
         { key: 'lui/input', component: LuiInputToolbarEntry, order: 40 },
-        { key: 'lui/output', component: LuiOutputToolbarEntry, order: 50 },
+        { key: 'lui/mutation', component: LuiOutputToolbarEntry, order: 50 },
         { key: 'lui/request', component: LuiRequestToolbarEntry, order: 60 },
         { key: 'lui/bonus', component: LuiBonusToolbarEntry, order: 70 },
         { key: 'lui/time-scale', component: LuiToolbarTimeScaleEntry, order: 200 },

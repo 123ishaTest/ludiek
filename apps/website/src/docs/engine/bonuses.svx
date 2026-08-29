@@ -19,7 +19,7 @@ It defines an Output which produces some seeds for the [Currency Plugin](../plug
 
 ```ts
 export interface SeedOutput extends BaseOutput {
-  type: '/output/seed';
+  type: '/mutation/seed';
   plant: PlantId;
   amount: number;
 }
@@ -29,7 +29,7 @@ interface Dependencies extends LudiekDependencies {
 }
 
 export class SeedProducer extends LudiekProducer<SeedOutput, Dependencies> {
-  readonly type = '/output/seed';
+  readonly type = '/mutation/seed';
 
   produce(output: SeedOutput): void {
     this.engine.plugins.currency.gainCurrency({

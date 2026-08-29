@@ -43,7 +43,7 @@ describe('Ludiek Introspector', () => {
         commands: [{ command: '/input/always', arguments: [{ field: 'amount', options: [], type: 'number' }] }],
       },
       output: {
-        commands: [{ command: '/output/always', arguments: [{ field: 'amount', options: [], type: 'number' }] }],
+        commands: [{ command: '/mutation/always', arguments: [{ field: 'amount', options: [], type: 'number' }] }],
       },
       request: { commands: [{ arguments: [], command: '/request/empty' }] },
       bonus: { commands: [{ command: '/bonus/multiplicative', arguments: [] }] },
@@ -186,7 +186,7 @@ describe('Ludiek Introspector', () => {
     });
   });
 
-  it('can do an output introspection', () => {
+  it('can do an mutation introspection', () => {
     // Arrange
     const engine = new LudiekEngine({
       producers: [new AlwaysProducer()],
@@ -200,7 +200,7 @@ describe('Ludiek Introspector', () => {
     expect(introspection).toStrictEqual({
       commands: [
         {
-          command: '/output/always',
+          command: '/mutation/always',
           arguments: [{ field: 'amount', options: [], type: 'number' }],
         },
       ],

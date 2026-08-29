@@ -16,8 +16,8 @@ it('gains experience', () => {
   skill.loadContent([{ id: '/skill/fishing', experiencePerLevel: [0, 100, 200] }]);
 
   // Act
-  output.produce({
-    type: '/output/skill/gain-experience',
+  output.apply({
+    type: '/mutation/skill/gain-experience',
     skill: '/skill/fishing',
     amount: 100,
   });
@@ -25,6 +25,6 @@ it('gains experience', () => {
   const fishingExperience = skill.getExperience('/skill/fishing');
 
   // Assert
-  expect(output.canProduce()).toBe(true);
+  expect(output.canApply()).toBe(true);
   expect(fishingExperience).toBe(100);
 });

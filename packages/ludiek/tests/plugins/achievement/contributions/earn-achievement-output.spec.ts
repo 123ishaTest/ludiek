@@ -20,7 +20,8 @@ describe('Achievement Output', () => {
     // Arrange
 
     // Act
-    const canProduce = producer.canProduce();
+    const canProduce = producer.
+    canProduce();
 
     // Assert
     expect(canProduce).toBe(true);
@@ -29,7 +30,7 @@ describe('Achievement Output', () => {
   it('earns achievement', () => {
     // Act
     producer.produce({
-      type: '/output/earn-achievement',
+      type: '/mutation/earn-achievement',
       id: 'example-achievement',
       amount: 1,
     });

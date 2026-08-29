@@ -3,7 +3,7 @@ import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekCondition, LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { LudiekEngineSaveData } from '@ludiek/engine/peristence/LudiekSaveData';
 import { LudiekConsumer, LudiekInput } from '@ludiek/engine/input/LudiekConsumer';
-import { LudiekOutput, LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
+import { LudiekMutation, LudiekMutator } from '@ludiek/engine/mutation/LudiekMutator';
 import { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
 import { LudiekController, LudiekRequest, LudiekResponse } from '@ludiek/engine/request/LudiekController';
 import { BonusContribution, LudiekBonus, LudiekModifier } from '@ludiek/engine/bonus/LudiekModifier';
@@ -14,7 +14,7 @@ import { LudiekContent, registry } from '@ludiek/engine/LudiekContent';
 import { ContentManager } from '@123ishatest/louter';
 import { LudiekConditionConcept } from '@ludiek/engine/condition/LudiekConditionConcept';
 import { LudiekInputConcept } from '@ludiek/engine/input/LudiekInputConcept';
-import { LudiekOutputConcept } from '@ludiek/engine/output/LudiekOutputConcept';
+import { LudiekMutationConcept } from '@ludiek/engine/mutation/LudiekMutationConcept';
 import { LudiekRequestConcept } from '@ludiek/engine/request/LudiekRequestConcept';
 import { LudiekBonusConcept } from '@ludiek/engine/bonus/LudiekBonusConcept';
 import { LudiekLogger } from '@ludiek/engine/logger/LudiekLogger';
@@ -29,7 +29,7 @@ export class LudiekEngine<
   const Content extends readonly LudiekContent[] = [],
   const Evaluators extends readonly LudiekEvaluator[] = [],
   const Consumers extends readonly LudiekConsumer[] = [],
-  const Producers extends readonly LudiekProducer[] = [],
+  const Mutators extends readonly LudiekMutator[] = [],
   const Controllers extends readonly LudiekController[] = [],
   const Modifiers extends readonly LudiekModifier[] = [],
 > {
@@ -47,14 +47,14 @@ export class LudiekEngine<
   private readonly _contentManager: ContentManager<ContentMap<Content>>;
   private readonly _condition: LudiekConditionConcept<Evaluators>;
   private readonly _input: LudiekInputConcept<Consumers>;
-  private readonly _output: LudiekOutputConcept<Producers>;
+  private readonly _mutation: LudiekMutationConcept<Mutators>;
   private readonly _request: LudiekRequestConcept<Controllers>;
   private readonly _bonus: LudiekBonusConcept<Modifiers>;
 
   private readonly _logger: LudiekLogger;
 
   constructor(
-    config: LudiekEngineConfig<Plugins, Features, Content, Evaluators, Consumers, Producers, Controllers, Modifiers>,
+    config: LudiekEngineConfig<Plugins, Features, Content, Evaluators, Consumers, Mutators, Controllers, Modifiers>,
     state = {},
   ) {
     this._engineId = config.engineId ?? DEFAULT_ID;
@@ -64,7 +64,7 @@ export class LudiekEngine<
 
     this._condition = new LudiekConditionConcept(this);
     this._input = new LudiekInputConcept(this);
-    this._output = new LudiekOutputConcept(this);
+    this._mutation = new LudiekMutationConcept(this);
     this._request = new LudiekRequestConcept(this);
     this._bonus = new LudiekBonusConcept(this, state);
 
@@ -77,7 +77,7 @@ export class LudiekEngine<
     // TODO(@Isha): Inject in constructor?
     config.evaluators?.forEach((c) => this._condition.register(c));
     config.consumers?.forEach((i) => this._input.register(i));
-    config.producers?.forEach((o) => this._output.register(o));
+    config.mutators?.forEach((o) => this._mutation.register(o));
     config.controllers?.forEach((c) => this._request.register(c));
     config.modifiers?.forEach((m) => this._bonus.register(m));
 
@@ -85,7 +85,7 @@ export class LudiekEngine<
     registry.set(this._engineId, new Map<string, z.ZodAny>());
     registry.get(this._engineId)?.set('LUDIEK_CONDITION', this._condition.schema);
     registry.get(this._engineId)?.set('LUDIEK_INPUT', this._input.schema);
-    registry.get(this._engineId)?.set('LUDIEK_OUTPUT', this._output.schema);
+    registry.get(this._engineId)?.set('LUDIEK_MUTATION', this._mutation.schema);
     registry.get(this._engineId)?.set('LUDIEK_REQUEST', this._request.schema);
     registry.get(this._engineId)?.set('LUDIEK_BONUS', this._bonus.schema);
     this.content = Object.fromEntries(config.content?.map((c) => [c.kind, c.schema]) ?? []) as ContentMap<Content>;
@@ -170,29 +170,29 @@ export class LudiekEngine<
     return this._input;
   }
 
-  public canProduce(output: LudiekOutput<Producers> | LudiekOutput<Producers>[]): boolean {
-    const type = getType(output);
-    this._logger.debug(`Can produce ${type}`, output);
+  public canMutate(mutation: LudiekMutation<Mutators> | LudiekMutation<Mutators>[]): boolean {
+    const type = getType(mutation);
+    this._logger.debug(`Can mutate ${type}`, mutation);
 
-    const result = this._output.canProduce(output);
+    const result = this._mutation.canApply(mutation);
     this._logger.debug(`${type} ->`, result);
     return result;
   }
 
-  public produce(output: LudiekOutput<Producers> | LudiekOutput<Producers>[]): void {
-    this._logger.debug(`Produce ${getType(output)}`, output);
-    this._output.produce(output);
+  public mutate(mutation: LudiekMutation<Mutators> | LudiekMutation<Mutators>[]): void {
+    this._logger.debug(`Mutate ${getType(mutation)}`, mutation);
+    this._mutation.apply(mutation);
   }
 
-  public modifyOutput<Output extends LudiekOutput<Producers>>(output: Output): Output {
-    this._logger.debug(`Modify ${output.type}`, output);
-    const result = this._output.modify(output);
-    this._logger.debug(`${output.type} ->`, result);
+  public modifyMutation<Mutation extends LudiekMutation<Mutators>>(mutation: Mutation): Mutation {
+    this._logger.debug(`Modify ${mutation.type}`, mutation);
+    const result = this._mutation.modify(mutation);
+    this._logger.debug(`${mutation.type} ->`, result);
     return result;
   }
 
-  public get output(): LudiekOutputConcept<Producers> {
-    return this._output;
+  public get mutation(): LudiekMutationConcept<Mutators> {
+    return this._mutation;
   }
 
   public resolveRequest<Request extends LudiekRequest<Controllers>>(
@@ -221,7 +221,7 @@ export class LudiekEngine<
   }
 
   public handleTransaction(
-    transaction: LudiekTransaction<LudiekInput<Consumers>, LudiekOutput<Producers>, LudiekCondition<Evaluators>>,
+    transaction: LudiekTransaction<LudiekInput<Consumers>, LudiekMutation<Mutators>, LudiekCondition<Evaluators>>,
   ): boolean {
     if (transaction.requirement && !this._condition.evaluate(transaction.requirement)) {
       return false;
@@ -231,7 +231,7 @@ export class LudiekEngine<
       return false;
     }
 
-    if (transaction.output && !this._output.canProduce(transaction.output)) {
+    if (transaction.output && !this._mutation.canApply(transaction.output)) {
       return false;
     }
 
@@ -240,7 +240,7 @@ export class LudiekEngine<
     }
 
     if (transaction.output) {
-      this._output.produce(transaction.output);
+      this._mutation.apply(transaction.output);
     }
     return true;
   }

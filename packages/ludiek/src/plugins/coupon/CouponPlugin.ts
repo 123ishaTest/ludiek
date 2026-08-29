@@ -50,7 +50,7 @@ export class CouponPlugin extends LudiekPlugin {
       return false;
     }
 
-    if (!this.canProduce(coupon.output)) {
+    if (!this.canMutate(coupon.output)) {
       return false;
     }
 

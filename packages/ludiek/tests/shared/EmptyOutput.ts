@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
+import { LudiekProducer } from '@ludiek/engine/mutation/LudiekProducer';
 
 export const EmptyOutputSchema = z.strictObject({
-  type: z.literal('/output/empty'),
+  type: z.literal('/mutation/empty'),
   amount: z.literal(1).default(1),
 });
 

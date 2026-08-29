@@ -12,6 +12,6 @@ export { LoseCurrencyConsumer, type LoseCurrencyInput } from '@ludiek/plugins/cu
 
 // Output
 export {
-  GainCurrencyProducer,
-  type GainCurrencyOutput,
-} from '@ludiek/plugins/currency/contributions/GainCurrencyOutput';
+  GainCurrencyMutator,
+  type GainCurrencyMutation,
+} from '@ludiek/plugins/currency/contributions/GainCurrencyMutation';

@@ -65,7 +65,7 @@
   upgrade.loadContent(upgrades);
 
   const output: SeedOutput = $state({
-    type: '/output/seed',
+    type: '/mutation/seed',
     plant: '/plant/sunflower',
     amount: 1,
   });

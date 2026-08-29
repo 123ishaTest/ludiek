@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
+import { LudiekProducer } from '@ludiek/engine/mutation/LudiekProducer';
 import { DummyModifier } from '@tests/shared/DummyBonus';
 
 export const ModifiedOutputSchema = z.strictObject({
-  type: z.literal('/output/modified'),
+  type: z.literal('/mutation/modified'),
   amount: z.number(),
 });
 

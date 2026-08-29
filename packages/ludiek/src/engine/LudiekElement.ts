@@ -75,20 +75,20 @@ export abstract class LudiekElement<Dependencies extends LudiekDependencies>
 
   /**
    * @internal
-   * @see LudiekEngine.canProduce
+   * @see LudiekEngine.canMutate
    */
-  protected canProduce(...args: Parameters<(typeof this.engine)['canProduce']>) {
+  protected canMutate(...args: Parameters<(typeof this.engine)['canMutate']>) {
     this.ensureEngine();
-    return this.engine.canProduce(...args);
+    return this.engine.canMutate(...args);
   }
 
   /**
    * @internal
-   * @see LudiekEngine.produce
+   * @see LudiekEngine.mutate
    */
-  protected produce(...args: Parameters<(typeof this.engine)['produce']>) {
+  protected produce(...args: Parameters<(typeof this.engine)['mutate']>) {
     this.ensureEngine();
-    return this.engine.produce(...args);
+    return this.engine.mutate(...args);
   }
 
   public get state(): object {

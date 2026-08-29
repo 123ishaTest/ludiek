@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
+import { LudiekProducer } from '@ludiek/engine/mutation/LudiekProducer';
 
-export class NeverProducer extends LudiekProducer<{ type: '/output/never'; amount: number }> {
+export class NeverProducer extends LudiekProducer<{ type: '/mutation/never'; amount: number }> {
   readonly schema = z.strictObject({
-    type: z.literal('/output/never'),
+    type: z.literal('/mutation/never'),
     amount: z.number(),
   });
 

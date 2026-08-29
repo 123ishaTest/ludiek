@@ -34,7 +34,7 @@ engine.plugins.achievement.loadContent([{
 
 // And use it fully type-safe
 engine.produce({
-  type: '/output/gain-currency',
+  type: '/mutation/gain-currency',
   currency: '/currency/money',
   amount: 10,
 })

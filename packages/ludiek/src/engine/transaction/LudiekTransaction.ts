@@ -1,5 +1,5 @@
 import { BaseInput } from '@ludiek/engine/input/LudiekConsumer';
-import { BaseOutput } from '@ludiek/engine/output/LudiekProducer';
+import { BaseOutput } from '@ludiek/engine/mutation/LudiekProducer';
 import { BaseCondition } from '@ludiek/engine/condition/LudiekEvaluator';
 
 export interface LudiekTransaction<

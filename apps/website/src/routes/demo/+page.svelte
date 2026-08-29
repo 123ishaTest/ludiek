@@ -47,7 +47,7 @@
         amount: 100,
       },
       output: {
-        type: '/output/gain-currency',
+        type: '/mutation/gain-currency',
         id: '/currency/gems',
         amount: 1,
       },

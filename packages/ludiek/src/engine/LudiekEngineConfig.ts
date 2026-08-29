@@ -1,6 +1,6 @@
 import { LudiekEvaluator } from '@ludiek/engine/condition/LudiekEvaluator';
 import { LudiekConsumer } from '@ludiek/engine/input/LudiekConsumer';
-import { LudiekProducer } from '@ludiek/engine/output/LudiekProducer';
+import { LudiekProducer } from '@ludiek/engine/mutation/LudiekProducer';
 import { LudiekController } from '@ludiek/engine/request/LudiekController';
 import { LudiekPlugin } from '@ludiek/engine/LudiekPlugin';
 import { LudiekModifier } from '@ludiek/engine/bonus/LudiekModifier';

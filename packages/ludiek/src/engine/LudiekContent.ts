@@ -1,7 +1,7 @@
 import z, { ZodType } from 'zod';
 import { BaseConditionSchema } from '@ludiek/engine/condition/LudiekEvaluator';
 import { BaseInputSchema } from '@ludiek/engine/input/LudiekConsumer';
-import { BaseOutputSchema } from '@ludiek/engine/output/LudiekProducer';
+import { BaseMutationSchema } from '@ludiek/engine/mutation/LudiekMutator';
 import { BaseRequestSchema } from '@ludiek/engine/request/LudiekController';
 import { BonusContributionSchema } from '@ludiek/engine/bonus/LudiekModifier';
 import { DEFAULT_ID } from '@ludiek/engine/LudiekEngine';
@@ -33,7 +33,7 @@ export const l = {
   content: (kind: string) => ref(kind).meta({ ludiek: { reference: kind } }),
   condition: (engineId = DEFAULT_ID) => deferSchema<typeof BaseConditionSchema>('LUDIEK_CONDITION', engineId),
   input: (engineId = DEFAULT_ID) => deferSchema<typeof BaseInputSchema>('LUDIEK_INPUT', engineId),
-  output: (engineId = DEFAULT_ID) => deferSchema<typeof BaseOutputSchema>('LUDIEK_OUTPUT', engineId),
+  mutation: (engineId = DEFAULT_ID) => deferSchema<typeof BaseMutationSchema>('LUDIEK_MUTATION', engineId),
   request: (engineId = DEFAULT_ID) => deferSchema<typeof BaseRequestSchema>('LUDIEK_REQUEST', engineId),
   bonus: (engineId = DEFAULT_ID) => deferSchema<typeof BonusContributionSchema>('LUDIEK_BONUS', engineId),
 };

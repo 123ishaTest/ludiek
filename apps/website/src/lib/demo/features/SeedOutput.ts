@@ -2,7 +2,7 @@ import z from 'zod';
 import { CurrencyPlugin, LudiekProducer } from '@123ishatest/ludiek';
 
 export const SeedOutputSchema = z.strictObject({
-  type: z.literal('/output/seed'),
+  type: z.literal('/mutation/seed'),
   plant: z.string(),
   amount: z.number().positive(),
 });

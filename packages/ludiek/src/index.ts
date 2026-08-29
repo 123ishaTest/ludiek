@@ -20,7 +20,7 @@ export {
 export { LudiekConsumer, type BaseInput, type LudiekInput } from '@ludiek/engine/input/LudiekConsumer';
 
 // Engine.Output
-export { LudiekProducer, type BaseOutput, type LudiekOutput } from '@ludiek/engine/output/LudiekProducer';
+export { LudiekProducer, type BaseOutput, type LudiekOutput } from '@ludiek/engine/mutation/LudiekProducer';
 
 // Engine.Transactions
 export type { LudiekTransaction } from '@ludiek/engine/transaction/LudiekTransaction';
